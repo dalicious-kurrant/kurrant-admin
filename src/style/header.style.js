@@ -1,0 +1,15 @@
+import styled from 'styled-components';
+
+export const H = {
+  Wrapper: styled.header`
+    background-color: #1b1c1d;
+    position: fixed;
+    width: 100%;
+    height: 75px;
+  `,
+  Bread: styled.div`
+    position: absolute;
+    left: 0;
+    top: 150px;
+  `,
+};
