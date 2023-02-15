@@ -7,6 +7,7 @@ import Customer from '../pages/customer/Customer';
 import Company from '../pages/customer/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
+import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
 
 export const MenuList = [
   {
@@ -47,7 +48,8 @@ export const MenuList = [
       {
         name: '스팟 정보',
         url: '/spot',
-        component: <Spot />,
+        component: <SpotInfo />,
+        // component: <Spot />,
       },
       {
         name: '아파트 정보',
