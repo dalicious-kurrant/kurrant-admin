@@ -17,7 +17,6 @@ const SpotInfo = () => {
         <Button color="red" content="삭제" icon="delete" onClick={onActive} />
       </BtnWrapper>
       <TableWrapper>
-        {/* <span>hihihihihi</span> */}
         <Table
           tableFieldsInput={spotInfoFields}
           tableDataInput={spotInfoMockData}
