@@ -49,8 +49,17 @@ const C = {
   BtnWrapper: styled.div``,
 };
 
-const Common = () => {
+const Common = ({onExcelLoadClick, onExcelExportClick}) => {
   const {pathname} = useLocation();
+
+  const handleExcelLoadClick = () => {
+    onExcelLoadClick();
+  };
+
+  const handleExcelExportClick = () => {
+    onExcelExportClick();
+  };
+
   return (
     <C.Wrapper>
       <C.Bread>
@@ -65,9 +74,15 @@ const Common = () => {
             inverted
             icon="file excel outline"
             content="엑셀 불러오기"
+            onClick={handleExcelLoadClick}
           />
           <Button.Or />
-          <Button color="blue" icon="share" content="엑셀 내보내기" />
+          <Button
+            color="blue"
+            icon="share"
+            content="엑셀 내보내기"
+            onClick={handleExcelExportClick}
+          />
         </Button.Group>
       </C.BtnWrapper>
     </C.Wrapper>

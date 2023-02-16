@@ -1,5 +1,5 @@
 import TableCheckbox from 'common/TableCheckbox';
-import {userStatusFields} from 'data/userStatusData';
+
 import {useEffect} from 'react';
 import {useState} from 'react';
 import styled from 'styled-components';
