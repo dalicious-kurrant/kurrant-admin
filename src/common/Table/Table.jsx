@@ -1,10 +1,10 @@
+import TableCheckbox from 'common/TableCheckbox';
+import {userStatusFields} from 'data/userStatusData';
 import {useEffect} from 'react';
 import {useState} from 'react';
 import styled from 'styled-components';
-
+import theme from 'theme/theme';
 import {handleFalsyValue} from 'utils/valueHandlingLogics';
-import theme from '../../theme/theme';
-import Checkbox from '../Checkbox';
 
 // 이 Table 컴포넌트는 다르다???
 
@@ -16,6 +16,8 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
 
+  const [checkboxStatus, setCheckboxStatus] = useState({});
+
   useEffect(() => {
     setKeyOfTableFieldsInput(Object.keys(tableFieldsInput));
   }, [tableFieldsInput]);
@@ -26,17 +28,62 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
     // 배열이 비여있을 경우 아웃
     if (keyOfTableFieldsInput.length === 0) return;
     // 걸러내기
-  }, [tableDataInput, keyOfTableFieldsInput]);
+  }, [keyOfTableFieldsInput]);
+
+  useEffect(() => {
+    const object1 = {parent: false};
+    const yo1 = [...tableDataInput].map(value => {
+      return value.id;
+    });
+
+    yo1.forEach(value => {
+      object1[value] = false;
+    });
+
+    setCheckboxStatus({
+      ...object1,
+    });
+  }, [tableDataInput]);
+
+  const onCheckCheckbox = value => {
+    if (value === 'parent') {
+      // 모든 value값 한번에 바꾸기
+
+      const yoyo = {};
+      Object.keys(checkboxStatus).forEach(value => {
+        if (checkboxStatus.parent === false) {
+          yoyo[value] = true;
+        } else {
+          yoyo[value] = false;
+        }
+      });
+
+      setCheckboxStatus({...yoyo});
+    } else {
+      setCheckboxStatus({
+        ...checkboxStatus,
+        [value]: !checkboxStatus[value],
+      });
+    }
+  };
 
   return (
     <Container>
-      <table border={1} bgcolor={useTheme.colors.white}>
-        {/* <table bgcolor={useTheme.colors.white}> */}
+      {/* <table border={1} bgcolor={useTheme.colors.white}> */}
+      <table bgcolor={useTheme.colors.white}>
         <thead>
           <tr>
-            {/* <td>체크박스</td> */}
-            {/* <td></td> */}
-            <CheckBoxTh />
+            <CheckBoxTh>
+              <TableCheckbox
+                width="2rem"
+                height="2rem"
+                css="margin:auto;"
+                value={'parent'}
+                checkboxStatus={checkboxStatus}
+                onChecked={onCheckCheckbox}
+                // setCheckboxStatus={setCheckboxStatus}
+              />
+            </CheckBoxTh>
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput.map((val, index) => (
                 <th align="left" key={index}>
@@ -58,7 +105,14 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
               return (
                 <tr key={index1}>
                   <CheckBoxTd align="center">
-                    <Checkbox width="2rem" height="2rem" css="margin:auto;" />
+                    <TableCheckbox
+                      width="2rem"
+                      height="2rem"
+                      css="margin:auto;"
+                      checkboxStatus={checkboxStatus}
+                      value={value1.id}
+                      onChecked={onCheckCheckbox}
+                    />
                   </CheckBoxTd>
 
                   {yo.map((value3, index3) => (
@@ -79,7 +133,6 @@ export default Table;
 
 const Container = styled.div`
   border-collapse: collapse;
-
   width: 100%;
 
   > table {
@@ -90,18 +143,15 @@ const Container = styled.div`
   }
 
   thead {
-    background-color: ${props => props.theme.colors.Grey02};
+    border-bottom: 2px solid ${props => props.theme.colors.Grey03};
+
     tr {
-      border: 1px solid ${props => props.theme.colors.Grey05};
       height: 5rem;
     }
     th {
-      border: 1px solid ${props => props.theme.colors.Grey05};
       vertical-align: middle;
-      padding: 0.8rem;
-      font-size: 1.1rem;
-
-      min-width: 5rem;
+      padding: 0.6rem;
+      font-size: 1.3rem;
       ${props => props.theme.colors.Black02}
       ${props => props.theme.fonts.H10}
     }
@@ -109,15 +159,12 @@ const Container = styled.div`
 
   tbody {
     tr {
-      border: 1px solid ${props => props.theme.colors.Grey05};
     }
     td {
-      border: 1px solid ${props => props.theme.colors.Grey05};
       vertical-align: middle;
-      padding: 0.8rem;
+      padding: 0.6rem;
       height: 6.4rem;
-      font-size: 1rem;
-      /* ${props => props.theme.fonts.Body07} */
+      ${props => props.theme.fonts.Body07}
     }
   }
 `;

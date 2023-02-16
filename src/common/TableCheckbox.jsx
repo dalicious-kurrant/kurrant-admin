@@ -4,25 +4,50 @@ import CheckIcon from 'assets/svg/CheckIcon.svg';
 import Image from './Image';
 import {useState} from 'react';
 import {splitNumberAndUnit} from 'utils/valueHandlingLogics';
+import {useEffect} from 'react';
 
-const Checkbox = ({width, height, css}) => {
-  const [checked, setChecked] = useState(false);
+const TableCheckbox = ({
+  width,
+  height,
+  css,
+  value = undefined,
+  checkboxStatus,
+  onChecked,
+}) => {
+  // const [checked, setChecked] = useState(false);
+  // const [valueHold, setValueHold] = useState(undefined);
+
+  // useEffect(() => {
+  //   setValueHold(value);
+  // }, [value]);
+
+  // useEffect(() => {
+  //   if (onChecked) {
+  //     onChecked();
+  //   }
+  // }, [onChecked]);
+
+  const handleClick = () => {
+    onChecked(value);
+  };
 
   return (
     <Container
       css={css}
-      checked={checked}
+      // checked={true}
+      checked={checkboxStatus[value]}
       width={width}
       height={height}
-      onClick={() => {
-        setChecked(!checked);
-      }}>
-      {checked && <Image src={CheckIcon} width={'70%'} height={'70%'} />}
+      onClick={handleClick}>
+      {false && <Image src={CheckIcon} width={'70%'} height={'70%'} />}
+      {checkboxStatus[value] && (
+        <Image src={CheckIcon} width={'70%'} height={'70%'} />
+      )}
     </Container>
   );
 };
 
-export default Checkbox;
+export default TableCheckbox;
 
 const Container = styled.div`
   width: ${({width}) => width};
