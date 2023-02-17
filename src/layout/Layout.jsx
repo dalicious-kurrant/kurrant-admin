@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Outlet, useLocation } from 'react-router-dom';
+import {Outlet, useLocation} from 'react-router-dom';
 import Header from '../components/Header';
 import Common from './Common';
 
@@ -10,11 +10,11 @@ const Wrapper = styled.main`
 `;
 
 const Layout = () => {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
   return (
     <Wrapper>
-      <Header />
-      {pathname === '/' ? <div style={{ paddingTop: '90px' }} /> : <Common />}
+      {pathname !== '/' && <Header />}
+      {pathname === '/main' ? <div style={{paddingTop: '90px'}} /> : <Common />}
       <Outlet />
     </Wrapper>
   );

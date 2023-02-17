@@ -7,6 +7,7 @@ import Customer from '../pages/customer/Customer';
 import Company from '../pages/customer/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
+import ItemInfo from '../pages/item/ItemInfo';
 
 export const MenuList = [
   {
@@ -90,6 +91,7 @@ export const MenuList = [
       {
         name: '상품 정보',
         url: '/info',
+        component: <ItemInfo />,
       },
       {
         name: '상품 등록요청',
