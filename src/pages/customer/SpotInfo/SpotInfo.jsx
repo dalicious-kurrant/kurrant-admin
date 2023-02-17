@@ -23,7 +23,7 @@ const SpotInfo = () => {
       // `${process.env.REACT_APP_TEST_SERVER_URL}/members?code=AAAAAA`,
       // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
     );
-    console.log(response.data.length);
+    // console.log(response.data.length);
     return response.data.length;
   });
 
@@ -50,7 +50,7 @@ const SpotInfo = () => {
       // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
     );
 
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   });
 

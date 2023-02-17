@@ -3,6 +3,7 @@ import {useLocation} from 'react-router';
 import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
+// import XLSX from 'xlsx';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -60,6 +61,28 @@ const Common = ({onExcelLoadClick, onExcelExportClick}) => {
     onExcelExportClick();
   };
 
+  // const readUploadFile = e => {
+  //   e.preventDefault();
+  //   if (e.target.files) {
+  //     const reader = new FileReader();
+  //     reader.onload = e => {
+  //       const data = e.target.result;
+  //       const workbook = xlsx.read(data, {type: 'array'});
+  //       const sheetName = workbook.SheetNames[0];
+  //       const worksheet = workbook.Sheets[sheetName];
+  //       const json = xlsx.utils.sheet_to_json(worksheet);
+  //       console.log(json);
+  //     };
+  //     reader.readAsArrayBuffer(e.target.files[0]);
+  //   }
+  // };
+
+  // const readUploadFile = async e => {
+  //   const file = e.target.files[0];
+  //   const data = await file.arrayBuffer();
+  //   const workbook = XLSX.read(data);
+  // };
+
   return (
     <C.Wrapper>
       <C.Bread>
@@ -84,6 +107,15 @@ const Common = ({onExcelLoadClick, onExcelExportClick}) => {
             onClick={handleExcelExportClick}
           />
         </Button.Group>
+        <form>
+          <label htmlFor="upload">Upload File</label>
+          <input
+            type="file"
+            name="upload"
+            id="upload"
+            // onChange={readUploadFile}
+          />
+        </form>
       </C.BtnWrapper>
     </C.Wrapper>
   );

@@ -1,8 +1,9 @@
 export const spotInfoFields = {
   id: '아이디',
   clientGroupName: '그룹 이름',
-  name: '스팟 이름',
   clientGroupId: '그룹 아이디',
+  name: '스팟 이름',
+  spotId: '스팟 아이디',
   zipCode: '우편번호',
   addressDepth1: '기본주소',
   addressDepth2: '상세주소',

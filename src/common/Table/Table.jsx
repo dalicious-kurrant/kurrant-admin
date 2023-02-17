@@ -69,8 +69,8 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
 
   return (
     <Container>
-      {/* <table border={1} bgcolor={useTheme.colors.white}> */}
-      <table bgcolor={useTheme.colors.white}>
+      <table border={1} bgcolor={useTheme.colors.white}>
+        {/* <table bgcolor={useTheme.colors.white}> */}
         <thead>
           <tr>
             <CheckBoxTh>
@@ -149,6 +149,7 @@ const Container = styled.div`
       height: 5rem;
     }
     th {
+      border: 1px solid ${props => props.theme.colors.Grey05};
       vertical-align: middle;
       padding: 0.6rem;
       font-size: 1.3rem;
@@ -164,7 +165,8 @@ const Container = styled.div`
       vertical-align: middle;
       padding: 0.6rem;
       height: 6.4rem;
-      ${props => props.theme.fonts.Body07}
+
+      border: 1px solid ${props => props.theme.colors.Grey05};
     }
   }
 `;
