@@ -11,7 +11,7 @@ const Header = () => {
     <H.Wrapper>
       <Segment inverted>
         <Menu inverted secondary>
-          <Menu.Item active onClick={() => navi('/')} icon="home" />
+          <Menu.Item active onClick={() => navi('/main')} icon="home" />
           {MenuList.map(v => (
             <Dropdown key={`${v.name}`} item text={v.name}>
               <Dropdown.Menu>
