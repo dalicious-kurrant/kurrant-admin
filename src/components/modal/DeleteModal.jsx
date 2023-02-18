@@ -1,7 +1,8 @@
 import React from 'react';
 import {Button, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
-
+import {planAtom} from '../../utils/store';
+import {useAtom} from 'jotai';
 const Content = styled.div`
   text-align: center;
 `;
@@ -18,21 +19,30 @@ const Line = styled.p`
 `;
 
 const DeleteModal = ({active, onClose}) => {
+  const [, setPlan] = useAtom(planAtom);
   return (
     <Modal onClose={onClose} open={active} size="mini">
       <Modal.Content image>
         <Modal.Description>
           <Content>
             <Line className="first">정말 삭제하시겠습니까?</Line>
-            <Line>
+            {/* <Line>
               선택된 수 <Strong>{`" 3 "`}</Strong>
-            </Line>
+            </Line> */}
           </Content>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
         <Button color="black" content="취소" onClick={onClose} />
-        <Button content="삭제" icon="delete" negative />
+        <Button
+          content="삭제"
+          icon="delete"
+          negative
+          onClick={() => {
+            setPlan();
+            onClose();
+          }}
+        />
       </Modal.Actions>
     </Modal>
   );

@@ -55,7 +55,7 @@ const C = {
 const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
-  const [plan, setPlan] = useAtom(planAtom);
+  const [, setPlan] = useAtom(planAtom);
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -70,6 +70,7 @@ const Common = () => {
     e.preventDefault();
     if (e.target.files) {
       const reader = new FileReader();
+      setPlan();
       reader.onload = e => {
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array'});
@@ -77,7 +78,10 @@ const Common = () => {
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
         console.log(sheetName);
-        if (sheetName === '메이커스 일정 관리') setPlan(json);
+        if (sheetName === '메이커스 일정 관리') {
+          setPlan(json);
+          inputRef.current.value = '';
+        }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
     }
