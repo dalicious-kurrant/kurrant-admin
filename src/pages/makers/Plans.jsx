@@ -1,6 +1,6 @@
 import useModal from '../../hooks/useModal';
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Table} from 'semantic-ui-react';
+import {Button, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 import {planAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
