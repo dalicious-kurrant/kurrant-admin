@@ -8,6 +8,7 @@ import Company from '../pages/customer/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
 import ItemInfo from '../pages/item/ItemInfo';
+import Plans from '../pages/makers/Plans';
 
 export const MenuList = [
   {
@@ -81,6 +82,7 @@ export const MenuList = [
       {
         name: '메이커스 일정',
         url: '/plans',
+        component: <Plans />,
       },
     ],
   },

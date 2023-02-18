@@ -92,7 +92,6 @@ export function formattedDateAndDay(data, delimiter = '. ') {
 // 식사구매 날짜 버튼
 export function formattedDateBtn(data) {
   const dateTime = transDateType(data);
-  const year = dateTime.getFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
   return month + '월' + day + '일';
@@ -101,7 +100,6 @@ export function formattedDateBtn(data) {
 // 취소 날짜
 export function formattedDateWeekBtn(data, delimiter = '.') {
   const dateTime = transDateType(data);
-  const year = dateTime.getFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
   const week = ['일', '월', '화', '수', '목', '금', '토'];
