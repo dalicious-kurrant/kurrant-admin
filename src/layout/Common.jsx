@@ -60,6 +60,7 @@ const Common = () => {
     if (!inputRef.current) {
       return;
     }
+    inputRef.current.value = '';
     inputRef.current.click();
   }, []);
 
@@ -80,7 +81,6 @@ const Common = () => {
         console.log(sheetName);
         if (sheetName === '메이커스 일정 관리') {
           setPlan(json);
-          inputRef.current.value = '';
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);

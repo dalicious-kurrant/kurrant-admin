@@ -24,7 +24,6 @@ const Plans = () => {
           {plan &&
             plan.map((p, i) => {
               const HeaderData = Object.values(p);
-
               if (i === 0) {
                 return (
                   <Table.Header key={p + i}>
