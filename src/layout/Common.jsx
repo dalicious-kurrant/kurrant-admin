@@ -4,7 +4,7 @@ import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
-import {planAtom} from '../utils/store';
+import {planAtom, productAtom} from '../utils/store';
 import {useAtom} from 'jotai';
 
 const makeSection = pathname => {
@@ -56,6 +56,7 @@ const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
   const [, setPlan] = useAtom(planAtom);
+  const [, setProduct] = useAtom(productAtom);
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -81,6 +82,9 @@ const Common = () => {
         console.log(sheetName);
         if (sheetName === '메이커스 일정 관리') {
           setPlan(json);
+        }
+        if (sheetName === '상품 정보') {
+          setProduct(json);
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);

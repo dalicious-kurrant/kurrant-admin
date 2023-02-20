@@ -21,10 +21,9 @@ import {useNavigate} from 'react-router-dom';
 import {useQueryClient} from 'react-query';
 import Modal from '../../../components/alertModal/AlertModal';
 
-// 주문 정보 페이지
+// 상품 정보 페이지
 const Order = () => {
   const navigate = useNavigate();
-  const {onActive} = useModal();
   const groupRef = useRef(null);
   const spotRef = useRef(null);
   const makersRef = useRef(null);
@@ -42,7 +41,7 @@ const Order = () => {
   const [diningType, setDiningType] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  console.log(checkItems);
+
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
   const {mutateAsync: cancelOrder} = useCancelOrder();

@@ -11,6 +11,7 @@ const Plans = () => {
   const {onActive} = useModal();
   const [plan] = useAtom(planAtom);
   const [key, setKey] = useState();
+
   useEffect(() => {
     if (plan) setKey(Object.keys(plan[0]));
   }, [plan]);
