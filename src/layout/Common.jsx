@@ -4,7 +4,8 @@ import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
-import {exelPlanAtom, planAtom} from '../utils/store';
+import {planAtom, productAtom,exelPlanAtom} from '../utils/store';
+
 import {useAtom} from 'jotai';
 import { planExel } from '../utils/downloadExel/exel';
 
@@ -56,8 +57,11 @@ const C = {
 const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
+
+  const [, setPlan] = useAtom(planAtom);
+  const [, setProduct] = useAtom(productAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
-  const [plan, setPlan] = useAtom(planAtom);
+
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -83,6 +87,9 @@ const Common = () => {
         const json = XLSX.utils.sheet_to_json(worksheet);
         if (sheetName === '메이커스 일정 관리') {  
           setExelPlan(json);
+        }
+        if (sheetName === '상품 정보') {
+          setProduct(json);
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
