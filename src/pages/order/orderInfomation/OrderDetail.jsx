@@ -28,28 +28,34 @@ const OrderDetail = () => {
               <Table.Cell>{orderDetail?.data?.userName}</Table.Cell>
               <Table.Cell>{orderDetail?.data?.servicePeriod}</Table.Cell>
               <Table.Cell>{orderDetail?.data?.spotName}</Table.Cell>
-              <Table.Cell>
-                {withCommas(orderDetail?.data?.totalPrice)}원
+              <Table.Cell textAlign="right">
+                {withCommas(orderDetail?.data?.totalPrice) || 0}원
               </Table.Cell>
             </TableRow>
           </Table.Body>
         </Table>
 
-        <Table celled>
+        <TableDetail celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>서비스일</Table.HeaderCell>
-              <Table.HeaderCell>다이닝타입</Table.HeaderCell>
-              <Table.HeaderCell>번호</Table.HeaderCell>
-              <Table.HeaderCell>메이커스</Table.HeaderCell>
-              <Table.HeaderCell>상품명</Table.HeaderCell>
-              <Table.HeaderCell>할인 적용가</Table.HeaderCell>
-              <Table.HeaderCell>개수</Table.HeaderCell>
-              <Table.HeaderCell>주문 상태</Table.HeaderCell>
-              <Table.HeaderCell>결제 총금액</Table.HeaderCell>
-              <Table.HeaderCell>지원금</Table.HeaderCell>
-              <Table.HeaderCell>추가 결제금액</Table.HeaderCell>
-              <Table.HeaderCell>배송비</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">서비스일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">다이닝타입</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">메이커스</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">상품명</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                할인 적용가
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">개수</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문 상태</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                결제 총금액
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">지원금</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                추가 결제금액
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">배송비</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -72,37 +78,43 @@ const OrderDetail = () => {
                         {el.diningType}
                       </Table.Cell>
                     )}
-                    <Table.Cell>{idx + 1}</Table.Cell>
+                    <Table.Cell textAlign="center">{idx + 1}</Table.Cell>
                     <Table.Cell>{v.makers}</Table.Cell>
                     <Table.Cell>{v.foodName}</Table.Cell>
-                    <Table.Cell>{withCommas(v.discountedPrice)}</Table.Cell>
-                    <Table.Cell>{v.count}</Table.Cell>
-                    <Table.Cell>{v.orderStatus}</Table.Cell>
+                    <Table.Cell textAlign="right">
+                      {withCommas(v.discountedPrice) || 0}원
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{v.count}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.orderStatus}</Table.Cell>
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
-                        verticalAlign="middle">
+                        verticalAlign="middle"
+                        textAlign="right">
                         {withCommas(el.totalPrice) || 0}원
                       </Table.Cell>
                     )}
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
-                        verticalAlign="middle">
+                        verticalAlign="middle"
+                        textAlign="right">
                         {withCommas(el.supportPrice) || 0}원
                       </Table.Cell>
                     )}
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
-                        verticalAlign="middle">
+                        verticalAlign="middle"
+                        textAlign="right">
                         {withCommas(el.payPrice) || 0}원
                       </Table.Cell>
                     )}
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
-                        verticalAlign="middle">
+                        verticalAlign="middle"
+                        textAlign="right">
                         {withCommas(el.deliveryFee) || 0}원
                       </Table.Cell>
                     )}
@@ -111,7 +123,7 @@ const OrderDetail = () => {
               });
             })}
           </Table.Body>
-        </Table>
+        </TableDetail>
       </TableWrap>
     </Wrap>
   );
@@ -133,4 +145,8 @@ const TableRow = styled(Table.Row)`
     cursor: pointer;
     background-color: whitesmoke;
   } */
+`;
+
+const TableDetail = styled(Table)`
+  margin-top: 50px;
 `;
