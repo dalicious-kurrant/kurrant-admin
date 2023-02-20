@@ -1,6 +1,6 @@
 import useModal from '../../../hooks/useModal';
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Table, Checkbox} from 'semantic-ui-react';
+import {Button, Table} from 'semantic-ui-react';
 import {
   PageWrapper,
   BtnWrapper,
@@ -13,14 +13,13 @@ import {
   useCancelOrder,
   useGetGroupList,
   useGetMakersList,
-  useGetOrderDetailList,
   useGetOrderList,
 } from '../../../hooks/useOrderList';
 import {orderApis} from '../../../api/order';
-import instance from '../../../shared/axios';
 import withCommas from '../../../utils/withCommas';
 import {useNavigate} from 'react-router-dom';
-import {useQuery, useQueryClient} from 'react-query';
+import {useQueryClient} from 'react-query';
+import Modal from '../../../components/alertModal/AlertModal';
 
 // 주문 정보 페이지
 const Order = () => {
@@ -41,9 +40,9 @@ const Order = () => {
   const [diningTypeOption, setDiningTypeOption] = useState('');
   const [spotList, setSpotList] = useState([]);
   const [diningType, setDiningType] = useState([]);
-  const [dataList, setDateList] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
-
+  const [modalOpen, setModalOpen] = useState(false);
+  console.log(checkItems);
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
@@ -110,6 +109,14 @@ const Order = () => {
     setEndDate(e.target.value);
   };
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const onClearSelect = () => {
     if (groupRef.current) {
       groupRef.current.clearValue();
@@ -143,12 +150,14 @@ const Order = () => {
       setCheckItems(checkItems.filter(el => el !== id));
     }
   };
-  // const checkboxList = dataList.map(el => el.orderItemDailyFoods);
-
+  const checkboxList = orderList?.data
+    ?.map(el => el.orderItemDailyFoods)
+    .flat();
+  console.log(checkboxList);
   const handleAllCheck = checked => {
     if (checked) {
       const idArray = [];
-      dataList.map(el =>
+      orderList?.data?.map(el =>
         el.orderItemDailyFoods.forEach(el =>
           idArray.push(el.orderItemDailyFoodId),
         ),
@@ -161,8 +170,8 @@ const Order = () => {
   };
 
   const cancelButton = async () => {
-    console.log(checkItems);
     await cancelOrder({idList: checkItems});
+    closeModal();
     queryClient.invalidateQueries('orderList');
   };
 
@@ -178,14 +187,22 @@ const Order = () => {
           defaultValue={startDate}
           onChange={e => getStartDate(e)}
         />
-        <span>~</span>
+        <span>-</span>
         <DateInput
           type="date"
           defaultValue={endDate}
           onChange={e => getEndDate(e)}
         />
       </div>
-      <button onClick={onClearSelect}> 필터 초기화</button>
+      <ResetButton>
+        <Button
+          color="black"
+          content="필터 초기화"
+          icon="redo"
+          onClick={onClearSelect}
+        />
+      </ResetButton>
+
       <SelectBoxWrapper>
         <SelectBox
           ref={groupRef}
@@ -239,7 +256,14 @@ const Order = () => {
       </SelectBoxWrapper>
 
       <BtnWrapper>
-        <Button color="red" content="취소" icon="delete" onClick={onActive} />
+        <Button
+          color="red"
+          content="주문 취소"
+          icon="delete"
+          onClick={() => {
+            openModal();
+          }}
+        />
       </BtnWrapper>
       <TableWrapper>
         <Table celled>
@@ -276,6 +300,11 @@ const Order = () => {
                     key={v.orderCode + idx}>
                     <Table.Cell textAlign="center">
                       <input
+                        checked={
+                          checkItems.length === checkboxList.length
+                            ? true
+                            : false
+                        }
                         type="checkbox"
                         onClick={e => {
                           checked(e, v.orderItemDailyFoodId);
@@ -299,7 +328,7 @@ const Order = () => {
                     <Table.Cell>{v.makers}</Table.Cell>
                     <Table.Cell>{v.foodName}</Table.Cell>
                     <Table.Cell>{v.count}</Table.Cell>
-                    <Table.Cell>{withCommas(v.price)}</Table.Cell>
+                    <Table.Cell>{withCommas(v.price)}원</Table.Cell>
                     <Table.Cell>{v.orderCode}</Table.Cell>
                   </TableRow>
                 );
@@ -308,6 +337,15 @@ const Order = () => {
           </Table.Body>
         </Table>
       </TableWrapper>
+      <Modal
+        open={modalOpen}
+        message={'선택한 주문을 취소하시겠습니까?'}
+        setAlertModalOpen={closeModal}
+        action={cancelButton}
+        actionMessage={'예'}
+        cancelMessage={'아니오'}
+        label={`선택된 수 ${checkItems.length}`}
+      />
     </PageWrapper>
   );
 };
@@ -320,7 +358,9 @@ const SelectBoxWrap = styled.div`
 
 const SelectBoxWrapper = styled.div`
   display: flex;
-  margin: 50px 0px;
+  margin: 24px 0px 50px 0px;
+  width: 80%;
+  justify-content: space-between;
 `;
 
 const SelectBox = styled(Select)`
@@ -339,4 +379,8 @@ const TableRow = styled(Table.Row)`
     cursor: pointer;
     background-color: whitesmoke;
   }
+`;
+
+const ResetButton = styled.div`
+  margin-top: 50px;
 `;

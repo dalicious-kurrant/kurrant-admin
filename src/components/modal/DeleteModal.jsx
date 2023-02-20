@@ -18,6 +18,7 @@ const Line = styled.p`
   }
 `;
 
+
 const DeleteModal = ({active, onClose}) => {
   const [, setExelPlan] = useAtom(exelPlanAtom);
   const [, setPlan] = useAtom(planAtom);

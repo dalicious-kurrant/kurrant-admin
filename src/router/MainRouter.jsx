@@ -12,7 +12,7 @@ const MainRouter = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        {token !== null && (
+        {token === null && (
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />
             <Route path="/shop/info/detail/:id" element={<ItemInfoDetail />} />
