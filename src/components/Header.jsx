@@ -3,9 +3,14 @@ import {useNavigate} from 'react-router-dom';
 import {MenuList} from '../router/menu';
 import {Segment, Menu, Dropdown} from 'semantic-ui-react';
 import {H} from '../style/header.style';
+import styled from 'styled-components';
 
 const Header = () => {
   const navi = useNavigate();
+  const logOutButton = () => {
+    localStorage.removeItem('token');
+    window.location.replace('/');
+  };
 
   return (
     <H.Wrapper>
@@ -27,8 +32,17 @@ const Header = () => {
           ))}
         </Menu>
       </Segment>
+      <Logout onClick={logOutButton}>로그아웃</Logout>
     </H.Wrapper>
   );
 };
 
 export default Header;
+
+const Logout = styled.div`
+  position: absolute;
+  right: 24px;
+  top: 45%;
+  color: white;
+  cursor: pointer;
+`;
