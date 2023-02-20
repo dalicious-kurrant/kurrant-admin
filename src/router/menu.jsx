@@ -49,7 +49,8 @@ export const MenuList = [
       {
         name: '스팟 정보',
         url: '/spot',
-        component: <Spot />,
+        component: <SpotInfo />,
+        // component: <Spot />,
       },
       {
         name: '아파트 정보',

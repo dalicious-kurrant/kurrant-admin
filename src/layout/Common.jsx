@@ -3,9 +3,13 @@ import {useLocation} from 'react-router';
 import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
+<<<<<<< HEAD
 import * as XLSX from 'xlsx';
 import {planAtom} from '../utils/store';
 import {useAtom} from 'jotai';
+=======
+// import XLSX from 'xlsx';
+>>>>>>> feature/jaesin
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -52,8 +56,9 @@ const C = {
   BtnWrapper: styled.div``,
 };
 
-const Common = () => {
+const Common = ({onExcelLoadClick, onExcelExportClick}) => {
   const {pathname} = useLocation();
+<<<<<<< HEAD
   const inputRef = useRef();
   const [, setPlan] = useAtom(planAtom);
   const onUploadFileButtonClick = useCallback(() => {
@@ -87,6 +92,39 @@ const Common = () => {
     }
   };
 
+=======
+
+  const handleExcelLoadClick = () => {
+    onExcelLoadClick();
+  };
+
+  const handleExcelExportClick = () => {
+    onExcelExportClick();
+  };
+
+  // const readUploadFile = e => {
+  //   e.preventDefault();
+  //   if (e.target.files) {
+  //     const reader = new FileReader();
+  //     reader.onload = e => {
+  //       const data = e.target.result;
+  //       const workbook = xlsx.read(data, {type: 'array'});
+  //       const sheetName = workbook.SheetNames[0];
+  //       const worksheet = workbook.Sheets[sheetName];
+  //       const json = xlsx.utils.sheet_to_json(worksheet);
+  //       console.log(json);
+  //     };
+  //     reader.readAsArrayBuffer(e.target.files[0]);
+  //   }
+  // };
+
+  // const readUploadFile = async e => {
+  //   const file = e.target.files[0];
+  //   const data = await file.arrayBuffer();
+  //   const workbook = XLSX.read(data);
+  // };
+
+>>>>>>> feature/jaesin
   return (
     <C.Wrapper>
       <C.Bread>
@@ -101,12 +139,30 @@ const Common = () => {
             inverted
             icon="file excel outline"
             content="엑셀 불러오기"
+<<<<<<< HEAD
             onClick={onUploadFileButtonClick}
+=======
+            onClick={handleExcelLoadClick}
+>>>>>>> feature/jaesin
           />
           <InputExcel type="file" ref={inputRef} onChange={onUploadFile} />
           <Button.Or />
-          <Button color="blue" icon="share" content="엑셀 내보내기" />
+          <Button
+            color="blue"
+            icon="share"
+            content="엑셀 내보내기"
+            onClick={handleExcelExportClick}
+          />
         </Button.Group>
+        <form>
+          <label htmlFor="upload">Upload File</label>
+          <input
+            type="file"
+            name="upload"
+            id="upload"
+            // onChange={readUploadFile}
+          />
+        </form>
       </C.BtnWrapper>
     </C.Wrapper>
   );
