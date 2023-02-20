@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import {planAtom, productAtom,exelPlanAtom} from '../utils/store';
 
 import {useAtom} from 'jotai';
-import { planExel } from '../utils/downloadExel/exel';
+import { planExel, planExelExport } from '../utils/downloadExel/exel';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -97,7 +97,10 @@ const Common = () => {
   };
   const onDownloadFile = async() => {
     if(plan && plan.length > 0){
-      planExel(plan);
+      return planExel(plan);
+    }
+    if(exelPlan && exelPlan.length > 0){
+      return planExelExport(exelPlan);
     }
     
       

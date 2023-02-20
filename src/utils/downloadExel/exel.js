@@ -34,3 +34,11 @@ export function planExel(plan) {
     XLSX.utils.book_append_sheet(workbook, worksheet, "메이커스 일정 관리");
     XLSX.writeFile(workbook, "메이커스_일정_관리.xlsx");
 }
+export function planExelExport(plan) {
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(plan, { cellDates: true, dateNF: 'dd.mm.yy hh:mm:ss' });
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, "메이커스 일정 관리");
+    XLSX.writeFile(workbook, "메이커스_일정_관리.xlsx");
+}
