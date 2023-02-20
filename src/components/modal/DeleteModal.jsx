@@ -18,7 +18,7 @@ const Line = styled.p`
   }
 `;
 
-const DeleteModal = ({active, onClose}) => {
+const DeleteModal = ({active, onClose, message}) => {
   const [, setPlan] = useAtom(planAtom);
   return (
     <Modal onClose={onClose} open={active} size="mini">
