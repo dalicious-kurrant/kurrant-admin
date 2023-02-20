@@ -7,14 +7,45 @@ import {useAtom} from 'jotai';
 import {BtnWrapper, PageWrapper, TableWrapper} from 'style/common.style';
 import {planAtom} from 'utils/store';
 import useModal from 'hooks/useModal';
+import useSpotInfoQuery from './useSpotInfoQuery';
+import {SpotInfoObjectSample} from 'data/spotInfo/spotInfoMockData';
 
 const SpotInfoExcel = () => {
   const {onActive} = useModal();
-  const [plan] = useAtom(planAtom);
+  const [plan, setPlan] = useAtom(planAtom);
   const [key, setKey] = useState();
+
+  const {
+    data_getSpotInfoJSON,
+    status_getSpotInfoJSON,
+    isLoading_getSpotInfoJSON,
+  } = useSpotInfoQuery();
+
   useEffect(() => {
     if (plan) setKey(Object.keys(plan[0]));
   }, [plan]);
+
+  useEffect(() => {
+    setPlan(SpotInfoObjectSample);
+    // console.log(SpotInfoObjectSample);
+  }, []);
+
+  if (isLoading_getSpotInfoJSON)
+    return (
+      <>
+        {' '}
+        <div>로딩중입니다..</div>{' '}
+      </>
+    );
+
+  if (status_getSpotInfoJSON === 'error')
+    return (
+      <div>
+        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
+        있어요
+      </div>
+    );
+
   return (
     <Container>
       <PageWrapper>
@@ -32,6 +63,8 @@ const SpotInfoExcel = () => {
                   return (
                     <Table.Header key={'0' + i}>
                       <Table.Row>
+                        {/* <Table.HeaderCell>체크박스</Table.HeaderCell> */}
+
                         {HeaderData.map((h, k) => {
                           return (
                             <Table.HeaderCell key={'0' + k}>

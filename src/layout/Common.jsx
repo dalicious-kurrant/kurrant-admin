@@ -83,6 +83,9 @@ const Common = () => {
         if (sheetName === '메이커스 일정 관리') {
           setPlan(json);
         } else if (sheetName === '고객 스팟 공지') {
+          // console.log(typeof json);
+          // console.log(typeof JSON.stringify(json));
+          // localStorage.setItem('sponInfo', JSON.stringify(json));
           setPlan(json);
         }
       };
