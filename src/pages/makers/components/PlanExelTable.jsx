@@ -1,8 +1,10 @@
+import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import { Button, Table,Dropdown } from "semantic-ui-react";
 import styled from "styled-components";
 import { TableWrapper } from "../../../style/common.style";
 import { formattedTime, formattedWeekDate } from "../../../utils/dateFormatter";
+import { exelPlanAtom } from "../../../utils/store";
 const foodStatusData = [
     {
         key: "판매 대기",
@@ -37,6 +39,7 @@ const foodStatusData = [
 ]
 const PlanExelTable = ({plan})=>{
   const [key, setKey] = useState();
+  const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   useEffect(() => {
      if (plan) setKey(Object.keys(plan[0]));
    }, [plan]);

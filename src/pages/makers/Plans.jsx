@@ -156,7 +156,6 @@ const makersCalendar = [
 // 메이커스 정보 페이지
 const Plans = () => {
   const {onActive} = useModal();
-  const [key, setKey] = useState();
   const [exelPlan,setExelPlan] = useAtom(exelPlanAtom);
   const [plan,setPlan] = useAtom(planAtom);
   const [startDate, setStartDate] = useState(new Date().setDate(new Date().getDate()+1));

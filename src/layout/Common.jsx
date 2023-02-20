@@ -58,7 +58,7 @@ const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
 
-  const [, setPlan] = useAtom(planAtom);
+  const [plan, setPlan] = useAtom(planAtom);
   const [, setProduct] = useAtom(productAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
 
