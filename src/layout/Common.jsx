@@ -78,8 +78,11 @@ const Common = () => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-        console.log(sheetName);
+        // console.log(sheetName);
+        // console.log(worksheet);
         if (sheetName === '메이커스 일정 관리') {
+          setPlan(json);
+        } else if (sheetName === '고객 스팟 공지') {
           setPlan(json);
         }
       };

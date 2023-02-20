@@ -10,6 +10,7 @@ import Apartment from '../pages/customer/Apartment';
 import ItemInfo from '../pages/item/ItemInfo';
 import Plans from '../pages/makers/Plans';
 import SpotInfo from 'pages/customer/SpotInfo/SpotInfo';
+import SpotInfoExcel from 'pages/customer/SpotInfo/SpotInfoExcel';
 
 export const MenuList = [
   {
@@ -50,7 +51,8 @@ export const MenuList = [
       {
         name: '스팟 정보',
         url: '/spot',
-        component: <SpotInfo />,
+        component: <SpotInfoExcel />,
+        // component: <SpotInfo />,
         // component: <Spot />,
       },
       {
