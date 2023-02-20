@@ -1,6 +1,6 @@
 import React from 'react';
 import Diet from '../pages/order/Diet';
-import Order from '../pages/order/Order';
+import Order from '../pages/order/orderInfomation/Order';
 import Makers from '../pages/makers/Makers';
 import Spot from '../pages/customer/Spot';
 import Customer from '../pages/customer/Customer';

@@ -6,6 +6,7 @@ export const H = {
     position: fixed;
     width: 100%;
     height: 75px;
+    z-index: 999;
   `,
   Bread: styled.div`
     position: absolute;
