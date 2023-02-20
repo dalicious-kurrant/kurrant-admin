@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
-import {planAtom} from '../../utils/store';
+import {exelPlanAtom, planAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 const Content = styled.div`
   text-align: center;
@@ -19,6 +19,7 @@ const Line = styled.p`
 `;
 
 const DeleteModal = ({active, onClose}) => {
+  const [, setExelPlan] = useAtom(exelPlanAtom);
   const [, setPlan] = useAtom(planAtom);
   return (
     <Modal onClose={onClose} open={active} size="mini">
@@ -39,6 +40,7 @@ const DeleteModal = ({active, onClose}) => {
           icon="delete"
           negative
           onClick={() => {
+            setExelPlan();
             setPlan();
             onClose();
           }}
