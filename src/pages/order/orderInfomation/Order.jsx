@@ -45,7 +45,7 @@ const Order = () => {
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
-
+  console.log(startDate, endDate);
   const groupInfoList = async id => {
     const res = await orderApis.groupInfoList(id);
 
@@ -270,6 +270,9 @@ const Order = () => {
             <Table.Row>
               <Table.HeaderCell width={1} textAlign="center">
                 <input
+                  checked={
+                    checkItems.length === checkboxList.length ? true : false
+                  }
                   type="checkbox"
                   onChange={e => handleAllCheck(e.target.checked)}
                 />
@@ -300,7 +303,7 @@ const Order = () => {
                     <Table.Cell textAlign="center">
                       <input
                         checked={
-                          checkItems.length === checkboxList.length
+                          checkItems.includes(v.orderItemDailyFoodId)
                             ? true
                             : false
                         }
