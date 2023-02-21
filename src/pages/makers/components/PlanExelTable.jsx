@@ -59,86 +59,83 @@ const PlanExelTable = ({plan}) => {
               <Table.Body key={p.makersName + i}>
                 <Table.Row>
                   {key &&
-                    key.map((k, i) => {
+                    key.map((k, kid) => {
                       if (k === 'serviceDate') {
                         return (
-                          <Table.Cell key={k + i}>
+                          <Table.Cell key={k + kid}>
                             <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
                           </Table.Cell>
                         );
-
-                      })}
-                    </Table.Row>
-                  </Table.Header>
-                );
-              } else {
-                return (
-                  <Table.Body key={p.makersName + i}>
-                    <Table.Row>
-                      {key &&
-                        key.map((k, kid) => {
-                          if(k === "serviceDate"){
-                              return(
-                                <Table.Cell key={k + kid}>
-                                <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
-                              </Table.Cell>
-                              )
-                          }
-                          if(k === "pickupTime"){
-                              return(
-                                <Table.Cell key={k + kid}>
-                                <FlexBox>{formattedTime(p[k])}</FlexBox>
-                              </Table.Cell>
-                              )
-                          }
-                          if(k.includes("scheduleStatus")){
-                            return(
-                                <Table.Cell key={k + kid}>
-                                     <Button
-                                        toggle
-                                        color={ p[k] === "대기"? "grey": p[k] === "승인" ? "green":"red" }
-                                        //   onClick={()=>{setTestData(testData.map((makers)=>{
-                                        //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
-                                        //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
-                                        //         if(food.presetFoodId === d.presetFoodId){
-                                        //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
-                                        //         }
-                                        //         return food;
-                                        //       })}
-                                        //     })}
-                                        // }))}}
-                                        >
-                                        {p[k]}
-                                    </Button>                            
-                              </Table.Cell>
-                              )
-                           
-                          }
-                          if(k==="foodStatus"){
-                            console.log(exelPlan);
-                            return(
-                                <Table.Cell key={k + kid}>
-                                    <DropdownBox>
-                                    <Dropdown item text={foodStatusData.filter((v)=>v.text ===p[k])[0].value}>
-                                        <Dropdown.Menu>
-                                            {foodStatusData?.map(b => (
-                                            <Dropdown.Item
-                                                key={`${b.key}`}
-                                                onClick={()=>{
-                                                  setExelPlan(exelPlan.map((plan,pid)=>{
-                                                    if(pid === i){
-                                                      return {...plan,foodStatus:b.text}
-                                                    }
-                                                    return plan;
-                                                  }));
-                                                }}>
-                                                {b.text}
-                                            </Dropdown.Item>
-                                            ))}
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                    {/* <Dropdown
-
+                      }
+                      if (k === 'pickupTime') {
+                        return (
+                          <Table.Cell key={k + kid}>
+                            <FlexBox>{formattedTime(p[k])}</FlexBox>
+                          </Table.Cell>
+                        );
+                      }
+                      if (k.includes('scheduleStatus')) {
+                        return (
+                          <Table.Cell key={k + kid}>
+                            <Button
+                              toggle
+                              color={
+                                p[k] === '대기'
+                                  ? 'grey'
+                                  : p[k] === '승인'
+                                  ? 'green'
+                                  : 'red'
+                              }
+                              //   onClick={()=>{setTestData(testData.map((makers)=>{
+                              //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
+                              //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
+                              //         if(food.presetFoodId === d.presetFoodId){
+                              //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
+                              //         }
+                              //         return food;
+                              //       })}
+                              //     })}
+                              // }))}}
+                            >
+                              {p[k]}
+                            </Button>
+                          </Table.Cell>
+                        );
+                      }
+                      if (k === 'foodStatus') {
+                        console.log(exelPlan);
+                        return (
+                          <Table.Cell key={k + kid}>
+                            <DropdownBox>
+                              <Dropdown
+                                item
+                                text={
+                                  foodStatusData.filter(v => v.text === p[k])[0]
+                                    .value
+                                }>
+                                <Dropdown.Menu>
+                                  {foodStatusData?.map(b => (
+                                    <Dropdown.Item
+                                      key={`${b.key}`}
+                                      onClick={() => {
+                                        setExelPlan(
+                                          exelPlan.map((plan, pid) => {
+                                            if (pid === i) {
+                                              return {
+                                                ...plan,
+                                                foodStatus: b.text,
+                                              };
+                                            }
+                                            return plan;
+                                          }),
+                                        );
+                                      }}>
+                                      {b.text}
+                                    </Dropdown.Item>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                              {/* <Dropdown
                                         placeholder='판매상태'
                                         fluid
                                         selection
