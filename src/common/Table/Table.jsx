@@ -154,7 +154,6 @@ const Container = styled.div`
       padding: 0.6rem;
       font-size: 1.3rem;
       ${props => props.theme.colors.Black02}
-      ${props => props.theme.fonts.H10}
     }
   }
 
