@@ -100,9 +100,18 @@ const Common = () => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
+
+        // console.log(sheetName);
+        // console.log(worksheet);
         if (sheetName === '메이커스 일정 관리') {
-          setExelPlan(json);
-        }
+          setPlan(json);
+        } 
+        if (sheetName === '고객 스팟 공지') {
+          // console.log(typeof json);
+          // console.log(typeof JSON.stringify(json));
+          // localStorage.setItem('sponInfo', JSON.stringify(json));
+          setPlan(json);
+         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
         }

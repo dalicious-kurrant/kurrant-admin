@@ -7,6 +7,18 @@ export const GlobalStyle = createGlobalStyle`
     .ui.celled.table tr th {
         white-space: nowrap;
     }
+
+
+button {
+  outline: 0;
+  cursor: pointer;
+  border: 0;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+  };
+
+
     html,
 body,
 div,

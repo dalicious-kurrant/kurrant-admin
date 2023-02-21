@@ -1,6 +1,7 @@
 import React from 'react';
 import {GlobalStyle} from './style/global';
 import MainRouter from './router/MainRouter';
+// import './App.css';
 import {ModalProvider} from './hooks/useModal';
 import {ThemeProvider} from 'styled-components';
 import Theme from './style/Theme';
