@@ -6,13 +6,7 @@ import {
   scheduleFormatted,
 } from '../../../utils/statusFormatter';
 
-const PlanTable = ({
-  count,
-  testData,
-  setTestData,
-  selectMakers,
-  selectDiningStatus,
-}) => {
+const PlanTable = ({count, testData, setTestData}) => {
   const changeStatus = (d, b) => {
     setTestData(
       testData.map(makers => {
@@ -42,7 +36,7 @@ const PlanTable = ({
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>상태</Table.HeaderCell>
+            <Table.HeaderCell>다이닝 타입 별 승인 상태</Table.HeaderCell>
             <Table.HeaderCell>메이커스</Table.HeaderCell>
             <Table.HeaderCell>날짜</Table.HeaderCell>
             <Table.HeaderCell>다이닝타입</Table.HeaderCell>
@@ -61,114 +55,110 @@ const PlanTable = ({
 
         <Table.Body>
           {testData.map((v, i) => {
-            if (
-              (selectMakers.length === 0 ||
-                selectMakers.includes(v.makersName)) &&
-              (selectDiningStatus.length === 0 ||
-                selectDiningStatus.includes(v.scheduleStatus) ||
-                selectDiningStatus.includes(
-                  scheduleFormatted(v.scheduleStatus),
-                ))
-            ) {
-              console.log(v);
-              return v.clientSchedule.map((s, si) => {
-                return s.foodSchedule.map((d, di) => {
-                  return (
-                    <Table.Row key={`${d.foodName + di}`}>
-                      <Table.Cell padding="0px" textAlign="center"></Table.Cell>
-                      {di === 0 && si === 0 && (
-                        <Table.Cell padding="0px" rowSpan={count[i]}>
-                          <FlexBox>
-                            <Button
-                              toggle
-                              color={
-                                v.scheduleStatus === 0
-                                  ? 'grey'
-                                  : v.scheduleStatus === 1
-                                  ? 'green'
-                                  : 'red'
-                              }>
+            return v.clientSchedule.map((s, si) => {
+              return s.foodSchedule.map((d, di) => {
+                return (
+                  <Table.Row key={`${d.foodName + di}`}>
+                    <Table.Cell padding="0px" textAlign="center"></Table.Cell>
+                    {di === 0 && si === 0 && (
+                      <Table.Cell padding="0px" rowSpan={count[i]}>
+                        <FlexBox>
+                          <Button
+                            toggle
+                            color={
+                              v.scheduleStatus === 0
+                                ? 'grey'
+                                : v.scheduleStatus === 1
+                                ? 'green'
+                                : 'red'
+                            }>
+                            <FlexBox>
                               {v.scheduleStatus === 0
                                 ? '대기'
                                 : v.scheduleStatus === 1
                                 ? '승인'
                                 : '거절'}
-                            </Button>
-                          </FlexBox>
-                        </Table.Cell>
-                      )}
-                      {di === 0 && si === 0 && (
-                        <Table.Cell padding="0px" rowSpan={count[i]}>
-                          {v.makersCapacity}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && si === 0 && (
-                        <Table.Cell rowSpan={count[i]}>
-                          {v.serviceDate}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && si === 0 && (
-                        <Table.Cell rowSpan={count[i]}>
-                          {v.diningType}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && si === 0 && (
-                        <Table.Cell rowSpan={count[i]}>
-                          {v.makersCapacity}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          {s.pickupTime}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          {s.clientName}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          {s.clientCapacity}
-                        </Table.Cell>
-                      )}
-                      {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          {s.clientCapacity}
-                        </Table.Cell>
-                      )}
-                      <Table.Cell textAlign="center">
-                        <Button
-                          toggle
-                          color={
-                            d.scheduleStatus === 0
-                              ? 'grey'
-                              : d.scheduleStatus === 1
-                              ? 'green'
-                              : 'red'
-                          }
-                          //   onClick={()=>{setTestData(testData.map((makers)=>{
-                          //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
-                          //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
-                          //         if(food.presetFoodId === d.presetFoodId){
-                          //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
-                          //         }
-                          //         return food;
-                          //       })}
-                          //     })}
-                          // }))}}
-                        >
+                            </FlexBox>
+                          </Button>
+                        </FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && si === 0 && (
+                      <Table.Cell padding="0px" rowSpan={count[i]}>
+                        <FlexBox>{v.makersCapacity}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && si === 0 && (
+                      <Table.Cell rowSpan={count[i]}>
+                        <FlexBox>{v.serviceDate}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && si === 0 && (
+                      <Table.Cell rowSpan={count[i]}>
+                        <FlexBox>{v.diningType}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && si === 0 && (
+                      <Table.Cell rowSpan={count[i]}>
+                        <FlexBox>{v.makersCapacity}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && (
+                      <Table.Cell rowSpan={s.foodSchedule.length}>
+                        <FlexBox>{s.pickupTime}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && (
+                      <Table.Cell rowSpan={s.foodSchedule.length}>
+                        <FlexBox>{s.clientName}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && (
+                      <Table.Cell rowSpan={s.foodSchedule.length}>
+                        <FlexBox>{s.clientCapacity}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    {di === 0 && (
+                      <Table.Cell rowSpan={s.foodSchedule.length}>
+                        <FlexBox>{s.clientCapacity}</FlexBox>
+                      </Table.Cell>
+                    )}
+                    <Table.Cell textAlign="center">
+                      <Button
+                        toggle
+                        color={
+                          d.scheduleStatus === 0
+                            ? 'grey'
+                            : d.scheduleStatus === 1
+                            ? 'green'
+                            : 'red'
+                        }
+                        //   onClick={()=>{setTestData(testData.map((makers)=>{
+                        //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
+                        //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
+                        //         if(food.presetFoodId === d.presetFoodId){
+                        //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
+                        //         }
+                        //         return food;
+                        //       })}
+                        //     })}
+                        // }))}}
+                      >
+                        <FlexBox>
                           {d.scheduleStatus === 0
                             ? '대기'
                             : d.scheduleStatus === 1
                             ? '승인'
                             : '거절'}
-                        </Button>
-                      </Table.Cell>
-                      <Table.Cell>{d.foodName}</Table.Cell>
-                      <Table.Cell>
-                        <DropdownBox>
-                          {/* <Dropdown
+                        </FlexBox>
+                      </Button>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <FlexBox>{d.foodName} </FlexBox>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <DropdownBox>
+                        {/* <Dropdown
                           item
                           text={
                             foodStatusData.filter(
@@ -185,30 +175,29 @@ const PlanTable = ({
                             ))}
                           </Dropdown.Menu>
                         </Dropdown> */}
-                          <Dropdown
-                            placeholder="판매상태"
-                            fluid
-                            selection
-                            defaultValue={
-                              foodStatusData.filter(
-                                v => v.text === d.foodStatus,
-                              )[0].value
-                            }
-                            options={foodStatusData}
-                            onChange={(e, data) => {
-                              changeStatus(d, data.value);
-                            }}
-                          />
-                        </DropdownBox>
-                      </Table.Cell>
+                        <Dropdown
+                          placeholder="판매상태"
+                          fluid
+                          selection
+                          defaultValue={
+                            foodStatusData.filter(
+                              v => v.text === d.foodStatus,
+                            )[0].value
+                          }
+                          options={foodStatusData}
+                          onChange={(e, data) => {
+                            changeStatus(d, data.value);
+                          }}
+                        />
+                      </DropdownBox>
+                    </Table.Cell>
 
-                      <Table.Cell>{d.foodCapacity}</Table.Cell>
-                      <Table.Cell>{d.foodCapacity}</Table.Cell>
-                    </Table.Row>
-                  );
-                });
+                    <Table.Cell>{d.foodCapacity}</Table.Cell>
+                    <Table.Cell>{d.foodCapacity}</Table.Cell>
+                  </Table.Row>
+                );
               });
-            }
+            });
           })}
         </Table.Body>
       </Table>
@@ -222,6 +211,7 @@ const FlexBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
 `;
 const DropdownBox = styled.div`
   width: 150px;

@@ -9,6 +9,9 @@ import {
   exelPlanAtom,
   exelProductAtom,
   productAtom,
+  exelStaticAtom,
+  spotAtom,
+  exelSpotAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -71,6 +74,9 @@ const Common = () => {
 
   const [plan, setPlan] = useAtom(planAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
+  const [spot, setSpot] = useAtom(spotAtom);
+  const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
 
@@ -93,7 +99,10 @@ const Common = () => {
       setProduct();
       setExelProduct();
       setExelPlan();
+      setExelStaticPlan();
       setPlan();
+      setSpot();
+      setExelSpot();
       reader.onload = e => {
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array', cellDates: true});
@@ -105,6 +114,7 @@ const Common = () => {
         // console.log(worksheet);
         if (sheetName === '메이커스 일정 관리') {
           setExelPlan(json);
+          setExelStaticPlan(json);
         }
         if (sheetName === '고객 스팟 공지') {
           // console.log(typeof json);

@@ -2,16 +2,23 @@ import useModal from '../../hooks/useModal';
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, Label, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
-import {exelPlanAtom, planAtom} from '../../utils/store';
+import {exelPlanAtom, exelStaticAtom, planAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 import styled from 'styled-components';
-import {formattedDateType, formattedWeekDate} from '../../utils/dateFormatter';
+import {
+  formattedDate,
+  formattedDateAndTime,
+  formattedDateType,
+  formattedTime,
+  formattedWeekDate,
+} from '../../utils/dateFormatter';
 import PlanExelTable from './components/PlanExelTable';
 import PlanTable from './components/PlanTable';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
+import {usePostCalendar} from 'hooks/useCalendars';
 const makersCalendar = [
   {
     presetMakersId: 1,
@@ -170,6 +177,7 @@ const optionsDiningStatus = [
 const Plans = () => {
   const {onActive} = useModal();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
+  const [exelStatic] = useAtom(exelStaticAtom);
   const [plan, setPlan] = useAtom(planAtom);
   const [selectMakers, setSelectMakers] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
@@ -182,7 +190,70 @@ const Plans = () => {
     setPlan(makersCalendar);
   };
   const [count, setCount] = useState(0);
+  const {mutateAsync: postCalendar} = usePostCalendar();
 
+  const callPostCalendar = async () => {
+    if (plan) {
+      const req = plan.map(makers => {
+        return makers.clientSchedule
+          .map(client => {
+            return client.foodSchedule
+              .map(food => {
+                return {
+                  makersName: makers.makersName,
+                  makersScheduleStatus: makers.scheduleStatus,
+                  serviceDate: makers.serviceDate,
+                  diningType: makers.diningType,
+                  makersCapacity: makers.makersCapacity,
+                  pickupTime: client.pickupTime,
+                  groupName: client.clientName,
+                  groupCapacity: client.clientCapacity,
+                  leftMakersCapacity: client.leftMakersCapacity,
+                  foodScheduleStatus: food.scheduleStatus,
+                  foodName: food.foodName,
+                  foodStatus: food.foodStatus,
+                  foodCapacity: food.foodCapacity,
+                  leftFoodCapacity: food.leftFoodCapacity,
+                };
+              })
+              .flat();
+          })
+          .flat();
+      });
+      await postCalendar({
+        deadline: formattedDateAndTime(startDate, '-'),
+        excelDataList: req,
+      });
+    }
+    if (exelPlan) {
+      const req = exelPlan.map((makers, i) => {
+        if (i !== 0) {
+          return {
+            makersName: makers.makersName,
+            makersScheduleStatus: makers.scheduleStatus,
+            serviceDate: formattedDate(makers.serviceDate, '-'),
+            diningType: makers.diningType,
+            makersCapacity: makers.makersCapacity,
+            pickupTime: formattedTime(makers.pickupTime),
+            groupName: makers.clientName,
+            groupCapacity: makers.clientCapacity,
+            leftMakersCapacity: makers.leftMakersCapacity,
+            foodScheduleStatus: makers.scheduleStatus,
+            foodName: makers.foodName,
+            foodStatus: makers.foodStatus,
+            foodCapacity: makers.foodCapacity,
+            leftFoodCapacity: makers.leftFoodCapacity,
+          };
+        }
+      });
+      req.shift();
+      console.log(req);
+      await postCalendar({
+        deadline: formattedDateAndTime(startDate, '-'),
+        excelDataList: req,
+      });
+    }
+  };
   useEffect(() => {
     setPlan(makersCalendar);
     setCount(
@@ -206,7 +277,11 @@ const Plans = () => {
       <ContentWrapper>
         <BtnWrapper>
           <DeadLineWrapper>
-            <Button color="blue" content="식사요청" onClick={onActive} />
+            <Button
+              color="blue"
+              content="식사요청"
+              onClick={callPostCalendar}
+            />
             {/* <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} /> */}
             <DatePickerBox>
               <DatePicker
@@ -235,7 +310,17 @@ const Plans = () => {
             selection
             options={options}
             value={selectMakers}
-            onChange={(e, data) => setSelectMakers(data.value)}
+            onChange={(e, data) => {
+              setSelectMakers(data.value);
+              if (data.value.length !== 0) {
+                const result = makersCalendar?.filter(makers => {
+                  return data.value.includes(makers.makersName);
+                });
+                setPlan(result);
+              } else {
+                setPlan(makersCalendar);
+              }
+            }}
           />
         </DropBox>
         <DropBox>
@@ -250,17 +335,31 @@ const Plans = () => {
             onChange={(e, data) => {
               setSelectClient(data.value);
               if (data.value.length !== 0) {
-                const result = makersCalendar?.map(makers => {
-                  return {
-                    ...makers,
-                    clientSchedule: makers.clientSchedule.filter(v => {
-                      return data.value.includes(v.clientName);
-                    }),
-                  };
-                });
-                setPlan(result);
+                if (plan) {
+                  const result = makersCalendar?.map(makers => {
+                    return {
+                      ...makers,
+                      clientSchedule: makers.clientSchedule.filter(v => {
+                        return data.value.includes(v.clientName);
+                      }),
+                    };
+                  });
+                  setPlan(result);
+                }
+                if (exelPlan) {
+                  const result = exelStatic?.filter((makers, i) => {
+                    if (i === 0) return true;
+                    return data.value.includes(makers.clientName);
+                  });
+                  setExelPlan(result);
+                }
               } else {
-                setPlan(makersCalendar);
+                if (plan) {
+                  setPlan(makersCalendar);
+                }
+                if (exelPlan) {
+                  setExelPlan(exelStatic);
+                }
               }
             }}
           />
@@ -274,25 +373,23 @@ const Plans = () => {
             selection
             options={optionsDiningStatus}
             value={selectDiningStatus}
-            onChange={(e, data) => setSelectDiningStatus(data.value)}
+            onChange={(e, data) => {
+              setSelectDiningStatus(data.value);
+              if (data.value.length !== 0) {
+                const result = makersCalendar?.filter(makers => {
+                  return data.value.includes(makers.scheduleStatus);
+                });
+                setPlan(result);
+              } else {
+                setPlan(makersCalendar);
+              }
+            }}
           />
         </DropBox>
       </FilterContainer>
-      {exelPlan && (
-        <PlanExelTable
-          plan={exelPlan}
-          selectMakers={selectMakers}
-          selectDiningStatus={selectDiningStatus}
-        />
-      )}
+      {exelPlan && <PlanExelTable />}
       {plan && (
-        <PlanTable
-          count={count}
-          testData={plan}
-          setTestData={setPlan}
-          selectMakers={selectMakers}
-          selectDiningStatus={selectDiningStatus}
-        />
+        <PlanTable count={count} testData={plan} setTestData={setPlan} />
       )}
     </PageWrapper>
   );
