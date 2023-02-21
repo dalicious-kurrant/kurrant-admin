@@ -1,7 +1,10 @@
 import {Button, Dropdown, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
-import {foodStatusData} from '../../../utils/statusFormatter';
+import {
+  foodStatusData,
+  scheduleFormatted,
+} from '../../../utils/statusFormatter';
 
 const PlanTable = ({
   count,
@@ -62,8 +65,12 @@ const PlanTable = ({
               (selectMakers.length === 0 ||
                 selectMakers.includes(v.makersName)) &&
               (selectDiningStatus.length === 0 ||
-                selectDiningStatus.includes(v.scheduleStatus))
+                selectDiningStatus.includes(v.scheduleStatus) ||
+                selectDiningStatus.includes(
+                  scheduleFormatted(v.scheduleStatus),
+                ))
             ) {
+              console.log(v);
               return v.clientSchedule.map((s, si) => {
                 return s.foodSchedule.map((d, di) => {
                   return (
@@ -80,18 +87,7 @@ const PlanTable = ({
                                   : v.scheduleStatus === 1
                                   ? 'green'
                                   : 'red'
-                              }
-                              //   onClick={()=>{setTestData(testData.map((makers)=>{
-                              //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
-                              //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
-                              //         if(food.presetFoodId === d.presetFoodId){
-                              //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
-                              //         }
-                              //         return food;
-                              //       })}
-                              //     })}
-                              // }))}}
-                            >
+                              }>
                               {v.scheduleStatus === 0
                                 ? '대기'
                                 : v.scheduleStatus === 1

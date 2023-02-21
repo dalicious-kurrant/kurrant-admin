@@ -4,7 +4,11 @@ import {Button, Table, Dropdown} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
 import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
-import {foodStatusData} from '../../../utils/statusFormatter';
+import {
+  foodStatusData,
+  scheduleFormatted,
+  scheduleFormatted2,
+} from '../../../utils/statusFormatter';
 import {exelPlanAtom} from '../../../utils/store';
 
 const PlanExelTable = ({plan, selectMakers, selectDiningStatus}) => {
@@ -33,7 +37,10 @@ const PlanExelTable = ({plan, selectMakers, selectDiningStatus}) => {
               (selectMakers.length === 0 ||
                 selectMakers.includes(p.makersName)) &&
               (selectDiningStatus.length === 0 ||
-                selectDiningStatus.includes(p.scheduleStatus))
+                selectDiningStatus.includes(p.scheduleStatus) ||
+                selectDiningStatus.includes(
+                  scheduleFormatted2(p.scheduleStatus),
+                ))
             ) {
               return (
                 <Table.Body key={p.makersName + i}>

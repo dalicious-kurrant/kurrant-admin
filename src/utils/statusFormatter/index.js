@@ -11,6 +11,19 @@ export function scheduleFormatted(data) {
   }
 }
 
+export function scheduleFormatted2(data) {
+  switch (data) {
+    case '대기':
+      return 0;
+    case '승인':
+      return 1;
+    case '거절':
+      return 2;
+    default:
+      return 1;
+  }
+}
+
 export const foodStatusData = [
   {
     key: '판매 대기',
