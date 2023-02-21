@@ -1,6 +1,6 @@
 import useModal from '../../hooks/useModal';
 import React, {useEffect, useState} from 'react';
-import {Button, Table} from 'semantic-ui-react';
+import {Button, Dropdown, Label, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 import {exelPlanAtom, planAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
@@ -153,11 +153,27 @@ const makersCalendar = [
     ],
   },
 ];
+const options = [
+  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
+  {key: '커런트', text: '커런트', value: '커런트'},
+];
+const optionsClient = [
+  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
+  {key: '이너스', text: '이너스', value: '이너스'},
+];
+const optionsDiningStatus = [
+  {key: '대기', text: '대기', value: 0},
+  {key: '승인', text: '승인', value: 1},
+  {key: '거절', text: '거절', value: 2},
+];
 // 메이커스 정보 페이지
 const Plans = () => {
   const {onActive} = useModal();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [plan, setPlan] = useAtom(planAtom);
+  const [selectMakers, setSelectMakers] = useState([]);
+  const [selectClient, setSelectClient] = useState([]);
+  const [selectDiningStatus, setSelectDiningStatus] = useState([]);
   const [startDate, setStartDate] = useState(
     new Date().setDate(new Date().getDate() + 1),
   );
@@ -209,9 +225,74 @@ const Plans = () => {
           <Button color="blue" content="식단 완료" onClick={onActive} />
         </BtnWrapper>
       </ContentWrapper>
-      {exelPlan && <PlanExelTable plan={exelPlan} />}
+      <FilterContainer>
+        <DropBox>
+          <Label>메이커스</Label>
+          <Dropdown
+            placeholder="메이커스"
+            fluid
+            multiple
+            selection
+            options={options}
+            value={selectMakers}
+            onChange={(e, data) => setSelectMakers(data.value)}
+          />
+        </DropBox>
+        <DropBox>
+          <Label>고객사</Label>
+          <Dropdown
+            placeholder="고객사"
+            fluid
+            multiple
+            selection
+            options={optionsClient}
+            value={selectClient}
+            onChange={(e, data) => {
+              setSelectClient(data.value);
+              if (data.value.length !== 0) {
+                const result = makersCalendar?.map(makers => {
+                  return {
+                    ...makers,
+                    clientSchedule: makers.clientSchedule.filter(v => {
+                      return data.value.includes(v.clientName);
+                    }),
+                  };
+                });
+                setPlan(result);
+              } else {
+                setPlan(makersCalendar);
+              }
+            }}
+          />
+        </DropBox>
+        <DropBox>
+          <Label>다이닝별 승인 상태</Label>
+          <Dropdown
+            placeholder="다이닝별 승인 상태"
+            fluid
+            multiple
+            selection
+            options={optionsDiningStatus}
+            value={selectDiningStatus}
+            onChange={(e, data) => setSelectDiningStatus(data.value)}
+          />
+        </DropBox>
+      </FilterContainer>
+      {exelPlan && (
+        <PlanExelTable
+          plan={exelPlan}
+          selectMakers={selectMakers}
+          selectDiningStatus={selectDiningStatus}
+        />
+      )}
       {plan && (
-        <PlanTable count={count} testData={plan} setTestData={setPlan} />
+        <PlanTable
+          count={count}
+          testData={plan}
+          setTestData={setPlan}
+          selectMakers={selectMakers}
+          selectDiningStatus={selectDiningStatus}
+        />
       )}
     </PageWrapper>
   );
@@ -238,4 +319,13 @@ const DatePickerBox = styled.div`
 `;
 const Wrapper = styled.div`
   margin-bottom: 10px;
+`;
+const DropBox = styled.div`
+  width: 250px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+`;
+const FilterContainer = styled.div`
+  display: flex;
+  gap: 20px;
 `;

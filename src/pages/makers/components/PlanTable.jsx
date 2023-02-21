@@ -3,15 +3,44 @@ import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
 import {foodStatusData} from '../../../utils/statusFormatter';
 
-const PlanTable = ({count, testData, setTestData}) => {
+const PlanTable = ({
+  count,
+  testData,
+  setTestData,
+  selectMakers,
+  selectDiningStatus,
+}) => {
+  const changeStatus = (d, b) => {
+    setTestData(
+      testData.map(makers => {
+        return {
+          ...makers,
+          clientSchedule: makers.clientSchedule.map(client => {
+            return {
+              ...client,
+              foodSchedule: client.foodSchedule.map(food => {
+                if (food.presetFoodId === d.presetFoodId) {
+                  return {
+                    ...food,
+                    foodStatus: b,
+                  };
+                }
+                return food;
+              }),
+            };
+          }),
+        };
+      }),
+    );
+  };
   return (
     <TableWrapper>
       <Table celled>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>메이커스</Table.HeaderCell>
             <Table.HeaderCell>상태</Table.HeaderCell>
+            <Table.HeaderCell>메이커스</Table.HeaderCell>
             <Table.HeaderCell>날짜</Table.HeaderCell>
             <Table.HeaderCell>다이닝타입</Table.HeaderCell>
             <Table.HeaderCell>메이커스 케파</Table.HeaderCell>
@@ -29,113 +58,121 @@ const PlanTable = ({count, testData, setTestData}) => {
 
         <Table.Body>
           {testData.map((v, i) => {
-            return v.clientSchedule.map((s, si) => {
-              return s.foodSchedule.map((d, di) => {
-                return (
-                  <Table.Row key={`${d.foodName + di}`}>
-                    <Table.Cell padding="0px" textAlign="center"></Table.Cell>
-                    {di === 0 && si === 0 && (
-                      <Table.Cell padding="0px" rowSpan={count[i]}>
-                        {v.makersCapacity}
-                      </Table.Cell>
-                    )}
-                    {di === 0 && si === 0 && (
-                      <Table.Cell padding="0px" rowSpan={count[i]}>
-                        <FlexBox>
-                          <Button
-                            toggle
-                            color={
-                              v.scheduleStatus === 0
-                                ? 'grey'
+            if (
+              (selectMakers.length === 0 ||
+                selectMakers.includes(v.makersName)) &&
+              (selectDiningStatus.length === 0 ||
+                selectDiningStatus.includes(v.scheduleStatus))
+            ) {
+              return v.clientSchedule.map((s, si) => {
+                return s.foodSchedule.map((d, di) => {
+                  return (
+                    <Table.Row key={`${d.foodName + di}`}>
+                      <Table.Cell padding="0px" textAlign="center"></Table.Cell>
+                      {di === 0 && si === 0 && (
+                        <Table.Cell padding="0px" rowSpan={count[i]}>
+                          <FlexBox>
+                            <Button
+                              toggle
+                              color={
+                                v.scheduleStatus === 0
+                                  ? 'grey'
+                                  : v.scheduleStatus === 1
+                                  ? 'green'
+                                  : 'red'
+                              }
+                              //   onClick={()=>{setTestData(testData.map((makers)=>{
+                              //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
+                              //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
+                              //         if(food.presetFoodId === d.presetFoodId){
+                              //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
+                              //         }
+                              //         return food;
+                              //       })}
+                              //     })}
+                              // }))}}
+                            >
+                              {v.scheduleStatus === 0
+                                ? '대기'
                                 : v.scheduleStatus === 1
-                                ? 'green'
-                                : 'red'
-                            }
-                            //   onClick={()=>{setTestData(testData.map((makers)=>{
-                            //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
-                            //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
-                            //         if(food.presetFoodId === d.presetFoodId){
-                            //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
-                            //         }
-                            //         return food;
-                            //       })}
-                            //     })}
-                            // }))}}
-                          >
-                            {v.scheduleStatus === 0
-                              ? '대기'
-                              : v.scheduleStatus === 1
-                              ? '승인'
-                              : '거절'}
-                          </Button>
-                        </FlexBox>
-                      </Table.Cell>
-                    )}
-                    {di === 0 && si === 0 && (
-                      <Table.Cell rowSpan={count[i]}>
-                        {v.serviceDate}
-                      </Table.Cell>
-                    )}
-                    {di === 0 && si === 0 && (
-                      <Table.Cell rowSpan={count[i]}>{v.diningType}</Table.Cell>
-                    )}
-                    {di === 0 && si === 0 && (
-                      <Table.Cell rowSpan={count[i]}>
-                        {v.makersCapacity}
-                      </Table.Cell>
-                    )}
-                    {di === 0 && (
-                      <Table.Cell rowSpan={s.foodSchedule.length}>
-                        {s.pickupTime}
-                      </Table.Cell>
-                    )}
-                    {di === 0 && (
-                      <Table.Cell rowSpan={s.foodSchedule.length}>
-                        {s.clientName}
-                      </Table.Cell>
-                    )}
-                    {di === 0 && (
-                      <Table.Cell rowSpan={s.foodSchedule.length}>
-                        {s.clientCapacity}
-                      </Table.Cell>
-                    )}
-                    {di === 0 && (
-                      <Table.Cell rowSpan={s.foodSchedule.length}>
-                        {s.clientCapacity}
-                      </Table.Cell>
-                    )}
-                    <Table.Cell textAlign="center">
-                      <Button
-                        toggle
-                        color={
-                          d.scheduleStatus === 0
-                            ? 'grey'
+                                ? '승인'
+                                : '거절'}
+                            </Button>
+                          </FlexBox>
+                        </Table.Cell>
+                      )}
+                      {di === 0 && si === 0 && (
+                        <Table.Cell padding="0px" rowSpan={count[i]}>
+                          {v.makersCapacity}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && si === 0 && (
+                        <Table.Cell rowSpan={count[i]}>
+                          {v.serviceDate}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && si === 0 && (
+                        <Table.Cell rowSpan={count[i]}>
+                          {v.diningType}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && si === 0 && (
+                        <Table.Cell rowSpan={count[i]}>
+                          {v.makersCapacity}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && (
+                        <Table.Cell rowSpan={s.foodSchedule.length}>
+                          {s.pickupTime}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && (
+                        <Table.Cell rowSpan={s.foodSchedule.length}>
+                          {s.clientName}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && (
+                        <Table.Cell rowSpan={s.foodSchedule.length}>
+                          {s.clientCapacity}
+                        </Table.Cell>
+                      )}
+                      {di === 0 && (
+                        <Table.Cell rowSpan={s.foodSchedule.length}>
+                          {s.clientCapacity}
+                        </Table.Cell>
+                      )}
+                      <Table.Cell textAlign="center">
+                        <Button
+                          toggle
+                          color={
+                            d.scheduleStatus === 0
+                              ? 'grey'
+                              : d.scheduleStatus === 1
+                              ? 'green'
+                              : 'red'
+                          }
+                          //   onClick={()=>{setTestData(testData.map((makers)=>{
+                          //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
+                          //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
+                          //         if(food.presetFoodId === d.presetFoodId){
+                          //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
+                          //         }
+                          //         return food;
+                          //       })}
+                          //     })}
+                          // }))}}
+                        >
+                          {d.scheduleStatus === 0
+                            ? '대기'
                             : d.scheduleStatus === 1
-                            ? 'green'
-                            : 'red'
-                        }
-                        //   onClick={()=>{setTestData(testData.map((makers)=>{
-                        //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
-                        //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
-                        //         if(food.presetFoodId === d.presetFoodId){
-                        //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
-                        //         }
-                        //         return food;
-                        //       })}
-                        //     })}
-                        // }))}}
-                      >
-                        {d.scheduleStatus === 0
-                          ? '대기'
-                          : d.scheduleStatus === 1
-                          ? '승인'
-                          : '거절'}
-                      </Button>
-                    </Table.Cell>
-                    <Table.Cell>{d.foodName}</Table.Cell>
-                    <Table.Cell>
-                      <DropdownBox>
-                        <Dropdown
+                            ? '승인'
+                            : '거절'}
+                        </Button>
+                      </Table.Cell>
+                      <Table.Cell>{d.foodName}</Table.Cell>
+                      <Table.Cell>
+                        <DropdownBox>
+                          {/* <Dropdown
                           item
                           text={
                             foodStatusData.filter(
@@ -146,51 +183,36 @@ const PlanTable = ({count, testData, setTestData}) => {
                             {foodStatusData?.map(b => (
                               <Dropdown.Item
                                 key={`${b.key}`}
-                                onClick={() => {
-                                  console.log(testData);
-                                  setTestData(
-                                    testData.map(makers => {
-                                      return {
-                                        ...makers,
-                                        clientSchedule:
-                                          makers.clientSchedule.map(client => {
-                                            return {
-                                              ...client,
-                                              foodSchedule:
-                                                client.foodSchedule.map(
-                                                  food => {
-                                                    if (
-                                                      food.presetFoodId ===
-                                                      d.presetFoodId
-                                                    ) {
-                                                      return {
-                                                        ...food,
-                                                        foodStatus: b.value,
-                                                      };
-                                                    }
-                                                    return food;
-                                                  },
-                                                ),
-                                            };
-                                          }),
-                                      };
-                                    }),
-                                  );
-                                }}>
+                                onClick={() => changeStatus(d, b)}>
                                 {b.text}
                               </Dropdown.Item>
                             ))}
                           </Dropdown.Menu>
-                        </Dropdown>
-                      </DropdownBox>
-                    </Table.Cell>
+                        </Dropdown> */}
+                          <Dropdown
+                            placeholder="판매상태"
+                            fluid
+                            selection
+                            defaultValue={
+                              foodStatusData.filter(
+                                v => v.text === d.foodStatus,
+                              )[0].value
+                            }
+                            options={foodStatusData}
+                            onChange={(e, data) => {
+                              changeStatus(d, data.value);
+                            }}
+                          />
+                        </DropdownBox>
+                      </Table.Cell>
 
-                    <Table.Cell>{d.foodCapacity}</Table.Cell>
-                    <Table.Cell>{d.foodCapacity}</Table.Cell>
-                  </Table.Row>
-                );
+                      <Table.Cell>{d.foodCapacity}</Table.Cell>
+                      <Table.Cell>{d.foodCapacity}</Table.Cell>
+                    </Table.Row>
+                  );
+                });
               });
-            });
+            }
           })}
         </Table.Body>
       </Table>

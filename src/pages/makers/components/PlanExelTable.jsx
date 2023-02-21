@@ -7,7 +7,7 @@ import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
 import {foodStatusData} from '../../../utils/statusFormatter';
 import {exelPlanAtom} from '../../../utils/store';
 
-const PlanExelTable = ({plan}) => {
+const PlanExelTable = ({plan, selectMakers, selectDiningStatus}) => {
   const [key, setKey] = useState();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   useEffect(() => {
@@ -17,7 +17,6 @@ const PlanExelTable = ({plan}) => {
     <TableWrapper>
       <Table celled>
         {plan.map((p, i) => {
-          console.log(p);
           const HeaderData = Object.values(p);
           if (i === 0) {
             return (
@@ -30,48 +29,54 @@ const PlanExelTable = ({plan}) => {
               </Table.Header>
             );
           } else {
-            return (
-              <Table.Body key={p.makersName + i}>
-                <Table.Row>
-                  {key &&
-                    key.map((k, kid) => {
-                      if (k === 'serviceDate') {
-                        return (
-                          <Table.Cell key={k + kid}>
-                            <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
-                          </Table.Cell>
-                        );
-                      }
-                      if (k === 'pickupTime') {
-                        return (
-                          <Table.Cell key={k + kid}>
-                            <FlexBox>{formattedTime(p[k])}</FlexBox>
-                          </Table.Cell>
-                        );
-                      }
-                      if (k.includes('scheduleStatus')) {
-                        return (
-                          <Table.Cell key={k + kid}>
-                            <Button
-                              toggle
-                              color={
-                                p[k] === '대기'
-                                  ? 'grey'
-                                  : p[k] === '승인'
-                                  ? 'green'
-                                  : 'red'
-                              }>
-                              {p[k]}
-                            </Button>
-                          </Table.Cell>
-                        );
-                      }
-                      if (k === 'foodStatus') {
-                        console.log(exelPlan);
-                        return (
-                          <Table.Cell key={k + kid}>
-                            <DropdownBox>
-                              <Dropdown
+            if (
+              (selectMakers.length === 0 ||
+                selectMakers.includes(p.makersName)) &&
+              (selectDiningStatus.length === 0 ||
+                selectDiningStatus.includes(p.scheduleStatus))
+            ) {
+              return (
+                <Table.Body key={p.makersName + i}>
+                  <Table.Row>
+                    {key &&
+                      key.map((k, kid) => {
+                        if (k === 'serviceDate') {
+                          return (
+                            <Table.Cell key={k + kid}>
+                              <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
+                            </Table.Cell>
+                          );
+                        }
+                        if (k === 'pickupTime') {
+                          return (
+                            <Table.Cell key={k + kid}>
+                              <FlexBox>{formattedTime(p[k])}</FlexBox>
+                            </Table.Cell>
+                          );
+                        }
+                        if (k.includes('scheduleStatus')) {
+                          return (
+                            <Table.Cell key={k + kid}>
+                              <Button
+                                toggle
+                                color={
+                                  p[k] === '대기'
+                                    ? 'grey'
+                                    : p[k] === '승인'
+                                    ? 'green'
+                                    : 'red'
+                                }>
+                                {p[k]}
+                              </Button>
+                            </Table.Cell>
+                          );
+                        }
+                        if (k === 'foodStatus') {
+                          console.log(exelPlan);
+                          return (
+                            <Table.Cell key={k + kid}>
+                              <DropdownBox>
+                                {/* <Dropdown
                                 item
                                 text={
                                   foodStatusData.filter(v => v.text === p[k])[0]
@@ -82,43 +87,51 @@ const PlanExelTable = ({plan}) => {
                                     <Dropdown.Item
                                       key={`${b.key}`}
                                       onClick={() => {
-                                        setExelPlan(
-                                          exelPlan.map((plan, pid) => {
-                                            if (pid === i) {
-                                              return {
-                                                ...plan,
-                                                foodStatus: b.text,
-                                              };
-                                            }
-                                            return plan;
-                                          }),
-                                        );
+                                        
                                       }}>
                                       {b.text}
                                     </Dropdown.Item>
                                   ))}
                                 </Dropdown.Menu>
-                              </Dropdown>
-                              {/* <Dropdown
-                                        placeholder='판매상태'
-                                        fluid
-                                        selection
-                                        defaultValue={foodStatusData.filter((v)=>v.text ===p[k])[0].value}
-                                        options={foodStatusData}
-                                    />            */}
-                            </DropdownBox>
+                              </Dropdown> */}
+                                <Dropdown
+                                  placeholder="판매상태"
+                                  fluid
+                                  selection
+                                  defaultValue={
+                                    foodStatusData.filter(
+                                      v => v.text === p[k],
+                                    )[0].value
+                                  }
+                                  options={foodStatusData}
+                                  onChange={(e, data) => {
+                                    setExelPlan(
+                                      exelPlan.map((plan, pid) => {
+                                        if (pid === i) {
+                                          return {
+                                            ...plan,
+                                            foodStatus: data.value,
+                                          };
+                                        }
+                                        return plan;
+                                      }),
+                                    );
+                                  }}
+                                />
+                              </DropdownBox>
+                            </Table.Cell>
+                          );
+                        }
+                        return (
+                          <Table.Cell key={k + i}>
+                            <FlexBox>{p[k]}</FlexBox>
                           </Table.Cell>
                         );
-                      }
-                      return (
-                        <Table.Cell key={k + i}>
-                          <FlexBox>{p[k]}</FlexBox>
-                        </Table.Cell>
-                      );
-                    })}
-                </Table.Row>
-              </Table.Body>
-            );
+                      })}
+                  </Table.Row>
+                </Table.Body>
+              );
+            }
           }
         })}
       </Table>
