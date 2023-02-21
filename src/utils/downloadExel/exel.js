@@ -4,6 +4,22 @@ import {scheduleFormatted} from '../statusFormatter';
 export function planExel(plan) {
   const reqArrays = [];
   reqArrays.push([
+    'makersName',
+    'scheduleStatus',
+    'serviceDate',
+    'diningType',
+    'makersCapacity',
+    'pickupTime',
+    'clientName',
+    'clientCapacity',
+    'leftClientCapacity',
+    'scheduleStatus',
+    'foodName',
+    'foodStatus',
+    'foodCapacity',
+    'leftFoodCapacity',
+  ]);
+  reqArrays.push([
     '메이커스',
     '상태',
     '날짜',
@@ -28,14 +44,15 @@ export function planExel(plan) {
         reqArray.push(makers.serviceDate);
         reqArray.push(makers.diningType);
         reqArray.push(makers.makersCapacity);
-        reqArray.push(makers.deadline);
         reqArray.push(client.pickupTime);
         reqArray.push(client.clientName);
         reqArray.push(client.clientCapacity);
+        reqArray.push(client.clientCapacity);
+        reqArray.push(scheduleFormatted(food.scheduleStatus));
         reqArray.push(food.foodName);
         reqArray.push(food.foodStatus);
         reqArray.push(food.foodCapacity);
-        reqArray.push(scheduleFormatted(food.scheduleStatus));
+        reqArray.push(food.foodCapacity);
         reqArrays.push(reqArray);
         return reqArrays;
       });

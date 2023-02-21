@@ -4,34 +4,9 @@ import {Button, Table, Dropdown} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
 import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
+import {foodStatusData} from '../../../utils/statusFormatter';
 import {exelPlanAtom} from '../../../utils/store';
-const foodStatusData = [
-  {
-    key: '판매 대기',
-    text: '판매 대기',
-    value: '판매 대기',
-  },
-  {
-    key: '판매중',
-    text: '판매중',
-    value: '판매중',
-  },
-  {
-    key: '품절',
-    text: '품절',
-    value: '품절',
-  },
-  {
-    key: '취소불가품',
-    text: '취소불가품',
-    value: '취소불가품',
-  },
-  {
-    key: '판매 중지',
-    text: '판매 중지',
-    value: '판매 중지',
-  },
-];
+
 const PlanExelTable = ({plan}) => {
   const [key, setKey] = useState();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
@@ -85,18 +60,7 @@ const PlanExelTable = ({plan}) => {
                                   : p[k] === '승인'
                                   ? 'green'
                                   : 'red'
-                              }
-                              //   onClick={()=>{setTestData(testData.map((makers)=>{
-                              //     return {...makers ,clientSchedule:makers.clientSchedule.map((client)=>{
-                              //       return {...client,foodSchedule:client.foodSchedule.map((food)=>{
-                              //         if(food.presetFoodId === d.presetFoodId){
-                              //             return {...food,scheduleStatus:d.scheduleStatus === 0? 1:d.scheduleStatus===1 ? 2:0}
-                              //         }
-                              //         return food;
-                              //       })}
-                              //     })}
-                              // }))}}
-                            >
+                              }>
                               {p[k]}
                             </Button>
                           </Table.Cell>
