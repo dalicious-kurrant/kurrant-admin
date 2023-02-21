@@ -1,17 +1,22 @@
 import useModal from '../../hooks/useModal';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 import {useGetAllProductsList} from '../../hooks/useProductsList';
 import withCommas from '../../utils/withCommas';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import {useAtom} from 'jotai';
+import {productAtom} from '../../utils/store';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
   const navigate = useNavigate();
   const {onActive} = useModal();
   const {data: productList} = useGetAllProductsList();
+
+  const [product] = useAtom(productAtom);
+  const [key, setKey] = useState();
 
   const goToPage = (foodId, makersId) => {
     navigate('/shop/info/detail/' + foodId, {
@@ -25,6 +30,11 @@ const ItemInfo = () => {
     e.stopPropagation();
     console.log(id, '11');
   };
+
+  useEffect(() => {
+    if (product) setKey(Object.keys(product[0]));
+  }, [product]);
+  console.log(product, '1323');
   return (
     <PageWrapper>
       <BtnWrapper>
