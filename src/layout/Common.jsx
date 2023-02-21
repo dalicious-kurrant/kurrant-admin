@@ -8,6 +8,7 @@ import {planAtom, productAtom, exelPlanAtom} from '../utils/store';
 
 import {useAtom} from 'jotai';
 import {planExel, planExelExport} from '../utils/downloadExel/exel';
+import {exportSpotInfoExcel} from 'pages/customer/SpotInfo/spotInfoExcel';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -79,6 +80,7 @@ const Common = () => {
       const reader = new FileReader();
       setExelPlan();
       setPlan();
+      console.log(reader);
       reader.onload = e => {
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array', cellDates: true});
@@ -97,6 +99,11 @@ const Common = () => {
     }
   };
   const onDownloadFile = async () => {
+    if (pathname === '/customer/spot') {
+      exportSpotInfoExcel(plan);
+      return;
+    }
+
     if (plan && plan.length > 0) {
       return planExel(plan);
     }

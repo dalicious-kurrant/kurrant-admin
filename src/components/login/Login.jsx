@@ -27,20 +27,22 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      const res = await instance.post('auth/login', input);
-      console.log(res);
-      if (res.statusCode === 200) {
-        const accessToken = res.data.accessToken;
-        localStorage.setItem('token', accessToken);
-        navigate('/main');
-        window.location.reload();
-      }
-    } catch (err) {
-      if (err.response.status === 401 || err.response.status === 400) {
-        setLoginCheck(true);
-      }
-    }
+    navigate('/main');
+    // try {
+    //   const res = await instance.post('auth/login', input);
+    //   console.log(res);
+    //   if (res.statusCode === 200) {
+    //     const accessToken = res.data.accessToken;
+    //     localStorage.setItem('token', accessToken);
+    //     navigate('/main');
+    //     window.location.reload();
+    //   }
+
+    // } catch (err) {
+    //   if (err.response.status === 401 || err.response.status === 400) {
+    //     setLoginCheck(true);
+    //   }
+    // }
   };
 
   return (
