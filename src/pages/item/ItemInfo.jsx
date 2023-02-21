@@ -1,89 +1,54 @@
 import useModal from '../../hooks/useModal';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 import {useGetAllProductsList} from '../../hooks/useProductsList';
 import withCommas from '../../utils/withCommas';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import ItemExelTable from './components/ItemExelTable';
+import {useAtom} from 'jotai';
+import {exelProductAtom, productAtom} from '../../utils/store';
+import ItemInfoTable from './components/ItemInfoTable';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
-  const navigate = useNavigate();
   const {onActive} = useModal();
   const {data: productList} = useGetAllProductsList();
-
-  const goToPage = (foodId, makersId) => {
-    navigate('/shop/info/detail/' + foodId, {
-      state: {
-        foodId: foodId,
-        makersId: makersId,
-      },
-    });
-  };
+  const [product, setProduct] = useAtom(productAtom);
+  const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
+  const [checkItems, setCheckItems] = useState([]);
+  console.log(product, '-');
   const checkId = (e, id) => {
     e.stopPropagation();
     console.log(id, '11');
   };
+  useEffect(() => {
+    setProduct(productList);
+  }, [productList, setProduct]);
+
   return (
     <PageWrapper>
       <BtnWrapper>
         <Button color="red" content="삭제" icon="delete" onClick={onActive} />
       </BtnWrapper>
       <TableWrapper>
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell textAlign="center">
-                <Checkbox />
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
-              <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
-              <Table.HeaderCell>식품 이름</Table.HeaderCell>
-              <Table.HeaderCell>상태</Table.HeaderCell>
-              <Table.HeaderCell>매장가격</Table.HeaderCell>
-              <Table.HeaderCell>매장할인률</Table.HeaderCell>
-              <Table.HeaderCell>이벤트할인률</Table.HeaderCell>
-              <Table.HeaderCell>최종가격</Table.HeaderCell>
-              <Table.HeaderCell>설명</Table.HeaderCell>
-              <Table.HeaderCell>식사태그</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {productList?.data.map((el, idx) => {
-              return (
-                <TableRow
-                  onClick={() => goToPage(el.foodId, el.makersId)}
-                  key={idx}>
-                  <Table.Cell textAlign="center">
-                    <Checkbox
-                      onClick={e => {
-                        checkId(e, el.foodId);
-                      }}
-                    />
-                  </Table.Cell>
-                  <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
-                  <Table.Cell>{el.makersName}</Table.Cell>
-                  <Table.Cell>{el.foodName}</Table.Cell>
-                  <Table.Cell>{el.foodStatus}</Table.Cell>
-                  <Table.Cell textAlign="right">
-                    {withCommas(el.defaultPrice)}
-                  </Table.Cell>
-                  <Table.Cell textAlign="right">{el.makersDiscount}</Table.Cell>
-                  <Table.Cell textAlign="right">{el.eventDiscount}</Table.Cell>
-                  <Table.Cell textAlign="right">
-                    {withCommas(el.resultPrice)}
-                  </Table.Cell>
-                  <Table.Cell>{el.description}</Table.Cell>
-                  <Table.Cell>
-                    {el.foodTags + (idx !== 0 ? ',  ' : '')}
-                  </Table.Cell>
-                </TableRow>
-              );
-            })}
-          </Table.Body>
-        </Table>
+        {exelProduct && (
+          <ItemExelTable
+            data={exelProduct}
+            checked={checkId}
+            checkItems={checkItems}
+            setCheckItems={setCheckItems}
+          />
+        )}
+        {product && (
+          <ItemInfoTable
+            data={product}
+            checked={checkId}
+            checkItems={checkItems}
+            setCheckItems={setCheckItems}
+          />
+        )}
       </TableWrapper>
     </PageWrapper>
   );

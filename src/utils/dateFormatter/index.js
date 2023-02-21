@@ -25,6 +25,19 @@ export function formattedTimer(remainSeconds) {
 }
 
 export function formattedTime(data) {
+  const isD = new Date(data);
+  console.log(typeof isD);
+  if (typeof data !== typeof new Date()) {
+    const isDate = new Date();
+    const hhmm = data.split(':');
+    isDate.setHours(hhmm[0]);
+    isDate.setMinutes(hhmm[1]);
+    const dateTime = transDateType(isDate);
+    const day = leftPad(dateTime.getDate());
+    const hour = leftPad(dateTime.getHours());
+    const minute = leftPad(dateTime.getMinutes());
+    return `${hour}:${minute}`;
+  }
   const dateTime = transDateType(data);
   const hour = leftPad(dateTime.getHours());
   const minute = leftPad(dateTime.getMinutes());

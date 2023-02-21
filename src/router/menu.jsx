@@ -11,6 +11,7 @@ import ItemInfo from '../pages/item/ItemInfo';
 import Plans from '../pages/makers/Plans';
 import SpotInfo from 'pages/customer/SpotInfo/SpotInfo';
 import SpotInfoExcel from 'pages/customer/SpotInfo/SpotInfoExcel';
+import Schedule from '../pages/salesSchedule/Schedule';
 
 export const MenuList = [
   {
@@ -184,6 +185,17 @@ export const MenuList = [
       {
         name: '정산 이슈',
         url: '/issue',
+      },
+    ],
+  },
+  {
+    name: '판매일정',
+    url: '/sales',
+    children: [
+      {
+        name: '판매일정/내역',
+        url: '/schedule',
+        component: <Schedule />,
       },
     ],
   },
