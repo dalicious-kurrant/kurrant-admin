@@ -1,18 +1,20 @@
 import styled from 'styled-components';
 import React, {useEffect, useState} from 'react';
-import {Button, Table} from 'semantic-ui-react';
+import {Button, Checkbox, Table} from 'semantic-ui-react';
 // import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 // import {planAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 import {BtnWrapper, PageWrapper, TableWrapper} from 'style/common.style';
-import {planAtom} from 'utils/store';
+import {exelSpotAtom, planAtom, spotAtom} from 'utils/store';
 import useModal from 'hooks/useModal';
 import useSpotInfoQuery from './useSpotInfoQuery';
-import {SpotInfoObjectSample} from 'data/spotInfo/spotInfoMockData';
+import {spotInfoMockData} from 'data/spotInfo/spotInfoMockData';
+import {spotInfoFields} from 'data/spotInfo/spotInfoData';
+import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 
 const SpotInfoExcel = () => {
-  const {onActive} = useModal();
-  const [plan, setPlan] = useAtom(planAtom);
+  const {onActive, chkData, setChkData} = useModal();
+  const [plan, setPlan] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
 
   const {
@@ -26,10 +28,12 @@ const SpotInfoExcel = () => {
   }, [plan]);
 
   useEffect(() => {
-    setPlan(SpotInfoObjectSample);
+    const req = [];
+    req.push(spotInfoFields);
+    req.push(...spotInfoMockData);
+    setPlan(req);
     // console.log(SpotInfoObjectSample);
   }, []);
-
   if (isLoading_getSpotInfoJSON)
     return (
       <>
@@ -64,7 +68,9 @@ const SpotInfoExcel = () => {
                     <Table.Header key={'0' + i}>
                       <Table.Row>
                         {/* <Table.HeaderCell>체크박스</Table.HeaderCell> */}
-
+                        <Table.HeaderCell width={1} textAlign="center">
+                          <Checkbox />
+                        </Table.HeaderCell>
                         {HeaderData.map((h, k) => {
                           return (
                             <Table.HeaderCell key={'0' + k}>
@@ -79,8 +85,41 @@ const SpotInfoExcel = () => {
                   return (
                     <Table.Body key={i}>
                       <Table.Row>
+                        <Table.Cell textAlign="center">
+                          <Checkbox
+                            checked={chkData.includes(p.id)}
+                            onChange={(v, data) => {
+                              if (data.checked) {
+                                setChkData([...chkData, p.id]);
+                              } else {
+                                setChkData(chkData.filter(v => v.id !== p.id));
+                              }
+                            }}
+                          />
+                        </Table.Cell>
                         {key &&
                           key.map((k, l) => {
+                            if (
+                              k === 'breakfastDeliveryTime' ||
+                              k === 'dinnerDeliveryTime' ||
+                              k === 'lunchDeliveryTime'
+                            ) {
+                              return (
+                                <Table.Cell key={k + l}>
+                                  <FlexBox>{formattedTime(p[k])}</FlexBox>
+                                </Table.Cell>
+                              );
+                            }
+                            if (
+                              k === 'createDateTime' ||
+                              k === 'updatedDateTime'
+                            ) {
+                              return (
+                                <Table.Cell key={k + l}>
+                                  <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
+                                </Table.Cell>
+                              );
+                            }
                             return (
                               <Table.Cell key={`${i}` + l}>
                                 <FlexBox>{p[k]}</FlexBox>

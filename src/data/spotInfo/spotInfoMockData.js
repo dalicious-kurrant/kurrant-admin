@@ -88,7 +88,7 @@ export const spotInfoMockData = [
     updatedDateTime: '2022-01-01',
   },
   {
-    id: '4',
+    id: '5',
     clientGroupName: '원할머니 보삼',
     name: '보삼',
     clientGroupId: '보쌈류',
@@ -110,7 +110,7 @@ export const spotInfoMockData = [
     updatedDateTime: '2022-01-01',
   },
   {
-    id: '4',
+    id: '6',
     clientGroupName: '원할머니 보삼',
     name: '보삼',
     clientGroupId: '보쌈류',
@@ -132,7 +132,7 @@ export const spotInfoMockData = [
     updatedDateTime: '2022-01-01',
   },
   {
-    id: '4',
+    id: '7',
     clientGroupName: '원할머니 보삼',
     name: '보삼',
     clientGroupId: '보쌈류',
@@ -154,7 +154,7 @@ export const spotInfoMockData = [
     updatedDateTime: '2022-01-01',
   },
   {
-    id: '4',
+    id: '8',
     clientGroupName: '원할머니 보삼',
     name: '보삼',
     clientGroupId: '보쌈류',

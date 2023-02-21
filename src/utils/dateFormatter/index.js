@@ -25,8 +25,6 @@ export function formattedTimer(remainSeconds) {
 }
 
 export function formattedTime(data) {
-  const isD = new Date(data);
-  console.log(typeof isD);
   if (typeof data !== typeof new Date()) {
     const isDate = new Date();
     const hhmm = data.split(':');

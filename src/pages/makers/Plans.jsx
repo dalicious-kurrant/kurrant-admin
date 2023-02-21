@@ -9,6 +9,7 @@ import {
   formattedDate,
   formattedDateAndTime,
   formattedDateType,
+  formattedFullDate,
   formattedTime,
   formattedWeekDate,
 } from '../../utils/dateFormatter';
@@ -19,6 +20,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
 import {usePostCalendar} from 'hooks/useCalendars';
+import {scheduleFormatted2} from 'utils/statusFormatter';
 const makersCalendar = [
   {
     presetMakersId: 1,
@@ -194,63 +196,62 @@ const Plans = () => {
 
   const callPostCalendar = async () => {
     if (plan) {
+      const reqArray = [];
       const req = plan.map(makers => {
-        return makers.clientSchedule
-          .map(client => {
-            return client.foodSchedule
-              .map(food => {
-                return {
-                  makersName: makers.makersName,
-                  makersScheduleStatus: makers.scheduleStatus,
-                  serviceDate: makers.serviceDate,
-                  diningType: makers.diningType,
-                  makersCapacity: makers.makersCapacity,
-                  pickupTime: client.pickupTime,
-                  groupName: client.clientName,
-                  groupCapacity: client.clientCapacity,
-                  leftMakersCapacity: client.leftMakersCapacity,
-                  foodScheduleStatus: food.scheduleStatus,
-                  foodName: food.foodName,
-                  foodStatus: food.foodStatus,
-                  foodCapacity: food.foodCapacity,
-                  leftFoodCapacity: food.leftFoodCapacity,
-                };
-              })
-              .flat();
-          })
-          .flat();
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              leftMakersCapacity: client.leftMakersCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+              leftFoodCapacity: food.leftFoodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
       });
       await postCalendar({
-        deadline: formattedDateAndTime(startDate, '-'),
-        excelDataList: req,
+        deadline: formattedFullDate(startDate, '-'),
+        excelDataList: [...reqArray],
       });
     }
     if (exelPlan) {
-      const req = exelPlan.map((makers, i) => {
+      const reqArray = [];
+      exelPlan.map((makers, i) => {
         if (i !== 0) {
-          return {
+          const result = {
             makersName: makers.makersName,
-            makersScheduleStatus: makers.scheduleStatus,
+            makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
             serviceDate: formattedDate(makers.serviceDate, '-'),
             diningType: makers.diningType,
             makersCapacity: makers.makersCapacity,
             pickupTime: formattedTime(makers.pickupTime),
             groupName: makers.clientName,
             groupCapacity: makers.clientCapacity,
-            leftMakersCapacity: makers.leftMakersCapacity,
-            foodScheduleStatus: makers.scheduleStatus,
+            leftMakersCapacity: 100,
+            foodScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
             foodName: makers.foodName,
             foodStatus: makers.foodStatus,
             foodCapacity: makers.foodCapacity,
             leftFoodCapacity: makers.leftFoodCapacity,
           };
+          reqArray.push(result);
         }
       });
-      req.shift();
-      console.log(req);
+
       await postCalendar({
-        deadline: formattedDateAndTime(startDate, '-'),
-        excelDataList: req,
+        deadline: formattedFullDate(startDate, '-'),
+        excelDataList: [...reqArray],
       });
     }
   };

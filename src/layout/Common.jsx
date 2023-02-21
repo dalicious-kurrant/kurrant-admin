@@ -118,9 +118,9 @@ const Common = () => {
         }
         if (sheetName === '고객 스팟 공지') {
           // console.log(typeof json);
-          // console.log(typeof JSON.stringify(json));
+          console.log(json);
           // localStorage.setItem('sponInfo', JSON.stringify(json));
-          setPlan(json);
+          setExelSpot(json);
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
