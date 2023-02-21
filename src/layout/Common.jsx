@@ -4,10 +4,10 @@ import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
-import {planAtom, productAtom,exelPlanAtom} from '../utils/store';
+import {planAtom, productAtom, exelPlanAtom} from '../utils/store';
 
 import {useAtom} from 'jotai';
-import { planExel, planExelExport } from '../utils/downloadExel/exel';
+import {planExel, planExelExport} from '../utils/downloadExel/exel';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -81,29 +81,28 @@ const Common = () => {
       setPlan();
       reader.onload = e => {
         const data = e.target.result;
-        const workbook = XLSX.read(data, {type: 'array',cellDates:true});
+        const workbook = XLSX.read(data, {type: 'array', cellDates: true});
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-        if (sheetName === '메이커스 일정 관리') {  
+        if (sheetName === '메이커스 일정 관리') {
           setExelPlan(json);
-        }
-        if (sheetName === '상품 정보') {
+        } else if (sheetName === '상품 정보') {
           setProduct(json);
+        } else if (sheetName === '고객 스팟 공지') {
+          setPlan(json);
         }
+        reader.readAsArrayBuffer(e.target.files[0]);
       };
-      reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
-  const onDownloadFile = async() => {
-    if(plan && plan.length > 0){
+  const onDownloadFile = async () => {
+    if (plan && plan.length > 0) {
       return planExel(plan);
     }
-    if(exelPlan && exelPlan.length > 0){
+    if (exelPlan && exelPlan.length > 0) {
       return planExelExport(exelPlan);
     }
-    
-      
   };
   return (
     <C.Wrapper>
@@ -123,7 +122,12 @@ const Common = () => {
           />
           <InputExcel type="file" ref={inputRef} onChange={onUploadFile} />
           <Button.Or />
-          <Button color="blue" icon="share" content="엑셀 내보내기" onClick={onDownloadFile} />
+          <Button
+            color="blue"
+            icon="share"
+            content="엑셀 내보내기"
+            onClick={onDownloadFile}
+          />
         </Button.Group>
       </C.BtnWrapper>
     </C.Wrapper>
