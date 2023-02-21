@@ -55,3 +55,50 @@ export function planExelExport(plan) {
   XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
   XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
 }
+
+// 상품 정보 엑셀
+
+export function productExel(product) {
+  const reqArrays = [];
+  reqArrays.push([
+    'ID',
+    '메이커스이름',
+    '식품이름',
+    '판매상태',
+    '매장가격',
+    '매장할인률',
+    '이벤트할인률',
+    '최종가격',
+    '설명',
+    '식사 태그',
+  ]);
+  product?.data?.map(el => {
+    const reqArray = [];
+    reqArray.push(el.foodId);
+    reqArray.push(el.makersName);
+    reqArray.push(el.foodName);
+    reqArray.push(el.foodStatus);
+    reqArray.push(el.defaultPrice);
+    reqArray.push(el.makersDiscount);
+    reqArray.push(el.eventDiscount);
+    reqArray.push(el.resultPrice);
+    reqArray.push(el.description);
+    reqArray.push(el.foodTags);
+    reqArrays.push(reqArray);
+    return reqArrays;
+  });
+  console.log(reqArrays);
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, '상품 정보');
+  XLSX.writeFile(workbook, '상품_정보.xlsx');
+}
+
+export function productExelExport(product) {
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(product, {cellDates: true});
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, '상품 정보');
+  XLSX.writeFile(workbook, '상품_정보.xlsx');
+}

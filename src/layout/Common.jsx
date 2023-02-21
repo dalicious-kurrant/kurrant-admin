@@ -4,12 +4,21 @@ import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
-import {planAtom, productAtom, exelPlanAtom} from '../utils/store';
+import {
+  planAtom,
+  exelPlanAtom,
+  exelProductAtom,
+  productAtom,
+} from '../utils/store';
 
 import {useAtom} from 'jotai';
 
-import { planExel, planExelExport } from '../utils/downloadExel/exel';
-
+import {
+  planExel,
+  planExelExport,
+  productExel,
+  productExelExport,
+} from '../utils/downloadExel/exel';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -61,9 +70,11 @@ const Common = () => {
   const inputRef = useRef();
 
   const [plan, setPlan] = useAtom(planAtom);
-  const [, setProduct] = useAtom(productAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
+  const [product, setProduct] = useAtom(productAtom);
+  const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
 
+  console.log(exelProduct, '0000');
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -79,6 +90,8 @@ const Common = () => {
     e.preventDefault();
     if (e.target.files) {
       const reader = new FileReader();
+      setProduct();
+      setExelProduct();
       setExelPlan();
       setPlan();
       reader.onload = e => {
@@ -91,20 +104,28 @@ const Common = () => {
           setExelPlan(json);
         }
         if (sheetName === '상품 정보') {
-          setProduct(json);
+          setExelProduct(json);
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
 
-  const onDownloadFile = async() => {
-    if(plan && plan.length > 0){
+  const onDownloadFile = async () => {
+    if (plan && plan.length > 0) {
       return planExel(plan);
     }
-    if(exelPlan && exelPlan.length > 0){
+    if (exelPlan && exelPlan.length > 0) {
       return planExelExport(exelPlan);
+    }
 
+    if (product?.data && product?.data?.length > 0) {
+      return productExel(product);
+    }
+    console.log(product, '018');
+
+    if (exelProduct && exelProduct.length > 0) {
+      return productExelExport(exelProduct);
     }
   };
   return (

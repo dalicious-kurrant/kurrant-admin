@@ -1,13 +1,11 @@
-import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from '../../../style/common.style';
-import {productAtom} from '../../../utils/store';
 import withCommas from '../../../utils/withCommas';
 
 const ItemExelTable = ({data, checked, checkItems, setCheckItems}) => {
-  console.log(checkItems, '141');
+  console.log(data, '0-?');
   const navigate = useNavigate();
   const [key, setKey] = useState();
 

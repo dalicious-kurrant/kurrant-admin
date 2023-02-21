@@ -1,10 +1,11 @@
 import {useNavigate} from 'react-router-dom';
-import {Table, TableRow} from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
+import styled from 'styled-components';
 import withCommas from '../../../utils/withCommas';
 
 const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
   const navigate = useNavigate();
-  console.log(checkItems);
+  console.log(data, '0----');
   const goToPage = (foodId, makersId) => {
     navigate('/shop/info/detail/' + foodId, {
       state: {
@@ -97,3 +98,10 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
 };
 
 export default ItemInfoTable;
+
+const TableRow = styled(Table.Row)`
+  :hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+  }
+`;
