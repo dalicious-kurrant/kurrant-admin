@@ -18,7 +18,7 @@ const Schedule = () => {
   const [makersOption, setMakersOption] = useState('');
 
   const {data: makersList} = useGetMakersList();
-
+  console.log(makersOption, '2424');
   const types =
     diningSelect &&
     diningSelect.map(el => {
@@ -104,8 +104,10 @@ const Schedule = () => {
             <Table celled>
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell>상품명</Table.HeaderCell>
-                  <Table.HeaderCell>합계(개)</Table.HeaderCell>
+                  <Table.HeaderCell textAlign="center">상품명</Table.HeaderCell>
+                  <Table.HeaderCell textAlign="center">
+                    합계(개)
+                  </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -113,14 +115,20 @@ const Schedule = () => {
                   return (
                     <Table.Row key={el.foodName + i}>
                       <Table.Cell>{el.foodName}</Table.Cell>
-                      <Table.Cell>{el.totalFoodCount}</Table.Cell>
+                      <Table.Cell textAlign="center">
+                        {el.totalFoodCount}
+                      </Table.Cell>
                     </Table.Row>
                   );
                 })}
 
                 <Table.Row>
-                  <Table.Cell>Total</Table.Cell>
-                  <Table.Cell>{totalCount}</Table.Cell>
+                  <Table.Cell>
+                    <BoldText>Total</BoldText>
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <BoldText>{totalCount}</BoldText>
+                  </Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -131,36 +139,40 @@ const Schedule = () => {
                 return el.foods.filter(v => v.foodId === s.foodId)[0];
               });
               return (
-                <Table style={{height: 100}}>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell
-                        key={el.serviceDate + el.diningType}
-                        style={{whiteSpace: 'nowrap'}}>
-                        {el.serviceDate + `\u00A0` + el.diningType}
-                      </Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {test.map(v => {
-                      if (v) {
+                <div>
+                  <Table key={el.serviceDate + el.diningType + i}>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell style={{whiteSpace: 'nowrap'}}>
+                          {el.serviceDate + `\u00A0` + el.diningType}
+                        </Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {test.map((v, i) => {
+                        if (v) {
+                          return (
+                            <Table.Row key={el.serviceDate + v.foodId}>
+                              <Table.Cell textAlign="center">
+                                {v.foodCount}
+                              </Table.Cell>
+                            </Table.Row>
+                          );
+                        }
                         return (
-                          <Table.Row>
-                            <Table.Cell>{v.foodCount}</Table.Cell>
+                          <Table.Row key={i}>
+                            <Table.Cell>{`\u00A0`}</Table.Cell>
                           </Table.Row>
                         );
-                      }
-                      return (
-                        <Table.Row>
-                          <Table.Cell>{`\u00A0`}</Table.Cell>
-                        </Table.Row>
-                      );
-                    })}
-                    <Table.Row>
-                      <Table.Cell>{el.totalCount}</Table.Cell>
-                    </Table.Row>
-                  </Table.Body>
-                </Table>
+                      })}
+                      <Table.Row key={el.diningType + el.serviceDate}>
+                        <Table.Cell textAlign="center">
+                          <BoldText>{el.totalCount}</BoldText>
+                        </Table.Cell>
+                      </Table.Row>
+                    </Table.Body>
+                  </Table>
+                </div>
               );
             })}
           </DetailTable>
@@ -169,15 +181,13 @@ const Schedule = () => {
       <TableWrapper>
         {salesList?.data?.groupFoodByDateDiningTypes.map((el, idx) => (
           <MakersTable key={idx}>
-            <Label
-              content={el.serviceDate + `\u00A0` + el.diningType}
-              color="yellow"
-            />
+            <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
+            <DateLine />
             <DiningTypeWrap>
               <MealDetailWrap>
-                {el.foodByGroups.map(v => {
+                {el.foodByGroups.map((v, index) => {
                   return (
-                    <TableWrap>
+                    <TableWrap key={index}>
                       {v.spotByDateDiningTypes.map((spot, i) => {
                         return (
                           <div key={i} style={{marginRight: 10}}>
@@ -255,13 +265,12 @@ const MakersTable = styled.div`
 `;
 
 const TotalTable = styled.div`
-  margin-right: 10px;
+  /* margin-right: 10px; */
   width: 30%;
 `;
 
 const DetailTable = styled.div`
   overflow-x: auto;
-  width: 100vw;
   display: flex;
 `;
 
@@ -286,4 +295,13 @@ const ButtonWrap = styled.div`
 const TableWrap = styled.div`
   display: flex;
   margin-right: 5px;
+`;
+
+const BoldText = styled.span`
+  font-weight: 700;
+`;
+
+const DateLine = styled.div`
+  padding-top: 10px;
+  border-bottom: 1px solid ${({theme}) => theme.colors.grey[5]};
 `;
