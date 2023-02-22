@@ -8,7 +8,6 @@ import {planAtom, productAtom, exelPlanAtom} from '../utils/store';
 
 import {useAtom} from 'jotai';
 import {planExel, planExelExport} from '../utils/downloadExel/exel';
-import {exportSpotInfoExcel} from 'pages/customer/SpotInfo/SpotInfoExcel';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -100,7 +99,7 @@ const Common = () => {
   };
   const onDownloadFile = async () => {
     if (pathname === '/customer/spot') {
-      exportSpotInfoExcel(plan);
+      // exportSpotInfoExcel(plan);
       return;
     }
 

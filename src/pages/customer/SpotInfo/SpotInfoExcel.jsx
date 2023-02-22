@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import React, {useEffect, useState} from 'react';
 import {Button, Table} from 'semantic-ui-react';
-// import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
-// import {planAtom} from '../../utils/store';
+
 import {useAtom} from 'jotai';
 import {BtnWrapper, PageWrapper, TableWrapper} from 'style/common.style';
 import {planAtom} from 'utils/store';
