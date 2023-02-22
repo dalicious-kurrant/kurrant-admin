@@ -46,7 +46,7 @@ const Container = styled.div`
   ${({css}) => css}
   ${({checked, theme}) => {
     if (!checked) {
-      return `border: 2px solid ${theme.colors.Grey04};`;
+      return `border: 2px solid ${theme.colors.grey[7]};`;
     }
   }}
 
@@ -57,5 +57,5 @@ const Container = styled.div`
     return `${(widthValue + heightValue) / 8}${unit}`;
   }};
   background-color: ${props =>
-    props.checked ? props.theme.colors.Blue04 : 'transparent'};
+    props.checked ? props.theme.colors.blue[600] : 'transparent'};
 `;

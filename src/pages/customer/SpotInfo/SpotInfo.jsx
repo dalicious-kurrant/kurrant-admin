@@ -89,8 +89,10 @@ const SpotInfo = () => {
         )} */}
         {!!spotInfoData && spotInfoData.length !== 0 && (
           <Table
-            tableFieldsInput={spotInfoFields}
-            tableDataInput={spotInfoData}
+            fieldsInput={spotInfoFields}
+            dataInput={spotInfoData}
+            // isMemo={true}
+            // handleChange={}
           />
         )}
       </TableWrapper>
