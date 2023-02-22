@@ -1,10 +1,14 @@
-import axios from 'axios';
-import Pagination from 'common/Pagination/Pagination';
-import usePagination from 'common/Pagination/usePagination';
+import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
+import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
+import Register from 'common/CRUD/Register/Register';
+
+import {TableCheckboxStatusAtom} from 'common/Table/store';
 import Table from 'common/Table/Table';
-import {spotInfoFields} from 'data/spotInfo/spotInfoData';
-import {useQuery} from 'react-query';
-import {Button} from 'semantic-ui-react';
+
+import {useAtom} from 'jotai';
+import {useState} from 'react';
+
+import {useLocation} from 'react-router';
 
 import useModal from '../../../hooks/useModal';
 import {
@@ -12,47 +16,68 @@ import {
   PageWrapper,
   TableWrapper,
 } from '../../../style/common.style';
+import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
+import {checkedValue, idsToDelete, numberOfTrues} from './SpotInfoLogics';
+import {SpotInfoDataAtom} from './store';
+import useMutate from './useMutate';
+import useSpotInfoQuery from './useSpotInfoQuery';
 
 const SpotInfo = () => {
   const {onActive} = useModal();
+  const [spotInfoData] = useAtom(SpotInfoDataAtom);
 
-  const {data: dataTotalLength} = useQuery(['getSpotInfoLength'], async () => {
-    const response = await axios.get(
-      // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
-      `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}`,
-      // `${process.env.REACT_APP_TEST_SERVER_URL}/members?code=AAAAAA`,
-      // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
-    );
-    // console.log(response.data.length);
-    return response.data.length;
-  });
+  const [showRegister, setShowRegister] = useState(false);
+  const [checkboxStatus] = useAtom(TableCheckboxStatusAtom);
+  const [dataToEdit, setDataToEdit] = useState({});
 
-  const {
-    page,
-    setPage,
-    dataLimit,
-    setDataLimit,
-    pageList,
-    handleButtonClick,
-    handleGoToEdge,
-    handleMove,
-  } = usePagination(dataTotalLength);
+  const [registerStatus, setRegisterStatus] = useState('register');
 
-  const {
-    data: dataList,
-    status,
-    isLoading,
-  } = useQuery(['getSpotInfo', page, dataLimit], async ({queryKey}) => {
-    //   } = useQuery(['getSpotInfo', 1, 4], async ({queryKey}) => {
-    const response = await axios.get(
-      // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
-      `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
-      // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
-    );
+  const {status, isLoading} = useSpotInfoQuery();
 
-    // console.log(response.data);
-    return response.data;
-  });
+  const {deleteMutate, submitMutate, editMutate} = useMutate();
+
+  const handleBundleClick = buttonStatus => {
+    numberOfTrues({...checkboxStatus});
+
+    if (buttonStatus === 'register') {
+      setDataToEdit(makeInitialInput([...spotInfoData][0]));
+      setRegisterStatus(buttonStatus);
+      setShowRegister(true);
+    } else if (buttonStatus === 'edit') {
+      if (numberOfTrues({...checkboxStatus}) === 0) {
+        window.confirm(
+          "아래의 기업 가입 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
+        );
+      } else if (numberOfTrues({...checkboxStatus}) !== 1) {
+        // console.log(numberOfTrues({...checkboxStatus}));
+
+        window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
+      } else if (numberOfTrues({...checkboxStatus}) === 1) {
+        setDataToEdit(checkedValue(checkboxStatus, spotInfoData));
+        setRegisterStatus(buttonStatus);
+        setShowRegister(true);
+      }
+    } else if (buttonStatus === 'delete') {
+      if (numberOfTrues === 0) {
+        window.confirm(
+          "아래의 기업 가입 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
+        );
+        return;
+      }
+
+      if (window.confirm('삭제하시겠습니까?')) {
+        idsToDelete({...checkboxStatus}).forEach(value => {
+          deleteMutate(value);
+        });
+      } else {
+        return;
+      }
+    }
+  };
+
+  const handleClose = () => {
+    setShowRegister(false);
+  };
 
   if (isLoading)
     return (
@@ -73,24 +98,39 @@ const SpotInfo = () => {
   return (
     <PageWrapper>
       <BtnWrapper>
-        <Button color="red" content="삭제" icon="delete" onClick={onActive} />
+        {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
       </BtnWrapper>
-      <TableWrapper>
-        <Pagination
-          dataTotalLength={dataTotalLength}
-          page={page}
-          setPage={setPage}
-          dataLimit={dataLimit}
-          setDataLimit={setDataLimit}
-          pageList={pageList}
-          handleButtonClick={handleButtonClick}
-          handleGoToEdge={handleGoToEdge}
-          handleMove={handleMove}
-          selectOptionArray={[1, 2, 4, 10]}
+
+      <div>
+        {/* {isCRUDAvaliable(pathname) && (
+          
+        )} */}
+        <CRUDBundle
+          handleBundleClick={handleBundleClick}
+          showRegister={showRegister}
         />
 
-        {!!dataList && dataList.length !== 0 && (
-          <Table tableFieldsInput={spotInfoFields} tableDataInput={dataList} />
+        {showRegister && (
+          <Register
+            registerStatus={registerStatus}
+            submitMutate={submitMutate}
+            editMutate={editMutate}
+            handleClose={handleClose}
+            data={dataToEdit}
+            fieldsToOpen={SpotInfoFieldsToOpen}
+            fieldsData={SpotInfoFieldsData}
+          />
+        )}
+      </div>
+
+      <TableWrapper>
+        {!!spotInfoData && spotInfoData.length !== 0 && (
+          <Table
+            fieldsInput={SpotInfoFieldsToOpen}
+            dataInput={spotInfoData}
+            // isMemo={true}
+            // handleChange={}
+          />
         )}
       </TableWrapper>
     </PageWrapper>

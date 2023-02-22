@@ -1,38 +1,34 @@
 import TableCheckbox from 'common/TableCheckbox';
 
+import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useState} from 'react';
+import Theme from 'style/Theme';
 import styled from 'styled-components';
-import theme from 'theme/theme';
+
 import {handleFalsyValue} from 'utils/valueHandlingLogics';
+import MemoInput from './MemoInput/MemoInput';
+import {TableCheckboxStatusAtom} from './store';
 
 // 이 Table 컴포넌트는 다르다???
 
 // - 데이터 안에 정해진 필드가 아닌 필드가 들어있으면 자동으로 걸러준다
 // - 데이터 값이 number나 string이 아닌 경우는 '-'로 표기한다
 
-const Table = ({tableFieldsInput, tableDataInput}) => {
-  const useTheme = theme;
+const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+  const useTheme = Theme;
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
 
-  const [checkboxStatus, setCheckboxStatus] = useState({});
+  const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
 
   useEffect(() => {
-    setKeyOfTableFieldsInput(Object.keys(tableFieldsInput));
-  }, [tableFieldsInput]);
-
-  useEffect(() => {
-    // 배열 아닐경우 아웃!
-    if (!Array.isArray(keyOfTableFieldsInput)) return;
-    // 배열이 비여있을 경우 아웃
-    if (keyOfTableFieldsInput.length === 0) return;
-    // 걸러내기
-  }, [keyOfTableFieldsInput]);
+    setKeyOfTableFieldsInput(Object.keys(fieldsInput));
+  }, [fieldsInput]);
 
   useEffect(() => {
     const object1 = {parent: false};
-    const yo1 = [...tableDataInput].map(value => {
+    const yo1 = [...dataInput].map(value => {
       return value.id;
     });
 
@@ -43,12 +39,10 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
     setCheckboxStatus({
       ...object1,
     });
-  }, [tableDataInput]);
+  }, [dataInput]);
 
   const onCheckCheckbox = value => {
     if (value === 'parent') {
-      // 모든 value값 한번에 바꾸기
-
       const yoyo = {};
       Object.keys(checkboxStatus).forEach(value => {
         if (checkboxStatus.parent === false) {
@@ -67,10 +61,11 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
     }
   };
 
+  // 추가 메모 기능
+
   return (
     <Container>
-      <table border={1} bgcolor={useTheme.colors.white}>
-        {/* <table bgcolor={useTheme.colors.white}> */}
+      <table bgcolor={useTheme.colors.white}>
         <thead>
           <tr>
             <CheckBoxTh>
@@ -81,20 +76,22 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
                 value={'parent'}
                 checkboxStatus={checkboxStatus}
                 onChecked={onCheckCheckbox}
-                // setCheckboxStatus={setCheckboxStatus}
               />
             </CheckBoxTh>
+
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput.map((val, index) => (
                 <th align="left" key={index}>
-                  {tableFieldsInput[val]}
+                  {fieldsInput[val]}
                 </th>
               ))}
+
+            {!!isMemo && <th className="memo">Memo</th>}
           </tr>
         </thead>
         <tbody>
-          {tableDataInput &&
-            tableDataInput.map((value1, index1) => {
+          {dataInput &&
+            dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
               let yo = [];
               keyOfTableFieldsInput.forEach((value2, index2) => {
@@ -102,6 +99,7 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
                   yo.push(value1[value2]);
                 }
               });
+
               return (
                 <tr key={index1}>
                   <CheckBoxTd align="center">
@@ -120,6 +118,12 @@ const Table = ({tableFieldsInput, tableDataInput}) => {
                       {handleFalsyValue(value3)}
                     </td>
                   ))}
+
+                  {!!isMemo && (
+                    <td className="memo">
+                      <MemoInput input={value1} handleChange={handleChange} />
+                    </td>
+                  )}
                 </tr>
               );
             })}
@@ -135,26 +139,33 @@ const Container = styled.div`
   border-collapse: collapse;
   width: 100%;
 
-  > table {
-    width: 100%;
+  form {
+  }
 
+  table {
+    width: 100%;
     overflow: auto;
     white-space: nowrap;
   }
 
   thead {
-    border-bottom: 2px solid ${props => props.theme.colors.Grey03};
+    /* border-bottom: 2px solid ${props => props.theme.colors.Grey03}; */
 
     tr {
       height: 5rem;
     }
     th {
-      border: 1px solid ${props => props.theme.colors.Grey05};
+      border: 1px solid ${props => props.theme.colors.grey[6]};
       vertical-align: middle;
       padding: 0.6rem;
       font-size: 1.3rem;
-      ${props => props.theme.colors.Black02}
-      ${props => props.theme.fonts.H10}
+
+      :last-child {
+      }
+    }
+    .memo {
+      padding: 0;
+      width: 30rem;
     }
   }
 
@@ -162,11 +173,14 @@ const Container = styled.div`
     tr {
     }
     td {
+      border: 1px solid ${props => props.theme.colors.grey[6]};
       vertical-align: middle;
       padding: 0.6rem;
       height: 6.4rem;
+    }
 
-      border: 1px solid ${props => props.theme.colors.Grey05};
+    .memo {
+      padding: 0;
     }
   }
 `;
