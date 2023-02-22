@@ -18,3 +18,10 @@ export function useEditProductDetail() {
     return productApis.modifyProductDetail(data);
   });
 }
+
+export function useDeleteProductList() {
+  return useMutation(data => {
+    console.log(data, '2323');
+    return productApis.deleteProduct(data);
+  });
+}

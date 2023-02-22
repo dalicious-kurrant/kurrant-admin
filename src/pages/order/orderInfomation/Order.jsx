@@ -1,4 +1,3 @@
-import useModal from '../../../hooks/useModal';
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Table} from 'semantic-ui-react';
 import {
@@ -186,7 +185,7 @@ const Order = () => {
           defaultValue={startDate}
           onChange={e => getStartDate(e)}
         />
-        <span>-</span>
+        <DateSpan>-</DateSpan>
         <DateInput
           type="date"
           defaultValue={endDate}
@@ -387,4 +386,8 @@ const TableRow = styled(Table.Row)`
 
 const ResetButton = styled.div`
   margin-top: 50px;
+`;
+
+const DateSpan = styled.span`
+  margin: 0px 4px;
 `;

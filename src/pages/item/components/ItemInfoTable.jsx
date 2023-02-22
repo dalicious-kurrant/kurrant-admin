@@ -5,7 +5,7 @@ import withCommas from '../../../utils/withCommas';
 
 const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
   const navigate = useNavigate();
-  console.log(data, '0----');
+
   const goToPage = (foodId, makersId) => {
     navigate('/shop/info/detail/' + foodId, {
       state: {
