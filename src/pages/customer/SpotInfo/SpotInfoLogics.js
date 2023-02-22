@@ -29,7 +29,7 @@ export const checkedValue = (checkboxStatus, companyMembershipDataList) => {
   });
 
   [...companyMembershipDataList].forEach(value => {
-    if (value.id === parseInt(checkedId)) {
+    if (value.id.toString() == checkedId) {
       returnValue = value;
     }
   });

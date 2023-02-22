@@ -40,7 +40,7 @@ const SpotInfo = () => {
     numberOfTrues({...checkboxStatus});
 
     if (buttonStatus === 'register') {
-      setDataToEdit(makeInitialInput([...spotInfoData][0]));
+      setDataToEdit(makeInitialInput(SpotInfoFieldsToOpen));
       setRegisterStatus(buttonStatus);
       setShowRegister(true);
     } else if (buttonStatus === 'edit') {
