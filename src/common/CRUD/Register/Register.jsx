@@ -88,7 +88,10 @@ const Register = ({
         {tellAlert(submitStatus)}
 
         <SubmitButton>
-          {registerStatus === 'register' ? '추가' : ' 수정'}하기
+          {registerStatus === 'register'
+            ? '아래 리스트에 추가'
+            : '해당 정보 수정'}
+          하기
         </SubmitButton>
       </Form>
     </Container>
@@ -125,6 +128,6 @@ const InputWrap = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   margin: 1rem 0;
 `;

@@ -19,7 +19,7 @@ const CRUDBundle = ({handleBundleClick, showRegister}) => {
     <Container>
       <Wrap>
         <Button id="register" onClick={handleClick}>
-          가입
+          추가
         </Button>
         <Button id="edit" onClick={handleClick}>
           수정

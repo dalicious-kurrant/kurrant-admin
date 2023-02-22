@@ -24,9 +24,8 @@ import useSpotInfoQuery from './useSpotInfoQuery';
 
 const SpotInfo = () => {
   const {onActive} = useModal();
-  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
-  const {pathname} = useLocation();
-  const [content, setContent] = useState({name: '', shortIntroduction: ''});
+  const [spotInfoData] = useAtom(SpotInfoDataAtom);
+
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
@@ -125,22 +124,6 @@ const SpotInfo = () => {
       </div>
 
       <TableWrapper>
-        {/* <Pagination
-          dataTotalLength={dataTotalLength}
-          page={page}
-          setPage={setPage}
-          dataLimit={dataLimit}
-          setDataLimit={setDataLimit}
-          pageList={pageList}
-          handleButtonClick={handleButtonClick}
-          handleGoToEdge={handleGoToEdge}
-          handleMove={handleMove}
-          selectOptionArray={[1, 2, 4, 10]}
-        /> */}
-
-        {/* {!!dataList && dataList.length !== 0 && (
-          <Table tableFieldsInput={spotInfoFields} tableDataInput={dataList} />
-        )} */}
         {!!spotInfoData && spotInfoData.length !== 0 && (
           <Table
             fieldsInput={SpotInfoFieldsToOpen}

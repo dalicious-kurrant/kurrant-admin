@@ -63,7 +63,7 @@ const Container = styled.div`
 `;
 
 const TitleWrap = styled.div`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.grey[8]};
   padding: 0 1rem;
   height: 3rem;
   font-size: 1.4rem;
