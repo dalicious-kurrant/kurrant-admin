@@ -32,17 +32,16 @@ export const handleSubmitLogic = (
   const fieldsArray = fieldsInput.map(value => input[value.fieldName]);
 
   if (registerStatus === 'register') {
-    if (fieldsArray.includes('')) {
-      setSubmitStatus('notFulfilled');
-      return;
-    }
+    // if (fieldsArray.includes('')) {
+    //   setSubmitStatus('notFulfilled');
+    //   return;
+    // }
     setSubmitStatus('doneRegister');
     submitMutate(input);
   } else if (registerStatus === 'edit') {
-    if (fieldsArray.includes('')) {
-      setSubmitStatus('notFulfilled');
-      return;
-    }
+    // if (fieldsArray.includes('')) {
+    //   setSubmitStatus('notFulfilled');
+    // }
 
     setSubmitStatus('doneEdit');
     editMutate(input);
