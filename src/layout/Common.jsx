@@ -68,13 +68,11 @@ const C = {
 const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
-
   const [plan, setPlan] = useAtom(planAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
 
-  console.log(exelProduct, '0000');
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -128,32 +126,38 @@ const Common = () => {
       return productExelExport(exelProduct);
     }
   };
+
+  const noNeedButton =
+    pathname !== '/sales/schedule' && pathname !== '/order/info';
+
   return (
     <C.Wrapper>
       <C.Bread>
         <Breadcrumb icon="right angle" sections={makeSection(pathname)} />
       </C.Bread>
-      <C.BtnWrapper>
-        <Button color="green" icon="save" content="저장" />
-        <Button icon="history" content="히스토리" />
-        <Button.Group>
-          <Button
-            color="blue"
-            inverted
-            icon="file excel outline"
-            content="엑셀 불러오기"
-            onClick={onUploadFileButtonClick}
-          />
-          <InputExcel type="file" ref={inputRef} onChange={onUploadFile} />
-          <Button.Or />
-          <Button
-            color="blue"
-            icon="share"
-            content="엑셀 내보내기"
-            onClick={onDownloadFile}
-          />
-        </Button.Group>
-      </C.BtnWrapper>
+      {noNeedButton && (
+        <C.BtnWrapper>
+          <Button color="green" icon="save" content="저장" />
+          <Button icon="history" content="히스토리" />
+          <Button.Group>
+            <Button
+              color="blue"
+              inverted
+              icon="file excel outline"
+              content="엑셀 불러오기"
+              onClick={onUploadFileButtonClick}
+            />
+            <InputExcel type="file" ref={inputRef} onChange={onUploadFile} />
+            <Button.Or />
+            <Button
+              color="blue"
+              icon="share"
+              content="엑셀 내보내기"
+              onClick={onDownloadFile}
+            />
+          </Button.Group>
+        </C.BtnWrapper>
+      )}
     </C.Wrapper>
   );
 };
