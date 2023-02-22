@@ -123,8 +123,8 @@ const Common = () => {
         if (sheetName === '상품 정보') {
           setExelProduct(json);
         }
+        reader.readAsArrayBuffer(e.target.files[0]);
       };
-      reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
 
