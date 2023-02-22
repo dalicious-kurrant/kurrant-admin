@@ -27,7 +27,7 @@ const useSpotInfoQuery = () => {
         `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}/spot-info`,
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     },
     {
@@ -40,7 +40,6 @@ const useSpotInfoQuery = () => {
   }, [data]);
 
   return {
-    // data,
     status,
     isLoading,
   };

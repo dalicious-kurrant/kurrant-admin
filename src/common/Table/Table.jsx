@@ -78,6 +78,7 @@ const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                 onChecked={onCheckCheckbox}
               />
             </CheckBoxTh>
+
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput.map((val, index) => (
                 <th align="left" key={index}>
