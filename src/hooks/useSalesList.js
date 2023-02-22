@@ -3,6 +3,13 @@ import {salesApis} from '../api/sales';
 
 export function useGetSalesList(startDate, endDate, diningSelect, makersId) {
   return useQuery('salesList', () => {
-    return salesApis.loadSalesList(startDate, endDate, diningSelect, makersId);
+    if (makersId) {
+      return salesApis.loadSalesList(
+        startDate,
+        endDate,
+        diningSelect,
+        makersId,
+      );
+    }
   });
 }
