@@ -77,7 +77,7 @@ const ItemExelTable = ({data, checked, checkItems, setCheckItems}) => {
             return (
               <Table.Body key={el.makersName + i}>
                 <Table.Row>
-                  <Table.Cell>
+                  <Table.Cell onClick={e => e.stopPropagation()}>
                     <input
                       checked={checkItems.includes(el.foodId) ? true : false}
                       type="checkbox"

@@ -67,7 +67,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
             <TableRow
               onClick={() => goToPage(el.foodId, el.makersId)}
               key={idx}>
-              <Table.Cell textAlign="center">
+              <Table.Cell textAlign="center" onClick={e => e.stopPropagation()}>
                 <input
                   checked={checkItems.includes(el.foodId) ? true : false}
                   type="checkbox"

@@ -123,10 +123,12 @@ const Schedule = () => {
                 })}
 
                 <Table.Row>
-                  <Table.Cell>
+                  <Table.Cell style={{borderTop: 'double black'}}>
                     <BoldText>Total</BoldText>
                   </Table.Cell>
-                  <Table.Cell textAlign="center">
+                  <Table.Cell
+                    textAlign="center"
+                    style={{borderTop: 'double black'}}>
                     <BoldText>{totalCount}</BoldText>
                   </Table.Cell>
                 </Table.Row>
@@ -166,7 +168,9 @@ const Schedule = () => {
                         );
                       })}
                       <Table.Row key={el.diningType + el.serviceDate}>
-                        <Table.Cell textAlign="center">
+                        <Table.Cell
+                          textAlign="center"
+                          style={{borderTop: ' double black'}}>
                           <BoldText>{el.totalCount}</BoldText>
                         </Table.Cell>
                       </Table.Row>
