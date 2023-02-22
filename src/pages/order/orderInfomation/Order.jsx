@@ -24,6 +24,7 @@ import Modal from '../../../components/alertModal/AlertModal';
 const Order = () => {
   const navigate = useNavigate();
   const groupRef = useRef(null);
+  const userRef = useRef(null);
   const spotRef = useRef(null);
   const makersRef = useRef(null);
   const diningRef = useRef(null);
@@ -33,10 +34,12 @@ const Order = () => {
   const [startDate, setStartDate] = useState(days);
   const [endDate, setEndDate] = useState(days);
   const [groupOption, setGroupOption] = useState('');
+  const [userOption, setUserOption] = useState('');
   const [markersOption, setMakersOption] = useState('');
   const [spotOption, setSpotOption] = useState('');
   const [diningTypeOption, setDiningTypeOption] = useState('');
   const [spotList, setSpotList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [diningType, setDiningType] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,7 +50,7 @@ const Order = () => {
   console.log(checkItems);
   const groupInfoList = async id => {
     const res = await orderApis.groupInfoList(id);
-
+    setUserList(res.data.users);
     setSpotList(res.data.spots);
     setDiningType(res.data.diningTypes);
   };
@@ -58,6 +61,15 @@ const Order = () => {
       label: el.groupName,
     };
   });
+
+  const userArr =
+    userList &&
+    userList.map(el => {
+      return {
+        value: el.userId,
+        label: el.userName,
+      };
+    });
 
   const spotArr =
     spotList &&
@@ -83,12 +95,14 @@ const Order = () => {
   });
 
   const group = groupOption && `&group=${groupOption}`;
+  const user = userOption && `&userId=${userOption}`;
   const spots = spotOption && `&spots=${spotOption}`;
   const makers = markersOption && `&makersId=${markersOption}`;
   const diningTypecode =
     diningTypeOption && `&diningTypeCode=${diningTypeOption}`;
   const params = {
     group: group && group,
+    user: user && user,
     spots: spots && spots,
     makers: makers && makers,
     type: diningTypecode && diningTypecode,
@@ -175,7 +189,7 @@ const Order = () => {
 
   useEffect(() => {
     refetch();
-  }, [group, spots, makers, diningTypecode, startDate, endDate, refetch]);
+  }, [group, spots, makers, diningTypecode, startDate, endDate, user, refetch]);
 
   return (
     <PageWrapper>
@@ -202,55 +216,82 @@ const Order = () => {
       </ResetButton>
 
       <SelectBoxWrapper>
-        <SelectBox
-          ref={groupRef}
-          options={groupArr}
-          placeholder="고객사"
-          onChange={e => {
-            if (e) {
-              setGroupOption(e.value);
-              groupInfoList(e.value);
-            } else {
-              setGroupOption('');
-            }
-          }}
-        />
-        <SelectBox
-          ref={spotRef}
-          options={spotArr}
-          placeholder="스팟 선택"
-          onChange={e => {
-            if (e) {
-              setSpotOption(e.value);
-            } else {
-              setSpotOption('');
-            }
-          }}
-        />
-        <SelectBox
-          ref={makersRef}
-          options={makersArr}
-          placeholder="메이커스 선택"
-          onChange={e => {
-            if (e) {
-              setMakersOption(e.value);
-            } else {
-              setMakersOption('');
-            }
-          }}
-        />
-        <SelectBox
-          ref={diningRef}
-          options={diningTypeArr}
-          placeholder="식사타입"
-          onChange={e => {
-            if (e) {
-              setDiningTypeOption(e.value);
-            } else {
-              setDiningTypeOption('');
-            }
-          }}
-        />
+        <div>
+          <span>고객사</span>
+          <SelectBox
+            ref={groupRef}
+            options={groupArr}
+            placeholder="고객사"
+            onChange={e => {
+              if (e) {
+                setGroupOption(e.value);
+                groupInfoList(e.value);
+              } else {
+                setGroupOption('');
+              }
+            }}
+          />
+        </div>
+        <div>
+          <span>유저</span>
+          <SelectBox
+            ref={userRef}
+            options={userArr}
+            placeholder="유저"
+            onChange={e => {
+              if (e) {
+                setUserOption(e.value);
+              } else {
+                setUserOption('');
+              }
+            }}
+          />
+        </div>
+        <div>
+          <span>스팟 선택</span>
+          <SelectBox
+            ref={spotRef}
+            options={spotArr}
+            placeholder="스팟 선택"
+            onChange={e => {
+              if (e) {
+                setSpotOption(e.value);
+              } else {
+                setSpotOption('');
+              }
+            }}
+          />
+        </div>
+        <div>
+          <span>메이커스 선택</span>
+          <SelectBox
+            ref={makersRef}
+            options={makersArr}
+            placeholder="메이커스 선택"
+            onChange={e => {
+              if (e) {
+                setMakersOption(e.value);
+              } else {
+                setMakersOption('');
+              }
+            }}
+          />
+        </div>
+        <div>
+          <span>식사타입</span>
+          <SelectBox
+            ref={diningRef}
+            options={diningTypeArr}
+            placeholder="식사타입"
+            onChange={e => {
+              if (e) {
+                setDiningTypeOption(e.value);
+              } else {
+                setDiningTypeOption('');
+              }
+            }}
+          />
+        </div>
       </SelectBoxWrapper>
 
       <BtnWrapper>
@@ -278,19 +319,21 @@ const Order = () => {
                   onChange={e => handleAllCheck(e.target.checked)}
                 />
               </Table.HeaderCell>
-              <Table.HeaderCell>날짜</Table.HeaderCell>
-              <Table.HeaderCell>그룹 이름</Table.HeaderCell>
-              <Table.HeaderCell>스팟 이름</Table.HeaderCell>
-              <Table.HeaderCell>유저 이름</Table.HeaderCell>
-              <Table.HeaderCell>번호</Table.HeaderCell>
-              <Table.HeaderCell>식사 타입</Table.HeaderCell>
-              <Table.HeaderCell>배송 시간</Table.HeaderCell>
-              <Table.HeaderCell>주문 상태</Table.HeaderCell>
-              <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
-              <Table.HeaderCell>상품 이름</Table.HeaderCell>
-              <Table.HeaderCell>수량</Table.HeaderCell>
-              <Table.HeaderCell>최종 가격</Table.HeaderCell>
-              <Table.HeaderCell>오더번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">날짜</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">그룹 이름</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">스팟 이름</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">유저 이름</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">배송 시간</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문 상태</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                메이커스 이름
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">상품 이름</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">수량</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">최종 가격</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">오더번호</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -301,7 +344,9 @@ const Order = () => {
                   <TableRow
                     onClick={() => goToPage(v.orderCode)}
                     key={v.orderCode + idx}>
-                    <Table.Cell textAlign="center">
+                    <Table.Cell
+                      textAlign="center"
+                      onClick={e => e.stopPropagation()}>
                       <input
                         checked={
                           checkItems.includes(v.orderItemDailyFoodId)
@@ -320,18 +365,26 @@ const Order = () => {
                         }
                       />
                     </Table.Cell>
-                    <Table.Cell>{v.serviceDate}</Table.Cell>
-                    <Table.Cell>{v.groupName}</Table.Cell>
-                    <Table.Cell>{v.spotName}</Table.Cell>
-                    <Table.Cell>{v.userName}</Table.Cell>
-                    <Table.Cell>{v.phone}</Table.Cell>
-                    <Table.Cell>{v.diningType}</Table.Cell>
-                    <Table.Cell>{v.deliveryTime}</Table.Cell>
-                    <Table.Cell>{v.orderStatus}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.serviceDate}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.groupName}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.spotName}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.userName}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.phone}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.diningType}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.deliveryTime}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {v.orderStatus === '취소' ? (
+                        <OrderCancel>{v.orderStatus}</OrderCancel>
+                      ) : (
+                        v.orderStatus
+                      )}
+                    </Table.Cell>
                     <Table.Cell>{v.makers}</Table.Cell>
                     <Table.Cell>{v.foodName}</Table.Cell>
-                    <Table.Cell>{v.count}</Table.Cell>
-                    <Table.Cell>{withCommas(v.price)}원</Table.Cell>
+                    <Table.Cell textAlign="center">{v.count}</Table.Cell>
+                    <Table.Cell textAlign="right">
+                      {withCommas(v.price)}원
+                    </Table.Cell>
                     <Table.Cell>{v.orderCode}</Table.Cell>
                   </TableRow>
                 );
@@ -368,6 +421,7 @@ const SelectBoxWrapper = styled.div`
 
 const SelectBox = styled(Select)`
   width: 250px;
+  margin-top: 4px;
 `;
 
 const DateInput = styled.input`
@@ -390,4 +444,8 @@ const ResetButton = styled.div`
 
 const DateSpan = styled.span`
   margin: 0px 4px;
+`;
+
+const OrderCancel = styled.span`
+  color: ${({theme}) => theme.colors.red[500]};
 `;
