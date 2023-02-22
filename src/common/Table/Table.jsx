@@ -172,9 +172,6 @@ const Container = styled.div`
     tr {
     }
     td {
-      ${props => {
-        console.log(props);
-      }}
       border: 1px solid ${props => props.theme.colors.grey[6]};
       vertical-align: middle;
       padding: 0.6rem;
