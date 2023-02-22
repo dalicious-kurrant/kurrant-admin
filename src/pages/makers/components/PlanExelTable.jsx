@@ -22,7 +22,6 @@ const PlanExelTable = () => {
       <Table celled>
         {exelPlan.map((p, i) => {
           const HeaderData = Object.values(p);
-
           if (i === 0) {
             return (
               <Table.Header key={p.makersName + i}>
@@ -59,7 +58,7 @@ const PlanExelTable = () => {
                             <Button
                               toggle
                               color={
-                                p[k] === '대기'
+                                p[k] === '요청'
                                   ? 'grey'
                                   : p[k] === '승인'
                                   ? 'green'

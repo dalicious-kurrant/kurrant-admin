@@ -93,7 +93,6 @@ const Common = () => {
     }
     e.preventDefault();
     if (e.target.files) {
-      const reader = new FileReader();
       setProduct();
       setExelProduct();
       setExelPlan();
@@ -101,6 +100,8 @@ const Common = () => {
       setPlan();
       setSpot();
       setExelSpot();
+
+      const reader = new FileReader();
       reader.onload = e => {
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array', cellDates: true});
@@ -108,8 +109,9 @@ const Common = () => {
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
 
-        // console.log(sheetName);
+        console.log(sheetName);
         // console.log(worksheet);
+
         if (sheetName === '메이커스 일정 관리') {
           setExelPlan(json);
           setExelStaticPlan(json);
@@ -123,8 +125,8 @@ const Common = () => {
         if (sheetName === '상품 정보') {
           setExelProduct(json);
         }
-        reader.readAsArrayBuffer(e.target.files[0]);
       };
+      reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
 
@@ -156,7 +158,7 @@ const Common = () => {
       </C.Bread>
       {noNeedButton && (
         <C.BtnWrapper>
-          <Button color="green" icon="save" content="저장" />
+          <Button color="green" icon="save" content="저장(미완)" />
           <Button icon="history" content="히스토리" />
           <Button.Group>
             <Button

@@ -19,7 +19,7 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
-import {usePostCalendar} from 'hooks/useCalendars';
+import {useGetCalendar, usePostCalendar} from 'hooks/useCalendars';
 import {scheduleFormatted2} from 'utils/statusFormatter';
 const makersCalendar = [
   {
@@ -171,7 +171,7 @@ const optionsClient = [
   {key: '이너스', text: '이너스', value: '이너스'},
 ];
 const optionsDiningStatus = [
-  {key: '대기', text: '대기', value: 0},
+  {key: '요청', text: '요청', value: 0},
   {key: '승인', text: '승인', value: 1},
   {key: '거절', text: '거절', value: 2},
 ];
@@ -193,6 +193,7 @@ const Plans = () => {
   };
   const [count, setCount] = useState(0);
   const {mutateAsync: postCalendar} = usePostCalendar();
+  const {data: calendarData, isSuccess} = useGetCalendar(10, 1);
 
   const callPostCalendar = async () => {
     if (plan) {
@@ -256,20 +257,28 @@ const Plans = () => {
     }
   };
   useEffect(() => {
-    setPlan(makersCalendar);
-    setCount(
-      makersCalendar.map((v, i) => {
-        let num = 0;
-        v.clientSchedule.map((s, si) => {
-          return s.foodSchedule.map((d, di) => {
-            return num++;
+    if (!exelPlan) {
+      if (isSuccess) {
+        setPlan(calendarData?.data?.items);
+        console.log(calendarData);
+      }
+    }
+  }, [calendarData, exelPlan, isSuccess, setPlan]);
+  useEffect(() => {
+    if (plan) {
+      setCount(
+        plan.map((v, i) => {
+          let num = 0;
+          v.clientSchedule.map((s, si) => {
+            return s.foodSchedule.map((d, di) => {
+              return num++;
+            });
           });
-        });
-        return num;
-      }),
-    );
-  }, []);
-
+          return num;
+        }),
+      );
+    }
+  }, [plan]);
   return (
     <PageWrapper>
       <Wrapper>
@@ -298,7 +307,7 @@ const Plans = () => {
         </BtnWrapper>
 
         <BtnWrapper>
-          <Button color="blue" content="식단 완료" onClick={onActive} />
+          <Button color="blue" content="식단 완료(미완)" onClick={onActive} />
         </BtnWrapper>
       </ContentWrapper>
       <FilterContainer>
@@ -314,12 +323,12 @@ const Plans = () => {
             onChange={(e, data) => {
               setSelectMakers(data.value);
               if (data.value.length !== 0) {
-                const result = makersCalendar?.filter(makers => {
+                const result = calendarData?.data?.items?.filter(makers => {
                   return data.value.includes(makers.makersName);
                 });
                 setPlan(result);
               } else {
-                setPlan(makersCalendar);
+                setPlan(calendarData?.data?.items);
               }
             }}
           />
@@ -337,7 +346,7 @@ const Plans = () => {
               setSelectClient(data.value);
               if (data.value.length !== 0) {
                 if (plan) {
-                  const result = makersCalendar?.map(makers => {
+                  const result = calendarData?.data?.items?.map(makers => {
                     return {
                       ...makers,
                       clientSchedule: makers.clientSchedule.filter(v => {
@@ -356,7 +365,7 @@ const Plans = () => {
                 }
               } else {
                 if (plan) {
-                  setPlan(makersCalendar);
+                  setPlan(calendarData?.data?.items);
                 }
                 if (exelPlan) {
                   setExelPlan(exelStatic);
@@ -377,12 +386,12 @@ const Plans = () => {
             onChange={(e, data) => {
               setSelectDiningStatus(data.value);
               if (data.value.length !== 0) {
-                const result = makersCalendar?.filter(makers => {
+                const result = calendarData?.data?.items?.filter(makers => {
                   return data.value.includes(makers.scheduleStatus);
                 });
                 setPlan(result);
               } else {
-                setPlan(makersCalendar);
+                setPlan(calendarData?.data?.items);
               }
             }}
           />

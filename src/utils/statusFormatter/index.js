@@ -1,11 +1,15 @@
 export function scheduleFormatted(data) {
   switch (data) {
     case 0:
-      return '대기';
+      return '요청';
     case 1:
       return '승인';
     case 2:
       return '거절';
+    case 3:
+      return '대기';
+    case 4:
+      return '완료';
     default:
       return '승인';
   }
@@ -13,12 +17,16 @@ export function scheduleFormatted(data) {
 
 export function scheduleFormatted2(data) {
   switch (data) {
-    case '대기':
+    case '요청':
       return 0;
     case '승인':
       return 1;
     case '거절':
       return 2;
+    case '대기':
+      return 3;
+    case '완료':
+      return 4;
     default:
       return 1;
   }
@@ -26,9 +34,9 @@ export function scheduleFormatted2(data) {
 
 export const foodStatusData = [
   {
-    key: '판매 대기',
-    text: '판매 대기',
-    value: '판매 대기',
+    key: '판매대기',
+    text: '판매대기',
+    value: '판매대기',
   },
   {
     key: '판매중',
@@ -46,8 +54,8 @@ export const foodStatusData = [
     value: '취소불가품',
   },
   {
-    key: '판매 중지',
-    text: '판매 중지',
-    value: '판매 중지',
+    key: '판매중지',
+    text: '판매중지',
+    value: '판매중지',
   },
 ];

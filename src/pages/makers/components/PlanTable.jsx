@@ -44,12 +44,10 @@ const PlanTable = ({count, testData, setTestData}) => {
             <Table.HeaderCell>픽업시간</Table.HeaderCell>
             <Table.HeaderCell>고객사</Table.HeaderCell>
             <Table.HeaderCell>고객사 케파</Table.HeaderCell>
-            <Table.HeaderCell>주문가능수량</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">음식 승인</Table.HeaderCell>
             <Table.HeaderCell>상품</Table.HeaderCell>
             <Table.HeaderCell>음식 상태</Table.HeaderCell>
             <Table.HeaderCell>Food 케파</Table.HeaderCell>
-            <Table.HeaderCell>주문가능수량</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -74,7 +72,7 @@ const PlanTable = ({count, testData, setTestData}) => {
                             }>
                             <FlexBox>
                               {v.scheduleStatus === 0
-                                ? '대기'
+                                ? '요청'
                                 : v.scheduleStatus === 1
                                 ? '승인'
                                 : '거절'}
@@ -85,7 +83,7 @@ const PlanTable = ({count, testData, setTestData}) => {
                     )}
                     {di === 0 && si === 0 && (
                       <Table.Cell padding="0px" rowSpan={count[i]}>
-                        <FlexBox>{v.makersCapacity}</FlexBox>
+                        <FlexBox>{v.makersName}</FlexBox>
                       </Table.Cell>
                     )}
                     {di === 0 && si === 0 && (
@@ -118,11 +116,6 @@ const PlanTable = ({count, testData, setTestData}) => {
                         <FlexBox>{s.clientCapacity}</FlexBox>
                       </Table.Cell>
                     )}
-                    {di === 0 && (
-                      <Table.Cell rowSpan={s.foodSchedule.length}>
-                        <FlexBox>{s.clientCapacity}</FlexBox>
-                      </Table.Cell>
-                    )}
                     <Table.Cell textAlign="center">
                       <Button
                         toggle
@@ -146,7 +139,7 @@ const PlanTable = ({count, testData, setTestData}) => {
                       >
                         <FlexBox>
                           {d.scheduleStatus === 0
-                            ? '대기'
+                            ? '요청'
                             : d.scheduleStatus === 1
                             ? '승인'
                             : '거절'}
@@ -192,7 +185,6 @@ const PlanTable = ({count, testData, setTestData}) => {
                       </DropdownBox>
                     </Table.Cell>
 
-                    <Table.Cell>{d.foodCapacity}</Table.Cell>
                     <Table.Cell>{d.foodCapacity}</Table.Cell>
                   </Table.Row>
                 );
