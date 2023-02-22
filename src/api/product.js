@@ -5,4 +5,5 @@ export const productApis = {
   productDetailList: async (foodId, makersId) =>
     await instance.get(`foods?foodId=${foodId}&makersId=${makersId}`),
   modifyProductDetail: async data => await instance.put('foods', data),
+  deleteProduct: async data => await instance.delete('/foods', data),
 };

@@ -4,10 +4,24 @@ import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
-import {planAtom, productAtom,exelPlanAtom} from '../utils/store';
+import {
+  planAtom,
+  exelPlanAtom,
+  exelProductAtom,
+  productAtom,
+  exelStaticAtom,
+  spotAtom,
+  exelSpotAtom,
+} from '../utils/store';
 
 import {useAtom} from 'jotai';
-import { planExel, planExelExport } from '../utils/downloadExel/exel';
+
+import {
+  planExel,
+  planExelExport,
+  productExel,
+  productExelExport,
+} from '../utils/downloadExel/exel';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -57,10 +71,13 @@ const C = {
 const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
-
   const [plan, setPlan] = useAtom(planAtom);
-  const [, setProduct] = useAtom(productAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
+  const [spot, setSpot] = useAtom(spotAtom);
+  const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [, setExelStaticPlan] = useAtom(exelStaticAtom);
+  const [product, setProduct] = useAtom(productAtom);
+  const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -77,55 +94,89 @@ const Common = () => {
     e.preventDefault();
     if (e.target.files) {
       const reader = new FileReader();
+      setProduct();
+      setExelProduct();
       setExelPlan();
+      setExelStaticPlan();
       setPlan();
+      setSpot();
+      setExelSpot();
       reader.onload = e => {
         const data = e.target.result;
-        const workbook = XLSX.read(data, {type: 'array',cellDates:true});
+        const workbook = XLSX.read(data, {type: 'array', cellDates: true});
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-        if (sheetName === '메이커스 일정 관리') {  
+
+        // console.log(sheetName);
+        // console.log(worksheet);
+        if (sheetName === '메이커스 일정 관리') {
           setExelPlan(json);
+          setExelStaticPlan(json);
+        }
+        if (sheetName === '고객 스팟 공지') {
+          // console.log(typeof json);
+          console.log(json);
+          // localStorage.setItem('sponInfo', JSON.stringify(json));
+          setExelSpot(json);
         }
         if (sheetName === '상품 정보') {
-          setProduct(json);
+          setExelProduct(json);
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
-  const onDownloadFile = async() => {
-    if(plan && plan.length > 0){
+
+  const onDownloadFile = async () => {
+    if (plan && plan.length > 0) {
       return planExel(plan);
     }
-    if(exelPlan && exelPlan.length > 0){
+    if (exelPlan && exelPlan.length > 0) {
       return planExelExport(exelPlan);
     }
-    
-      
+
+    if (product?.data && product?.data?.length > 0) {
+      return productExel(product);
+    }
+    console.log(product, '018');
+
+    if (exelProduct && exelProduct.length > 0) {
+      return productExelExport(exelProduct);
+    }
   };
+
+  const noNeedButton =
+    pathname !== '/sales/schedule' && pathname !== '/order/info';
+
   return (
     <C.Wrapper>
       <C.Bread>
         <Breadcrumb icon="right angle" sections={makeSection(pathname)} />
       </C.Bread>
-      <C.BtnWrapper>
-        <Button color="green" icon="save" content="저장" />
-        <Button icon="history" content="히스토리" />
-        <Button.Group>
-          <Button
-            color="blue"
-            inverted
-            icon="file excel outline"
-            content="엑셀 불러오기"
-            onClick={onUploadFileButtonClick}
-          />
-          <InputExcel type="file" ref={inputRef} onChange={onUploadFile} />
-          <Button.Or />
-          <Button color="blue" icon="share" content="엑셀 내보내기" onClick={onDownloadFile} />
-        </Button.Group>
-      </C.BtnWrapper>
+      {noNeedButton && (
+        <C.BtnWrapper>
+          <Button color="green" icon="save" content="저장" />
+          <Button icon="history" content="히스토리" />
+          <Button.Group>
+            <Button
+              color="blue"
+              inverted
+              icon="file excel outline"
+              content="엑셀 불러오기"
+              onClick={onUploadFileButtonClick}
+            />
+            <InputExcel type="file" ref={inputRef} onChange={onUploadFile} />
+            <Button.Or />
+            <Button
+              color="blue"
+              icon="share"
+              content="엑셀 내보내기"
+              onClick={onDownloadFile}
+            />
+          </Button.Group>
+        </C.BtnWrapper>
+      )}
     </C.Wrapper>
   );
 };

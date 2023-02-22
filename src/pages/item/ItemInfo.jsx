@@ -2,99 +2,93 @@ import useModal from '../../hooks/useModal';
 import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
-import {useGetAllProductsList} from '../../hooks/useProductsList';
+import {
+  useDeleteProductList,
+  useGetAllProductsList,
+} from '../../hooks/useProductsList';
 import withCommas from '../../utils/withCommas';
 import styled from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import ItemExelTable from './components/ItemExelTable';
 import {useAtom} from 'jotai';
-import {productAtom} from '../../utils/store';
+import {exelProductAtom, productAtom} from '../../utils/store';
+import ItemInfoTable from './components/ItemInfoTable';
+import Modal from '../../components/alertModal/AlertModal';
+import {useQueryClient} from 'react-query';
+import {useCancelOrder} from '../../hooks/useOrderList';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
-  const navigate = useNavigate();
   const {onActive} = useModal();
+  const queryClient = useQueryClient();
   const {data: productList} = useGetAllProductsList();
-
-  const [product] = useAtom(productAtom);
-  const [key, setKey] = useState();
-
-  const goToPage = (foodId, makersId) => {
-    navigate('/shop/info/detail/' + foodId, {
-      state: {
-        foodId: foodId,
-        makersId: makersId,
-      },
-    });
-  };
+  const {mutateAsync: cancelProduct} = useDeleteProductList();
+  const [product, setProduct] = useAtom(productAtom);
+  const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
+  const [checkItems, setCheckItems] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  console.log(checkItems);
   const checkId = (e, id) => {
     e.stopPropagation();
     console.log(id, '11');
   };
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const cancelButton = async () => {
+    await cancelProduct({foodId: checkItems});
+    closeModal();
+    queryClient.invalidateQueries('allList');
+  };
   useEffect(() => {
-    if (product) setKey(Object.keys(product[0]));
-  }, [product]);
-  console.log(product, '1323');
+    setProduct(productList);
+  }, [productList, setProduct]);
+
   return (
     <PageWrapper>
       <BtnWrapper>
-        <Button color="red" content="삭제" icon="delete" onClick={onActive} />
+        <Button
+          color="red"
+          content="상품 삭제"
+          icon="delete"
+          onClick={() => {
+            openModal();
+          }}
+        />
       </BtnWrapper>
       <TableWrapper>
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell textAlign="center">
-                <Checkbox />
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
-              <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
-              <Table.HeaderCell>식품 이름</Table.HeaderCell>
-              <Table.HeaderCell>상태</Table.HeaderCell>
-              <Table.HeaderCell>매장가격</Table.HeaderCell>
-              <Table.HeaderCell>매장할인률</Table.HeaderCell>
-              <Table.HeaderCell>이벤트할인률</Table.HeaderCell>
-              <Table.HeaderCell>최종가격</Table.HeaderCell>
-              <Table.HeaderCell>설명</Table.HeaderCell>
-              <Table.HeaderCell>식사태그</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {productList?.data.map((el, idx) => {
-              return (
-                <TableRow
-                  onClick={() => goToPage(el.foodId, el.makersId)}
-                  key={idx}>
-                  <Table.Cell textAlign="center">
-                    <Checkbox
-                      onClick={e => {
-                        checkId(e, el.foodId);
-                      }}
-                    />
-                  </Table.Cell>
-                  <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
-                  <Table.Cell>{el.makersName}</Table.Cell>
-                  <Table.Cell>{el.foodName}</Table.Cell>
-                  <Table.Cell>{el.foodStatus}</Table.Cell>
-                  <Table.Cell textAlign="right">
-                    {withCommas(el.defaultPrice)}
-                  </Table.Cell>
-                  <Table.Cell textAlign="right">{el.makersDiscount}</Table.Cell>
-                  <Table.Cell textAlign="right">{el.eventDiscount}</Table.Cell>
-                  <Table.Cell textAlign="right">
-                    {withCommas(el.resultPrice)}
-                  </Table.Cell>
-                  <Table.Cell>{el.description}</Table.Cell>
-                  <Table.Cell>
-                    {el.foodTags + (idx !== 0 ? ',  ' : '')}
-                  </Table.Cell>
-                </TableRow>
-              );
-            })}
-          </Table.Body>
-        </Table>
+        {exelProduct && (
+          <ItemExelTable
+            data={exelProduct}
+            checked={checkId}
+            checkItems={checkItems}
+            setCheckItems={setCheckItems}
+          />
+        )}
+        {product && (
+          <ItemInfoTable
+            data={product}
+            checked={checkId}
+            checkItems={checkItems}
+            setCheckItems={setCheckItems}
+          />
+        )}
       </TableWrapper>
+      <Modal
+        open={modalOpen}
+        message={'선택한 주문을 취소하시겠습니까?'}
+        setAlertModalOpen={closeModal}
+        action={cancelButton}
+        actionMessage={'예'}
+        cancelMessage={'아니오'}
+        label={`선택된 수 ${checkItems.length}`}
+      />
     </PageWrapper>
   );
 };

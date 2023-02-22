@@ -9,6 +9,7 @@ const ModalContext = createContext({
 
 export const ModalProvider = ({children}) => {
   const [active, setActive] = useState(false);
+  const [chkData, setChkData] = useState([]);
 
   const onActive = () => {
     setActive(true);
@@ -22,14 +23,21 @@ export const ModalProvider = ({children}) => {
     () => ({
       active,
       onActive,
+      chkData,
+      setChkData,
     }),
-    [active],
+    [active, chkData],
   );
-
+  console.log(chkData);
   return (
     <ModalContext.Provider value={alertModalValue}>
       {children}
-      <DeleteModal active={active} onClose={onClose} />
+      <DeleteModal
+        active={active}
+        onClose={onClose}
+        chkData={chkData}
+        setChkData={setChkData}
+      />
     </ModalContext.Provider>
   );
 };

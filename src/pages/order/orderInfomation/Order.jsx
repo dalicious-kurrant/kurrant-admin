@@ -1,4 +1,3 @@
-import useModal from '../../../hooks/useModal';
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Table} from 'semantic-ui-react';
 import {
@@ -45,7 +44,7 @@ const Order = () => {
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
-
+  console.log(checkItems);
   const groupInfoList = async id => {
     const res = await orderApis.groupInfoList(id);
 
@@ -186,7 +185,7 @@ const Order = () => {
           defaultValue={startDate}
           onChange={e => getStartDate(e)}
         />
-        <span>-</span>
+        <DateSpan>-</DateSpan>
         <DateInput
           type="date"
           defaultValue={endDate}
@@ -270,6 +269,11 @@ const Order = () => {
             <Table.Row>
               <Table.HeaderCell width={1} textAlign="center">
                 <input
+                  checked={
+                    checkItems.length === (checkboxList && checkboxList.length)
+                      ? true
+                      : false
+                  }
                   type="checkbox"
                   onChange={e => handleAllCheck(e.target.checked)}
                 />
@@ -300,7 +304,7 @@ const Order = () => {
                     <Table.Cell textAlign="center">
                       <input
                         checked={
-                          checkItems.length === checkboxList.length
+                          checkItems.includes(v.orderItemDailyFoodId)
                             ? true
                             : false
                         }
@@ -382,4 +386,8 @@ const TableRow = styled(Table.Row)`
 
 const ResetButton = styled.div`
   margin-top: 50px;
+`;
+
+const DateSpan = styled.span`
+  margin: 0px 4px;
 `;

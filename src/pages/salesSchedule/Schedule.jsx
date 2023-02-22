@@ -1,25 +1,83 @@
-import {useState} from 'react';
-import {Button, Header, Table} from 'semantic-ui-react';
+import {useRef, useState} from 'react';
+import {Button, Header, Label, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {PageWrapper, TableWrapper} from '../../style/common.style';
 import {formattedWeekDate} from '../../utils/dateFormatter';
 import Select from 'react-select';
+import DiningButton from './components/DiningButton';
+import {useGetMakersList} from '../../hooks/useOrderList';
+import {useGetSalesList} from '../../hooks/useSalesList';
 
 const Schedule = () => {
+  const makersRef = useRef(null);
   const day = new Date();
   const days = formattedWeekDate(day);
   const [startDate, setStartDate] = useState(days);
   const [endDate, setEndDate] = useState(days);
-  const [diningSelect, setDiningSelect] = useState(false);
+  const [diningSelect, setDiningSelect] = useState([0, 1, 2]);
+  const [makersOption, setMakersOption] = useState('');
+
+  const {data: makersList} = useGetMakersList();
+
+  const types =
+    diningSelect &&
+    diningSelect.map(el => {
+      if (el === 0) {
+        return 1;
+      }
+      if (el === 1) {
+        return 2;
+      }
+      if (el === 2) {
+        return 3;
+      }
+      return el;
+    });
+  const {data: salesList, refetch} = useGetSalesList(
+    startDate,
+    endDate,
+    types,
+    makersOption,
+  );
+  console.log(salesList);
   const getStartDate = e => {
     setStartDate(e.target.value);
   };
   const getEndDate = e => {
     setEndDate(e.target.value);
   };
+
+  const loadButton = () => {
+    refetch();
+  };
+  const totalFood = salesList?.data?.totalFoods;
+
+  const totalCount = totalFood
+    ?.map(el => el.totalFoodCount)
+    .reduce((acc, cur) => {
+      return acc + cur;
+    }, 0);
+
+  const makersArr = makersList?.data?.map(el => {
+    return {
+      value: el.makersId,
+      label: el.makersName,
+    };
+  });
+
   return (
     <PageWrapper>
       <Header as="h2">기간별 판매 내역</Header>
+      <div>
+        <SelectBox
+          ref={makersRef}
+          options={makersArr}
+          placeholder="메이커스 선택"
+          onChange={e => {
+            setMakersOption(e.value);
+          }}
+        />
+      </div>
       <CalendarWrap>
         <div>
           <DateInput
@@ -27,91 +85,141 @@ const Schedule = () => {
             defaultValue={startDate}
             onChange={e => getStartDate(e)}
           />
-          <span>-</span>
+          <DateSpan>-</DateSpan>
           <DateInput
             type="date"
             defaultValue={endDate}
             onChange={e => getEndDate(e)}
           />
         </div>
-        <Button content="조회하기" basic />
+        <ButtonWrap>
+          <Button content="조회하기" basic size="tiny" onClick={loadButton} />
+        </ButtonWrap>
       </CalendarWrap>
-      <div>
-        <SelectBox placeholder="메이커스" />
-      </div>
-      <Btn onClick={() => setDiningSelect(!diningSelect)} press={diningSelect}>
-        아침
-      </Btn>
-      <Button content="점심" color="olive" toggle={true} />
-      <Button content="저녁" color="olive" toggle={true} />
+      <DiningButton touch={diningSelect} setTouch={setDiningSelect} />
+
       <TableWrapper>
         <TopTable>
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>상품명</Table.HeaderCell>
-                <Table.HeaderCell>수량 합계</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell width={3}>꽃맛살샐러드</Table.Cell>
-                <Table.Cell width={2}>20</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>Total</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>2월 20일 아침</Table.HeaderCell>
-                <Table.HeaderCell>2월 20일 아침</Table.HeaderCell>
-                <Table.HeaderCell>2월 20일 아침</Table.HeaderCell>
-                <Table.HeaderCell>2월 20일 아침</Table.HeaderCell>
-                <Table.HeaderCell>2월 20일 아침</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-                <Table.Cell>20</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
+          <TotalTable>
+            <Table celled>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>상품명</Table.HeaderCell>
+                  <Table.HeaderCell>합계(개)</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {salesList?.data?.totalFoods?.map((el, i) => {
+                  return (
+                    <Table.Row key={el.foodName + i}>
+                      <Table.Cell>{el.foodName}</Table.Cell>
+                      <Table.Cell>{el.totalFoodCount}</Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+
+                <Table.Row>
+                  <Table.Cell>Total</Table.Cell>
+                  <Table.Cell>{totalCount}</Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+          </TotalTable>
+          <DetailTable>
+            {salesList?.data?.foodByDateDiningTypes.map((el, i) => {
+              const test = totalFood.map(s => {
+                return el.foods.filter(v => v.foodId === s.foodId)[0];
+              });
+              return (
+                <Table style={{height: 100}}>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell
+                        key={el.serviceDate + el.diningType}
+                        style={{whiteSpace: 'nowrap'}}>
+                        {el.serviceDate + `\u00A0` + el.diningType}
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {test.map(v => {
+                      if (v) {
+                        return (
+                          <Table.Row>
+                            <Table.Cell>{v.foodCount}</Table.Cell>
+                          </Table.Row>
+                        );
+                      }
+                      return (
+                        <Table.Row>
+                          <Table.Cell>{`\u00A0`}</Table.Cell>
+                        </Table.Row>
+                      );
+                    })}
+                    <Table.Row>
+                      <Table.Cell>{el.totalCount}</Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+              );
+            })}
+          </DetailTable>
         </TopTable>
       </TableWrapper>
       <TableWrapper>
-        <MakersTable>
-          <div>배송 시간</div>
-          <div>메이커스 이름</div>
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>상품명</Table.HeaderCell>
-                <Table.HeaderCell>수량</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>꽃맛살샐러드</Table.Cell>
-                <Table.Cell>1</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </MakersTable>
+        {salesList?.data?.groupFoodByDateDiningTypes.map((el, idx) => (
+          <MakersTable key={idx}>
+            <Label
+              content={el.serviceDate + `\u00A0` + el.diningType}
+              color="yellow"
+            />
+            <DiningTypeWrap>
+              <MealDetailWrap>
+                {el.foodByGroups.map(v => {
+                  return (
+                    <TableWrap>
+                      {v.spotByDateDiningTypes.map((spot, i) => {
+                        return (
+                          <div key={i} style={{marginRight: 10}}>
+                            <Label
+                              content={v.groupName + `\u00A0` + spot.spotName}
+                              color="green"
+                            />
+                            <Label content={spot.deliveryTime} color="black" />
+                            <Table celled>
+                              <Table.Header>
+                                <Table.Row>
+                                  <Table.HeaderCell textAlign="center">
+                                    상품명
+                                  </Table.HeaderCell>
+                                  <Table.HeaderCell textAlign="center">
+                                    수량
+                                  </Table.HeaderCell>
+                                </Table.Row>
+                              </Table.Header>
+                              {spot.foods.map((food, index) => {
+                                return (
+                                  <Table.Body key={index}>
+                                    <Table.Row>
+                                      <Table.Cell>{food.foodName}</Table.Cell>
+                                      <Table.Cell textAlign="center">
+                                        {food.foodCount}
+                                      </Table.Cell>
+                                    </Table.Row>
+                                  </Table.Body>
+                                );
+                              })}
+                            </Table>
+                          </div>
+                        );
+                      })}
+                    </TableWrap>
+                  );
+                })}
+              </MealDetailWrap>
+            </DiningTypeWrap>
+          </MakersTable>
+        ))}
       </TableWrapper>
     </PageWrapper>
   );
@@ -119,41 +227,63 @@ const Schedule = () => {
 
 export default Schedule;
 
+const SelectBox = styled(Select)`
+  width: 250px;
+`;
+
 const DateInput = styled.input`
   padding: 4px;
   width: 200px;
+  height: 36px;
   border-radius: 4px;
-  border: 1px solid ${({theme}) => theme.colors.grey[5]};
+  border: 1px solid #bdbac1;
 `;
 
 const CalendarWrap = styled.div`
   display: flex;
   align-items: center;
+  margin: 24px 0;
 `;
 
 const TopTable = styled.div`
   margin-top: 50px;
   display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
-  background-color: gold;
-`;
-const SelectBox = styled(Select)`
-  width: 250px;
 `;
 
 const MakersTable = styled.div`
-  width: 30%;
   margin-top: 50px;
 `;
 
-const Btn = styled.div`
-  width: 78px;
-  height: 42px;
-  text-align: center;
-  border-radius: 4px;
-  font-weight: 600;
-  padding: 12px 24px;
-  background-color: ${({press}) => (press ? '#b5cc18' : 'green')};
+const TotalTable = styled.div`
+  margin-right: 10px;
+  width: 30%;
+`;
+
+const DetailTable = styled.div`
+  overflow-x: auto;
+  width: 100vw;
+  display: flex;
+`;
+
+const MealDetailWrap = styled.div`
+  display: flex;
+  margin-right: 24px;
+`;
+
+const DiningTypeWrap = styled.div`
+  display: flex;
+  margin-top: 24px;
+`;
+
+const DateSpan = styled.span`
+  margin: 0px 4px;
+`;
+
+const ButtonWrap = styled.div`
+  margin-left: 10px;
+`;
+
+const TableWrap = styled.div`
+  display: flex;
+  margin-right: 5px;
 `;

@@ -1,5 +1,9 @@
-import { atomWithReset } from 'jotai/utils';
+import {atomWithReset} from 'jotai/utils';
 
 export const exelPlanAtom = atomWithReset();
+export const exelStaticAtom = atomWithReset();
 export const planAtom = atomWithReset();
-export const productAtom = atomWithReset(); // 상품 정보 엑셀
+export const exelSpotAtom = atomWithReset();
+export const spotAtom = atomWithReset();
+export const productAtom = atomWithReset();
+export const exelProductAtom = atomWithReset();

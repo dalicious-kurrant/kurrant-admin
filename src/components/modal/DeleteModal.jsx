@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
-import {exelPlanAtom, planAtom} from '../../utils/store';
+import {exelPlanAtom, exelSpotAtom, planAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 const Content = styled.div`
   text-align: center;
@@ -18,9 +18,9 @@ const Line = styled.p`
   }
 `;
 
-
-const DeleteModal = ({active, onClose}) => {
+const DeleteModal = ({active, onClose, chkData = [], setChkData}) => {
   const [, setExelPlan] = useAtom(exelPlanAtom);
+  const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [, setPlan] = useAtom(planAtom);
   return (
     <Modal onClose={onClose} open={active} size="mini">
@@ -28,9 +28,11 @@ const DeleteModal = ({active, onClose}) => {
         <Modal.Description>
           <Content>
             <Line className="first">정말 삭제하시겠습니까?</Line>
-            {/* <Line>
-              선택된 수 <Strong>{`" 3 "`}</Strong>
-            </Line> */}
+            {chkData.length > 0 && (
+              <Line>
+                선택된 수 <Strong>{chkData.length}</Strong>
+              </Line>
+            )}
           </Content>
         </Modal.Description>
       </Modal.Content>
@@ -43,6 +45,15 @@ const DeleteModal = ({active, onClose}) => {
           onClick={() => {
             setExelPlan();
             setPlan();
+            if (exelSpot) {
+              setExelSpot(
+                exelSpot.filter(v => {
+                  return !chkData.includes(v.id);
+                }),
+              );
+            }
+
+            setChkData([]);
             onClose();
           }}
         />

@@ -9,6 +9,8 @@ import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
 import ItemInfo from '../pages/item/ItemInfo';
 import Plans from '../pages/makers/Plans';
+import SpotInfo from 'pages/customer/SpotInfo/SpotInfo';
+
 import Schedule from '../pages/salesSchedule/Schedule';
 
 export const MenuList = [
