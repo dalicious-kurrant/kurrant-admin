@@ -187,6 +187,7 @@ const Plans = () => {
   const [startDate, setStartDate] = useState(
     new Date().setDate(new Date().getDate() + 1),
   );
+  const [recommandStartDate, setRecommandStartDate] = useState(new Date());
   const recommandData = () => {
     setExelPlan();
     setPlan(makersCalendar);
@@ -282,7 +283,21 @@ const Plans = () => {
   return (
     <PageWrapper>
       <Wrapper>
-        <Button color="blue" content="추천 가져오기" onClick={recommandData} />
+        <DeadLineWrapper>
+          <Button
+            color="blue"
+            content="추천 가져오기"
+            onClick={recommandData}
+          />
+          <RecoDatePickerBox>
+            <DatePicker
+              selected={recommandStartDate}
+              onChange={date => setRecommandStartDate(date)}
+              dateFormat="yyyy-MM-dd"
+              customInput={<SelectDatePicker />}
+            />
+          </RecoDatePickerBox>
+        </DeadLineWrapper>
       </Wrapper>
       <ContentWrapper>
         <BtnWrapper>
@@ -420,9 +435,16 @@ const DeadLineWrapper = styled.div`
 const DatePickerBox = styled.div`
   display: flex;
   align-items: center;
-  width: 200px;
   cursor: pointer;
   justify-content: space-between;
+  width: 200px;
+`;
+const RecoDatePickerBox = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+  width: 100px;
 `;
 const Wrapper = styled.div`
   margin-bottom: 10px;

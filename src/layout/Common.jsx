@@ -159,7 +159,7 @@ const Common = () => {
       {noNeedButton && (
         <C.BtnWrapper>
           <Button color="green" icon="save" content="저장(미완)" />
-          <Button icon="history" content="히스토리" />
+          {/* <Button icon="history" content="히스토리" /> */}
           <Button.Group>
             <Button
               color="blue"

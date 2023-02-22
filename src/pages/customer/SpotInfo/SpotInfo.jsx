@@ -6,9 +6,10 @@ import {TableCheckboxStatusAtom} from 'common/Table/store';
 import Table from 'common/Table/Table';
 
 import {useAtom} from 'jotai';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {useLocation} from 'react-router';
+import {exelSpotAtom} from 'utils/store';
 
 import useModal from '../../../hooks/useModal';
 import {
@@ -21,11 +22,15 @@ import {checkedValue, idsToDelete, numberOfTrues} from './SpotInfoLogics';
 import {SpotInfoDataAtom} from './store';
 import useMutate from './useMutate';
 import useSpotInfoQuery from './useSpotInfoQuery';
+import {Button, Checkbox} from 'semantic-ui-react';
+import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
+import styled from 'styled-components';
 
 const SpotInfo = () => {
-  const {onActive} = useModal();
+  const {onActive, chkData, setChkData} = useModal();
   const [spotInfoData] = useAtom(SpotInfoDataAtom);
-
+  const [plan, setPlan] = useAtom(exelSpotAtom);
+  const [key, setKey] = useState();
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
@@ -78,63 +83,151 @@ const SpotInfo = () => {
   const handleClose = () => {
     setShowRegister(false);
   };
-
-  if (isLoading)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
-
-  if (status === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  useEffect(() => {
+    if (plan) console.log(plan);
+  }, [plan]);
 
   return (
-    <PageWrapper>
-      <BtnWrapper>
-        {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
-      </BtnWrapper>
+    <>
+      {plan ? (
+        <PageWrapper>
+          <BtnWrapper>
+            <Button
+              color="red"
+              content="삭제"
+              icon="delete"
+              onClick={onActive}
+            />
+          </BtnWrapper>
+          <TableWrapper>
+            <Table celled>
+              {/* {console.log(plan)} */}
+              {plan &&
+                plan.map((p, i) => {
+                  const HeaderData = Object.values(p);
+                  console.log(HeaderData, '123');
+                  if (i === 0) {
+                    return (
+                      <Table.Header key={'0' + i}>
+                        <Table.Row>
+                          {/* <Table.HeaderCell>체크박스</Table.HeaderCell> */}
+                          <Table.HeaderCell width={1} textAlign="center">
+                            <Checkbox />
+                          </Table.HeaderCell>
+                          {HeaderData.map((h, k) => {
+                            return (
+                              <Table.HeaderCell
+                                key={'0' + h.lunchDailySupportPrice + k}>
+                                {h}
+                              </Table.HeaderCell>
+                            );
+                          })}
+                        </Table.Row>
+                      </Table.Header>
+                    );
+                  } else {
+                    return (
+                      <Table.Body key={i}>
+                        <Table.Row>
+                          <Table.Cell textAlign="center">
+                            <Checkbox
+                              checked={chkData.includes(p.id)}
+                              onChange={(v, data) => {
+                                if (data.checked) {
+                                  setChkData([...chkData, p.id]);
+                                } else {
+                                  setChkData(
+                                    chkData.filter(v => v.id !== p.id),
+                                  );
+                                }
+                              }}
+                            />
+                          </Table.Cell>
+                          {key &&
+                            key.map((k, l) => {
+                              console.log(p[k], 'test');
+                              if (
+                                k === 'breakfastDeliveryTime' ||
+                                k === 'dinnerDeliveryTime' ||
+                                k === 'lunchDeliveryTime'
+                              ) {
+                                return (
+                                  <Table.Cell key={k + l}>
+                                    <FlexBox>{formattedTime(p[k])}</FlexBox>
+                                  </Table.Cell>
+                                );
+                              }
+                              if (
+                                k === 'createDateTime' ||
+                                k === 'updatedDateTime'
+                              ) {
+                                return (
+                                  <Table.Cell key={k + l}>
+                                    <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
+                                  </Table.Cell>
+                                );
+                              }
+                              return (
+                                <Table.Cell key={`${i}` + l}>
+                                  <FlexBox>{p[k]}</FlexBox>
+                                </Table.Cell>
+                              );
+                            })}
+                        </Table.Row>
+                      </Table.Body>
+                    );
+                  }
+                })}
+            </Table>
+          </TableWrapper>
+        </PageWrapper>
+      ) : (
+        <PageWrapper>
+          <BtnWrapper>
+            {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
+          </BtnWrapper>
 
-      <div>
-        {/* {isCRUDAvaliable(pathname) && (
+          <div>
+            {/* {isCRUDAvaliable(pathname) && (
           
         )} */}
-        <CRUDBundle
-          handleBundleClick={handleBundleClick}
-          showRegister={showRegister}
-        />
+            <CRUDBundle
+              handleBundleClick={handleBundleClick}
+              showRegister={showRegister}
+            />
 
-        {showRegister && (
-          <Register
-            registerStatus={registerStatus}
-            submitMutate={submitMutate}
-            editMutate={editMutate}
-            handleClose={handleClose}
-            data={dataToEdit}
-            fieldsToOpen={SpotInfoFieldsToOpen}
-            fieldsData={SpotInfoFieldsData}
-          />
-        )}
-      </div>
+            {showRegister && (
+              <Register
+                registerStatus={registerStatus}
+                submitMutate={submitMutate}
+                editMutate={editMutate}
+                handleClose={handleClose}
+                data={dataToEdit}
+                fieldsToOpen={SpotInfoFieldsToOpen}
+                fieldsData={SpotInfoFieldsData}
+              />
+            )}
+          </div>
 
-      <TableWrapper>
-        {!!spotInfoData && spotInfoData.length !== 0 && (
-          <Table
-            fieldsInput={SpotInfoFieldsToOpen}
-            dataInput={spotInfoData}
-            // isMemo={true}
-            // handleChange={}
-          />
-        )}
-      </TableWrapper>
-    </PageWrapper>
+          <TableWrapper>
+            {!!spotInfoData && spotInfoData.length !== 0 && (
+              <Table
+                fieldsInput={SpotInfoFieldsToOpen}
+                dataInput={spotInfoData}
+                // isMemo={true}
+                // handleChange={}
+              />
+            )}
+          </TableWrapper>
+        </PageWrapper>
+      )}
+    </>
   );
 };
 
 export default SpotInfo;
+
+const FlexBox = styled.div`
+  display: flex;
+  white-space: nowrap;
+`;
