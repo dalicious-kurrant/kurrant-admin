@@ -3,6 +3,7 @@ import Pagination from 'common/Pagination/Pagination';
 import usePagination from 'common/Pagination/usePagination';
 import Table from 'common/Table/Table';
 import {spotInfoFields} from 'data/spotInfo/spotInfoData';
+import {useAtom} from 'jotai';
 import {useQuery} from 'react-query';
 import {Button} from 'semantic-ui-react';
 
@@ -12,47 +13,41 @@ import {
   PageWrapper,
   TableWrapper,
 } from '../../../style/common.style';
+import {SpotInfoDataAtom} from './store';
+import useSpotInfoQuery from './useSpotInfoQuery';
 
 const SpotInfo = () => {
   const {onActive} = useModal();
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
 
-  const {data: dataTotalLength} = useQuery(['getSpotInfoLength'], async () => {
-    const response = await axios.get(
-      // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
-      `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}`,
-      // `${process.env.REACT_APP_TEST_SERVER_URL}/members?code=AAAAAA`,
-      // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
-    );
-    // console.log(response.data.length);
-    return response.data.length;
-  });
+  const {status, isLoading} = useSpotInfoQuery();
 
-  const {
-    page,
-    setPage,
-    dataLimit,
-    setDataLimit,
-    pageList,
-    handleButtonClick,
-    handleGoToEdge,
-    handleMove,
-  } = usePagination(dataTotalLength);
+  // const {
+  //   page,
+  //   setPage,
+  //   dataLimit,
+  //   setDataLimit,
+  //   pageList,
+  //   handleButtonClick,
+  //   handleGoToEdge,
+  //   handleMove,
+  // } = usePagination(dataTotalLength);
 
-  const {
-    data: dataList,
-    status,
-    isLoading,
-  } = useQuery(['getSpotInfo', page, dataLimit], async ({queryKey}) => {
-    //   } = useQuery(['getSpotInfo', 1, 4], async ({queryKey}) => {
-    const response = await axios.get(
-      // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
-      `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
-      // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
-    );
+  // const {
+  //   data: dataList,
+  //   status,
+  //   isLoading,
+  // } = useQuery(['getSpotInfo', page, dataLimit], async ({queryKey}) => {
+  //   //   } = useQuery(['getSpotInfo', 1, 4], async ({queryKey}) => {
+  //   const response = await axios.get(
+  //     // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
+  //     `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
+  //     // `${process.env.REACT_APP_JSON_SERVER_USER_STATUS}`,
+  //   );
 
-    // console.log(response.data);
-    return response.data;
-  });
+  //   // console.log(response.data);
+  //   return response.data;
+  // });
 
   if (isLoading)
     return (
@@ -76,7 +71,7 @@ const SpotInfo = () => {
         <Button color="red" content="삭제" icon="delete" onClick={onActive} />
       </BtnWrapper>
       <TableWrapper>
-        <Pagination
+        {/* <Pagination
           dataTotalLength={dataTotalLength}
           page={page}
           setPage={setPage}
@@ -87,10 +82,16 @@ const SpotInfo = () => {
           handleGoToEdge={handleGoToEdge}
           handleMove={handleMove}
           selectOptionArray={[1, 2, 4, 10]}
-        />
+        /> */}
 
-        {!!dataList && dataList.length !== 0 && (
+        {/* {!!dataList && dataList.length !== 0 && (
           <Table tableFieldsInput={spotInfoFields} tableDataInput={dataList} />
+        )} */}
+        {!!spotInfoData && spotInfoData.length !== 0 && (
+          <Table
+            tableFieldsInput={spotInfoFields}
+            tableDataInput={spotInfoData}
+          />
         )}
       </TableWrapper>
     </PageWrapper>

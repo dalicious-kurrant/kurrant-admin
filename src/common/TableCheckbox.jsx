@@ -14,19 +14,6 @@ const TableCheckbox = ({
   checkboxStatus,
   onChecked,
 }) => {
-  // const [checked, setChecked] = useState(false);
-  // const [valueHold, setValueHold] = useState(undefined);
-
-  // useEffect(() => {
-  //   setValueHold(value);
-  // }, [value]);
-
-  // useEffect(() => {
-  //   if (onChecked) {
-  //     onChecked();
-  //   }
-  // }, [onChecked]);
-
   const handleClick = () => {
     onChecked(value);
   };
