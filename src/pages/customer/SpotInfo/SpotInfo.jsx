@@ -3,7 +3,6 @@ import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
 import Register from 'common/CRUD/Register/Register';
 
 import {TableCheckboxStatusAtom} from 'common/Table/store';
-import Table from 'common/Table/Table';
 
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
@@ -22,7 +21,8 @@ import {checkedValue, idsToDelete, numberOfTrues} from './SpotInfoLogics';
 import {SpotInfoDataAtom} from './store';
 import useMutate from './useMutate';
 import useSpotInfoQuery from './useSpotInfoQuery';
-import {Button, Checkbox} from 'semantic-ui-react';
+import {Button, Checkbox, Table} from 'semantic-ui-react';
+import CustomTable from '../../../common/Table/CustomTable';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
 
@@ -84,7 +84,7 @@ const SpotInfo = () => {
     setShowRegister(false);
   };
   useEffect(() => {
-    if (plan) console.log(plan);
+    if (plan) setKey(Object.keys(plan[0]));
   }, [plan]);
 
   return (
@@ -105,8 +105,9 @@ const SpotInfo = () => {
               {plan &&
                 plan.map((p, i) => {
                   const HeaderData = Object.values(p);
-                  console.log(HeaderData, '123');
+
                   if (i === 0) {
+                    console.log(HeaderData, '123');
                     return (
                       <Table.Header key={'0' + i}>
                         <Table.Row>
@@ -116,8 +117,7 @@ const SpotInfo = () => {
                           </Table.HeaderCell>
                           {HeaderData.map((h, k) => {
                             return (
-                              <Table.HeaderCell
-                                key={'0' + h.lunchDailySupportPrice + k}>
+                              <Table.HeaderCell key={'0' + p.id + k}>
                                 {h}
                               </Table.HeaderCell>
                             );
@@ -126,6 +126,7 @@ const SpotInfo = () => {
                       </Table.Header>
                     );
                   } else {
+                    console.log(p);
                     return (
                       <Table.Body key={i}>
                         <Table.Row>
@@ -153,7 +154,11 @@ const SpotInfo = () => {
                               ) {
                                 return (
                                   <Table.Cell key={k + l}>
-                                    <FlexBox>{formattedTime(p[k])}</FlexBox>
+                                    <FlexBox>
+                                      {typeof p[k] === 'object'
+                                        ? formattedTime(p[k])
+                                        : '-'}
+                                    </FlexBox>
                                   </Table.Cell>
                                 );
                               }
@@ -211,7 +216,7 @@ const SpotInfo = () => {
 
           <TableWrapper>
             {!!spotInfoData && spotInfoData.length !== 0 && (
-              <Table
+              <CustomTable
                 fieldsInput={SpotInfoFieldsToOpen}
                 dataInput={spotInfoData}
                 // isMemo={true}

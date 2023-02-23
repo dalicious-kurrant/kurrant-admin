@@ -1,8 +1,13 @@
 import useModal from '../../hooks/useModal';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Dropdown, Label, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
-import {exelPlanAtom, exelStaticAtom, planAtom} from '../../utils/store';
+import {
+  exelPlanAtom,
+  exelStaticAtom,
+  planAtom,
+  recommandPlanAtom,
+} from '../../utils/store';
 import {useAtom} from 'jotai';
 import styled from 'styled-components';
 import {
@@ -19,149 +24,13 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
-import {useGetCalendar, usePostCalendar} from 'hooks/useCalendars';
+import {
+  useGetCalendar,
+  useGetRecommandCalendar,
+  usePostCalendar,
+} from 'hooks/useCalendars';
 import {scheduleFormatted2} from 'utils/statusFormatter';
-const makersCalendar = [
-  {
-    presetMakersId: 1,
-    scheduleStatus: 0,
-    serviceDate: '2023-02-24',
-    diningType: '아침',
-    makersCapacity: 100,
-    leftmakersCapacity: 80,
-    deadline: '2023/02/30 18:00:00',
-    clientSchedule: [
-      {
-        pickupTime: '07:50',
-        clientName: '달리셔스',
-        clientCapacity: 20,
-        foodSchedule: [
-          {
-            presetFoodId: 9,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 2,
-          },
-          {
-            presetFoodId: 10,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 2,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    presetMakersId: 2,
-    scheduleStatus: 1,
-    serviceDate: '2023-02-24',
-    diningType: '아침',
-    makersCapacity: 100,
-    deadline: '2023/02/30 18:00:00',
-    clientSchedule: [
-      {
-        pickupTime: '07:50',
-        clientName: '달리셔스',
-        clientCapacity: 20,
-        foodSchedule: [
-          {
-            presetFoodId: 1,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-          {
-            presetFoodId: 8,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    presetMakersId: 3,
-    scheduleStatus: 0,
-    serviceDate: '2023-02-24',
-    diningType: '아침',
-    makersCapacity: 100,
-    deadline: '2023/02/30 18:00:00',
-    clientSchedule: [
-      {
-        pickupTime: '07:50',
-        clientName: '달리셔스',
-        clientCapacity: 20,
-        foodSchedule: [
-          {
-            presetFoodId: 2,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-          {
-            presetFoodId: 3,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-          {
-            presetFoodId: 4,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    presetMakersId: 4,
-    scheduleStatus: 2,
-    serviceDate: '2023-02-24',
-    diningType: '아침',
-    makersCapacity: 100,
-    deadline: '2023/02/30 18:00:00',
-    clientSchedule: [
-      {
-        pickupTime: '07:50',
-        clientName: '달리셔스',
-        clientCapacity: 20,
-        foodSchedule: [
-          {
-            presetFoodId: 5,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-          {
-            presetFoodId: 6,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-          {
-            presetFoodId: 7,
-            foodName: '음식',
-            foodStatus: '판매중',
-            foodCapacity: 100,
-            scheduleStatus: 0,
-          },
-        ],
-      },
-    ],
-  },
-];
+import {QueryClient} from 'react-query';
 const options = [
   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
   {key: '커런트', text: '커런트', value: '커런트'},
@@ -175,26 +44,35 @@ const optionsDiningStatus = [
   {key: '승인', text: '승인', value: 1},
   {key: '거절', text: '거절', value: 2},
 ];
+
 // 메이커스 정보 페이지
 const Plans = () => {
   const {onActive} = useModal();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
-  const [exelStatic] = useAtom(exelStaticAtom);
+  const [exelStatic, setStaticPlan] = useAtom(exelStaticAtom);
   const [plan, setPlan] = useAtom(planAtom);
+  const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [selectDiningStatus, setSelectDiningStatus] = useState([]);
-  const [startDate, setStartDate] = useState(
-    new Date().setDate(new Date().getDate() + 1),
-  );
-  const [recommandStartDate, setRecommandStartDate] = useState(new Date());
-  const recommandData = () => {
-    setExelPlan();
-    setPlan(makersCalendar);
-  };
   const [count, setCount] = useState(0);
   const {mutateAsync: postCalendar} = usePostCalendar();
   const {data: calendarData, isSuccess} = useGetCalendar(10, 1);
+  const [recommandStartDate, setRecommandStartDate] = useState(new Date());
+  const [options, setOption] = useState([]);
+  const [optionsClient, setOptionsClient] = useState([]);
+  const {data: calendarRecommandData, refetch: recommandRefetch} =
+    useGetRecommandCalendar(formattedWeekDate(recommandStartDate), 10, 1);
+  const [startDate, setStartDate] = useState(
+    new Date().setDate(new Date().getDate() + 1),
+  );
+  const recommandData = () => {
+    setReCommandPlan();
+    setExelPlan();
+    setStaticPlan();
+    setPlan();
+    setReCommandPlan(calendarRecommandData?.data.items?.presetScheduleList);
+  };
 
   const callPostCalendar = async () => {
     if (plan) {
@@ -211,12 +89,38 @@ const Plans = () => {
               pickupTime: client.pickupTime,
               groupName: client.clientName,
               groupCapacity: client.clientCapacity,
-              leftMakersCapacity: client.leftMakersCapacity,
               foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
               foodName: food.foodName,
               foodStatus: food.foodStatus,
               foodCapacity: food.foodCapacity,
-              leftFoodCapacity: food.leftFoodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
+      await postCalendar({
+        deadline: formattedFullDate(startDate, '-'),
+        excelDataList: [...reqArray],
+      });
+    }
+    if (reCommandPlan) {
+      const reqArray = [];
+      reCommandPlan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
             };
             reqArray.push(result);
           });
@@ -240,12 +144,11 @@ const Plans = () => {
             pickupTime: formattedTime(makers.pickupTime),
             groupName: makers.clientName,
             groupCapacity: makers.clientCapacity,
-            leftMakersCapacity: 100,
             foodScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
             foodName: makers.foodName,
             foodStatus: makers.foodStatus,
             foodCapacity: makers.foodCapacity,
-            leftFoodCapacity: makers.leftFoodCapacity,
+            leftFoodCapacity: makers.foodCapacity,
           };
           reqArray.push(result);
         }
@@ -255,18 +158,34 @@ const Plans = () => {
         deadline: formattedFullDate(startDate, '-'),
         excelDataList: [...reqArray],
       });
+      alert('식사를 요청했습니다.');
     }
   };
   useEffect(() => {
-    if (!exelPlan) {
-      if (isSuccess) {
-        setPlan(calendarData?.data?.items);
-        console.log(calendarData);
-      }
-    }
-  }, [calendarData, exelPlan, isSuccess, setPlan]);
+    recommandRefetch();
+  }, [recommandRefetch, recommandStartDate]);
   useEffect(() => {
-    if (plan) {
+    if (!exelPlan && !reCommandPlan) {
+      if (isSuccess) {
+        setPlan(calendarData?.data?.items?.presetScheduleList);
+        setOption(
+          calendarData?.data?.items?.makersInfoList.map(v => {
+            return {key: v.makersName, text: v.makersName, value: v.makersId};
+          }),
+        );
+        setOptionsClient(
+          calendarData?.data?.items?.groupInfoList.map(v => {
+            return {key: v.groupName, text: v.groupName, value: v.groupId};
+          }),
+        );
+      }
+    } else {
+      setPlan();
+    }
+  }, [calendarData, exelPlan, isSuccess, reCommandPlan, setPlan]);
+
+  useEffect(() => {
+    if (plan && !exelPlan && !reCommandPlan) {
       setCount(
         plan.map((v, i) => {
           let num = 0;
@@ -279,7 +198,20 @@ const Plans = () => {
         }),
       );
     }
-  }, [plan]);
+    if (!plan && reCommandPlan) {
+      setCount(
+        reCommandPlan.map((v, i) => {
+          let num = 0;
+          v.clientSchedule.map((s, si) => {
+            return s.foodSchedule.map((d, di) => {
+              return num++;
+            });
+          });
+          return num;
+        }),
+      );
+    }
+  }, [plan, reCommandPlan]);
   return (
     <PageWrapper>
       <Wrapper>
@@ -292,7 +224,9 @@ const Plans = () => {
           <RecoDatePickerBox>
             <DatePicker
               selected={recommandStartDate}
-              onChange={date => setRecommandStartDate(date)}
+              onChange={date => {
+                setRecommandStartDate(date);
+              }}
               dateFormat="yyyy-MM-dd"
               customInput={<SelectDatePicker />}
             />
@@ -338,12 +272,29 @@ const Plans = () => {
             onChange={(e, data) => {
               setSelectMakers(data.value);
               if (data.value.length !== 0) {
-                const result = calendarData?.data?.items?.filter(makers => {
-                  return data.value.includes(makers.makersName);
-                });
-                setPlan(result);
+                if (plan && !exelPlan && !reCommandPlan) {
+                  const result =
+                    calendarData?.data?.items?.presetScheduleList?.filter(
+                      makers => {
+                        return data.value.includes(makers.makersName);
+                      },
+                    );
+                  setPlan(result);
+                }
+                if (exelPlan && !plan && !reCommandPlan) {
+                  const result = exelStatic?.filter((makers, i) => {
+                    if (i === 0) return true;
+                    return data.value.includes(makers.makersName);
+                  });
+                  setExelPlan(result);
+                }
               } else {
-                setPlan(calendarData?.data?.items);
+                if (plan && !exelPlan && !reCommandPlan) {
+                  setPlan(calendarData?.data?.items);
+                }
+                if (exelPlan) {
+                  setExelPlan(exelStatic);
+                }
               }
             }}
           />
@@ -359,19 +310,23 @@ const Plans = () => {
             value={selectClient}
             onChange={(e, data) => {
               setSelectClient(data.value);
+              console.log(data.value);
               if (data.value.length !== 0) {
-                if (plan) {
-                  const result = calendarData?.data?.items?.map(makers => {
-                    return {
-                      ...makers,
-                      clientSchedule: makers.clientSchedule.filter(v => {
-                        return data.value.includes(v.clientName);
-                      }),
-                    };
-                  });
+                if (plan && !exelPlan && !reCommandPlan) {
+                  const result =
+                    calendarData?.data?.items?.presetScheduleList?.map(
+                      makers => {
+                        return {
+                          ...makers,
+                          clientSchedule: makers.clientSchedule.filter(v => {
+                            return data.value.includes(v.clientName);
+                          }),
+                        };
+                      },
+                    );
                   setPlan(result);
                 }
-                if (exelPlan) {
+                if (exelPlan && !plan && !reCommandPlan) {
                   const result = exelStatic?.filter((makers, i) => {
                     if (i === 0) return true;
                     return data.value.includes(makers.clientName);
@@ -380,7 +335,7 @@ const Plans = () => {
                 }
               } else {
                 if (plan) {
-                  setPlan(calendarData?.data?.items);
+                  setPlan(calendarData?.data?.items?.presetScheduleList);
                 }
                 if (exelPlan) {
                   setExelPlan(exelStatic);
@@ -401,12 +356,43 @@ const Plans = () => {
             onChange={(e, data) => {
               setSelectDiningStatus(data.value);
               if (data.value.length !== 0) {
-                const result = calendarData?.data?.items?.filter(makers => {
-                  return data.value.includes(makers.scheduleStatus);
-                });
-                setPlan(result);
+                if (plan && !exelPlan && !reCommandPlan) {
+                  const result =
+                    calendarData?.data?.items?.presetScheduleList?.filter(
+                      makers => {
+                        return data.value.includes(makers.scheduleStatus);
+                      },
+                    );
+                  setPlan(result);
+                }
+                if (exelPlan && !plan && !reCommandPlan) {
+                  const result = exelStatic?.filter((makers, i) => {
+                    if (i === 0) return true;
+                    return data.value.includes(makers.scheduleStatus);
+                  });
+                  setExelPlan(result);
+                }
+                if (reCommandPlan && !exelPlan && !plan) {
+                  const result =
+                    calendarData?.data?.items?.presetScheduleList?.filter(
+                      makers => {
+                        return data.value.includes(makers.scheduleStatus);
+                      },
+                    );
+                  setReCommandPlan(result);
+                }
               } else {
-                setPlan(calendarData?.data?.items);
+                if (plan) {
+                  setPlan(calendarData?.data?.items?.presetScheduleList);
+                }
+                if (exelPlan) {
+                  setExelPlan(exelStatic);
+                }
+                if (reCommandPlan) {
+                  setReCommandPlan(
+                    calendarRecommandData?.data.items?.presetScheduleList,
+                  );
+                }
               }
             }}
           />
@@ -415,6 +401,13 @@ const Plans = () => {
       {exelPlan && <PlanExelTable />}
       {plan && (
         <PlanTable count={count} testData={plan} setTestData={setPlan} />
+      )}
+      {reCommandPlan && (
+        <PlanTable
+          count={count}
+          testData={reCommandPlan}
+          setTestData={setReCommandPlan}
+        />
       )}
     </PageWrapper>
   );
@@ -458,3 +451,219 @@ const FilterContainer = styled.div`
   display: flex;
   gap: 20px;
 `;
+
+const res = {
+  deadline: '2023-02-24 12:40:06',
+  excelDataList: [
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '1++ 양갈비(200g)',
+      foodStatus: '판매대기',
+      foodCapacity: 20,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '마늘밥',
+      foodStatus: '판매중지',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '오뎅탕',
+      foodStatus: '판매중',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '1++ 양갈비(500g)',
+      foodStatus: '판매대기',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '위시티자이아파트',
+      groupCapacity: 13,
+      foodScheduleStatus: 1,
+      foodName: '1++ 양갈비(200g)',
+      foodStatus: '판매대기',
+      foodCapacity: 20,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '위시티자이아파트',
+      groupCapacity: 13,
+      foodScheduleStatus: 1,
+      foodName: '마늘밥',
+      foodStatus: '판매중지',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '위시티자이아파트',
+      groupCapacity: 13,
+      foodScheduleStatus: 1,
+      foodName: '오뎅탕',
+      foodStatus: '판매중',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '위시티자이아파트',
+      groupCapacity: 13,
+      foodScheduleStatus: 1,
+      foodName: '1++ 양갈비(500g)',
+      foodStatus: '판매대기',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '민디도시락',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '한정식 도시락',
+      foodStatus: '판매중지',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '마라하오',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '위시티자이아파트',
+      groupCapacity: 13,
+      foodScheduleStatus: 1,
+      foodName: '마라샹궈',
+      foodStatus: '판매중',
+      foodCapacity: 20,
+    },
+    {
+      makersName: '마라하오',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-25',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '위시티자이아파트',
+      groupCapacity: 13,
+      foodScheduleStatus: 1,
+      foodName: '마라탕',
+      foodStatus: '판매대기',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-26',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '1++ 양갈비(200g)',
+      foodStatus: '판매대기',
+      foodCapacity: 20,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-26',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '마늘밥',
+      foodStatus: '판매중지',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-26',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '오뎅탕',
+      foodStatus: '판매중',
+      foodCapacity: 100,
+    },
+    {
+      makersName: '라무진',
+      makersScheduleStatus: 1,
+      serviceDate: '2023-02-26',
+      diningType: '점심',
+      makersCapacity: 100,
+      pickupTime: '11:20:00',
+      groupName: '달리셔스',
+      groupCapacity: 5,
+      foodScheduleStatus: 1,
+      foodName: '1++ 양갈비(500g)',
+      foodStatus: '판매대기',
+      foodCapacity: 100,
+    },
+  ],
+};
