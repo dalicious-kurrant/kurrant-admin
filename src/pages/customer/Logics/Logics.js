@@ -19,7 +19,7 @@ export const numberOfTrues = checkboxStatus => {
   return total;
 };
 
-export const checkedValue = (checkboxStatus, companyMembershipDataList) => {
+export const checkedValue = (checkboxStatus, dataList) => {
   let checkedId = undefined;
   let returnValue;
   Object.entries({...checkboxStatus}).forEach(value => {
@@ -28,7 +28,7 @@ export const checkedValue = (checkboxStatus, companyMembershipDataList) => {
     }
   });
 
-  [...companyMembershipDataList].forEach(value => {
+  [...dataList].forEach(value => {
     if (value.id.toString() == checkedId) {
       returnValue = value;
     }

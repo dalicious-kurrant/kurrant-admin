@@ -22,6 +22,10 @@ import {CustomerDataAtom} from './store';
 import {handleFalsyValue} from 'utils/valueHandlingLogics';
 
 import useCustomerData from './useCustomerData';
+import CustomTable from 'common/Table/CustomTable';
+import {useMutation, useQueryClient} from 'react-query';
+
+import instance from 'shared/axios';
 
 import {useMutation, useQueryClient} from 'react-query';
 
@@ -118,8 +122,7 @@ const Customer = () => {
       let yo = {};
 
       // yo['userId'] = handleFalsyValue(value.id);
-      // yo['userId'] = handleFalsyValue(value.email);
-      yo['userId'] = 123;
+      yo['userId'] = handleFalsyValue(value.email);
       // yo['password'] = handleFalsyValue(value.password);
       yo['password'] = handleFalsyValue(value.password);
       yo['name'] = handleFalsyValue(value.name);
@@ -164,6 +167,10 @@ const Customer = () => {
   //       있어요
   //     </div>
   //   );
+
+  useEffect(() => {
+    console.log(dataToEdit);
+  }, [dataToEdit]);
 
   return (
     <PageWrapper>

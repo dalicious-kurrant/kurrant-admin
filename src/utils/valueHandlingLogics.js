@@ -9,6 +9,8 @@ export const handleFalsyValue = value => {
     return 'null';
   } else if (value === false) {
     return 'false';
+  } else if (value === '') {
+    return '';
   } else {
     return '-';
   }
