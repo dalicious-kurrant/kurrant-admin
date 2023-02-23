@@ -6,7 +6,7 @@ import {TableCheckboxStatusAtom} from 'common/Table/store';
 import Table from 'common/Table/Table';
 
 import {useAtom} from 'jotai';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {useLocation} from 'react-router';
 
@@ -16,8 +16,9 @@ import {
   PageWrapper,
   TableWrapper,
 } from '../../../style/common.style';
+import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
-import {checkedValue, idsToDelete, numberOfTrues} from './SpotInfoLogics';
+
 import {SpotInfoDataAtom} from './store';
 import useMutate from './useMutate';
 import useSpotInfoQuery from './useSpotInfoQuery';
@@ -27,14 +28,14 @@ const SpotInfo = () => {
   const [spotInfoData] = useAtom(SpotInfoDataAtom);
 
   const [showRegister, setShowRegister] = useState(false);
-  const [checkboxStatus] = useAtom(TableCheckboxStatusAtom);
+  const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
 
   const [registerStatus, setRegisterStatus] = useState('register');
 
-  const {status, isLoading} = useSpotInfoQuery();
-
   const {deleteMutate, submitMutate, editMutate} = useMutate();
+
+  const {status, isLoading} = useSpotInfoQuery();
 
   const handleBundleClick = buttonStatus => {
     numberOfTrues({...checkboxStatus});
@@ -46,7 +47,7 @@ const SpotInfo = () => {
     } else if (buttonStatus === 'edit') {
       if (numberOfTrues({...checkboxStatus}) === 0) {
         window.confirm(
-          "아래의 기업 가입 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
+          "아래의 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
         );
       } else if (numberOfTrues({...checkboxStatus}) !== 1) {
         // console.log(numberOfTrues({...checkboxStatus}));
@@ -60,7 +61,7 @@ const SpotInfo = () => {
     } else if (buttonStatus === 'delete') {
       if (numberOfTrues === 0) {
         window.confirm(
-          "아래의 기업 가입 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
+          "아래의 리스트중에 체크박스를 눌러 수정할 리스트를 '하나만' 선택해주세요.",
         );
         return;
       }
@@ -78,6 +79,12 @@ const SpotInfo = () => {
   const handleClose = () => {
     setShowRegister(false);
   };
+
+  useEffect(() => {
+    return () => {
+      setCheckboxStatus({});
+    };
+  }, []);
 
   if (isLoading)
     return (

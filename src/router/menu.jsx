@@ -38,6 +38,7 @@ export const MenuList = [
         name: '유저 정보',
         url: '/info',
         component: <Customer />,
+        // component: <></>,
       },
       {
         name: '기업 정보',
