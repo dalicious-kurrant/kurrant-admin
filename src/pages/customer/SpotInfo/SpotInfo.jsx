@@ -20,7 +20,6 @@ import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 
 import {SpotInfoDataAtom} from './store';
-
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import CustomTable from '../../../common/Table/CustomTable';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
