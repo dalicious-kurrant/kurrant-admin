@@ -29,8 +29,6 @@ export const checkedValue = (checkboxStatus, dataList) => {
   });
 
   [...dataList].forEach(value => {
-    console.log(value);
-
     if (value.id.toString() == checkedId) {
       returnValue = value;
     }

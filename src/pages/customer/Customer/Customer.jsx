@@ -117,9 +117,9 @@ const Customer = () => {
       let yo = {};
 
       // yo['userId'] = handleFalsyValue(value.id);
-      yo['userId'] = 1234;
+      yo['userId'] = handleFalsyValue(value.email);
       // yo['password'] = handleFalsyValue(value.password);
-      yo['password'] = '1234';
+      yo['password'] = handleFalsyValue(value.password);
       yo['name'] = handleFalsyValue(value.name);
       yo['email'] = handleFalsyValue(value.email);
       yo['phone'] = handleFalsyValue(value.phone);

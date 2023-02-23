@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {handleFalsyValue} from 'utils/valueHandlingLogics';
 
 const TextInput = ({
   fieldsToOpen,
@@ -39,7 +40,8 @@ const TextInput = ({
           placeholder={placeholder}
           width={width}
           flex={flex}
-          value={input[name]}
+          // value={input[name]}
+          value={handleFalsyValue(input[name])}
         />
       </Container>
     </>
