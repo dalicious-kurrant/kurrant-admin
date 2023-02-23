@@ -13,3 +13,8 @@ export function useGetCalendar(size, page) {
     return calendarApis.getDailyFood(size, page);
   });
 }
+export function useGetRecommandCalendar(startDate, size, page) {
+  return useQuery('calendarRecommandList', () => {
+    return calendarApis.getRecommnadDailyFood(startDate, size, page);
+  });
+}
