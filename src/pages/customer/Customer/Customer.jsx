@@ -9,8 +9,6 @@ import Register from 'common/CRUD/Register/Register';
 import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 
-// import Table
-
 import {
   BtnWrapper,
   PageWrapper,
@@ -19,7 +17,6 @@ import {
 
 import {CustomerDataAtom} from './store';
 
-<<<<<<< HEAD
 import {handleFalsyValue} from 'utils/valueHandlingLogics';
 
 import useCustomerData from './useCustomerData';
@@ -27,11 +24,6 @@ import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
-=======
-import useGetDataQuery from 'hooks/useGetDataQuery';
-import useCustomerData from './useCustomerData';
-import CustomTable from 'common/Table/CustomTable';
->>>>>>> ecf09f666e869548d8a6b3b800f4c0f78da91fc1
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
