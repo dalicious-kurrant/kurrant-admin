@@ -65,12 +65,12 @@ export function planExel(plan) {
   XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
   XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
 }
-export function planExelExport(plan) {
+export function planExelExport(plan, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(plan, {cellDates: true});
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
-  XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  XLSX.writeFile(workbook, fileName);
 }
 
 // 상품 정보 엑셀

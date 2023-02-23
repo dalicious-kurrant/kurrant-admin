@@ -15,7 +15,12 @@ import {TableCheckboxStatusAtom} from './store';
 // - 데이터 안에 정해진 필드가 아닌 필드가 들어있으면 자동으로 걸러준다
 // - 데이터 값이 number나 string이 아닌 경우는 '-'로 표기한다
 
-const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+const CustomTable = ({
+  fieldsInput,
+  dataInput,
+  isMemo = false,
+  handleChange,
+}) => {
   const useTheme = Theme;
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
@@ -133,7 +138,7 @@ const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
   );
 };
 
-export default Table;
+export default CustomTable;
 
 const Container = styled.div`
   border-collapse: collapse;

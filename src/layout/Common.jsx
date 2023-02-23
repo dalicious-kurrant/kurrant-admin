@@ -12,6 +12,7 @@ import {
   exelStaticAtom,
   spotAtom,
   exelSpotAtom,
+  recommandPlanAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -78,7 +79,7 @@ const Common = () => {
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
-
+  const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -100,7 +101,7 @@ const Common = () => {
       setPlan();
       setSpot();
       setExelSpot();
-
+      setReCommandPlan();
       const reader = new FileReader();
       reader.onload = e => {
         const data = e.target.result;
@@ -135,14 +136,21 @@ const Common = () => {
       return planExel(plan);
     }
     if (exelPlan && exelPlan.length > 0) {
-      return planExelExport(exelPlan);
+      return planExelExport(
+        exelPlan,
+        '메이커스 일정 관리',
+        '메이커스_일정_관리.xlsx',
+      );
     }
-
+    if (reCommandPlan && reCommandPlan.length > 0) {
+      return planExel(reCommandPlan);
+    }
+    if (exelSpot && exelSpot.length > 0) {
+      return planExelExport(exelSpot, '고객 스팟 공지', '고객_스팟_공지.xlsx');
+    }
     if (product?.data && product?.data?.length > 0) {
       return productExel(product);
     }
-    console.log(product, '018');
-
     if (exelProduct && exelProduct.length > 0) {
       return productExelExport(exelProduct);
     }
