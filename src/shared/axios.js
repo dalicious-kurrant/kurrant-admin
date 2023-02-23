@@ -3,7 +3,7 @@ import axios from 'axios';
 const token = localStorage.getItem('token');
 
 const baseURL =
-  process.env.NODE_ENV === 'prod'
+  process.env.REACT_APP_NODE_ENV === 'prod'
     ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
     : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 
