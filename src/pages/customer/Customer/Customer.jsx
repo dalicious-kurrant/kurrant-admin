@@ -16,8 +16,9 @@ import {
 } from '../../../style/common.style';
 
 import {CustomerDataAtom} from './store';
-import useCustomerQuery from './useCustomerQuery';
+
 import Table from 'common/Table/Table';
+import useDataGetQuery from 'hooks/useGetDataQuery';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -29,7 +30,11 @@ const Customer = () => {
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
-  const {status, isLoading} = useCustomerQuery();
+  const {status, isLoading} = useDataGetQuery(
+    ['getCustomerJSON'],
+    CustomerDataAtom,
+    `${process.env.REACT_APP_JSON_SERVER}/customer`,
+  );
 
   const handleBundleClick = buttonStatus => {
     numberOfTrues({...checkboxStatus});

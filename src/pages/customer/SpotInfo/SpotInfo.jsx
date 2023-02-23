@@ -9,7 +9,7 @@ import Table from 'common/Table/Table';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 
-import {useLocation} from 'react-router';
+import useDataGetQuery from 'hooks/useGetDataQuery';
 
 import useModal from '../../../hooks/useModal';
 import {
@@ -21,8 +21,6 @@ import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 
 import {SpotInfoDataAtom} from './store';
-
-import useSpotInfoQuery from './useSpotInfoQuery';
 
 const SpotInfo = () => {
   const {onActive} = useModal();
@@ -36,7 +34,12 @@ const SpotInfo = () => {
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
-  const {status, isLoading} = useSpotInfoQuery();
+  // const {status, isLoading} = useSpotInfoQuery();
+  const {status, isLoading} = useDataGetQuery(
+    ['getSpotInfoJSON'],
+    SpotInfoDataAtom,
+    `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+  );
 
   const handleBundleClick = buttonStatus => {
     numberOfTrues({...checkboxStatus});
