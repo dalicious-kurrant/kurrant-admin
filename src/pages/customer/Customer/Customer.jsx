@@ -27,11 +27,6 @@ import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
 
-import {useMutation, useQueryClient} from 'react-query';
-
-import instance from 'shared/axios';
-import CustomTable from 'common/Table/CustomTable';
-
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
   const [showRegister, setShowRegister] = useState(false);
