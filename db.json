@@ -17,6 +17,55 @@
     "name": "typicode"
   },
 
+  "customer": [
+    {
+      "userId": "num",
+      "password": "str",
+      "userName": "str",
+      "role": "str",
+      "phone": "str",
+      "email": "str",
+      "groupName": "str",
+      "point": "num",
+      "gourmetType": "str",
+      "isMembership": "Boolean",
+      "userEmailAgreed": "str",
+      "userEmailAgreedDateTime": "str",
+      "userOrderAlarm": "str",
+      "recentLoginDateTime": "str",
+      "userCreatedDateTime": "str",
+      "userUpdatedDateTime": "str",
+      "generalEmail": "str",
+      "kakaoEmail": "str",
+      "naverEmail": "str",
+      "facebookEmail": "str",
+      "appleEmail": "str"
+    },
+    {
+      "userId": "num",
+      "password": "str",
+      "userName": "str",
+      "role": "str",
+      "phone": "str",
+      "email": "str",
+      "groupName": "str",
+      "point": "num",
+      "gourmetType": "str",
+      "isMembership": "Boolean",
+      "userEmailAgreed": "str",
+      "userEmailAgreedDateTime": "str",
+      "userOrderAlarm": "str",
+      "recentLoginDateTime": "str",
+      "userCreatedDateTime": "str",
+      "userUpdatedDateTime": "str",
+      "generalEmail": "str",
+      "kakaoEmail": "str",
+      "naverEmail": "str",
+      "facebookEmail": "str",
+      "appleEmail": "str"
+    }
+  ],
+
   "spot-info": [
     {
       "id": 1,

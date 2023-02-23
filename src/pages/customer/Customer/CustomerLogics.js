@@ -1,3 +1,5 @@
+import {handleFalsyValue} from 'utils/valueHandlingLogics';
+
 export const sendFinal = (data, sendFinalMutate) => {
   const oldData = [...data];
 
@@ -5,14 +7,14 @@ export const sendFinal = (data, sendFinalMutate) => {
     let yo = {};
 
     // yo['userId'] = handleFalsyValue(value.id);
-    // yo['userId'] = handleFalsyValue(value.email);
-    // // yo['password'] = handleFalsyValue(value.password);
+    yo['userId'] = handleFalsyValue(value.email);
     // yo['password'] = handleFalsyValue(value.password);
-    // yo['name'] = handleFalsyValue(value.name);
-    // yo['email'] = handleFalsyValue(value.email);
-    // yo['phone'] = handleFalsyValue(value.phone);
-    // // yo['phone'] = `010-6565-1181`;
-    // yo['role'] = handleFalsyValue(value.role);
+    yo['password'] = handleFalsyValue(value.password);
+    yo['name'] = handleFalsyValue(value.name);
+    yo['email'] = handleFalsyValue(value.email);
+    yo['phone'] = handleFalsyValue(value.phone);
+    // yo['phone'] = `010-6565-1181`;
+    yo['role'] = handleFalsyValue(value.role);
 
     return yo;
   });

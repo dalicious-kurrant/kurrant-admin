@@ -3,7 +3,7 @@ import Diet from '../pages/order/Diet';
 import Order from '../pages/order/orderInfomation/Order';
 import Makers from '../pages/makers/Makers';
 import Spot from '../pages/customer/Spot';
-import Customer from '../pages/customer/Customer';
+import Customer from '../pages/customer/Customer/Customer';
 import Company from '../pages/customer/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
@@ -38,6 +38,7 @@ export const MenuList = [
         name: '유저 정보',
         url: '/info',
         component: <Customer />,
+        // component: <></>,
       },
       {
         name: '기업 정보',

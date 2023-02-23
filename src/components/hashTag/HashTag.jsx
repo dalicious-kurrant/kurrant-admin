@@ -159,7 +159,7 @@ const Box = styled.div`
   border: 0.5px solid #c8c8d2;
   cursor: pointer;
   margin: 4px;
-  width: 100px;
+  width: 110px;
   white-space: normal;
 `;
 

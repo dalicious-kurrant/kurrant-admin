@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {productApis} from '../api/product';
 
 export function useGetAllProductsList() {
@@ -14,14 +14,29 @@ export function useGetDetailProductsList(foodId, makersId) {
 }
 
 export function useEditProductDetail() {
-  return useMutation(data => {
-    return productApis.modifyProductDetail(data);
-  });
+  const queryClient = useQueryClient();
+  return useMutation(
+    (formData, config) => productApis.modifyProductDetail(formData, config),
+    {
+      onSuccess: res => {
+        console.log(res, '998');
+      },
+    },
+  );
 }
 
 export function useDeleteProductList() {
   return useMutation(data => {
     console.log(data, '2323');
     return productApis.deleteProduct(data);
+  });
+}
+
+export function useEditProductStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(data => productApis.editProductStatus(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('allList');
+    },
   });
 }

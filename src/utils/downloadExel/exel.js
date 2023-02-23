@@ -65,18 +65,30 @@ export function planExel(plan) {
   XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
   XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
 }
-export function planExelExport(plan) {
+export function planExelExport(plan, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(plan, {cellDates: true});
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
-  XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  XLSX.writeFile(workbook, fileName);
 }
 
 // 상품 정보 엑셀
 
 export function productExel(product) {
   const reqArrays = [];
+  reqArrays.push([
+    'foodId',
+    'makersName',
+    'foodName',
+    'foodStatus',
+    'defaultPrice',
+    'makersDiscount',
+    'eventDiscount',
+    'resultPrice',
+    'description',
+    'foodTags',
+  ]);
   reqArrays.push([
     'ID',
     '메이커스이름',
@@ -90,6 +102,7 @@ export function productExel(product) {
     '식사 태그',
   ]);
   product?.data?.map(el => {
+    console.log(el.foodTags);
     const reqArray = [];
     reqArray.push(el.foodId);
     reqArray.push(el.makersName);
@@ -112,10 +125,10 @@ export function productExel(product) {
   XLSX.writeFile(workbook, '상품_정보.xlsx');
 }
 
-export function productExelExport(product) {
+export function productExelExport(product, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(product, {cellDates: true});
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '상품 정보');
-  XLSX.writeFile(workbook, '상품_정보.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  XLSX.writeFile(workbook, fileName);
 }

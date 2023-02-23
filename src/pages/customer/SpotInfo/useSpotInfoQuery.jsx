@@ -18,16 +18,17 @@ const useSpotInfoQuery = () => {
   } = useQuery(
     ['getSpotInfoJSON'],
     async ({queryKey}) => {
-      // const response = await instance.get(
-      //   `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}/spot-info`,
-      //   // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
-      // );
+      const response = await instance.get(
+        // `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}/spot-info`,
 
-      const response = await axios.get(
-        `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}/spot-info`,
+        `${process.env.REACT_APP_LOCAL_URL}/v1/clients/spot/all`,
       );
 
-      // console.log(response.data);
+      // const response = await axios.get(
+      //   `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}/spot-info`,
+      // );
+
+      console.log(response.data);
       return response.data;
     },
     {

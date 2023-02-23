@@ -15,7 +15,12 @@ import {TableCheckboxStatusAtom} from './store';
 // - 데이터 안에 정해진 필드가 아닌 필드가 들어있으면 자동으로 걸러준다
 // - 데이터 값이 number나 string이 아닌 경우는 '-'로 표기한다
 
-const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+const CustomTable = ({
+  fieldsInput,
+  dataInput,
+  isMemo = false,
+  handleChange,
+}) => {
   const useTheme = Theme;
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
@@ -94,6 +99,7 @@ const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
             dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
               let yo = [];
+
               keyOfTableFieldsInput.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
                   yo.push(value1[value2]);
@@ -113,11 +119,13 @@ const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                     />
                   </CheckBoxTd>
 
-                  {yo.map((value3, index3) => (
-                    <td align="left" key={index3}>
-                      {handleFalsyValue(value3)}
-                    </td>
-                  ))}
+                  {yo.map((value3, index3) => {
+                    return (
+                      <td align="left" key={index3}>
+                        {handleFalsyValue(value3)}
+                      </td>
+                    );
+                  })}
 
                   {!!isMemo && (
                     <td className="memo">
@@ -133,7 +141,7 @@ const Table = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
   );
 };
 
-export default Table;
+export default CustomTable;
 
 const Container = styled.div`
   border-collapse: collapse;

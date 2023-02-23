@@ -1,16 +1,10 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
-import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
 import Register from 'common/CRUD/Register/Register';
-
+import useMutate from 'common/CRUD/useMutate';
 import {TableCheckboxStatusAtom} from 'common/Table/store';
-import Table from 'common/Table/Table';
-
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
-
-import {useLocation} from 'react-router';
 import {exelSpotAtom} from 'utils/store';
-
 import useModal from '../../../hooks/useModal';
 import {
   BtnWrapper,
@@ -18,13 +12,16 @@ import {
   TableWrapper,
 } from '../../../style/common.style';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
-import {checkedValue, idsToDelete, numberOfTrues} from './SpotInfoLogics';
+import {clickButtonBundle} from '../Logics/Logics';
 import {SpotInfoDataAtom} from './store';
-import useMutate from './useMutate';
-import useSpotInfoQuery from './useSpotInfoQuery';
-import {Button, Checkbox} from 'semantic-ui-react';
+import {Button, Checkbox, Table} from 'semantic-ui-react';
+import CustomTable from '../../../common/Table/CustomTable';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
+import useSpotInfoData from './useSpotInfoData';
+import {sendFinal} from './SpotInfoLogics';
+import {useMutation, useQueryClient} from 'react-query';
+import instance from 'shared/axios';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
@@ -32,60 +29,111 @@ const SpotInfo = () => {
   const [plan, setPlan] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
   const [showRegister, setShowRegister] = useState(false);
-  const [checkboxStatus] = useAtom(TableCheckboxStatusAtom);
+  const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
 
   const [registerStatus, setRegisterStatus] = useState('register');
 
-  const {status, isLoading} = useSpotInfoQuery();
+  const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
-  const {deleteMutate, submitMutate, editMutate} = useMutate();
+  const queryClient = useQueryClient();
+
+  // const {status, isLoading} = useSpotInfoQuery();
+  const {status, isLoading} = useSpotInfoData(
+    ['getSpotInfoJSON'],
+    SpotInfoDataAtom,
+    `clients/spot/all`,
+    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+    localStorage.getItem('token'),
+  );
+
+  const {mutate: sendFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.post(`users`, todo);
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getSpotInfoJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
 
   const handleBundleClick = buttonStatus => {
-    numberOfTrues({...checkboxStatus});
-
-    if (buttonStatus === 'register') {
-      setDataToEdit(makeInitialInput([...spotInfoData][0]));
-      setRegisterStatus(buttonStatus);
-      setShowRegister(true);
-    } else if (buttonStatus === 'edit') {
-      if (numberOfTrues({...checkboxStatus}) === 0) {
-        window.confirm(
-          "아래의 기업 가입 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
-        );
-      } else if (numberOfTrues({...checkboxStatus}) !== 1) {
-        // console.log(numberOfTrues({...checkboxStatus}));
-
-        window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
-      } else if (numberOfTrues({...checkboxStatus}) === 1) {
-        setDataToEdit(checkedValue(checkboxStatus, spotInfoData));
-        setRegisterStatus(buttonStatus);
-        setShowRegister(true);
-      }
-    } else if (buttonStatus === 'delete') {
-      if (numberOfTrues === 0) {
-        window.confirm(
-          "아래의 기업 가입 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
-        );
-        return;
-      }
-
-      if (window.confirm('삭제하시겠습니까?')) {
-        idsToDelete({...checkboxStatus}).forEach(value => {
-          deleteMutate(value);
-        });
-      } else {
-        return;
-      }
-    }
+    clickButtonBundle(
+      buttonStatus,
+      SpotInfoFieldsToOpen,
+      spotInfoData,
+      checkboxStatus,
+      setDataToEdit,
+      setRegisterStatus,
+      setShowRegister,
+      deleteMutate,
+    );
   };
 
   const handleClose = () => {
     setShowRegister(false);
   };
   useEffect(() => {
-    if (plan) console.log(plan);
+    if (plan) setKey(Object.keys(plan[0]));
   }, [plan]);
+
+  useEffect(() => {
+    return () => {
+      setCheckboxStatus({});
+    };
+  }, []);
+
+  // const sendFinal = () => {
+  //   const oldData = [...customerData];
+
+  //   const newData = oldData.map(value => {
+  //     let yo = {};
+
+  //     yo['userId'] = handleFalsyValue(value.email);
+  //     yo['password'] = handleFalsyValue(value.password);
+  //     yo['name'] = handleFalsyValue(value.name);
+  //     yo['email'] = handleFalsyValue(value.email);
+  //     yo['phone'] = handleFalsyValue(value.phone);
+  //     yo['role'] = handleFalsyValue(value.role);
+
+  //     return yo;
+  //   });
+
+  //   const newData2 = {
+  //     userList: newData,
+  //   };
+
+  //   if (
+  //     window.confirm(
+  //       '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+  //     )
+  //   ) {
+  //     sendFinalMutate(newData2);
+  //   } else {
+  //   }
+  // };
+
+  if (isLoading)
+    return (
+      <>
+        {' '}
+        <div>로딩중입니다..</div>{' '}
+      </>
+    );
+
+  if (status === 'error')
+    return (
+      <div>
+        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
+        있어요
+      </div>
+    );
 
   return (
     <>
@@ -105,8 +153,9 @@ const SpotInfo = () => {
               {plan &&
                 plan.map((p, i) => {
                   const HeaderData = Object.values(p);
-                  console.log(HeaderData, '123');
+
                   if (i === 0) {
+                    console.log(HeaderData, '123');
                     return (
                       <Table.Header key={'0' + i}>
                         <Table.Row>
@@ -116,8 +165,7 @@ const SpotInfo = () => {
                           </Table.HeaderCell>
                           {HeaderData.map((h, k) => {
                             return (
-                              <Table.HeaderCell
-                                key={'0' + h.lunchDailySupportPrice + k}>
+                              <Table.HeaderCell key={'0' + p.id + k}>
                                 {h}
                               </Table.HeaderCell>
                             );
@@ -126,6 +174,7 @@ const SpotInfo = () => {
                       </Table.Header>
                     );
                   } else {
+                    console.log(p);
                     return (
                       <Table.Body key={i}>
                         <Table.Row>
@@ -153,7 +202,11 @@ const SpotInfo = () => {
                               ) {
                                 return (
                                   <Table.Cell key={k + l}>
-                                    <FlexBox>{formattedTime(p[k])}</FlexBox>
+                                    <FlexBox>
+                                      {typeof p[k] === 'object'
+                                        ? formattedTime(p[k])
+                                        : '-'}
+                                    </FlexBox>
                                   </Table.Cell>
                                 );
                               }
@@ -194,6 +247,9 @@ const SpotInfo = () => {
             <CRUDBundle
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
+              sendFinal={() => {
+                sendFinal(spotInfoData, sendFinalMutate);
+              }}
             />
 
             {showRegister && (
@@ -211,7 +267,7 @@ const SpotInfo = () => {
 
           <TableWrapper>
             {!!spotInfoData && spotInfoData.length !== 0 && (
-              <Table
+              <CustomTable
                 fieldsInput={SpotInfoFieldsToOpen}
                 dataInput={spotInfoData}
                 // isMemo={true}
