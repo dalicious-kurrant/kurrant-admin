@@ -5,6 +5,7 @@ const CRUDBundle = ({handleBundleClick, showRegister}) => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
       if (showRegister) {
         window.confirm("'닫기'버튼을 누른후에 시도해주세요");
+        return;
       }
     }
 
@@ -19,13 +20,13 @@ const CRUDBundle = ({handleBundleClick, showRegister}) => {
     <Container>
       <Wrap>
         <Button id="register" onClick={handleClick}>
-          추가
+          추가 열기
         </Button>
         <Button id="edit" onClick={handleClick}>
-          수정
+          수정 열기
         </Button>
         <Button id="delete" onClick={handleClick}>
-          삭제
+          삭제 하기
         </Button>
 
         <Wrap2>

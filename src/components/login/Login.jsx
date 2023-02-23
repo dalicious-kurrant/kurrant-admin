@@ -27,7 +27,6 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    navigate('/main');
     try {
       const res = await instance.post('auth/login', input);
       console.log(res);

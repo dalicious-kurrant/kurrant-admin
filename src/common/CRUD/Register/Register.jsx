@@ -61,8 +61,8 @@ const Register = ({
     <Container>
       <TitleButtonWrap>
         <H2>
-          가입 리스트
-          {registerStatus === 'register' ? '에 추가하기' : ' 수정하기'}
+          리스트
+          {registerStatus === 'register' ? '추가 입력란' : ' 수정 기입란'}
         </H2>
         <button onClick={handleCloseBtn}> 닫기 </button>
       </TitleButtonWrap>

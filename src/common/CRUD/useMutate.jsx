@@ -1,22 +1,18 @@
 import {useAtom} from 'jotai';
-import {getCompanyMembershipDataAtom} from 'jotai/state';
-import styled from 'styled-components';
 
-const useMutate = () => {
-  const [companyMembershipDataList, setCompanyMembershipDataList] = useAtom(
-    getCompanyMembershipDataAtom,
-  );
+const useMutate = atom => {
+  const [dataList, setDataList] = useAtom(atom);
 
   const submitMutate = input => {
-    const newDataList = [...companyMembershipDataList, input];
+    const newDataList = [...dataList, input];
 
-    setCompanyMembershipDataList(newDataList);
+    setDataList(newDataList);
   };
 
   const editMutate = input => {
     // input : 객체
 
-    const oldDataList = [...companyMembershipDataList];
+    const oldDataList = [...dataList];
     let newDataList = [];
     for (let i = 0; i < oldDataList.length; i++) {
       if (oldDataList[i].id == input.id) {
@@ -26,11 +22,11 @@ const useMutate = () => {
       }
     }
 
-    setCompanyMembershipDataList(newDataList);
+    setDataList(newDataList);
   };
 
   const deleteMutate = id => {
-    const oldDataList = [...companyMembershipDataList];
+    const oldDataList = [...dataList];
     let newDataList = [];
     for (let i = 0; i < oldDataList.length; i++) {
       if (oldDataList[i].id == id) {
@@ -38,7 +34,7 @@ const useMutate = () => {
         newDataList.push(oldDataList[i]);
       }
     }
-    setCompanyMembershipDataList(newDataList);
+    setDataList(newDataList);
   };
 
   return {submitMutate, editMutate, deleteMutate};
