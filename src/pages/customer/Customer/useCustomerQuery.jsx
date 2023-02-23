@@ -4,11 +4,11 @@ import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import styled from 'styled-components';
-import {SpotInfoDataAtom} from './store';
+import {CustomerDataAtom} from './store';
 
-const useSpotInfoQuery = () => {
+const useCustomerQuery = () => {
   const queryClient = useQueryClient();
-  const [, setSpotInfoData] = useAtom(SpotInfoDataAtom);
+  const [, setCustomerData] = useAtom(CustomerDataAtom);
   // 일단 instance해 놓음
 
   const {
@@ -16,7 +16,7 @@ const useSpotInfoQuery = () => {
     status,
     isLoading,
   } = useQuery(
-    ['getSpotInfoJSON'],
+    ['getCustomerJSON'],
     async ({queryKey}) => {
       // const response = await instance.get(
       //   `${process.env.REACT_APP_JSON_SERVER_SPOT_INFO}/spot-info`,
@@ -24,7 +24,7 @@ const useSpotInfoQuery = () => {
       // );
 
       const response = await axios.get(
-        `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+        `${process.env.REACT_APP_JSON_SERVER}/customer`,
       );
 
       // console.log(response.data);
@@ -36,7 +36,7 @@ const useSpotInfoQuery = () => {
   );
 
   useEffect(() => {
-    setSpotInfoData(data);
+    setCustomerData(data);
   }, [data]);
 
   return {
@@ -45,4 +45,4 @@ const useSpotInfoQuery = () => {
   };
 };
 
-export default useSpotInfoQuery;
+export default useCustomerQuery;
