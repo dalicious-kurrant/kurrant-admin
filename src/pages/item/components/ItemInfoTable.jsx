@@ -81,7 +81,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
             <Table.HeaderCell>이벤트할인률</Table.HeaderCell>
             <Table.HeaderCell>최종가격</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">설명</Table.HeaderCell>
-            <Table.HeaderCell>식사태그</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">식사태그</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -145,7 +145,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
                 </Table.Cell>
                 <Table.Cell>{el.description}</Table.Cell>
                 <Table.Cell>
-                  {el.foodTags + (idx !== 0 ? ',  ' : '')}
+                  {el.foodTags + (idx !== 0 ? `\u00A0` : '')}
                 </Table.Cell>
               </TableRow>
             );

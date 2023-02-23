@@ -1,6 +1,4 @@
-import {useAtom} from 'jotai';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import {productImageAtom} from 'utils/store';
 import {productApis} from '../api/product';
 
 export function useGetAllProductsList() {
@@ -16,9 +14,15 @@ export function useGetDetailProductsList(foodId, makersId) {
 }
 
 export function useEditProductDetail() {
-  return useMutation(data => {
-    return productApis.modifyProductDetail(data);
-  });
+  const queryClient = useQueryClient();
+  return useMutation(
+    (formData, config) => productApis.modifyProductDetail(formData, config),
+    {
+      onSuccess: res => {
+        console.log(res, '998');
+      },
+    },
+  );
 }
 
 export function useDeleteProductList() {
@@ -26,19 +30,6 @@ export function useDeleteProductList() {
     console.log(data, '2323');
     return productApis.deleteProduct(data);
   });
-}
-
-export function useImageUpload() {
-  const [imgData, setImgData] = useAtom(productImageAtom);
-  return useMutation(
-    (formData, config) => productApis.imageUpload(formData, config),
-    {
-      onSuccess: res => {
-        setImgData(res.data);
-        console.log(res, '0000');
-      },
-    },
-  );
 }
 
 export function useEditProductStatus() {

@@ -12,6 +12,9 @@ import {
   useGetDetailProductsList,
 } from '../../hooks/useProductsList';
 import ItemDetailImage from './components/ItemDetailImage';
+import {useAtom} from 'jotai';
+import {productDataAtom} from 'utils/store';
+import {Button} from 'semantic-ui-react';
 
 const ProductDetailPage = () => {
   const location = useLocation();
@@ -23,8 +26,9 @@ const ProductDetailPage = () => {
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
   const listData = detailData?.data;
-  console.log(listData, '29292');
   const [clicked, setClicked] = useState([]);
+  const [dataList, setDataList] = useAtom(productDataAtom); // 이미지
+  const [sendForm, setSendForm] = useState();
 
   const form = useForm({
     mode: 'all',
@@ -32,7 +36,6 @@ const ProductDetailPage = () => {
   const {
     formState: {errors},
     watch,
-    handleSubmit,
     setValue,
   } = form;
 
@@ -45,17 +48,46 @@ const ProductDetailPage = () => {
   const customPrice = watch('customPrice');
 
   const modifyButton = async () => {
+    const formData = new FormData();
+
+    if (sendForm) {
+      for (let i = 0; i < sendForm.length; i++) {
+        formData.append('files', sendForm[i]);
+      }
+    }
     const data = {
       foodId: listData?.foodId,
+      defaultPrice: Number(foodPrice.replace(',', '')),
       makersDiscountRate: Number(discountRate),
       periodDiscountRate: Number(periodDiscountRate),
+      customPrice: Number(customPrice.replace(',', '')),
       foodTags: clicked,
+      capacity: 100, // 임시로 넣어둠
+      images: dataList?.foodImages,
     };
-    console.log(data);
-    await editData(data);
-    // navigate(-1);
+
+    const json = JSON.stringify(data);
+    const blob = new Blob([json], {type: 'application/json'});
+    formData.append('contents', blob);
+
+    const config = {
+      headers: {'Content-Type': 'multipart/form-data'},
+    };
+
+    await editData(formData, config);
+    navigate(-1);
     //queryClient.invalidateQueries('productDetail');
   };
+
+  const deleteImage = dataUrl => {
+    const newImageURL = dataList.foodImages.filter(el => el !== dataUrl);
+
+    setDataList(prev => ({
+      ...prev,
+      foodImages: [...newImageURL],
+    }));
+  };
+
   useEffect(() => {
     setValue('foodName', listData?.foodName);
     setValue('foodPrice', withCommas(listData?.foodPrice));
@@ -85,9 +117,11 @@ const ProductDetailPage = () => {
     );
     setValue(
       'customPrice',
-      listData?.customPrice === 0 ? '0' : listData?.customPrice,
+      withCommas(listData?.customPrice === 0 ? '0' : listData?.customPrice),
     );
     setClicked(listData?.foodTags);
+
+    setDataList(detailData?.data);
   }, [
     listData?.customPrice,
     listData?.foodName,
@@ -98,6 +132,10 @@ const ProductDetailPage = () => {
     listData?.periodDiscountRate,
     listData?.foodTags,
     setValue,
+    listData?.foodImages,
+
+    setDataList,
+    detailData?.data,
   ]);
   return (
     <Wrap>
@@ -107,12 +145,12 @@ const ProductDetailPage = () => {
         </div>
         <InputWrap>
           <FormProvider {...form}>
-            <Input name="foodName" label="메뉴명" width="200px" />
+            <Input name="foodName" label="메뉴명" width="200px" readOnly />
             <Input name="foodPrice" label="매장가" />
             <Input name="discountRate" label="할인율" />
-            <Input name="discountPrice" label="할인가" />
+            <Input name="discountPrice" label="할인가" readOnly />
             <Input name="periodDiscountRate" label="기간할인율" />
-            <Input name="periodDiscountPrice" label="기간할인가" />
+            <Input name="periodDiscountPrice" label="기간할인가" readOnly />
             <Input name="customPrice" label="커스텀가" />
           </FormProvider>
         </InputWrap>
@@ -124,12 +162,25 @@ const ProductDetailPage = () => {
         </div>
         <div>
           <TagTitle>이미지 등록</TagTitle>
-          <div>기존이미지</div>
+
           <ImageWrap>
-            <img src={listData?.foodImage} alt="기존이미지" />
+            {dataList &&
+              dataList?.foodImages.map(el => {
+                return (
+                  <div key={el}>
+                    <img src={el} alt="기존이미지" />
+                    <Button
+                      content="삭제"
+                      onClick={() => {
+                        deleteImage(el);
+                      }}
+                    />
+                  </div>
+                );
+              })}
           </ImageWrap>
-          <div>새로운이미지</div>
-          <ItemDetailImage />
+
+          <ItemDetailImage setSendForm={setSendForm} />
         </div>
         <ModifyButtonWrap>
           <ModifyButton onClick={modifyButton}>수정하기</ModifyButton>
