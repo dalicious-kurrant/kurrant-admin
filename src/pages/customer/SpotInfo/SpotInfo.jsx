@@ -1,6 +1,7 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
 import Register from 'common/CRUD/Register/Register';
+import useMutate from 'common/CRUD/useMutate';
 
 import {TableCheckboxStatusAtom} from 'common/Table/store';
 import Table from 'common/Table/Table';
@@ -20,7 +21,7 @@ import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 
 import {SpotInfoDataAtom} from './store';
-import useMutate from './useMutate';
+
 import useSpotInfoQuery from './useSpotInfoQuery';
 
 const SpotInfo = () => {
@@ -33,7 +34,7 @@ const SpotInfo = () => {
 
   const [registerStatus, setRegisterStatus] = useState('register');
 
-  const {deleteMutate, submitMutate, editMutate} = useMutate();
+  const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
   const {status, isLoading} = useSpotInfoQuery();
 
@@ -50,8 +51,6 @@ const SpotInfo = () => {
           "아래의 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
         );
       } else if (numberOfTrues({...checkboxStatus}) !== 1) {
-        // console.log(numberOfTrues({...checkboxStatus}));
-
         window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
       } else if (numberOfTrues({...checkboxStatus}) === 1) {
         setDataToEdit(checkedValue(checkboxStatus, spotInfoData));

@@ -20,7 +20,7 @@ import useCustomerQuery from './useCustomerQuery';
 import Table from 'common/Table/Table';
 
 const Customer = () => {
-  const [customerData, setCustomerData] = useAtom(CustomerDataAtom);
+  const [customerData] = useAtom(CustomerDataAtom);
 
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
@@ -41,7 +41,7 @@ const Customer = () => {
     } else if (buttonStatus === 'edit') {
       if (numberOfTrues({...checkboxStatus}) === 0) {
         window.confirm(
-          "아래의 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
+          "아래의 리스트중에 체크박스를 눌러 수정할 리스트를 '하나만' 선택해주세요.",
         );
       } else if (numberOfTrues({...checkboxStatus}) !== 1) {
         window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
@@ -53,7 +53,7 @@ const Customer = () => {
     } else if (buttonStatus === 'delete') {
       if (numberOfTrues === 0) {
         window.confirm(
-          "아래의 리스트중에 체크박스를 눌러 수정할 리스트 '하나만' 선택해주세요.",
+          "아래의 리스트중에 체크박스를 눌러 수정할 리스트를 '하나만' 선택해주세요.",
         );
         return;
       }
