@@ -8,3 +8,4 @@ export const spotAtom = atomWithReset();
 export const productAtom = atomWithReset();
 export const exelProductAtom = atomWithReset();
 export const productImageAtom = atomWithReset();
+export const shopInfoDetailIdAtom = atomWithReset('');

@@ -5,7 +5,8 @@ import {TableWrapper} from '../../../style/common.style';
 import withCommas from '../../../utils/withCommas';
 
 const ItemExelTable = ({data, checked, checkItems, setCheckItems}) => {
-  console.log(data, '0-?');
+  // console.log(data, '0-?');
+  console.log(data);
   const navigate = useNavigate();
   const [key, setKey] = useState();
 

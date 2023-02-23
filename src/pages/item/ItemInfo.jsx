@@ -19,7 +19,6 @@ import {useCancelOrder} from '../../hooks/useOrderList';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
-  const {onActive} = useModal();
   const queryClient = useQueryClient();
   const {data: productList} = useGetAllProductsList();
   const {mutateAsync: cancelProduct} = useDeleteProductList();
@@ -52,16 +51,6 @@ const ItemInfo = () => {
 
   return (
     <PageWrapper>
-      <BtnWrapper>
-        <Button
-          color="red"
-          content="상품 삭제"
-          icon="delete"
-          onClick={() => {
-            openModal();
-          }}
-        />
-      </BtnWrapper>
       <TableWrapper>
         {exelProduct && (
           <ItemExelTable

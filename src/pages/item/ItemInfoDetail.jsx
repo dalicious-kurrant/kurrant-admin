@@ -23,7 +23,7 @@ const ProductDetailPage = () => {
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
   const listData = detailData?.data;
-
+  console.log(listData, '29292');
   const [clicked, setClicked] = useState([]);
 
   const form = useForm({
@@ -53,7 +53,7 @@ const ProductDetailPage = () => {
     };
     console.log(data);
     await editData(data);
-    navigate(-1);
+    // navigate(-1);
     //queryClient.invalidateQueries('productDetail');
   };
   useEffect(() => {
@@ -123,7 +123,12 @@ const ProductDetailPage = () => {
           </HashTagWrap>
         </div>
         <div>
-          <TagTitle>썸네일 정보 등록</TagTitle>
+          <TagTitle>이미지 등록</TagTitle>
+          <div>기존이미지</div>
+          <ImageWrap>
+            <img src={listData?.foodImage} alt="기존이미지" />
+          </ImageWrap>
+          <div>새로운이미지</div>
           <ItemDetailImage />
         </div>
         <ModifyButtonWrap>
@@ -174,4 +179,14 @@ const ModifyButton = styled.div`
   font-weight: 600;
   color: white;
   cursor: pointer;
+`;
+
+const ImageWrap = styled.div`
+  display: flex;
+
+  img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
 `;
