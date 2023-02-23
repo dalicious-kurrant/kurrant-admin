@@ -1,5 +1,7 @@
 // import {CRUDAvaliableList} from 'data/CRUDAvaliableList';
 
+import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
+
 // export const isCRUDAvaliable = pathname => {
 //   return CRUDAvaliableList.map(value => `/main/${value}`).includes(pathname);
 // };
@@ -47,4 +49,51 @@ export const idsToDelete = checkboxStatus => {
   });
 
   return returnIdsToDelete;
+};
+
+export const clickButtonBundle = (
+  buttonStatus,
+  fieldsToOpen,
+  data,
+  checkboxStatus,
+  setDataToEdit,
+
+  setRegisterStatus,
+  setShowRegister,
+  deleteMutate,
+) => {
+  numberOfTrues({...checkboxStatus});
+
+  if (buttonStatus === 'register') {
+    setDataToEdit(makeInitialInput(fieldsToOpen));
+    setRegisterStatus(buttonStatus);
+    setShowRegister(true);
+  } else if (buttonStatus === 'edit') {
+    if (numberOfTrues({...checkboxStatus}) === 0) {
+      window.confirm(
+        "아래의 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
+      );
+    } else if (numberOfTrues({...checkboxStatus}) !== 1) {
+      window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
+    } else if (numberOfTrues({...checkboxStatus}) === 1) {
+      setDataToEdit(checkedValue(checkboxStatus, data));
+      setRegisterStatus(buttonStatus);
+      setShowRegister(true);
+    }
+  } else if (buttonStatus === 'delete') {
+    if (numberOfTrues === 0) {
+      window.confirm(
+        "아래의 리스트중에 체크박스를 눌러 수정할 리스트를 '하나만' 선택해주세요.",
+      );
+      return;
+    }
+
+    if (window.confirm('삭제하시겠습니까?')) {
+      idsToDelete({...checkboxStatus}).forEach(value => {
+        deleteMutate(value);
+      });
+    } else {
+      return;
+    }
+  }
 };

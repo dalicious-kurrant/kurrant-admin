@@ -1,30 +1,23 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
-import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
 import Register from 'common/CRUD/Register/Register';
 import useMutate from 'common/CRUD/useMutate';
-
 import {TableCheckboxStatusAtom} from 'common/Table/store';
-
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
-
 import {exelSpotAtom} from 'utils/store';
-
 import useModal from '../../../hooks/useModal';
 import {
   BtnWrapper,
   PageWrapper,
   TableWrapper,
 } from '../../../style/common.style';
-import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
-
+import {clickButtonBundle} from '../Logics/Logics';
 import {SpotInfoDataAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import CustomTable from '../../../common/Table/CustomTable';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
-
 import useSpotInfoData from './useSpotInfoData';
 import {sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
@@ -71,40 +64,16 @@ const SpotInfo = () => {
   );
 
   const handleBundleClick = buttonStatus => {
-    numberOfTrues({...checkboxStatus});
-
-    if (buttonStatus === 'register') {
-      setDataToEdit(makeInitialInput(SpotInfoFieldsToOpen));
-      setRegisterStatus(buttonStatus);
-      setShowRegister(true);
-    } else if (buttonStatus === 'edit') {
-      if (numberOfTrues({...checkboxStatus}) === 0) {
-        window.confirm(
-          "아래의 리스트중에 체크박스를 눌러 수정할 기업을 '하나만' 선택해주세요.",
-        );
-      } else if (numberOfTrues({...checkboxStatus}) !== 1) {
-        window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
-      } else if (numberOfTrues({...checkboxStatus}) === 1) {
-        setDataToEdit(checkedValue(checkboxStatus, spotInfoData));
-        setRegisterStatus(buttonStatus);
-        setShowRegister(true);
-      }
-    } else if (buttonStatus === 'delete') {
-      if (numberOfTrues === 0) {
-        window.confirm(
-          "아래의 리스트중에 체크박스를 눌러 수정할 리스트를 '하나만' 선택해주세요.",
-        );
-        return;
-      }
-
-      if (window.confirm('삭제하시겠습니까?')) {
-        idsToDelete({...checkboxStatus}).forEach(value => {
-          deleteMutate(value);
-        });
-      } else {
-        return;
-      }
-    }
+    clickButtonBundle(
+      buttonStatus,
+      SpotInfoFieldsToOpen,
+      spotInfoData,
+      checkboxStatus,
+      setDataToEdit,
+      setRegisterStatus,
+      setShowRegister,
+      deleteMutate,
+    );
   };
 
   const handleClose = () => {
