@@ -157,7 +157,7 @@ const Common = () => {
       return productExel(product);
     }
     if (exelProduct && exelProduct.length > 0) {
-      return productExelExport(exelProduct);
+      return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
     }
   };
 
@@ -173,7 +173,7 @@ const Common = () => {
       </C.Bread>
       {noNeedButton && (
         <C.BtnWrapper>
-          <Button color="green" icon="save" content="저장(미완)" />
+          <Button color="green" icon="save" content="엑셀저장(미완)" />
           {/* <Button icon="history" content="히스토리" /> */}
           <Button.Group>
             <Button
