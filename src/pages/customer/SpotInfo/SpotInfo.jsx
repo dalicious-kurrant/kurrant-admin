@@ -26,6 +26,9 @@ import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
 
 import useSpotInfoData from './useSpotInfoData';
+import {sendFinal} from './SpotInfoLogics';
+import {useMutation, useQueryClient} from 'react-query';
+import instance from 'shared/axios';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
@@ -40,6 +43,8 @@ const SpotInfo = () => {
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
+  const queryClient = useQueryClient();
+
   // const {status, isLoading} = useSpotInfoQuery();
   const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
@@ -47,6 +52,22 @@ const SpotInfo = () => {
     `clients/spot/all`,
     // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
     localStorage.getItem('token'),
+  );
+
+  const {mutate: sendFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.post(`users`, todo);
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getSpotInfoJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
   );
 
   const handleBundleClick = buttonStatus => {
@@ -98,6 +119,36 @@ const SpotInfo = () => {
       setCheckboxStatus({});
     };
   }, []);
+
+  // const sendFinal = () => {
+  //   const oldData = [...customerData];
+
+  //   const newData = oldData.map(value => {
+  //     let yo = {};
+
+  //     yo['userId'] = handleFalsyValue(value.email);
+  //     yo['password'] = handleFalsyValue(value.password);
+  //     yo['name'] = handleFalsyValue(value.name);
+  //     yo['email'] = handleFalsyValue(value.email);
+  //     yo['phone'] = handleFalsyValue(value.phone);
+  //     yo['role'] = handleFalsyValue(value.role);
+
+  //     return yo;
+  //   });
+
+  //   const newData2 = {
+  //     userList: newData,
+  //   };
+
+  //   if (
+  //     window.confirm(
+  //       '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+  //     )
+  //   ) {
+  //     sendFinalMutate(newData2);
+  //   } else {
+  //   }
+  // };
 
   if (isLoading)
     return (
@@ -227,6 +278,9 @@ const SpotInfo = () => {
             <CRUDBundle
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
+              sendFinal={() => {
+                sendFinal(spotInfoData, sendFinalMutate);
+              }}
             />
 
             {showRegister && (

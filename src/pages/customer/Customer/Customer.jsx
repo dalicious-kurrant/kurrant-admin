@@ -24,6 +24,7 @@ import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
+import {sendFinal} from './CustomerLogics';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -108,62 +109,60 @@ const Customer = () => {
     };
   }, []);
 
-  const sendFinal = () => {
-    const oldData = [...customerData];
+  // const sendFinal = () => {
+  //   const oldData = [...customerData];
 
-    const newData = oldData.map(value => {
-      let yo = {};
+  //   const newData = oldData.map(value => {
+  //     let yo = {};
 
-      // yo['userId'] = handleFalsyValue(value.id);
-      yo['userId'] = handleFalsyValue(value.email);
-      // yo['password'] = handleFalsyValue(value.password);
-      yo['password'] = handleFalsyValue(value.password);
-      yo['name'] = handleFalsyValue(value.name);
-      yo['email'] = handleFalsyValue(value.email);
-      yo['phone'] = handleFalsyValue(value.phone);
-      // yo['phone'] = `010-6565-1181`;
-      yo['role'] = handleFalsyValue(value.role);
+  //     // yo['userId'] = handleFalsyValue(value.id);
+  //     yo['userId'] = handleFalsyValue(value.email);
+  //     // yo['password'] = handleFalsyValue(value.password);
+  //     yo['password'] = handleFalsyValue(value.password);
+  //     yo['name'] = handleFalsyValue(value.name);
+  //     yo['email'] = handleFalsyValue(value.email);
+  //     yo['phone'] = handleFalsyValue(value.phone);
+  //     // yo['phone'] = `010-6565-1181`;
+  //     yo['role'] = handleFalsyValue(value.role);
 
-      return yo;
-    });
+  //     return yo;
+  //   });
 
-    const newData2 = {
-      userList: newData,
-    };
+  //   const newData2 = {
+  //     userList: newData,
+  //   };
 
-    console.log(newData2);
-
-    // console.log(customerData);
-
-    if (
-      window.confirm(
-        '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
-      )
-    ) {
-      sendFinalMutate(newData2);
-    } else {
-    }
-  };
-
-  // if (isLoading)
-  //   return (
-  //     <>
-  //       {' '}
-  //       <div>로딩중입니다..</div>{' '}
-  //     </>
-  //   );
-
-  // if (status === 'error')
-  //   return (
-  //     <div>
-  //       에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-  //       있어요
-  //     </div>
-  //   );
+  //   if (
+  //     window.confirm(
+  //       '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+  //     )
+  //   ) {
+  //     sendFinalMutate(newData2);
+  //   } else {
+  //   }
+  // };
 
   useEffect(() => {
-    console.log(dataToEdit);
-  }, [dataToEdit]);
+    return () => {
+      setCheckboxStatus({});
+    };
+  }, []);
+
+  if (isLoading)
+    return (
+      <>
+        {' '}
+        <div>로딩중입니다..</div>{' '}
+      </>
+    );
+
+  if (status === 'error')
+    return (
+      <div>
+        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
+        있어요
+      </div>
+    );
 
   return (
     <PageWrapper>
@@ -175,7 +174,9 @@ const Customer = () => {
         <CRUDBundle
           handleBundleClick={handleBundleClick}
           showRegister={showRegister}
-          sendFinal={sendFinal}
+          sendFinal={() => {
+            sendFinal(customerData, sendFinalMutate);
+          }}
         />
 
         {showRegister && (
