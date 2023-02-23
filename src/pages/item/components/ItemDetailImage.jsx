@@ -1,14 +1,10 @@
 import {useImageUpload} from 'hooks/useProductsList';
-import {useAtom} from 'jotai';
-import {useCallback, useRef, useState} from 'react';
-import {Label} from 'semantic-ui-react';
+import {useRef, useState} from 'react';
 import styled from 'styled-components';
-import {productImageAtom} from 'utils/store';
 
-const ItemDetailImage = () => {
+const ItemDetailImage = ({sendForm, setSendForm}) => {
   const [showImages, setShowImages] = useState([]); // 미리보기
   const [imgData, setImgData] = useState([]); // formData
-  const {mutateAsync: imageUpload} = useImageUpload();
 
   const imgRef = useRef(null);
 
@@ -31,38 +27,31 @@ const ItemDetailImage = () => {
       reader.readAsDataURL(file);
     }
   };
-  console.log(imgData);
-  console.log(showImages, '98977');
 
-  const onSubmit = async e => {
+  const updateContent = async e => {
     const files = e.target.files;
 
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('multipartFiles', files[i]);
-    }
+    // const formData = new FormData();
+    // for (let i = 0; i < files.length; i++) {
+    //   formData.append('multipartFiles', files[i]);
+    // }
 
-    const config = {
-      headers: {'Content-Type': 'multipart/form-data'},
-    };
-
-    if (files) {
-      //   await imageUpload(formData, config);
-      //   handleAddImages()
-    }
+    setSendForm(files);
   };
 
   return (
-    <div>
-      <Label content="이미지 업로드" color="blue" htmlFor="inputTag" />
-      <label htmlFor="inputTag">이미지 업로드</label>
+    <Wrapper>
+      <Label htmlFor="inputTag">이미지 업로드</Label>
       <Input
         id="inputTag"
         type="file"
         accept="image/*"
         multiple="multiple"
         ref={imgRef}
-        onChange={e => handleImageUpload(e)}
+        onChange={e => {
+          handleImageUpload(e);
+          updateContent(e);
+        }}
       />
       <Wrap>
         {showImages.map((el, i) => {
@@ -73,12 +62,15 @@ const ItemDetailImage = () => {
           );
         })}
       </Wrap>
-    </div>
+    </Wrapper>
   );
 };
 
 export default ItemDetailImage;
 
+const Wrapper = styled.div`
+  margin-top: 50px;
+`;
 const Wrap = styled.div`
   display: flex;
 `;
@@ -93,4 +85,11 @@ const ImgWrap = styled.div`
 
 const Input = styled.input`
   display: none;
+`;
+
+const Label = styled.label`
+  background-color: skyblue;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
 `;
