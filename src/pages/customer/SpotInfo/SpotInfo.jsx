@@ -8,7 +8,6 @@ import {TableCheckboxStatusAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 
-import {useLocation} from 'react-router';
 import {exelSpotAtom} from 'utils/store';
 
 import useModal from '../../../hooks/useModal';
@@ -21,8 +20,7 @@ import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 
 import {SpotInfoDataAtom} from './store';
-import useMutate from './useMutate';
-import useSpotInfoQuery from './useSpotInfoQuery';
+
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import CustomTable from '../../../common/Table/CustomTable';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';

@@ -99,6 +99,7 @@ const CustomTable = ({
             dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
               let yo = [];
+
               keyOfTableFieldsInput.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
                   yo.push(value1[value2]);
@@ -118,11 +119,13 @@ const CustomTable = ({
                     />
                   </CheckBoxTd>
 
-                  {yo.map((value3, index3) => (
-                    <td align="left" key={index3}>
-                      {handleFalsyValue(value3)}
-                    </td>
-                  ))}
+                  {yo.map((value3, index3) => {
+                    return (
+                      <td align="left" key={index3}>
+                        {handleFalsyValue(value3)}
+                      </td>
+                    );
+                  })}
 
                   {!!isMemo && (
                     <td className="memo">

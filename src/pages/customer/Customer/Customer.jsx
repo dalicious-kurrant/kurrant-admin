@@ -9,6 +9,8 @@ import Register from 'common/CRUD/Register/Register';
 import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 
+// import Table
+
 import {
   BtnWrapper,
   PageWrapper,
@@ -17,9 +19,12 @@ import {
 
 import {CustomerDataAtom} from './store';
 
-import Table from 'common/Table/Table';
 import useGetDataQuery from 'hooks/useGetDataQuery';
 import useCustomerData from './useCustomerData';
+import CustomTable from 'common/Table/CustomTable';
+import {useMutation, useQueryClient} from 'react-query';
+import axios from 'axios';
+import instance from 'shared/axios';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -27,6 +32,24 @@ const Customer = () => {
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
   const [registerStatus, setRegisterStatus] = useState('register');
+
+  const queryClient = useQueryClient();
+
+  const {mutate: sendFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.post(`users/all`, todo);
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
@@ -36,7 +59,6 @@ const Customer = () => {
     ['getCustomerJSON'],
     CustomerDataAtom,
     'users/all',
-    // `${process.env.REACT_APP_JSON_SERVER}/customer`,
     token,
   );
 
@@ -87,6 +109,10 @@ const Customer = () => {
     };
   }, []);
 
+  const sendFinal = () => {
+    sendFinalMutate(customerData);
+  };
+
   // if (isLoading)
   //   return (
   //     <>
@@ -113,6 +139,7 @@ const Customer = () => {
         <CRUDBundle
           handleBundleClick={handleBundleClick}
           showRegister={showRegister}
+          sendFinal={sendFinal}
         />
 
         {showRegister && (
@@ -130,7 +157,7 @@ const Customer = () => {
 
       <TableWrapper>
         {!!customerData && customerData.length !== 0 && (
-          <Table
+          <CustomTable
             fieldsInput={CustomerFieldsToOpen}
             dataInput={customerData}
             // isMemo={true}

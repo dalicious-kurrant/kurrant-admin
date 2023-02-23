@@ -1,6 +1,8 @@
+import {useAtom} from 'jotai';
+import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import styled from 'styled-components';
 
-const CRUDBundle = ({handleBundleClick, showRegister}) => {
+const CRUDBundle = ({handleBundleClick, showRegister, sendFinal}) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
       if (showRegister) {
@@ -13,7 +15,7 @@ const CRUDBundle = ({handleBundleClick, showRegister}) => {
   };
 
   const handleSend = () => {
-    console.log('최종적용하기');
+    sendFinal();
   };
 
   return (
