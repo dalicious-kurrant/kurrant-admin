@@ -9,6 +9,8 @@ import Register from 'common/CRUD/Register/Register';
 import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 
+// import Table
+
 import {
   BtnWrapper,
   PageWrapper,
@@ -17,9 +19,14 @@ import {
 
 import {CustomerDataAtom} from './store';
 
-import Table from 'common/Table/Table';
-import useGetDataQuery from 'hooks/useGetDataQuery';
+import {handleFalsyValue} from 'utils/valueHandlingLogics';
+
 import useCustomerData from './useCustomerData';
+
+import {useMutation, useQueryClient} from 'react-query';
+
+import instance from 'shared/axios';
+import CustomTable from 'common/Table/CustomTable';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -27,6 +34,24 @@ const Customer = () => {
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
   const [registerStatus, setRegisterStatus] = useState('register');
+
+  const queryClient = useQueryClient();
+
+  const {mutate: sendFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.post(`users`, todo);
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
@@ -36,7 +61,6 @@ const Customer = () => {
     ['getCustomerJSON'],
     CustomerDataAtom,
     'users/all',
-    // `${process.env.REACT_APP_JSON_SERVER}/customer`,
     token,
   );
 
@@ -55,7 +79,7 @@ const Customer = () => {
       } else if (numberOfTrues({...checkboxStatus}) !== 1) {
         window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
       } else if (numberOfTrues({...checkboxStatus}) === 1) {
-        setDataToEdit(checkedValue(checkboxStatus, CustomerFieldsData));
+        setDataToEdit(checkedValue(checkboxStatus, customerData));
         setRegisterStatus(buttonStatus);
         setShowRegister(true);
       }
@@ -87,6 +111,44 @@ const Customer = () => {
     };
   }, []);
 
+  const sendFinal = () => {
+    const oldData = [...customerData];
+
+    const newData = oldData.map(value => {
+      let yo = {};
+
+      // yo['userId'] = handleFalsyValue(value.id);
+      // yo['userId'] = handleFalsyValue(value.email);
+      yo['userId'] = 123;
+      // yo['password'] = handleFalsyValue(value.password);
+      yo['password'] = handleFalsyValue(value.password);
+      yo['name'] = handleFalsyValue(value.name);
+      yo['email'] = handleFalsyValue(value.email);
+      yo['phone'] = handleFalsyValue(value.phone);
+      // yo['phone'] = `010-6565-1181`;
+      yo['role'] = handleFalsyValue(value.role);
+
+      return yo;
+    });
+
+    const newData2 = {
+      userList: newData,
+    };
+
+    console.log(newData2);
+
+    // console.log(customerData);
+
+    if (
+      window.confirm(
+        '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+      )
+    ) {
+      sendFinalMutate(newData2);
+    } else {
+    }
+  };
+
   // if (isLoading)
   //   return (
   //     <>
@@ -113,6 +175,7 @@ const Customer = () => {
         <CRUDBundle
           handleBundleClick={handleBundleClick}
           showRegister={showRegister}
+          sendFinal={sendFinal}
         />
 
         {showRegister && (
@@ -130,7 +193,7 @@ const Customer = () => {
 
       <TableWrapper>
         {!!customerData && customerData.length !== 0 && (
-          <Table
+          <CustomTable
             fieldsInput={CustomerFieldsToOpen}
             dataInput={customerData}
             // isMemo={true}
