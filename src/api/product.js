@@ -6,4 +6,6 @@ export const productApis = {
     await instance.get(`foods?foodId=${foodId}&makersId=${makersId}`),
   modifyProductDetail: async data => await instance.put('foods', data),
   deleteProduct: async data => await instance.delete('/foods', data),
+  imageUpload: async (formData, config) =>
+    await instance.post('admins/files/images', formData, config),
 };

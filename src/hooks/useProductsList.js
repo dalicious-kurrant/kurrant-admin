@@ -1,4 +1,6 @@
+import {useAtom} from 'jotai';
 import {useMutation, useQuery} from 'react-query';
+import {productImageAtom} from 'utils/store';
 import {productApis} from '../api/product';
 
 export function useGetAllProductsList() {
@@ -24,4 +26,17 @@ export function useDeleteProductList() {
     console.log(data, '2323');
     return productApis.deleteProduct(data);
   });
+}
+
+export function useImageUpload() {
+  const [, setImage] = useAtom(productImageAtom);
+  return useMutation(
+    (formData, config) => productApis.imageUpload(formData, config),
+    {
+      onSuccess: res => {
+        // setImage()
+        console.log(res, '0000');
+      },
+    },
+  );
 }
