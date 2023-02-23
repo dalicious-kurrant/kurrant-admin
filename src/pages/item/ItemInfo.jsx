@@ -27,7 +27,7 @@ const ItemInfo = () => {
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  console.log(checkItems);
+
   const checkId = (e, id) => {
     e.stopPropagation();
     console.log(id, '11');

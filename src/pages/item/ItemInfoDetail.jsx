@@ -11,6 +11,7 @@ import {
   useEditProductDetail,
   useGetDetailProductsList,
 } from '../../hooks/useProductsList';
+import ItemDetailImage from './components/ItemDetailImage';
 
 const ProductDetailPage = () => {
   const location = useLocation();
@@ -121,6 +122,10 @@ const ProductDetailPage = () => {
             <HashTag clicked={clicked} setClicked={setClicked} />
           </HashTagWrap>
         </div>
+        <div>
+          <TagTitle>썸네일 정보 등록</TagTitle>
+          <ItemDetailImage />
+        </div>
         <ModifyButtonWrap>
           <ModifyButton onClick={modifyButton}>수정하기</ModifyButton>
         </ModifyButtonWrap>
@@ -154,8 +159,7 @@ const TagTitle = styled.div`
 
 const HashTagWrap = styled.div`
   width: 100%;
-
-  padding-right: 40px;
+  //padding-right: 40px;
 `;
 const ModifyButtonWrap = styled.div`
   display: flex;
