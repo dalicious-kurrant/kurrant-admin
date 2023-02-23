@@ -4,7 +4,7 @@ import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 
-const useGetDataQuery = (
+const useSpotInfoData = (
   uniqueQueryKey,
   atom,
   url,
@@ -54,4 +54,4 @@ const useGetDataQuery = (
   };
 };
 
-export default useGetDataQuery;
+export default useSpotInfoData;

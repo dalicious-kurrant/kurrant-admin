@@ -9,8 +9,6 @@ import Table from 'common/Table/Table';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 
-import useDataGetQuery from 'hooks/useGetDataQuery';
-
 import useModal from '../../../hooks/useModal';
 import {
   BtnWrapper,
@@ -21,6 +19,8 @@ import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 
 import {SpotInfoDataAtom} from './store';
+import useText from '../Customer/text';
+import useSpotInfoData from './useSpotInfoData';
 
 const SpotInfo = () => {
   const {onActive} = useModal();
@@ -35,10 +35,12 @@ const SpotInfo = () => {
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
   // const {status, isLoading} = useSpotInfoQuery();
-  const {status, isLoading} = useDataGetQuery(
+  const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
     SpotInfoDataAtom,
-    `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+    `clients/spot/all`,
+    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+    localStorage.getItem('token'),
   );
 
   const handleBundleClick = buttonStatus => {

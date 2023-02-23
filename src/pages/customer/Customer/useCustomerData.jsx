@@ -4,7 +4,7 @@ import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 
-const useGetDataQuery = (
+const useCustomerData = (
   uniqueQueryKey,
   atom,
   url,
@@ -31,8 +31,8 @@ const useGetDataQuery = (
             // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
           );
           console.log('hi');
-          console.log(response.data);
-          return response.data;
+          console.log(response.data.items);
+          return response.data.items;
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);
@@ -54,4 +54,4 @@ const useGetDataQuery = (
   };
 };
 
-export default useGetDataQuery;
+export default useCustomerData;

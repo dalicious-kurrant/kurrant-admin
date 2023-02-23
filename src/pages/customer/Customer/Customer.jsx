@@ -18,11 +18,11 @@ import {
 import {CustomerDataAtom} from './store';
 
 import Table from 'common/Table/Table';
-import useDataGetQuery from 'hooks/useGetDataQuery';
+import useGetDataQuery from 'hooks/useGetDataQuery';
+import useCustomerData from './useCustomerData';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
-
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
@@ -30,10 +30,14 @@ const Customer = () => {
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
-  const {status, isLoading} = useDataGetQuery(
+  const token = localStorage.getItem('token');
+
+  const {status, isLoading} = useCustomerData(
     ['getCustomerJSON'],
     CustomerDataAtom,
-    `${process.env.REACT_APP_JSON_SERVER}/customer`,
+    'users/all',
+    // `${process.env.REACT_APP_JSON_SERVER}/customer`,
+    token,
   );
 
   const handleBundleClick = buttonStatus => {
@@ -83,21 +87,21 @@ const Customer = () => {
     };
   }, []);
 
-  if (isLoading)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
+  // if (isLoading)
+  //   return (
+  //     <>
+  //       {' '}
+  //       <div>로딩중입니다..</div>{' '}
+  //     </>
+  //   );
 
-  if (status === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  // if (status === 'error')
+  //   return (
+  //     <div>
+  //       에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
+  //       있어요
+  //     </div>
+  //   );
 
   return (
     <PageWrapper>
@@ -106,9 +110,6 @@ const Customer = () => {
       </BtnWrapper>
 
       <div>
-        {/* {isCRUDAvaliable(pathname) && (
-        
-      )} */}
         <CRUDBundle
           handleBundleClick={handleBundleClick}
           showRegister={showRegister}
