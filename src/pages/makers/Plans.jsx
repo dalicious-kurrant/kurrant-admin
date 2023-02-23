@@ -198,7 +198,7 @@ const Plans = () => {
         }),
       );
     }
-    if (!plan && reCommandPlan) {
+    if (!exelPlan && !plan && reCommandPlan) {
       setCount(
         reCommandPlan.map((v, i) => {
           let num = 0;
@@ -211,7 +211,7 @@ const Plans = () => {
         }),
       );
     }
-  }, [plan, reCommandPlan]);
+  }, [exelPlan, plan, reCommandPlan]);
   return (
     <PageWrapper>
       <Wrapper>

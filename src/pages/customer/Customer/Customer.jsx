@@ -17,9 +17,9 @@ import {
 
 import {CustomerDataAtom} from './store';
 
-import Table from 'common/Table/Table';
 import useGetDataQuery from 'hooks/useGetDataQuery';
 import useCustomerData from './useCustomerData';
+import CustomTable from 'common/Table/CustomTable';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -130,7 +130,7 @@ const Customer = () => {
 
       <TableWrapper>
         {!!customerData && customerData.length !== 0 && (
-          <Table
+          <CustomTable
             fieldsInput={CustomerFieldsToOpen}
             dataInput={customerData}
             // isMemo={true}

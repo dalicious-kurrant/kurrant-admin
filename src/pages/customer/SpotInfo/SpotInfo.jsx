@@ -21,7 +21,6 @@ import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
 import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 
 import {SpotInfoDataAtom} from './store';
-import useMutate from './useMutate';
 import useSpotInfoQuery from './useSpotInfoQuery';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 import CustomTable from '../../../common/Table/CustomTable';
