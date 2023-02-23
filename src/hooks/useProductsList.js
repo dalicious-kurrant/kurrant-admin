@@ -1,5 +1,5 @@
 import {useAtom} from 'jotai';
-import {useMutation, useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {productImageAtom} from 'utils/store';
 import {productApis} from '../api/product';
 
@@ -29,14 +29,23 @@ export function useDeleteProductList() {
 }
 
 export function useImageUpload() {
-  const [, setImage] = useAtom(productImageAtom);
+  const [imgData, setImgData] = useAtom(productImageAtom);
   return useMutation(
     (formData, config) => productApis.imageUpload(formData, config),
     {
       onSuccess: res => {
-        // setImage()
+        setImgData(res.data);
         console.log(res, '0000');
       },
     },
   );
+}
+
+export function useEditProductStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(data => productApis.editProductStatus(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('allList');
+    },
+  });
 }

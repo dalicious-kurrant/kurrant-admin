@@ -12,6 +12,7 @@ import {
   exelStaticAtom,
   spotAtom,
   exelSpotAtom,
+  shopInfoDetailIdAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -78,6 +79,7 @@ const Common = () => {
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
+  const [id] = useAtom(shopInfoDetailIdAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -103,6 +105,7 @@ const Common = () => {
 
       const reader = new FileReader();
       reader.onload = e => {
+        console.log(e.target.result);
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array', cellDates: true});
         const sheetName = workbook.SheetNames[0];
@@ -124,6 +127,7 @@ const Common = () => {
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
+          console.log(json, 'json');
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -149,7 +153,9 @@ const Common = () => {
   };
 
   const noNeedButton =
-    pathname !== '/sales/schedule' && pathname !== '/order/info';
+    pathname !== '/sales/schedule' &&
+    pathname !== '/order/info' &&
+    pathname !== `/shop/info/detail/${id}`;
 
   return (
     <C.Wrapper>

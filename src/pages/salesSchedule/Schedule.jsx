@@ -141,8 +141,8 @@ const Schedule = () => {
                 return el.foods.filter(v => v.foodId === s.foodId)[0];
               });
               return (
-                <div>
-                  <Table key={el.serviceDate + el.diningType + i}>
+                <div key={el.serviceDate + el.diningType + i}>
+                  <Table>
                     <Table.Header>
                       <Table.Row>
                         <Table.HeaderCell style={{whiteSpace: 'nowrap'}}>

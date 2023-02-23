@@ -8,4 +8,5 @@ export const productApis = {
   deleteProduct: async data => await instance.delete('/foods', data),
   imageUpload: async (formData, config) =>
     await instance.post('admins/files/images', formData, config),
+  editProductStatus: async data => await instance.post('foods/status', data),
 };
