@@ -30,8 +30,7 @@ const useSpotInfoData = (
             url,
             // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
           );
-          console.log('hi');
-          console.log(response.data);
+
           return response.data;
         }
       : async ({queryKey}) => {

@@ -546,3 +546,14 @@ userUpdatedDateTime: '2023-02-22, 06:10:41';
     appleEmail: null,
   })
 ];
+
+[
+  {
+    userId: 123,
+    password: '패스워드',
+    name: '이름',
+    email: '이메일',
+    phone: '전화번호',
+    role: '롤',
+  },
+];

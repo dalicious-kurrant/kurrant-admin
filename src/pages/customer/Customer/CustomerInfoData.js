@@ -1,10 +1,12 @@
 export const CustomerFieldsToOpen = {
-  userId: '아이디',
+  // id: '아이디이이',
+  // userId: '아이디',
+  email: '이메일',
   password: '비밀번호',
   userName: '사용자 명',
   role: '유저타입(0: 일반, 1: 관리자)',
   phone: '폰 번호',
-  email: '이메일',
+
   groupName: '그룹이름',
   point: '보유 포인트',
   gourmetType: '미식가 타입',
@@ -23,9 +25,18 @@ export const CustomerFieldsToOpen = {
 };
 
 export const CustomerFieldsData = [
+  // {
+  //   fieldName: 'userId',
+  //   fieldNameKor: '아이디',
+  //   placeholder: '',
+  //   maxCharLength: 20,
+  //   flex: 1,
+  //   width: undefined,
+  // },
+
   {
-    fieldName: 'userId',
-    fieldNameKor: '아이디',
+    fieldName: 'email',
+    fieldNameKor: '이메일',
     placeholder: '',
     maxCharLength: 20,
     flex: 1,
@@ -62,15 +73,6 @@ export const CustomerFieldsData = [
   {
     fieldName: 'phone',
     fieldNameKor: '폰 번호',
-    placeholder: '',
-    maxCharLength: 20,
-    flex: 1,
-    width: undefined,
-  },
-
-  {
-    fieldName: 'email',
-    fieldNameKor: '이메일',
     placeholder: '',
     maxCharLength: 20,
     flex: 1,

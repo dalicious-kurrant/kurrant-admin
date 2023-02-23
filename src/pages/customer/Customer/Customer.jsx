@@ -19,11 +19,12 @@ import {
 
 import {CustomerDataAtom} from './store';
 
-import useGetDataQuery from 'hooks/useGetDataQuery';
+import {handleFalsyValue} from 'utils/valueHandlingLogics';
+
 import useCustomerData from './useCustomerData';
 import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
-import axios from 'axios';
+
 import instance from 'shared/axios';
 
 const Customer = () => {
@@ -37,7 +38,7 @@ const Customer = () => {
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
-      const response = await instance.post(`users/all`, todo);
+      const response = await instance.post(`users`, todo);
       return response;
     },
     {
@@ -77,7 +78,7 @@ const Customer = () => {
       } else if (numberOfTrues({...checkboxStatus}) !== 1) {
         window.confirm("체크박스가 '하나만' 선택되어 있는지 확인해주세요 ");
       } else if (numberOfTrues({...checkboxStatus}) === 1) {
-        setDataToEdit(checkedValue(checkboxStatus, CustomerFieldsData));
+        setDataToEdit(checkedValue(checkboxStatus, customerData));
         setRegisterStatus(buttonStatus);
         setShowRegister(true);
       }
@@ -110,7 +111,40 @@ const Customer = () => {
   }, []);
 
   const sendFinal = () => {
-    sendFinalMutate(customerData);
+    const oldData = [...customerData];
+
+    const newData = oldData.map(value => {
+      let yo = {};
+
+      // yo['userId'] = handleFalsyValue(value.id);
+      yo['userId'] = 1234;
+      // yo['password'] = handleFalsyValue(value.password);
+      yo['password'] = '1234';
+      yo['name'] = handleFalsyValue(value.name);
+      yo['email'] = handleFalsyValue(value.email);
+      yo['phone'] = handleFalsyValue(value.phone);
+      // yo['phone'] = `010-6565-1181`;
+      yo['role'] = handleFalsyValue(value.role);
+
+      return yo;
+    });
+
+    const newData2 = {
+      userList: newData,
+    };
+
+    console.log(newData2);
+
+    // console.log(customerData);
+
+    if (
+      window.confirm(
+        '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+      )
+    ) {
+      sendFinalMutate(newData2);
+    } else {
+    }
   };
 
   // if (isLoading)
@@ -128,6 +162,10 @@ const Customer = () => {
   //       있어요
   //     </div>
   //   );
+
+  useEffect(() => {
+    console.log(dataToEdit);
+  }, [dataToEdit]);
 
   return (
     <PageWrapper>
