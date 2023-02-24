@@ -21,7 +21,7 @@ import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
-import {sendFinal} from './CustomerLogics';
+import {sendDelete, sendFinal} from './CustomerLogics';
 import usePagination from 'common/test/Pagination/usePagination';
 import Pagination from 'common/test/Pagination/Pagination';
 import PaginationTest from './PaginationTest';
@@ -74,12 +74,12 @@ const Customer = () => {
 
   const token = localStorage.getItem('token');
 
-  // const {status, isLoading} = useCustomerData(
-  //   ['getCustomerJSON'],
-  //   CustomerDataAtom,
-  //   'users/all',
-  //   token,
-  // );
+  const {status, isLoading} = useCustomerData(
+    ['getCustomerJSON'],
+    CustomerDataAtom,
+    'users/all',
+    token,
+  );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -113,12 +113,12 @@ const Customer = () => {
 
   // 2. 백엔드에 있는 데이터의 총 길이
 
-  const [page, setPage] = useState(12);
-  const [limit, setLimit] = useState(1);
+  // const [page, setPage] = useState(12);
+  // const [limit, setLimit] = useState(1);
 
-  PaginationTest(page, limit);
+  // PaginationTest(page, limit);
 
-  const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
+  // const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
 
   return (
     <PageWrapper>
@@ -151,7 +151,7 @@ const Customer = () => {
         )}
       </div>
 
-      <div>
+      {/* <div>
         <Pagination
           pageList={totalPageArray}
           page={page}
@@ -161,7 +161,7 @@ const Customer = () => {
           lastPage={totalPageByLimit}
           selectOptionArray={[1, 2, 4, 10]}
         />
-      </div>
+      </div> */}
 
       <TableWrapper>
         {!!customerData && customerData.length !== 0 && (
