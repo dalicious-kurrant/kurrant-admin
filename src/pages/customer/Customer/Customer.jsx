@@ -22,6 +22,8 @@ import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
 import {sendFinal} from './CustomerLogics';
+import usePagination from 'test/Pagination/usePagination';
+import Pagination from 'test/Pagination/Pagination';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -86,21 +88,25 @@ const Customer = () => {
     console.log(customerData);
   }, [customerData]);
 
-  if (isLoading)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
+  // 페이지네이션
 
-  if (status === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  const MockData = [
+    {
+      id: 1,
+      userName: 'name',
+      info: 'info',
+    },
+    {
+      id: 2,
+      userName: 'name2',
+      info: 'info2',
+    },
+  ];
+
+  const [page, setPage] = useState(19);
+  const [limit, setLimit] = useState(1);
+
+  const {totalPageArray} = usePagination(20, limit, page);
 
   return (
     <PageWrapper>
@@ -128,6 +134,10 @@ const Customer = () => {
             fieldsData={CustomerFieldsData}
           />
         )}
+      </div>
+
+      <div>
+        <Pagination pageList={totalPageArray} page={page} />
       </div>
 
       <TableWrapper>
