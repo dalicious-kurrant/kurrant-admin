@@ -22,6 +22,10 @@ import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
 import {sendFinal} from './CustomerLogics';
+import {exelUserAtom} from 'utils/store';
+import {Checkbox, Table} from 'semantic-ui-react';
+import styled from 'styled-components';
+import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -29,12 +33,16 @@ const Customer = () => {
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
   const [registerStatus, setRegisterStatus] = useState('register');
-
+  const [key, setKey] = useState([]);
+  const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const queryClient = useQueryClient();
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
       const response = await instance.post(`users`, todo);
+
+      console.log(todo);
+
       return response;
     },
     {
@@ -75,6 +83,9 @@ const Customer = () => {
   const handleClose = () => {
     setShowRegister(false);
   };
+  useEffect(() => {
+    if (exelUser) setKey(Object.keys(exelUser[0]));
+  }, [exelUser]);
 
   useEffect(() => {
     return () => {
@@ -82,11 +93,9 @@ const Customer = () => {
     };
   }, []);
 
-  useEffect(() => {
-    return () => {
-      setCheckboxStatus({});
-    };
-  }, []);
+  // useEffect(() => {
+  //   console.log(customerData);
+  // }, [customerData]);
 
   if (isLoading)
     return (
@@ -105,45 +114,127 @@ const Customer = () => {
     );
 
   return (
-    <PageWrapper>
-      <BtnWrapper>
-        {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
-      </BtnWrapper>
+    <>
+      {exelUser ? (
+        <PageWrapper>
+          <TableWrapper>
+            <Table celled>
+              {/* {console.log(plan)} */}
+              {exelUser &&
+                exelUser.map((p, i) => {
+                  const HeaderData = Object.values(p);
 
-      <div>
-        <CRUDBundle
-          handleBundleClick={handleBundleClick}
-          showRegister={showRegister}
-          sendFinal={() => {
-            sendFinal(customerData, sendFinalMutate);
-          }}
-        />
+                  if (i === 0) {
+                    console.log(HeaderData, '123');
+                    return (
+                      <Table.Header key={'0' + i}>
+                        <Table.Row>
+                          {/* <Table.HeaderCell>체크박스</Table.HeaderCell> */}
 
-        {showRegister && (
-          <Register
-            registerStatus={registerStatus}
-            submitMutate={submitMutate}
-            editMutate={editMutate}
-            handleClose={handleClose}
-            data={dataToEdit}
-            fieldsToOpen={CustomerFieldsToOpen}
-            fieldsData={CustomerFieldsData}
-          />
-        )}
-      </div>
+                          {HeaderData.map((h, k) => {
+                            return (
+                              <Table.HeaderCell key={'0' + p.id + k}>
+                                {h}
+                              </Table.HeaderCell>
+                            );
+                          })}
+                        </Table.Row>
+                      </Table.Header>
+                    );
+                  } else {
+                    console.log(p);
+                    return (
+                      <Table.Body key={i}>
+                        <Table.Row>
+                          {key &&
+                            key.map((k, l) => {
+                              console.log(p[k], 'test');
+                              if (
+                                k === 'breakfastDeliveryTime' ||
+                                k === 'dinnerDeliveryTime' ||
+                                k === 'lunchDeliveryTime'
+                              ) {
+                                return (
+                                  <Table.Cell key={k + l}>
+                                    <FlexBox>
+                                      {typeof p[k] === 'object'
+                                        ? formattedTime(p[k])
+                                        : '-'}
+                                    </FlexBox>
+                                  </Table.Cell>
+                                );
+                              }
+                              if (
+                                k === 'createDateTime' ||
+                                k === 'updatedDateTime'
+                              ) {
+                                return (
+                                  <Table.Cell key={k + l}>
+                                    <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
+                                  </Table.Cell>
+                                );
+                              }
+                              return (
+                                <Table.Cell key={`${i}` + l}>
+                                  <FlexBox>{p[k]}</FlexBox>
+                                </Table.Cell>
+                              );
+                            })}
+                        </Table.Row>
+                      </Table.Body>
+                    );
+                  }
+                })}
+            </Table>
+          </TableWrapper>
+        </PageWrapper>
+      ) : (
+        <PageWrapper>
+          <BtnWrapper>
+            {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
+          </BtnWrapper>
 
-      <TableWrapper>
-        {!!customerData && customerData.length !== 0 && (
-          <CustomTable
-            fieldsInput={CustomerFieldsToOpen}
-            dataInput={customerData}
-            // isMemo={true}
-            // handleChange={}
-          />
-        )}
-      </TableWrapper>
-    </PageWrapper>
+          <div>
+            <CRUDBundle
+              handleBundleClick={handleBundleClick}
+              showRegister={showRegister}
+              sendFinal={() => {
+                sendFinal(customerData, sendFinalMutate, checkboxStatus);
+              }}
+            />
+
+            {showRegister && (
+              <Register
+                registerStatus={registerStatus}
+                submitMutate={submitMutate}
+                editMutate={editMutate}
+                handleClose={handleClose}
+                data={dataToEdit}
+                fieldsToOpen={CustomerFieldsToOpen}
+                fieldsData={CustomerFieldsData}
+              />
+            )}
+          </div>
+
+          <TableWrapper>
+            {!!customerData && customerData.length !== 0 && (
+              <CustomTable
+                fieldsInput={CustomerFieldsToOpen}
+                dataInput={customerData}
+                // isMemo={true}
+                // handleChange={}
+              />
+            )}
+          </TableWrapper>
+        </PageWrapper>
+      )}
+    </>
   );
 };
 
 export default Customer;
+
+const FlexBox = styled.div`
+  display: flex;
+  white-space: nowrap;
+`;

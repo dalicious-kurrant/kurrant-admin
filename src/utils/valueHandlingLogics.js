@@ -1,4 +1,4 @@
-export const handleFalsyValue = value => {
+export const handleFalsyValueToString = value => {
   if (typeof value === 'string') {
     return value;
   } else if (typeof value === 'number') {
@@ -13,6 +13,42 @@ export const handleFalsyValue = value => {
     return '';
   } else {
     return '-';
+  }
+};
+
+export const handleFalsyValueToHyphen = value => {
+  if (typeof value === 'string') {
+    return value;
+  } else if (typeof value === 'number') {
+    return value;
+  } else if (typeof value === 'undefined') {
+    return '-';
+  } else if (typeof value === 'null') {
+    return '-';
+  } else if (value === false) {
+    return 'false';
+  } else if (value === '') {
+    return '-';
+  } else {
+    return '-';
+  }
+};
+
+export const handleFalsyValueToBlank = value => {
+  if (typeof value === 'string') {
+    return value;
+  } else if (typeof value === 'number') {
+    return value;
+  } else if (typeof value === 'undefined') {
+    return '';
+  } else if (typeof value === 'null') {
+    return '';
+  } else if (value === false) {
+    return '';
+  } else if (value === '') {
+    return '';
+  } else {
+    return '';
   }
 };
 

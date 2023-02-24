@@ -38,7 +38,6 @@ const SpotInfo = () => {
 
   const queryClient = useQueryClient();
 
-  // const {status, isLoading} = useSpotInfoQuery();
   const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
     SpotInfoDataAtom,

@@ -1,20 +1,57 @@
-import {handleFalsyValue} from 'utils/valueHandlingLogics';
+import {removeParentKeyInCheckbox} from 'common/Table/Logics';
+import {
+  handleFalsyValueToBlank,
+  handleFalsyValueToString,
+} from 'utils/valueHandlingLogics';
 
-export const sendFinal = (data, sendFinalMutate) => {
-  const oldData = [...data];
+export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
+  const checkboxStatusNow = {...removeParentKeyInCheckbox(checkboxStatus)};
 
-  const newData = oldData.map(value => {
+  let selectedData = [];
+
+  Object.entries(checkboxStatusNow).forEach(value => {
+    if (value[1] === true) {
+      selectedData.push(value[0]);
+    }
+  });
+
+  let finalLaunch = [];
+
+  data.map(value => {
+    if (selectedData.includes(value.id.toString())) {
+      finalLaunch.push(value);
+    }
+  });
+
+  // console.log(finalLaunch);
+
+  const newData = finalLaunch.map(value => {
     let yo = {};
 
-    // yo['userId'] = handleFalsyValue(value.id);
-    yo['userId'] = handleFalsyValue(value.email);
-    // yo['password'] = handleFalsyValue(value.password);
-    yo['password'] = handleFalsyValue(value.password);
-    yo['name'] = handleFalsyValue(value.name);
-    yo['email'] = handleFalsyValue(value.email);
-    yo['phone'] = handleFalsyValue(value.phone);
-    // yo['phone'] = `010-6565-1181`;
-    yo['role'] = handleFalsyValue(value.role);
+    // 우선 아래의 항목만 수정가능하게 만듬
+
+    // yo['userId'] = handleFalsyValueToBlank(value.email);
+
+    // '유저타입' 값 치환하기
+
+    let roleValue = '';
+    if (value.role === 'USER') {
+      roleValue = '일반';
+    } else if (value.role === 'MANAGER') {
+      roleValue = '관리자';
+    } else if (value.role === '일반' || value.role === '관리자') {
+      roleValue = value.role;
+    } else {
+      window.confirm("유저타입의 값은 '일반' 아니면 '관리자'로 해주세요");
+      return;
+    }
+
+    yo['userId'] = parseInt(value.id);
+    yo['password'] = handleFalsyValueToBlank(value.password);
+    yo['name'] = handleFalsyValueToBlank(value.userName);
+    yo['email'] = handleFalsyValueToBlank(value.email);
+    yo['phone'] = handleFalsyValueToBlank(value.phone);
+    yo['role'] = roleValue;
 
     return yo;
   });
@@ -25,10 +62,11 @@ export const sendFinal = (data, sendFinalMutate) => {
 
   if (
     window.confirm(
-      '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+      '기존에 있던 데이터가 아래의 테이블에 있는 데이터로 변경됩니다 진행하시겠습니까?',
     )
   ) {
     sendFinalMutate(newData2);
   } else {
+    return;
   }
 };

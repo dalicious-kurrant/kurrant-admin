@@ -1,7 +1,5 @@
-import {useAtom} from 'jotai';
-import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import styled from 'styled-components';
-
+import {Button} from 'semantic-ui-react';
 const CRUDBundle = ({handleBundleClick, showRegister, sendFinal}) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
@@ -21,18 +19,29 @@ const CRUDBundle = ({handleBundleClick, showRegister, sendFinal}) => {
   return (
     <Container>
       <Wrap>
-        <Button id="register" onClick={handleClick}>
-          추가 열기
-        </Button>
-        <Button id="edit" onClick={handleClick}>
-          수정 열기
-        </Button>
-        <Button id="delete" onClick={handleClick}>
-          삭제 하기
-        </Button>
+        <Button.Group>
+          <BtnWrap>
+            <Button id="register" color="green" inverted onClick={handleClick}>
+              추가 열기
+            </Button>
+          </BtnWrap>
 
+          <BtnWrap>
+            <Button id="edit" color="blue" inverted onClick={handleClick}>
+              수정 열기
+            </Button>
+          </BtnWrap>
+
+          <BtnWrap>
+            <Button id="delete" inverted color="red" onClick={handleClick}>
+              삭제하기
+            </Button>
+          </BtnWrap>
+        </Button.Group>
         <Wrap2>
-          <Button onClick={handleSend}>최종적용하기</Button>
+          <Button.Group>
+            <Button onClick={handleSend}>최종적용하기</Button>
+          </Button.Group>
         </Wrap2>
       </Wrap>
     </Container>
@@ -45,14 +54,20 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row-reverse;
+  margin-bottom: 20px;
+
   /* border: 1px solid black; */
 `;
 
-const Wrap = styled.div``;
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-const Wrap2 = styled.div``;
+const Wrap2 = styled.div`
+  margin: 0.2rem;
+`;
 
-const Button = styled.button`
-  font-size: 1.2rem;
-  margin: 0.6rem;
+const BtnWrap = styled.div`
+  margin: 0.4rem 0.2rem;
 `;

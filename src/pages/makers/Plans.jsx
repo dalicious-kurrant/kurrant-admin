@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import {
   formattedDate,
   formattedDateAndTime,
-  formattedDateType,
   formattedFullDate,
   formattedTime,
   formattedWeekDate,
@@ -268,13 +267,9 @@ const Plans = () => {
       <ContentWrapper>
         <BtnWrapper>
           <CallWrapper>
-            <Button
-              color="blue"
-              content="식사요청"
-              onClick={callPostCalendar}
-            />
             {/* <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} /> */}
             <DatePickerBox>
+              <Label>마감날짜</Label>
               <DatePicker
                 selected={startDate}
                 onChange={date => setStartDate(date)}
@@ -284,6 +279,11 @@ const Plans = () => {
                 customInput={<SelectDatePicker />}
               />
             </DatePickerBox>
+            <Button
+              color="blue"
+              content="식사요청"
+              onClick={callPostCalendar}
+            />
           </CallWrapper>
         </BtnWrapper>
 
@@ -442,15 +442,15 @@ const DeadLineWrapper = styled.div`
 `;
 const CallWrapper = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-end;
+  gap: 20px;
 `;
 const DatePickerBox = styled.div`
   display: flex;
-  align-items: center;
   cursor: pointer;
-  justify-content: space-between;
+  align-items: flex-start;
   width: 200px;
+  flex-direction: column;
 `;
 const RecoDatePickerBox = styled.div`
   display: flex;

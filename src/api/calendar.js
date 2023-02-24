@@ -6,7 +6,7 @@ export const calendarApis = {
   getDailyFood: async (size, page, makersId, groupId, status) =>
     await instance.get(`schedules/all`, {
       params: {
-        size: size,
+        limit: size,
         page: page,
         makersId: makersId.join(','),
         groupId: groupId.join(','),
@@ -26,7 +26,7 @@ export const calendarApis = {
       params: {
         startDate: startDate,
         endDate: endDate,
-        size: size,
+        limit: size,
         page: page,
         makersId: makersId.join(','),
         groupId: groupId.join(','),

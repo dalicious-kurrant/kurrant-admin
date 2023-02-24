@@ -33,6 +33,7 @@ import {
   formattedTime,
 } from 'utils/dateFormatter';
 import {usePostPresetCalendar} from 'hooks/useCalendars';
+import {useSaveUserData} from 'hooks/useUserData';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -87,6 +88,7 @@ const Common = () => {
   const [spot, setSpot] = useAtom(spotAtom);
   const [startDate, setStartDate] = useAtom(deadlineAtom);
   const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
+  const {mutateAsync: saveUserData} = useSaveUserData();
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
@@ -224,7 +226,33 @@ const Common = () => {
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
-
+  const handlerSaveUser = async () => {
+    const result = exelUser.map((v, i) => {
+      if (i !== 0) {
+        return {
+          role:
+            v.role === 'USER'
+              ? '일반'
+              : v.role === 'MANAGER'
+              ? '관리자'
+              : '일반',
+          password: v.password,
+          name: v.userName,
+          email: v.email,
+          phone: v.phone,
+          userId: v.id,
+        };
+      }
+    });
+    const req = result.filter(element => {
+      return element !== undefined && element !== null && element !== '';
+    });
+    await saveUserData({
+      userList: req,
+    });
+    alert('저장 되었습니다.');
+    window.location.reload();
+  };
   const onDownloadFile = async () => {
     if (plan && plan.length > 0) {
       return planExel(plan);
@@ -233,20 +261,23 @@ const Common = () => {
       return planExelExport(
         exelPlan,
         '메이커스 일정 관리',
-        '메이커스_일정_관리.xlsx',
+        '메이커스 일정 관리.xlsx',
       );
     }
     if (reCommandPlan && reCommandPlan.length > 0) {
       return planExel(reCommandPlan);
     }
     if (exelSpot && exelSpot.length > 0) {
-      return planExelExport(exelSpot, '고객 스팟 공지', '고객_스팟_공지.xlsx');
+      return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
     }
     if (product?.data && product?.data?.length > 0) {
       return productExel(product);
     }
     if (exelProduct && exelProduct.length > 0) {
       return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
+    }
+    if (exelUser && exelUser.length > 0) {
+      return planExelExport(exelSpot, '유저 정보', '유저 정보.xlsx');
     }
   };
 
@@ -265,10 +296,13 @@ const Common = () => {
           <Button
             color="green"
             icon="save"
-            content="저장(미완)"
+            content="저장"
             onClick={() => {
               if (plan || exelPlan || reCommandPlan) {
                 callPostCalendar();
+              }
+              if (exelUser) {
+                handlerSaveUser();
               }
             }}
           />

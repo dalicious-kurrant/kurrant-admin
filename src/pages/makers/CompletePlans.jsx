@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import {
   formattedDate,
   formattedDateAndTime,
-  formattedDateType,
   formattedFullDate,
   formattedTime,
   formattedWeekDate,
@@ -32,6 +31,7 @@ import {
 } from 'hooks/useCalendars';
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {QueryClient} from 'react-query';
+import CustomPlanTable from './components/CustomPlanTable';
 const options = [
   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
   {key: '커런트', text: '커런트', value: '커런트'},
@@ -235,11 +235,7 @@ const CompletePlans = () => {
     <PageWrapper>
       <Wrapper>
         <DeadLineWrapper>
-          <Button
-            color="blue"
-            content="추천 가져오기"
-            onClick={recommandData}
-          />
+          <Label color="blue">날짜선택</Label>
           <RecoDatePickerContainer>
             <RecoDatePickerBox>
               <DatePicker
@@ -265,7 +261,7 @@ const CompletePlans = () => {
           </RecoDatePickerContainer>
         </DeadLineWrapper>
       </Wrapper>
-      <ContentWrapper>
+      {/* <ContentWrapper>
         <BtnWrapper>
           <CallWrapper>
             <Button
@@ -273,7 +269,7 @@ const CompletePlans = () => {
               content="식사요청"
               onClick={callPostCalendar}
             />
-            {/* <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} /> */}
+            <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} />
             <DatePickerBox>
               <DatePicker
                 selected={startDate}
@@ -311,11 +307,11 @@ const CompletePlans = () => {
             </AccessDate>
           </AccessBox>
         </BtnWrapper>
-      </ContentWrapper>
+      </ContentWrapper> */}
       <FilterContainer>
         <FilterBox>
           <DropBox>
-            <Label>메이커스</Label>
+            <Label color="teal">메이커스</Label>
             <Dropdown
               placeholder="메이커스"
               fluid
@@ -329,7 +325,7 @@ const CompletePlans = () => {
             />
           </DropBox>
           <DropBox>
-            <Label>고객사</Label>
+            <Label color="orange">고객사</Label>
             <Dropdown
               placeholder="고객사"
               fluid
@@ -342,7 +338,7 @@ const CompletePlans = () => {
               }}
             />
           </DropBox>
-          <DropBox>
+          {/* <DropBox>
             <Label>다이닝별 승인 상태</Label>
             <Dropdown
               placeholder="다이닝별 승인 상태"
@@ -355,7 +351,7 @@ const CompletePlans = () => {
                 setSelectDiningStatus(data.value);
               }}
             />
-          </DropBox>
+          </DropBox> */}
         </FilterBox>
         {totalPage > 0 && (
           <PagenationBox>
@@ -373,24 +369,10 @@ const CompletePlans = () => {
       {exelPlan && <PlanExelTable />}
       {plan && (
         <>
-          <PlanTable count={count} testData={plan} setTestData={setPlan} />
-        </>
-      )}
-      {reCommandPlan && (
-        <>
-          <PagenationBox>
-            <Pagination
-              defaultActivePage={page}
-              totalPages={totalPage}
-              onPageChange={(e, data) => {
-                console.log(data.activePage);
-              }}
-            />
-          </PagenationBox>
-          <PlanTable
+          <CustomPlanTable
             count={count}
-            testData={reCommandPlan}
-            setTestData={setReCommandPlan}
+            testData={plan}
+            setTestData={setPlan}
           />
         </>
       )}
@@ -458,7 +440,6 @@ const RecoDatePickerBox = styled.div`
   cursor: pointer;
   justify-content: space-between;
   width: 100px;
-  margin-top: 10px;
 `;
 const RecoDatePickerContainer = styled.div`
   display: flex;
