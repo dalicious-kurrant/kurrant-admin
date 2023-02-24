@@ -47,7 +47,7 @@ const optionsDiningStatus = [
 ];
 
 // 메이커스 정보 페이지
-const Plans = () => {
+const CompletePlans = () => {
   const {onActive} = useModal();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [exelStatic, setStaticPlan] = useAtom(exelStaticAtom);
@@ -398,7 +398,7 @@ const Plans = () => {
   );
 };
 
-export default Plans;
+export default CompletePlans;
 const PagenationBox = styled.div`
   display: flex;
   justify-content: center;

@@ -14,6 +14,8 @@ import {
   exelSpotAtom,
   shopInfoDetailIdAtom,
   recommandPlanAtom,
+  deadlineAtom,
+  exelUserAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -24,6 +26,13 @@ import {
   productExel,
   productExelExport,
 } from '../utils/downloadExel/exel';
+import {scheduleFormatted2} from 'utils/statusFormatter';
+import {
+  formattedDate,
+  formattedFullDate,
+  formattedTime,
+} from 'utils/dateFormatter';
+import {usePostPresetCalendar} from 'hooks/useCalendars';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -76,7 +85,10 @@ const Common = () => {
   const [plan, setPlan] = useAtom(planAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [spot, setSpot] = useAtom(spotAtom);
+  const [startDate, setStartDate] = useAtom(deadlineAtom);
+  const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
@@ -90,7 +102,83 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
-
+  const callPostCalendar = async () => {
+    const reqArray = [];
+    if (plan) {
+      const req = plan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
+    }
+    if (reCommandPlan) {
+      reCommandPlan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
+    }
+    if (exelPlan) {
+      exelPlan.map((makers, i) => {
+        if (i !== 0) {
+          const result = {
+            makersName: makers.makersName,
+            makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+            serviceDate: formattedDate(makers.serviceDate, '-'),
+            diningType: makers.diningType,
+            makersCapacity: makers.makersCapacity,
+            pickupTime: formattedTime(makers.pickupTime),
+            groupName: makers.clientName,
+            groupCapacity: makers.clientCapacity,
+            foodScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+            foodName: makers.foodName,
+            foodStatus: makers.foodStatus,
+            foodCapacity: makers.foodCapacity,
+          };
+          reqArray.push(result);
+        }
+      });
+    }
+    console.log(reqArray);
+    await postPresetCalendar({
+      deadline: formattedFullDate(startDate, '-'),
+      excelDataList: [...reqArray],
+    });
+    alert('저장 되었습니다.');
+    window.location.reload();
+  };
   const onUploadFile = async e => {
     if (!e.target.files) {
       return;
@@ -104,6 +192,7 @@ const Common = () => {
       setPlan();
       setSpot();
       setExelSpot();
+      setExelUser();
       setReCommandPlan();
       const reader = new FileReader();
       reader.onload = e => {
@@ -122,14 +211,14 @@ const Common = () => {
           setExelStaticPlan(json);
         }
         if (sheetName === '고객 스팟 공지') {
-          // console.log(typeof json);
-          console.log(json);
-          // localStorage.setItem('sponInfo', JSON.stringify(json));
           setExelSpot(json);
+        }
+        if (sheetName === '유저 정보') {
+          console.log(json);
+          setExelUser(json);
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
-          console.log(json, 'json');
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -173,7 +262,16 @@ const Common = () => {
       </C.Bread>
       {noNeedButton && (
         <C.BtnWrapper>
-          <Button color="green" icon="save" content="엑셀저장(미완)" />
+          <Button
+            color="green"
+            icon="save"
+            content="저장(미완)"
+            onClick={() => {
+              if (plan || exelPlan || reCommandPlan) {
+                callPostCalendar();
+              }
+            }}
+          />
           {/* <Button icon="history" content="히스토리" /> */}
           <Button.Group>
             <Button
