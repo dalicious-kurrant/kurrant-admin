@@ -31,8 +31,8 @@ const useCustomerData = (
             // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
           );
           // console.log('hi');
-          // console.log(response.data.items);
-          return response.data.items;
+          console.log(response.data);
+          return response.data;
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);
