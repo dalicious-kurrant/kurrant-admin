@@ -32,17 +32,29 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
 
     // yo['userId'] = handleFalsyValueToBlank(value.email);
 
+    // '유저타입' 값 치환하기
+
+    let roleValue = '';
+    if (value.role === 'USER') {
+      roleValue = '일반';
+    } else if (value.role === 'MANAGER') {
+      roleValue = '관리자';
+    } else if (value.role === '일반' || value.role === '관리자') {
+      roleValue = value.role;
+    } else {
+      window.confirm("유저타입의 값은 '일반' 아니면 '관리자'로 해주세요");
+      return;
+    }
+
     yo['userId'] = parseInt(value.id);
     yo['password'] = handleFalsyValueToBlank(value.password);
     yo['name'] = handleFalsyValueToBlank(value.userName);
     yo['email'] = handleFalsyValueToBlank(value.email);
     yo['phone'] = handleFalsyValueToBlank(value.phone);
-    yo['role'] = handleFalsyValueToString(value.role);
+    yo['role'] = roleValue;
 
     return yo;
   });
-
-  console.log(newData);
 
   const newData2 = {
     userList: finalLaunch,
@@ -55,5 +67,6 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
   ) {
     sendFinalMutate(newData2);
   } else {
+    return;
   }
 };
