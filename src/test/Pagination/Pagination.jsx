@@ -40,10 +40,6 @@ const Pagination = ({
     }
   };
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
-
   return (
     <Container>
       <ButtonWrap>

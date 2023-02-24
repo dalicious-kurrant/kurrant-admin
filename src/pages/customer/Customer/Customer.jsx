@@ -24,6 +24,7 @@ import instance from 'shared/axios';
 import {sendFinal} from './CustomerLogics';
 import usePagination from 'test/Pagination/usePagination';
 import Pagination from 'test/Pagination/Pagination';
+import PaginationTest from './PaginationTest';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -54,12 +55,12 @@ const Customer = () => {
 
   const token = localStorage.getItem('token');
 
-  const {status, isLoading} = useCustomerData(
-    ['getCustomerJSON'],
-    CustomerDataAtom,
-    'users/all',
-    token,
-  );
+  // const {status, isLoading} = useCustomerData(
+  //   ['getCustomerJSON'],
+  //   CustomerDataAtom,
+  //   'users/all',
+  //   token,
+  // );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -102,7 +103,13 @@ const Customer = () => {
   const [page, setPage] = useState(12);
   const [limit, setLimit] = useState(1);
 
-  const {totalPageArray, totalPageByLimit} = usePagination(31, limit, page);
+  PaginationTest(page, limit);
+
+  const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
+
+  useEffect(() => {
+    console.log(customerData);
+  }, [customerData]);
 
   return (
     <PageWrapper>
