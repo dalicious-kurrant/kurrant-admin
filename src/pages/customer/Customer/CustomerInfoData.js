@@ -64,7 +64,7 @@ export const CustomerFieldsData = [
   {
     fieldName: 'role',
     fieldNameKor: '유저타입(0: 일반, 1: 관리자)',
-    placeholder: '',
+    placeholder: "'일반'아니면 '관리자'로 입력 ",
     maxCharLength: 20,
     flex: 1,
     width: undefined,

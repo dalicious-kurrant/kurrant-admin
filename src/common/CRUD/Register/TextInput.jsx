@@ -93,7 +93,7 @@ const TextInputInput = styled.input`
   height: 5.8rem;
 
   &::placeholder {
-    color: ${props => props.theme.colors.Grey05};
+    color: ${props => props.theme.colors.grey[5]};
   }
 
   padding: 0 1rem;

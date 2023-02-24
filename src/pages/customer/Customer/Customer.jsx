@@ -21,7 +21,7 @@ import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
-import {sendFinal} from './CustomerLogics';
+import {sendDelete, sendFinal} from './CustomerLogics';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -35,6 +35,24 @@ const Customer = () => {
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
       const response = await instance.post(`users`, todo);
+
+      console.log(todo);
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
+  const {mutate: deleteFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.patch(`client/members`, todo);
 
       console.log(todo);
 
@@ -117,6 +135,9 @@ const Customer = () => {
           showRegister={showRegister}
           sendFinal={() => {
             sendFinal(customerData, sendFinalMutate, checkboxStatus);
+          }}
+          sendDelete={() => {
+            sendDelete(deleteFinalMutate, checkboxStatus);
           }}
         />
 

@@ -1,4 +1,7 @@
-import {removeParentKeyInCheckbox} from 'common/Table/Logics';
+import {
+  extractOnlyTruesNumberArray,
+  removeParentKeyInCheckbox,
+} from 'common/Table/Logics';
 import {
   handleFalsyValueToBlank,
   handleFalsyValueToString,
@@ -66,6 +69,23 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
     )
   ) {
     sendFinalMutate(newData2);
+  } else {
+    return;
+  }
+};
+
+export const sendDelete = (deleteFinalMutate, checkboxStatus) => {
+  // console.log(deleteFinalMutate);
+  // console.log(checkboxStatus)
+  console.log(extractOnlyTruesNumberArray(checkboxStatus));
+
+  const submitData = {
+    useIdList: extractOnlyTruesNumberArray(checkboxStatus),
+    groupId: 1,
+  };
+
+  if (window.confirm('정보가 삭제됩니다 진행하시겠습니까?')) {
+    deleteFinalMutate(submitData);
   } else {
     return;
   }
