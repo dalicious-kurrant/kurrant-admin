@@ -26,6 +26,8 @@ import {exelUserAtom} from 'utils/store';
 import {Checkbox, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
+import {sendDelete, sendFinal} from './CustomerLogics';
+
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -40,6 +42,22 @@ const Customer = () => {
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
       const response = await instance.post(`users`, todo);
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
+  const {mutate: deleteFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.patch(`client/members`, todo);
 
       console.log(todo);
 
@@ -229,6 +247,7 @@ const Customer = () => {
         </PageWrapper>
       )}
     </>
+
   );
 };
 

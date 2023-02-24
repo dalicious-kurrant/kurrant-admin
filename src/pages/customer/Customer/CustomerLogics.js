@@ -1,4 +1,7 @@
-import {removeParentKeyInCheckbox} from 'common/Table/Logics';
+import {
+  extractOnlyTruesNumberArray,
+  removeParentKeyInCheckbox,
+} from 'common/Table/Logics';
 import {
   handleFalsyValueToBlank,
   handleFalsyValueToString,
@@ -69,4 +72,40 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
   } else {
     return;
   }
+};
+
+export const sendDelete = (deleteFinalMutate, checkboxStatus) => {
+  // console.log(deleteFinalMutate);
+  // console.log(checkboxStatus)
+  console.log(extractOnlyTruesNumberArray(checkboxStatus));
+
+  const submitData = {
+    useIdList: extractOnlyTruesNumberArray(checkboxStatus),
+    groupId: 1,
+  };
+
+  if (window.confirm('정보가 삭제됩니다 진행하시겠습니까?')) {
+    deleteFinalMutate(submitData);
+  } else {
+    return;
+  }
+};
+
+// 유저타입 USER -> 일반 , MANAGER -> 관리자
+
+export const shiftUserType = customerData => {
+  const shifted = [...customerData];
+
+  const shiftedData = shifted.map(value => {
+    if (value.role === 'USER') {
+      value.role = '일반';
+    } else if (value.role === 'MANAGER') {
+      value.role = '관리자';
+    } else if (value.role === 'GUEST') {
+      value.role = '게스트';
+    }
+    return value;
+  });
+
+  return shiftedData;
 };
