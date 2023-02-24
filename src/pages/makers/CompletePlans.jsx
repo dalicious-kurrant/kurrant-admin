@@ -31,6 +31,7 @@ import {
 } from 'hooks/useCalendars';
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {QueryClient} from 'react-query';
+import CustomPlanTable from './components/CustomPlanTable';
 const options = [
   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
   {key: '커런트', text: '커런트', value: '커런트'},
@@ -46,7 +47,7 @@ const optionsDiningStatus = [
 ];
 
 // 메이커스 정보 페이지
-const Plans = () => {
+const CompletePlans = () => {
   const {onActive} = useModal();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [exelStatic, setStaticPlan] = useAtom(exelStaticAtom);
@@ -234,11 +235,7 @@ const Plans = () => {
     <PageWrapper>
       <Wrapper>
         <DeadLineWrapper>
-          <Button
-            color="blue"
-            content="추천 가져오기"
-            onClick={recommandData}
-          />
+          <Label color="blue">날짜선택</Label>
           <RecoDatePickerContainer>
             <RecoDatePickerBox>
               <DatePicker
@@ -264,12 +261,16 @@ const Plans = () => {
           </RecoDatePickerContainer>
         </DeadLineWrapper>
       </Wrapper>
-      <ContentWrapper>
+      {/* <ContentWrapper>
         <BtnWrapper>
           <CallWrapper>
-            {/* <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} /> */}
+            <Button
+              color="blue"
+              content="식사요청"
+              onClick={callPostCalendar}
+            />
+            <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} />
             <DatePickerBox>
-              <Label>마감날짜</Label>
               <DatePicker
                 selected={startDate}
                 onChange={date => setStartDate(date)}
@@ -279,11 +280,6 @@ const Plans = () => {
                 customInput={<SelectDatePicker />}
               />
             </DatePickerBox>
-            <Button
-              color="blue"
-              content="식사요청"
-              onClick={callPostCalendar}
-            />
           </CallWrapper>
         </BtnWrapper>
 
@@ -311,11 +307,11 @@ const Plans = () => {
             </AccessDate>
           </AccessBox>
         </BtnWrapper>
-      </ContentWrapper>
+      </ContentWrapper> */}
       <FilterContainer>
         <FilterBox>
           <DropBox>
-            <Label>메이커스</Label>
+            <Label color="teal">메이커스</Label>
             <Dropdown
               placeholder="메이커스"
               fluid
@@ -329,7 +325,7 @@ const Plans = () => {
             />
           </DropBox>
           <DropBox>
-            <Label>고객사</Label>
+            <Label color="orange">고객사</Label>
             <Dropdown
               placeholder="고객사"
               fluid
@@ -342,7 +338,7 @@ const Plans = () => {
               }}
             />
           </DropBox>
-          <DropBox>
+          {/* <DropBox>
             <Label>다이닝별 승인 상태</Label>
             <Dropdown
               placeholder="다이닝별 승인 상태"
@@ -355,7 +351,7 @@ const Plans = () => {
                 setSelectDiningStatus(data.value);
               }}
             />
-          </DropBox>
+          </DropBox> */}
         </FilterBox>
         {totalPage > 0 && (
           <PagenationBox>
@@ -373,24 +369,10 @@ const Plans = () => {
       {exelPlan && <PlanExelTable />}
       {plan && (
         <>
-          <PlanTable count={count} testData={plan} setTestData={setPlan} />
-        </>
-      )}
-      {reCommandPlan && (
-        <>
-          <PagenationBox>
-            <Pagination
-              defaultActivePage={page}
-              totalPages={totalPage}
-              onPageChange={(e, data) => {
-                console.log(data.activePage);
-              }}
-            />
-          </PagenationBox>
-          <PlanTable
+          <CustomPlanTable
             count={count}
-            testData={reCommandPlan}
-            setTestData={setReCommandPlan}
+            testData={plan}
+            setTestData={setPlan}
           />
         </>
       )}
@@ -398,7 +380,7 @@ const Plans = () => {
   );
 };
 
-export default Plans;
+export default CompletePlans;
 const PagenationBox = styled.div`
   display: flex;
   justify-content: center;
@@ -442,15 +424,15 @@ const DeadLineWrapper = styled.div`
 `;
 const CallWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
-  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
 const DatePickerBox = styled.div`
   display: flex;
+  align-items: center;
   cursor: pointer;
-  align-items: flex-start;
+  justify-content: space-between;
   width: 200px;
-  flex-direction: column;
 `;
 const RecoDatePickerBox = styled.div`
   display: flex;
@@ -458,7 +440,6 @@ const RecoDatePickerBox = styled.div`
   cursor: pointer;
   justify-content: space-between;
   width: 100px;
-  margin-top: 10px;
 `;
 const RecoDatePickerContainer = styled.div`
   display: flex;
