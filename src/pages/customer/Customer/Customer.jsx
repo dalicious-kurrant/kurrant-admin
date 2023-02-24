@@ -35,6 +35,9 @@ const Customer = () => {
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
       const response = await instance.post(`users`, todo);
+
+      console.log(todo);
+
       return response;
     },
     {
@@ -82,9 +85,9 @@ const Customer = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(customerData);
-  }, [customerData]);
+  // useEffect(() => {
+  //   console.log(customerData);
+  // }, [customerData]);
 
   if (isLoading)
     return (

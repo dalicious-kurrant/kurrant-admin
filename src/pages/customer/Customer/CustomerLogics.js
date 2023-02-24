@@ -57,7 +57,7 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
   });
 
   const newData2 = {
-    userList: finalLaunch,
+    userList: newData,
   };
 
   if (
