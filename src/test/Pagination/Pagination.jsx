@@ -17,17 +17,13 @@ const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
     e.preventDefault();
     const id = e.target.id;
 
-    console.log(calculatePageMove(id, page, lastPage));
-
     setPage(calculatePageMove(id, page, lastPage));
 
-    // console.log(calculatePageMove(id, page, lastPage));
-    // console.log(calculatePageMove(id, page, lastPage));
-    // if (id === 'move-back') {
-    //   setPage(prev => prev - 1);
-    // } else if (id === 'move-forward') {
-    //   setPage(prev => prev + 1);
-    // }
+    if (id === 'first') {
+      setPage(1);
+    } else if (id === 'last') {
+      setPage(lastPage);
+    }
   };
 
   useEffect(() => {
@@ -37,7 +33,13 @@ const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
   return (
     <Container>
       <ButtonWrap>
-        <Button id="">{'<<'}</Button>
+        <Button
+          id="first"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
+          {'<<'}
+        </Button>
         <Button
           id="move-back"
           onClick={e => {
@@ -70,7 +72,13 @@ const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
           {'>'}
         </Button>
 
-        <Button>{'>>'}</Button>
+        <Button
+          id="last"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
+          {'>>'}
+        </Button>
       </ButtonWrap>
       <Wrap>
         {/* <DataLimitSelect

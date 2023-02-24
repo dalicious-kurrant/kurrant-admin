@@ -106,7 +106,7 @@ const Customer = () => {
   const [page, setPage] = useState(12);
   const [limit, setLimit] = useState(1);
 
-  const {totalPageArray} = usePagination(19, limit, page);
+  const {totalPageArray} = usePagination(31, limit, page);
 
   return (
     <PageWrapper>
@@ -142,7 +142,7 @@ const Customer = () => {
           page={page}
           setPage={setPage}
           setLimit={setLimit}
-          lastPage={19}
+          lastPage={31}
         />
       </div>
 
