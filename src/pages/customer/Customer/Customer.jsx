@@ -26,8 +26,6 @@ import {exelUserAtom} from 'utils/store';
 import {Checkbox, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
-import {sendDelete, sendFinal} from './CustomerLogics';
-
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -247,7 +245,6 @@ const Customer = () => {
         </PageWrapper>
       )}
     </>
-
   );
 };
 
