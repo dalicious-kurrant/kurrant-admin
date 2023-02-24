@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import styled from 'styled-components';
 import {calculatePageMove} from './PaginationLogics';
 
@@ -17,7 +18,21 @@ const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
     const id = e.target.id;
 
     console.log(calculatePageMove(id, page, lastPage));
+
+    setPage(calculatePageMove(id, page, lastPage));
+
+    // console.log(calculatePageMove(id, page, lastPage));
+    // console.log(calculatePageMove(id, page, lastPage));
+    // if (id === 'move-back') {
+    //   setPage(prev => prev - 1);
+    // } else if (id === 'move-forward') {
+    //   setPage(prev => prev + 1);
+    // }
   };
+
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
 
   return (
     <Container>

@@ -42,6 +42,9 @@ export const calculatePageButtons = (pageNow, totalPages) => {
 };
 
 export const calculatePageMove = (direction, page, lastPage) => {
+  // console.log(page);
+  // console.log(lastPage);
+
   if (direction !== 'move-forward' && direction !== 'move-back') {
     console.log('에러: 함수의 첫번째 파라메타 값이 이상합니다 ');
     return;
@@ -61,15 +64,20 @@ export const calculatePageMove = (direction, page, lastPage) => {
       return result;
     }
   } else if (direction === 'move-back') {
+    // console.log('page ' + page);
+
+    if (page === 10) {
+      return 1;
+    }
+
     const tens = Math.floor((page - 1) / 10);
     const result = tens * 10;
 
     if (result < 10) {
       return 1;
-    } else if (result < 1) {
-      return 1;
     } else {
       return result;
     }
+    // }
   }
 };
