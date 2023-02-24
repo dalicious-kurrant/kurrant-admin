@@ -12,8 +12,8 @@ import Plans from '../pages/makers/Plans';
 import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
 import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
 import Schedule from '../pages/salesSchedule/Schedule';
-import Personal from 'pages/recommendation/personal/personal';
-import Learning from 'pages/recommendation/learning/Learning';
+import Personal from '../pages/recommendation/personal/Personal';
+import Learning from '../pages/recommendation/learning/Learning';
 
 export const MenuList = [
   {

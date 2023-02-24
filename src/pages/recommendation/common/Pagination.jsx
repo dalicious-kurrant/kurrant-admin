@@ -7,10 +7,10 @@ import {
   PRIMARY_COLOR_6,
 } from '../../../shared/recommendation-constants';
 
-const PAGINATION_PREV_NORMAL = '/assets/images/pagination-prev-normal.svg';
-const PAGINATION_PREV_DISABLED = '/assets/images/pagination-prev-disabled.svg';
-const PAGINATION_NEXT_NORMAL = '/assets/images/pagination-next-normal.svg';
-const PAGINATION_NEXT_DISABLED = '/assets/images/pagination-next-disabled.svg';
+const PAGINATION_PREV_NORMAL = '/assets/svg/PaginationPrevNormalIcon.svg';
+const PAGINATION_PREV_DISABLED = '/assets/svg/PaginationPrevDisabledIcon.svg';
+const PAGINATION_NEXT_NORMAL = '/assets/svg/PaginationNextNormalIcon.svg';
+const PAGINATION_NEXT_DISABLED = '/assets/svg/PaginationNextDisabledIcon.svg';
 
 const StyledPageList = styled.ul`
   text-align: center;

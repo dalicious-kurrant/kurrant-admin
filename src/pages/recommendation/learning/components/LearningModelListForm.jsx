@@ -1,3 +1,4 @@
+import {recommendationApis} from 'api/recommendation';
 import {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import ContentsContainer from '../../common/ContentsContainer';
@@ -10,28 +11,15 @@ import {
   StyledTr,
 } from '../../ui/table';
 
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  row-gap: 8px;
-`;
-
-const StyledActionsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 8px;
-  justify-content: center;
-`;
-
-export default function LearningModelListForm({recommendationService: rs}) {
+export default function LearningModelListForm() {
   const [models, setModels] = useState([]);
   const [selectedModel, setSelectedModel] = useState('');
 
   const fetchModels = useCallback(async () => {
-    const fetchedModels = await rs.getModels();
+    const fetchedModels = await recommendationApis.getModels();
     setModels(fetchedModels);
     setSelectedModel(fetchedModels.find(model => model.isSelected).version);
-  }, [rs]);
+  }, []);
 
   useEffect(() => {
     fetchModels();
@@ -43,13 +31,13 @@ export default function LearningModelListForm({recommendationService: rs}) {
 
   const applyHandler = async e => {
     e.preventDefault();
-    await rs.callApplyModel(selectedModel);
+    await recommendationApis.callApplyModel(selectedModel);
     await fetchModels();
   };
 
   const deleteHandler = async e => {
     e.preventDefault();
-    await rs.callDeleteModel(selectedModel);
+    await recommendationApis.callDeleteModel(selectedModel);
     await fetchModels();
   };
 
@@ -119,3 +107,16 @@ export default function LearningModelListForm({recommendationService: rs}) {
     </ContentsContainer>
   );
 }
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+`;
+
+const StyledActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  column-gap: 8px;
+  justify-content: center;
+`;

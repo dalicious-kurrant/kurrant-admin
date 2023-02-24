@@ -4,14 +4,14 @@ import LearningNewModelForm from './components/LearningNewModelForm';
 import {MODEL_LEARNING_TITLE} from '../../../shared/recommendation-constants';
 import {PageWrapper} from 'style/common.style';
 
-const LearningPage = ({recommendationService: rs}) => {
+const Learning = () => {
   return (
     <PageWrapper>
       <PageHeader title={MODEL_LEARNING_TITLE} />
-      <LearningNewModelForm recommendationService={rs} />
-      <LearningModelListForm recommendationService={rs} />
+      <LearningNewModelForm />
+      <LearningModelListForm />
     </PageWrapper>
   );
 };
 
-export default LearningPage;
+export default Learning;

@@ -1,3 +1,6 @@
+//TODO: Excel 로직 분리
+//TODO: 데이터 상태 관리 코드 분리
+
 import {useEffect, useRef, useState} from 'react';
 import ModelInfo from '../common/ModelInfo';
 import PageHeader from '../common/PageHeader';
@@ -8,8 +11,9 @@ import FoodCards from './components/FoodCards';
 import PersonalResultTable from './components/PersonalResultTable';
 import * as XLSX from 'xlsx';
 import {PageWrapper} from 'style/common.style';
+import {recommendationApis} from 'api/recommendation';
 
-const Personal = ({recommendationService: rs}) => {
+const Personal = () => {
   const [modelInfo, setModelInfo] = useState({});
   const [groups, setGroups] = useState([]);
   const [diningTypes, setDiningTypes] = useState([]);
@@ -24,26 +28,30 @@ const Personal = ({recommendationService: rs}) => {
     fetchModelInfo();
 
     async function fetchModelInfo() {
-      const fetchedModelInfo = await rs.getModelInfo();
+      const fetchedModelInfo = await recommendationApis.getModelInfo();
       setModelInfo(fetchedModelInfo);
       requestParamsRef.current = {version: fetchedModelInfo.version};
     }
-  }, [rs]);
+  }, []);
 
   useEffect(() => {
     fetchGroups();
     fetchDiningTypes();
 
     async function fetchGroups() {
-      const fetchedGroups = await rs.getGroups(getRequestParams());
+      const fetchedGroups = await recommendationApis.getGroups(
+        getRequestParams(),
+      );
       setGroups(fetchedGroups);
     }
 
     async function fetchDiningTypes() {
-      const fetchedDiningTypes = await rs.getDiningTypes(getRequestParams());
+      const fetchedDiningTypes = await recommendationApis.getDiningTypes(
+        getRequestParams(),
+      );
       setDiningTypes(fetchedDiningTypes);
     }
-  }, [rs, modelInfo]);
+  }, [modelInfo]);
 
   const submitTargetFormHandler = e => {
     e.preventDefault();
@@ -66,10 +74,14 @@ const Personal = ({recommendationService: rs}) => {
     }
 
     async function fetchSourceFormDataByTarget() {
-      const fetchedMakers = await rs.getMakers(getRequestParams());
+      const fetchedMakers = await recommendationApis.getMakers(
+        getRequestParams(),
+      );
       setMakers(fetchedMakers);
 
-      const fetchedFoods = await rs.getFoods(getRequestParams());
+      const fetchedFoods = await recommendationApis.getFoods(
+        getRequestParams(),
+      );
       setFoods(fetchedFoods);
     }
   };
@@ -107,7 +119,7 @@ const Personal = ({recommendationService: rs}) => {
     }
 
     async function fetchRecommendationResult() {
-      const fetchedResult = await rs.getPersonalRecommendation(
+      const fetchedResult = await recommendationApis.getPersonalRecommendation(
         getRequestParams(),
       );
       setResults(fetchedResult);
@@ -127,7 +139,6 @@ const Personal = ({recommendationService: rs}) => {
       return;
     }
     const {data, filename} = generateData();
-    console.log(filename, data);
     saveXlsx(data, filename);
 
     function validate() {
