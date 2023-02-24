@@ -14,7 +14,6 @@ export function useGetDetailProductsList(foodId, makersId) {
 }
 
 export function useEditProductDetail() {
-  const queryClient = useQueryClient();
   return useMutation(
     (formData, config) => productApis.modifyProductDetail(formData, config),
     {
