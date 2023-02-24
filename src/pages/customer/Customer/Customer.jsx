@@ -87,18 +87,12 @@ const Customer = () => {
 
   // 페이지네이션
 
-  const MockData = [
-    {
-      id: 1,
-      userName: 'name',
-      info: 'info',
-    },
-    {
-      id: 2,
-      userName: 'name2',
-      info: 'info2',
-    },
-  ];
+  // 두가지만 백엔드랑 연결하면 됨
+
+  // 1. 페이지네이션 처리가 된 URL
+  //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
+
+  // 2. 백엔드에 있는 데이터의 총 길이
 
   const [page, setPage] = useState(12);
   const [limit, setLimit] = useState(1);
@@ -106,10 +100,6 @@ const Customer = () => {
   PaginationTest(page, limit);
 
   const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
-
-  useEffect(() => {
-    console.log(customerData);
-  }, [customerData]);
 
   return (
     <PageWrapper>

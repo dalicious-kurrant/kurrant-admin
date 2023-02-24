@@ -1,16 +1,12 @@
 import axios from 'axios';
 import {useAtom} from 'jotai';
 import {useEffect} from 'react';
-import {useQuery, useQueryClient} from 'react-query';
-import styled from 'styled-components';
+import {useQuery} from 'react-query';
+
 import {CustomerDataAtom} from './store';
 
 const PaginationTest = (page, limit) => {
   const [, setData] = useAtom(CustomerDataAtom);
-  const queryClient = useQueryClient();
-
-  console.log(`page ` + page);
-  console.log(`limit ` + limit);
 
   const {data, status, isLoading} = useQuery(
     ['getMe', page, limit],
@@ -22,20 +18,13 @@ const PaginationTest = (page, limit) => {
       return response.data;
     },
     {
-      onSuccess: () => {
-        console.log('success');
-        // queryClient.invalidateQueries(['getMe']);
-      },
       enabled: true,
     },
   );
 
   useEffect(() => {
-    console.log(data);
     setData(data);
   }, [data]);
-
-  return {};
 };
 
 export default PaginationTest;
