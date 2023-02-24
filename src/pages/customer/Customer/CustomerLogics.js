@@ -90,3 +90,22 @@ export const sendDelete = (deleteFinalMutate, checkboxStatus) => {
     return;
   }
 };
+
+// 유저타입 USER -> 일반 , MANAGER -> 관리자
+
+export const shiftUserType = customerData => {
+  const shifted = [...customerData];
+
+  const shiftedData = shifted.map(value => {
+    if (value.role === 'USER') {
+      value.role = '일반';
+    } else if (value.role === 'MANAGER') {
+      value.role = '관리자';
+    } else if (value.role === 'GUEST') {
+      value.role = '게스트';
+    }
+    return value;
+  });
+
+  return shiftedData;
+};

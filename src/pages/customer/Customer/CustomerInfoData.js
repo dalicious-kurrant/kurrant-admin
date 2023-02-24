@@ -31,6 +31,7 @@ export const CustomerFieldsData = [
   //   placeholder: '',
   //   maxCharLength: 20,
   //   flex: 1,
+
   //   width: undefined,
   // },
 

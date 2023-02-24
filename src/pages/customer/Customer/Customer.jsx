@@ -36,8 +36,6 @@ const Customer = () => {
     async todo => {
       const response = await instance.post(`users`, todo);
 
-      console.log(todo);
-
       return response;
     },
     {
