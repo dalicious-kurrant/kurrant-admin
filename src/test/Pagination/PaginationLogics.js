@@ -43,7 +43,7 @@ export const calculatePageButtons = (pageNow, totalPages) => {
 
 export const calculatePageMove = (direction, page, lastPage) => {
   if (direction !== 'move-forward' && direction !== 'move-back') {
-    console.log('에러: 함수의 첫번째 파라메타 값이 이상합니다 ');
+    // console.log('에러: 함수의 첫번째 파라메타 값이 이상합니다 ');
     return;
   }
 

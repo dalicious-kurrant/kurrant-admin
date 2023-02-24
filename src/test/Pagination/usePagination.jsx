@@ -1,16 +1,14 @@
 import {calculatePageButtons} from 'common/Pagination/Logics/PaginationLogics';
+import {calculateTotalPages} from './PaginationLogics';
 
 const usePagination = (totalLength, limit, page) => {
-  const totalPage = Math.ceil(totalLength / limit);
+  // const totalPage = Math.ceil(totalLength / limit);
 
-  // let totalPageArray = [];
-  // for (let i = 1; i <= totalPage; i++) {
-  //   totalPageArray.push(i);
-  // }
+  const totalPageByLimit = calculateTotalPages(totalLength, limit);
 
-  const totalPageArray = calculatePageButtons(page, totalLength);
+  const totalPageArray = calculatePageButtons(page, totalPageByLimit);
 
-  return {totalPageArray};
+  return {totalPageArray, totalPageByLimit};
 };
 
 export default usePagination;

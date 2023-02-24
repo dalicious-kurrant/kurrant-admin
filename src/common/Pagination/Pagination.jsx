@@ -60,7 +60,7 @@ const Pagination = ({
       <Wrap>
         <DataLimitSelect
           currentValue={dataLimit}
-          setDataLimit={setDataLimit}
+          setLimit={setDataLimit}
           setPage={setPage}
           options={selectOptionArray}
         />

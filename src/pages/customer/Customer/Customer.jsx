@@ -84,10 +84,6 @@ const Customer = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(customerData);
-  }, [customerData]);
-
   // 페이지네이션
 
   const MockData = [
@@ -106,7 +102,7 @@ const Customer = () => {
   const [page, setPage] = useState(12);
   const [limit, setLimit] = useState(1);
 
-  const {totalPageArray} = usePagination(31, limit, page);
+  const {totalPageArray, totalPageByLimit} = usePagination(31, limit, page);
 
   return (
     <PageWrapper>
@@ -141,8 +137,10 @@ const Customer = () => {
           pageList={totalPageArray}
           page={page}
           setPage={setPage}
+          limit={limit}
           setLimit={setLimit}
-          lastPage={31}
+          lastPage={totalPageByLimit}
+          selectOptionArray={[1, 2, 4, 10]}
         />
       </div>
 

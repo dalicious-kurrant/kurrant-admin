@@ -32,7 +32,7 @@ const useCustomerData = (
           );
           // console.log('hi');
           // console.log(response.data.items);
-          console.log(response.data);
+          // console.log(response.data);
 
           return response.data;
         }

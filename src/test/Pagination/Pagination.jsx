@@ -1,11 +1,17 @@
+import DataLimitSelect from 'common/Pagination/Childs/DataLimitSelect';
 import {useEffect} from 'react';
 import styled from 'styled-components';
 import {calculatePageMove} from './PaginationLogics';
 
-const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
-  // console.log(pageList);
-  // console.log(page);
-
+const Pagination = ({
+  pageList,
+  page,
+  setPage,
+  limit,
+  setLimit,
+  lastPage,
+  selectOptionArray,
+}) => {
   const handleNumberButtonClick = e => {
     e.preventDefault();
     const id = e.target.id;
@@ -16,6 +22,14 @@ const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
   const handleButtonClick = e => {
     e.preventDefault();
     const id = e.target.id;
+
+    if (page + 10 > lastPage) {
+      setPage(lastPage);
+    }
+
+    if (page < 1) {
+      return;
+    }
 
     setPage(calculatePageMove(id, page, lastPage));
 
@@ -81,12 +95,12 @@ const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
         </Button>
       </ButtonWrap>
       <Wrap>
-        {/* <DataLimitSelect
-          currentValue={dataLimit}
-          setDataLimit={setDataLimit}
+        <DataLimitSelect
+          currentValue={limit}
+          setLimit={setLimit}
           setPage={setPage}
           options={selectOptionArray}
-        /> */}
+        />
       </Wrap>
     </Container>
   );
