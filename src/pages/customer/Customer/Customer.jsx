@@ -21,7 +21,10 @@ import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
-import {sendDelete, sendFinal} from './CustomerLogics';
+import {sendFinal} from './CustomerLogics';
+import usePagination from 'common/test/Pagination/usePagination';
+import Pagination from 'common/test/Pagination/Pagination';
+import PaginationTest from './PaginationTest';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -71,12 +74,12 @@ const Customer = () => {
 
   const token = localStorage.getItem('token');
 
-  const {status, isLoading} = useCustomerData(
-    ['getCustomerJSON'],
-    CustomerDataAtom,
-    'users/all',
-    token,
-  );
+  // const {status, isLoading} = useCustomerData(
+  //   ['getCustomerJSON'],
+  //   CustomerDataAtom,
+  //   'users/all',
+  //   token,
+  // );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -101,25 +104,21 @@ const Customer = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(customerData);
-  // }, [customerData]);
+  // 페이지네이션
 
-  if (isLoading)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
+  // 두가지만 백엔드랑 연결하면 됨
 
-  if (status === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  // 1. 페이지네이션 처리가 된 URL
+  //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
+
+  // 2. 백엔드에 있는 데이터의 총 길이
+
+  const [page, setPage] = useState(12);
+  const [limit, setLimit] = useState(1);
+
+  PaginationTest(page, limit);
+
+  const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
 
   return (
     <PageWrapper>
@@ -150,6 +149,18 @@ const Customer = () => {
             fieldsData={CustomerFieldsData}
           />
         )}
+      </div>
+
+      <div>
+        <Pagination
+          pageList={totalPageArray}
+          page={page}
+          setPage={setPage}
+          limit={limit}
+          setLimit={setLimit}
+          lastPage={totalPageByLimit}
+          selectOptionArray={[1, 2, 4, 10]}
+        />
       </div>
 
       <TableWrapper>

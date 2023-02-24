@@ -14,6 +14,7 @@ const usePagination = (totalLength, page, setPage, limit, setLimit) => {
 
   useEffect(() => {
     // 페이지 번호 리스트 [1,2,3,4,5]
+    // 페이지네이션 다시 만들기
 
     setPageList(
       calculatePageButtons(
