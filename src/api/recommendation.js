@@ -210,4 +210,42 @@ export const recommendationApis = {
     const res = await fetch(url, {method: 'DELETE'});
     const json = await res.json();
   },
+
+  getGroupsRecommendation: async ({version, groups, diningTypes}) => {
+    const url = DOMAIN + API_BASE_URL + `/recommendation/recommend/by-group?`;
+
+    const params = new URLSearchParams({
+      version: version,
+      groups: groups,
+      dining_types: diningTypes,
+    }).toString();
+
+    const res = await fetch(url + params);
+    const json = await res.json();
+    return json.results.map(result =>
+      Object({
+        group: {id: result.group.id, name: result.group.name},
+        diningTypes: result.dining_types.map(diningType =>
+          Object({
+            id: diningType.id,
+            name: diningType.name,
+            dates: diningType.dates.map(date =>
+              Object({
+                date: date.date,
+                makers: date.makers.map(maker =>
+                  Object({
+                    id: maker.id,
+                    name: maker.name,
+                    foods: maker.foods.map(food =>
+                      Object({id: food.id, name: food.name, price: food.price}),
+                    ),
+                  }),
+                ),
+              }),
+            ),
+          }),
+        ),
+      }),
+    );
+  },
 };

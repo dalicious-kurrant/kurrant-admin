@@ -5,6 +5,7 @@ import {
 } from '../../../shared/recommendation-constants';
 
 export const StyledTable = styled.table`
+  position: relative;
   width: 100%;
   text-align: left;
   font-size: 14px;
@@ -13,11 +14,10 @@ export const StyledTable = styled.table`
   border-radius: ${DEFAULT_BORDER_RADIUS};
 `;
 
-export const StyledThead = styled.thead`
-  background-color: #fafafa;
-`;
+export const StyledThead = styled.thead``;
 
 export const StyledTh = styled.th`
+  background-color: #fafafa;
   border: ${DEFAULT_DIVIDER_BORDER};
   font-weight: normal;
   padding: 16px;

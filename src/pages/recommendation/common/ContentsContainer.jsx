@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledBlock = styled.section`
   display: flex;
@@ -13,7 +13,7 @@ const StyledHeader = styled.div`
   font-size: 16px;
 `;
 
-const ContentsContainer = ({ header, children }) => {
+const ContentsContainer = ({header, children}) => {
   return (
     <StyledBlock>
       {header && <StyledHeader>{header}</StyledHeader>}

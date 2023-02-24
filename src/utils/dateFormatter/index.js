@@ -192,3 +192,16 @@ export function formattedDateType(data) {
 //     return 0;
 //   }
 // }
+
+export function formattedDateForRecommendation(date) {
+  const year = date.getFullYear();
+  const month = leftPad(date.getMonth() + 1);
+  const day = leftPad(date.getDate());
+  return `${year}-${month}-${day}`;
+}
+
+export function addDays(date, days) {
+  let dateTime = transDateType(date);
+  dateTime = new Date(dateTime.setDate(dateTime.getDate() + days));
+  return dateTime;
+}

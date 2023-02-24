@@ -14,6 +14,7 @@ import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
 import Schedule from '../pages/salesSchedule/Schedule';
 import Personal from '../pages/recommendation/personal/Personal';
 import Learning from '../pages/recommendation/learning/Learning';
+import Group from 'pages/recommendation/group/Group';
 
 export const MenuList = [
   {
@@ -205,6 +206,11 @@ export const MenuList = [
     name: '추천시스템',
     url: '/recommendation',
     children: [
+      {
+        name: '그룹별 추천 메이커 및 음식',
+        url: '/group',
+        component: <Group />,
+      },
       {
         name: '개인별 추천 음식',
         url: '/personal',

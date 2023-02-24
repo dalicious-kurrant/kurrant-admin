@@ -9,10 +9,13 @@ import {
 } from '../../../../shared/recommendation-constants';
 import {StyledInputDate, StyledSecondaryButton} from '../../ui/inputs';
 import {recommendationApis} from 'api/recommendation';
+import {addDays, formattedDateForRecommendation} from 'utils/dateFormatter';
 
 export default function LearningNewModelForm() {
   const [learningState, setLearningState] = useState(LEARNING_STATE_NONE);
-  const [startDate, setStartDate] = useState(dateToString(new Date()));
+  const [startDate, setStartDate] = useState(
+    formattedDateForRecommendation(new Date()),
+  );
 
   useEffect(() => {
     fetchLearningState();
@@ -61,7 +64,7 @@ export default function LearningNewModelForm() {
     }
   };
 
-  const endDate = dateToString(addDays(startDate, 13));
+  const endDate = formattedDateForRecommendation(addDays(startDate, 13));
 
   const buttonMessage = getButtonMessage();
 
@@ -86,19 +89,6 @@ export default function LearningNewModelForm() {
       <StyledInfoMessage>{infoMessage}</StyledInfoMessage>
     </StyledContainer>
   );
-}
-
-function dateToString(date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-    2,
-    '0',
-  )}-${String(date.getDate()).padStart(2, '0')}`;
-}
-
-function addDays(date, days) {
-  let tmpDate = new Date(date);
-  tmpDate = new Date(tmpDate.setDate(tmpDate.getDate() + days));
-  return tmpDate;
 }
 
 const StyledContainer = styled.div`
