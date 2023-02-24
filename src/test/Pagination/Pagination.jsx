@@ -1,31 +1,59 @@
 import styled from 'styled-components';
+import {calculatePageMove} from './PaginationLogics';
 
-const Pagination = ({pageList, page}) => {
+const Pagination = ({pageList, page, setPage, setLimit, lastPage}) => {
   // console.log(pageList);
   // console.log(page);
+
+  const handleNumberButtonClick = e => {
+    e.preventDefault();
+    const id = e.target.id;
+
+    setPage(parseInt(id));
+  };
+
+  const handleButtonClick = e => {
+    e.preventDefault();
+    const id = e.target.id;
+
+    console.log(calculatePageMove(id, page, lastPage));
+  };
 
   return (
     <Container>
       <ButtonWrap>
         <Button id="">{'<<'}</Button>
-        <Button>{'<'}</Button>
+        <Button
+          id="move-back"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
+          {'<'}
+        </Button>
 
         {Array.isArray(pageList) &&
           !!pageList.length &&
           pageList.map((value, index) => {
-            // console.log(page);
-            // console.log(value);
-
             const selected = page === value ? true : false;
-            // console.log(selected);
+
             return (
-              <NumberButton key={index} id={value} selected={selected}>
+              <NumberButton
+                key={index}
+                id={value}
+                selected={selected}
+                onClick={handleNumberButtonClick}>
                 {value}
               </NumberButton>
             );
           })}
 
-        <Button>{'>'}</Button>
+        <Button
+          id="move-forward"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
+          {'>'}
+        </Button>
 
         <Button>{'>>'}</Button>
       </ButtonWrap>
@@ -60,17 +88,12 @@ const ButtonWrap = styled.div`
   }
 `;
 const Button = styled.button`
-  color: ${props => {
-    console.log(props.theme.colors.blue[400]);
-
-    return props.selected ? props.theme.colors.blue[400] : `black`;
-  }};
   font-size: 1.8rem;
 `;
 
 const NumberButton = styled.button`
   color: ${props =>
-    props.selected ? props.theme.colors.Blue04 : props.theme.colors.black};
+    props.selected ? `${props.theme.colors.blue[400]}` : `black`};
 
   font-size: 1.8rem;
 `;
