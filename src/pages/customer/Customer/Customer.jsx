@@ -22,8 +22,8 @@ import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
 import {sendFinal} from './CustomerLogics';
-import usePagination from 'test/Pagination/usePagination';
-import Pagination from 'test/Pagination/Pagination';
+import usePagination from 'common/test/Pagination/usePagination';
+import Pagination from 'common/test/Pagination/Pagination';
 import PaginationTest from './PaginationTest';
 
 const Customer = () => {
