@@ -5,6 +5,7 @@ import {calculateTotalPages} from 'common/Pagination/Logics/PaginationLogics';
 
 const Pagination = ({
   dataTotalLength,
+
   page,
   setPage,
   dataLimit,

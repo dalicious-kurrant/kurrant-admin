@@ -1,22 +1,42 @@
+import {removeParentKeyInCheckbox} from 'common/Table/Logics';
 import {
   handleFalsyValueToBlank,
   handleFalsyValueToString,
 } from 'utils/valueHandlingLogics';
 
-export const sendFinal = (data, sendFinalMutate) => {
-  const oldData = [...data];
+export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
+  const checkboxStatusNow = {...removeParentKeyInCheckbox(checkboxStatus)};
 
-  const newData = oldData.map(value => {
+  let selectedData = [];
+
+  Object.entries(checkboxStatusNow).forEach(value => {
+    if (value[1] === true) {
+      selectedData.push(value[0]);
+    }
+  });
+
+  let finalLaunch = [];
+
+  data.map(value => {
+    if (selectedData.includes(value.id.toString())) {
+      finalLaunch.push(value);
+    }
+  });
+
+  // console.log(finalLaunch);
+
+  const newData = finalLaunch.map(value => {
     let yo = {};
 
-    // yo['userId'] = handleFalsyValue(value.id);
-    yo['userId'] = handleFalsyValueToBlank(value.email);
-    // yo['password'] = handleFalsyValue(value.password);
+    // 우선 아래의 항목만 수정가능하게 만듬
+
+    // yo['userId'] = handleFalsyValueToBlank(value.email);
+
+    yo['userId'] = parseInt(value.id);
     yo['password'] = handleFalsyValueToBlank(value.password);
-    yo['name'] = handleFalsyValueToBlank(value.name);
+    yo['name'] = handleFalsyValueToBlank(value.userName);
     yo['email'] = handleFalsyValueToBlank(value.email);
     yo['phone'] = handleFalsyValueToBlank(value.phone);
-    // yo['phone'] = `010-6565-1181`;
     yo['role'] = handleFalsyValueToString(value.role);
 
     return yo;
@@ -25,12 +45,12 @@ export const sendFinal = (data, sendFinalMutate) => {
   console.log(newData);
 
   const newData2 = {
-    userList: newData,
+    userList: finalLaunch,
   };
 
   if (
     window.confirm(
-      '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+      '기존에 있던 데이터가 아래의 테이블에 있는 데이터로 변경됩니다 진행하시겠습니까?',
     )
   ) {
     sendFinalMutate(newData2);

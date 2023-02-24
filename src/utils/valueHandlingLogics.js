@@ -48,7 +48,7 @@ export const handleFalsyValueToBlank = value => {
   } else if (value === '') {
     return '';
   } else {
-    return '-';
+    return '';
   }
 };
 

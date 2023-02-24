@@ -27,7 +27,7 @@ const useCustomerData = (
       ? async ({queryKey}) => {
           const response = await instance.get(
             // `clients/spot/all`,
-            url,
+            `${url}?limit=50`,
             // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
           );
           // console.log('hi');

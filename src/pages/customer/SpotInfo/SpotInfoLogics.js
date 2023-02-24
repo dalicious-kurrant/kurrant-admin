@@ -31,7 +31,7 @@ export const sendFinal = (data, sendFinalMutate) => {
 
   if (
     window.confirm(
-      '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+      '기존에 있던 데이터가 아래의 테이블에 있는 데이터로 변경됩니다 진행하시겠습니까?',
     )
   ) {
     // sendFinalMutate(newData2);

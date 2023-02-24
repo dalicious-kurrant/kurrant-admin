@@ -83,10 +83,8 @@ const Customer = () => {
   }, []);
 
   useEffect(() => {
-    return () => {
-      setCheckboxStatus({});
-    };
-  }, []);
+    console.log(customerData);
+  }, [customerData]);
 
   if (isLoading)
     return (
@@ -115,7 +113,7 @@ const Customer = () => {
           handleBundleClick={handleBundleClick}
           showRegister={showRegister}
           sendFinal={() => {
-            sendFinal(customerData, sendFinalMutate);
+            sendFinal(customerData, sendFinalMutate, checkboxStatus);
           }}
         />
 

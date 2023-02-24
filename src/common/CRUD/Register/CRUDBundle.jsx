@@ -38,11 +38,11 @@ const CRUDBundle = ({handleBundleClick, showRegister, sendFinal}) => {
             </Button>
           </BtnWrap>
         </Button.Group>
-        <div>
+        <Wrap2>
           <Button.Group>
             <Button onClick={handleSend}>최종적용하기</Button>
           </Button.Group>
-        </div>
+        </Wrap2>
       </Wrap>
     </Container>
   );
@@ -62,6 +62,10 @@ const Container = styled.div`
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Wrap2 = styled.div`
+  margin: 0.2rem;
 `;
 
 const BtnWrap = styled.div`
