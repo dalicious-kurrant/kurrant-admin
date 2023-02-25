@@ -41,13 +41,15 @@ const CRUDBundle = ({
               수정 열기
             </Button>
           </BtnWrap>
+          <BtnWrap>
+            <Button id="delete" inverted color="red" onClick={handleDelete}>
+              삭제하기
+            </Button>
+          </BtnWrap>
         </Button.Group>
         <Wrap2>
           <Button.Group>
             <Button onClick={handleSend}>최종적용하기</Button>
-            <Button id="delete" inverted color="red" onClick={handleDelete}>
-              삭제하기
-            </Button>
           </Button.Group>
         </Wrap2>
       </Wrap>
