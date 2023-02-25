@@ -113,9 +113,10 @@ const Customer = () => {
 
   // 페이지네이션
 
-  // 두가지만 백엔드랑 연결하면 됨
+  // 두 가지가 필요함
 
-  // 1. 페이지네이션 처리가 된 URL
+  // 1. 페이지네이션 처리가 된 Get Api
+  // '현재 페이지'랑 '한 페이지당 보여줄 페이지의 갯수'
   //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
 
   // 2. 백엔드에 있는 데이터의 총 길이
@@ -133,7 +134,6 @@ const Customer = () => {
         <PageWrapper>
           <TableWrapper>
             <Table celled>
-              {/* {console.log(plan)} */}
               {exelUser &&
                 exelUser.map((p, i) => {
                   const HeaderData = Object.values(p);
@@ -204,10 +204,6 @@ const Customer = () => {
         </PageWrapper>
       ) : (
         <PageWrapper>
-          <BtnWrapper>
-            {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
-          </BtnWrapper>
-
           <div>
             <CRUDBundle
               handleBundleClick={handleBundleClick}

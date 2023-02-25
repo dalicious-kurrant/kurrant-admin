@@ -22,6 +22,7 @@ import useSpotInfoData from './useSpotInfoData';
 import {sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
+import TableYo from 'common/Table/TableYo';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
@@ -265,8 +266,16 @@ const SpotInfo = () => {
           </div>
 
           <TableWrapper>
-            {!!spotInfoData && spotInfoData.length !== 0 && (
+            {/* {!!spotInfoData && spotInfoData.length !== 0 && (
               <CustomTable
+                fieldsInput={SpotInfoFieldsToOpen}
+                dataInput={spotInfoData}
+                // isMemo={true}
+                // handleChange={}
+              />
+            )} */}
+            {!!spotInfoData && spotInfoData.length !== 0 && (
+              <TableYo
                 fieldsInput={SpotInfoFieldsToOpen}
                 dataInput={spotInfoData}
                 // isMemo={true}

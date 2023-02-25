@@ -6,6 +6,7 @@ import {MenuList} from './menu';
 import LoginPage from '../pages/login/Login';
 import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import OrderDetail from '../pages/order/orderInfomation/OrderDetail';
+import Test from 'common/test/InputTest';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
@@ -15,6 +16,7 @@ const MainRouter = () => {
         {token !== null && (
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />
+            <Route path="/test" element={<Test />} />
             <Route path="/shop/info/detail/:id" element={<ItemInfoDetail />} />
             <Route path="/order/info/detail/:code" element={<OrderDetail />} />
             {MenuList.map(v => (
