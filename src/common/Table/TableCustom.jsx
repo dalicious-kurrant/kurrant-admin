@@ -1,3 +1,4 @@
+import React from 'react';
 import TableCheckbox from 'common/TableCheckbox';
 
 import {useAtom} from 'jotai';
@@ -13,18 +14,13 @@ import {
 import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom} from './store';
 
-// 이 Table 컴포넌트는 다르다???
+import {Button, Table} from 'semantic-ui-react';
+import {makeId} from './Logics';
 
-// - 데이터 안에 정해진 필드가 아닌 필드가 들어있으면 자동으로 걸러준다
-// - 데이터 값이 number나 string이 아닌 경우는 '-'로 표기한다
+// import putId from './'
 
-const CustomTable = ({
-  fieldsInput,
-  dataInput,
-  isMemo = false,
-  handleChange,
-}) => {
-  const useTheme = Theme;
+const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+  // 데이터에 'id'필드가 없을시 생성해 줌
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
 
@@ -69,13 +65,11 @@ const CustomTable = ({
     }
   };
 
-  // 추가 메모 기능
-
   return (
-    <Container>
-      <table bgcolor={useTheme.colors.white}>
-        <thead>
-          <tr>
+    <>
+      <Table celled>
+        <Table.Header>
+          <Table.Row>
             <CheckBoxTh>
               <TableCheckbox
                 width="2rem"
@@ -89,18 +83,22 @@ const CustomTable = ({
 
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput.map((val, index) => (
-                <th align="left" key={index}>
+                <Table.HeaderCell align="left" key={index}>
                   {fieldsInput[val]}
-                </th>
+                </Table.HeaderCell>
               ))}
 
-            {!!isMemo && <th className="memo">Memo</th>}
-          </tr>
-        </thead>
-        <tbody>
+            {!!isMemo && (
+              <Table.HeaderCell className="memo">Memo</Table.HeaderCell>
+            )}
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
           {dataInput &&
             dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
+
               let yo = [];
 
               keyOfTableFieldsInput.forEach((value2, index2) => {
@@ -110,7 +108,7 @@ const CustomTable = ({
               });
 
               return (
-                <tr key={index1}>
+                <Table.Row key={index1}>
                   <CheckBoxTd align="center">
                     <TableCheckbox
                       width="2rem"
@@ -124,77 +122,26 @@ const CustomTable = ({
 
                   {yo.map((value3, index3) => {
                     return (
-                      <td align="left" key={index3}>
+                      <Table.Cell align="left" key={index3}>
                         {handleFalsyValueToHyphen(value3)}
-                      </td>
+                      </Table.Cell>
                     );
                   })}
 
                   {!!isMemo && (
-                    <td className="memo">
+                    <Table.Cell className="memo">
                       <MemoInput input={value1} handleChange={handleChange} />
-                    </td>
+                    </Table.Cell>
                   )}
-                </tr>
+                </Table.Row>
               );
             })}
-        </tbody>
-      </table>
-    </Container>
+        </Table.Body>
+      </Table>
+    </>
   );
 };
-
-export default CustomTable;
-
-const Container = styled.div`
-  border-collapse: collapse;
-  width: 100%;
-
-  form {
-  }
-
-  table {
-    width: 100%;
-    overflow: auto;
-    white-space: nowrap;
-  }
-
-  thead {
-    /* border-bottom: 2px solid ${props => props.theme.colors.Grey03}; */
-
-    tr {
-      height: 5rem;
-    }
-    th {
-      border: 1px solid ${props => props.theme.colors.grey[6]};
-      vertical-align: middle;
-      padding: 0.6rem;
-      font-size: 1.3rem;
-
-      :last-child {
-      }
-    }
-    .memo {
-      padding: 0;
-      width: 30rem;
-    }
-  }
-
-  tbody {
-    tr {
-    }
-    td {
-      border: 1px solid ${props => props.theme.colors.grey[6]};
-      vertical-align: middle;
-      padding: 0.6rem;
-      height: 6.4rem;
-    }
-
-    .memo {
-      padding: 0;
-    }
-  }
-`;
+export default TableYo;
 
 const CheckBoxTh = styled.th`
   width: 4rem;

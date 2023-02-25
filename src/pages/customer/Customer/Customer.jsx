@@ -17,7 +17,7 @@ import {
 import {CustomerDataAtom} from './store';
 
 import useCustomerData from './useCustomerData';
-import CustomTable from 'common/Table/CustomTable';
+
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
@@ -28,6 +28,8 @@ import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import Pagination from 'common/test/Pagination/Pagination';
 import {sendFinal} from './CustomerLogics';
+
+import TableCustom from 'common/Table/TableCustom';
 
 const Customer = () => {
   const [customerData] = useAtom(CustomerDataAtom);
@@ -240,7 +242,7 @@ const Customer = () => {
 
           <TableWrapper>
             {!!customerData && customerData.length !== 0 && (
-              <CustomTable
+              <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
                 dataInput={customerData}
                 // isMemo={true}

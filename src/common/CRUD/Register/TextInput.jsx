@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  handleFalsyValueToBlank,
-  handleFalsyValueToString,
-} from 'utils/valueHandlingLogics';
+import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 const TextInput = ({
   fieldsToOpen,

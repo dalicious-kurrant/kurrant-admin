@@ -3,6 +3,7 @@ import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
+import {shiftUserType} from './CustomerLogics';
 
 const useCustomerData = (
   uniqueQueryKey,
@@ -34,7 +35,7 @@ const useCustomerData = (
           // console.log(response.data.items);
           // console.log(response.data);
 
-          return response.data;
+          return shiftUserType(response.data);
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);

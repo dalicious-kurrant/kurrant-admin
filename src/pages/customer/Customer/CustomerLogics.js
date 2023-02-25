@@ -2,10 +2,7 @@ import {
   extractOnlyTruesNumberArray,
   removeParentKeyInCheckbox,
 } from 'common/Table/Logics';
-import {
-  handleFalsyValueToBlank,
-  handleFalsyValueToString,
-} from 'utils/valueHandlingLogics';
+import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
   const checkboxStatusNow = {...removeParentKeyInCheckbox(checkboxStatus)};
@@ -25,8 +22,6 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
       finalLaunch.push(value);
     }
   });
-
-  // console.log(finalLaunch);
 
   const newData = finalLaunch.map(value => {
     let yo = {};

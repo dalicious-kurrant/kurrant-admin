@@ -1,4 +1,3 @@
-import React from 'react';
 import TableCheckbox from 'common/TableCheckbox';
 
 import {useAtom} from 'jotai';
@@ -14,9 +13,12 @@ import {
 import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom} from './store';
 
-import {Button, Table} from 'semantic-ui-react';
+// 이 Table 컴포넌트는 다르다???
 
-const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+// - 데이터 안에 정해진 필드가 아닌 필드가 들어있으면 자동으로 걸러준다
+// - 데이터 값이 number나 string이 아닌 경우는 '-'로 표기한다
+
+const HTMLTable = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
   const useTheme = Theme;
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
@@ -62,11 +64,13 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
     }
   };
 
+  // 추가 메모 기능
+
   return (
-    <>
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
+    <Container>
+      <table bgcolor={useTheme.colors.white}>
+        <thead>
+          <tr>
             <CheckBoxTh>
               <TableCheckbox
                 width="2rem"
@@ -80,22 +84,15 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
 
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput.map((val, index) => (
-                <Table.HeaderCell align="left" key={index}>
+                <th align="left" key={index}>
                   {fieldsInput[val]}
-                </Table.HeaderCell>
+                </th>
               ))}
 
-            {!!isMemo && (
-              <Table.HeaderCell className="memo">Memo</Table.HeaderCell>
-            )}
-          </Table.Row>
-        </Table.Header>
-
-        {/* <TableRow
- <Table.Cell */}
-        {/* <Table.Body></Table.Body> */}
-
-        <Table.Body>
+            {!!isMemo && <th className="memo">Memo</th>}
+          </tr>
+        </thead>
+        <tbody>
           {dataInput &&
             dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
@@ -108,7 +105,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
               });
 
               return (
-                <Table.Row key={index1}>
+                <tr key={index1}>
                   <CheckBoxTd align="center">
                     <TableCheckbox
                       width="2rem"
@@ -122,26 +119,77 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
 
                   {yo.map((value3, index3) => {
                     return (
-                      <Table.Cell align="left" key={index3}>
+                      <td align="left" key={index3}>
                         {handleFalsyValueToHyphen(value3)}
-                      </Table.Cell>
+                      </td>
                     );
                   })}
 
                   {!!isMemo && (
-                    <Table.Cell className="memo">
+                    <td className="memo">
                       <MemoInput input={value1} handleChange={handleChange} />
-                    </Table.Cell>
+                    </td>
                   )}
-                </Table.Row>
+                </tr>
               );
             })}
-        </Table.Body>
-      </Table>
-    </>
+        </tbody>
+      </table>
+    </Container>
   );
 };
-export default TableYo;
+
+export default HTMLTable;
+
+const Container = styled.div`
+  border-collapse: collapse;
+  width: 100%;
+
+  form {
+  }
+
+  table {
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
+  }
+
+  thead {
+    /* border-bottom: 2px solid ${props => props.theme.colors.Grey03}; */
+
+    tr {
+      height: 5rem;
+    }
+    th {
+      border: 1px solid ${props => props.theme.colors.grey[6]};
+      vertical-align: middle;
+      padding: 0.6rem;
+      font-size: 1.3rem;
+
+      :last-child {
+      }
+    }
+    .memo {
+      padding: 0;
+      width: 30rem;
+    }
+  }
+
+  tbody {
+    tr {
+    }
+    td {
+      border: 1px solid ${props => props.theme.colors.grey[6]};
+      vertical-align: middle;
+      padding: 0.6rem;
+      height: 6.4rem;
+    }
+
+    .memo {
+      padding: 0;
+    }
+  }
+`;
 
 const CheckBoxTh = styled.th`
   width: 4rem;
