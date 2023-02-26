@@ -27,7 +27,7 @@ import {removeIdToSend} from 'common/Table/Logics';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [spotInfoData] = useAtom(SpotInfoDataAtom);
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [plan, setPlan] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
   const [showRegister, setShowRegister] = useState(false);
@@ -99,20 +99,29 @@ const SpotInfo = () => {
   }, []);
 
   const handleDelete = () => {
-    const deletedStatus = {...checkboxStatus};
+    // console.log(deletedStatus);
 
-    console.log(checkboxStatus);
+    const status = {...checkboxStatus};
 
-    Object.entries(deletedStatus).forEach(v => {
+    let deleteList = [];
+
+    Object.entries(status).forEach(v => {
       if (v[1] === true) {
-        const yes = parseInt(v[0]);
-        delete deletedStatus[yes];
+        deleteList.push(v[0]);
       }
     });
 
-    // 삭제 useMutate만 보내면 됨
+    let yo = [];
+    const customerDataToDelete = [...spotInfoData];
 
-    console.log(deletedStatus);
+    customerDataToDelete.forEach(v => {
+      if (deleteList.includes(v.id.toString())) {
+      } else {
+        yo.push(v);
+      }
+    });
+
+    setSpotInfoData(yo);
   };
 
   // const sendFinal = () => {

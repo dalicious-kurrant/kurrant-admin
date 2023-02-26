@@ -116,14 +116,6 @@ const Customer = () => {
   const handleDelete = () => {
     const status = {...checkboxStatus};
 
-    // Object.entries(deletedStatus).forEach(v => {
-    //   if (v[1] === true) {
-    //     const yes = parseInt(v[0]);
-    //     delete deletedStatus[yes];
-    //   }
-    // });
-
-    // 삭제 useMutate만 보내면 됨
     let deleteList = [];
 
     Object.entries(status).forEach(v => {
