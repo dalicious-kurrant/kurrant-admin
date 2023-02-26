@@ -4,7 +4,7 @@ export const CustomerFieldsToOpen = {
   email: '이메일',
   password: '비밀번호',
   userName: '사용자 명',
-  role: '유저타입(0: 일반, 1: 관리자)',
+  role: '유저타입',
   phone: '폰 번호',
 
   groupName: '그룹이름',
@@ -22,6 +22,11 @@ export const CustomerFieldsToOpen = {
   naverEmail: '네이버_이메일',
   facebookEmail: '페이스북_이메일',
   appleEmail: '애플_이메일',
+};
+
+const inputType = {
+  select: 'select',
+  text: 'text',
 };
 
 export const CustomerFieldsData = [
@@ -42,6 +47,7 @@ export const CustomerFieldsData = [
     maxCharLength: 30,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -51,6 +57,7 @@ export const CustomerFieldsData = [
     maxCharLength: 30,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -60,15 +67,26 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
+  // {
+  //   fieldName: 'role',
+  //   fieldNameKor: '유저타입(0: 일반, 1: 관리자)',
+  //   placeholder: "'일반'아니면 '관리자'로 입력 ",
+  //   maxCharLength: 20,
+  //   flex: 1,
+  //   width: undefined,
+  // },
   {
     fieldName: 'role',
-    fieldNameKor: '유저타입(0: 일반, 1: 관리자)',
+    fieldNameKor: '유저타입',
     placeholder: "'일반'아니면 '관리자'로 입력 ",
     maxCharLength: 20,
-    flex: 1,
+    flex: 2,
     width: undefined,
+    inputType: inputType.select,
+    options: ['일반', '관리자'],
   },
 
   {
@@ -78,6 +96,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -87,6 +106,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -96,6 +116,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -105,6 +126,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -114,6 +136,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -123,6 +146,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -132,6 +156,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -141,6 +166,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -150,6 +176,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -159,6 +186,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -168,6 +196,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -177,6 +206,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -186,6 +216,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -195,6 +226,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -204,6 +236,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 
   {
@@ -213,6 +246,7 @@ export const CustomerFieldsData = [
     maxCharLength: 20,
     flex: 1,
     width: undefined,
+    inputType: inputType.text,
   },
 ];
 

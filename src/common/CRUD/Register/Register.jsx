@@ -10,6 +10,7 @@ import {
 } from './logics/RegisterLogics';
 import TextInput from './TextInput';
 import {Button} from 'semantic-ui-react';
+import SelectInput from './SelectInput';
 
 const Register = ({
   fieldsToOpen,
@@ -63,27 +64,44 @@ const Register = ({
       <TitleButtonWrap>
         <H2>
           리스트
-          {registerStatus === 'register' ? '추가 입력란' : ' 수정 기입란'}
+          {registerStatus === 'register' ? ' 추가 입력란' : ' 수정 기입란'}
         </H2>
         <Button onClick={handleCloseBtn}> 닫기 </Button>
       </TitleButtonWrap>
 
       <Form onSubmit={handleSubmit}>
         <InputWrap>
-          {fieldsData.map((value, index) => (
-            <TextInput
-              fieldsToOpen={fieldsToOpen}
-              registerStatus={registerStatus}
-              key={index}
-              input={input}
-              setInput={setInput}
-              required
-              name={value.fieldName}
-              placeholder={value.placeholder}
-              maxCharLength={value.maxCharLength}
-              flex={value.flex}
-            />
-          ))}
+          {fieldsData.map((value, index) => {
+            if (value.inputType === 'text') {
+              return (
+                <TextInput
+                  fieldsToOpen={fieldsToOpen}
+                  registerStatus={registerStatus}
+                  key={index}
+                  input={input}
+                  setInput={setInput}
+                  required
+                  name={value.fieldName}
+                  placeholder={value.placeholder}
+                  maxCharLength={value.maxCharLength}
+                  flex={value.flex}
+                />
+              );
+            } else if (value.inputType === 'select') {
+              return (
+                <SelectInput
+                  key={index}
+                  fieldsToOpen={fieldsToOpen}
+                  registerStatus={registerStatus}
+                  input={input}
+                  name={value.fieldName}
+                  setInput={setInput}
+                  placeholder={value.placeholder}
+                  options={value.options}
+                />
+              );
+            }
+          })}
         </InputWrap>
 
         {tellAlert(submitStatus)}
