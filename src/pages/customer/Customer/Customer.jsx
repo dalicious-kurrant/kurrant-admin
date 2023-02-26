@@ -238,6 +238,7 @@ const Customer = () => {
                 sendFinal(customerData, sendFinalMutate, checkboxStatus);
               }}
               sendDelete={handleDelete}
+              checkboxStatus={checkboxStatus}
             />
 
             {showRegister && (

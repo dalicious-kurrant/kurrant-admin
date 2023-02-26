@@ -286,6 +286,7 @@ const SpotInfo = () => {
                 sendFinal(spotInfoData, sendFinalMutate);
               }}
               sendDelete={handleDelete}
+              checkboxStatus={checkboxStatus}
             />
 
             {showRegister && (

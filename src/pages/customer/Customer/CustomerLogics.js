@@ -5,6 +5,11 @@ import {
 import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
+  if (!Object.values(checkboxStatus).includes(true)) {
+    window.confirm('체크된 항목이 없습니다 ');
+    return;
+  }
+
   const checkboxStatusNow = {...removeParentKeyInCheckbox(checkboxStatus)};
 
   let selectedData = [];
@@ -37,7 +42,11 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
       roleValue = '일반';
     } else if (value.role === 'MANAGER') {
       roleValue = '관리자';
-    } else if (value.role === '일반' || value.role === '관리자') {
+    } else if (
+      value.role === '일반' ||
+      value.role === '관리자' ||
+      value.role === '게스트'
+    ) {
       roleValue = value.role;
     } else {
       window.confirm("유저타입의 값은 '일반' 아니면 '관리자'로 해주세요");
