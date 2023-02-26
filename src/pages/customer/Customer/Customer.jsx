@@ -4,10 +4,8 @@ import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
-
 import {clickButtonBundle} from '../Logics/Logics';
 import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
-
 import {
   BtnWrapper,
   PageWrapper,
@@ -15,8 +13,6 @@ import {
 } from '../../../style/common.style';
 
 import {CustomerDataAtom} from './store';
-
-import useCustomerData from './useCustomerData';
 
 import {useMutation, useQueryClient} from 'react-query';
 
@@ -26,13 +22,17 @@ import {exelUserAtom} from 'utils/store';
 import {Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
-import Pagination from 'common/test/Pagination/Pagination';
+
 import {sendFinal} from './CustomerLogics';
 
 import TableCustom from 'common/Table/TableCustom';
+import usePagination from 'common/test/Pagination/usePagination';
+import PaginationTest from './PaginationTest';
+import Pagination from 'common/test/Pagination/Pagination';
+import useCustomerData from './useCustomerData';
 
 const Customer = () => {
-  const [customerData] = useAtom(CustomerDataAtom);
+  const [customerData, setCustomerData] = useAtom(CustomerDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
@@ -112,6 +112,38 @@ const Customer = () => {
       setCheckboxStatus({});
     };
   }, []);
+
+  const handleDelete = () => {
+    const status = {...checkboxStatus};
+
+    // Object.entries(deletedStatus).forEach(v => {
+    //   if (v[1] === true) {
+    //     const yes = parseInt(v[0]);
+    //     delete deletedStatus[yes];
+    //   }
+    // });
+
+    // 삭제 useMutate만 보내면 됨
+    let deleteList = [];
+
+    Object.entries(status).forEach(v => {
+      if (v[1] === true) {
+        deleteList.push(v[0]);
+      }
+    });
+
+    let yo = [];
+    const customerDataToDelete = [...customerData];
+
+    customerDataToDelete.forEach(v => {
+      if (deleteList.includes(v.id.toString())) {
+      } else {
+        yo.push(v);
+      }
+    });
+
+    setCustomerData(yo);
+  };
 
   // 페이지네이션
 
@@ -213,6 +245,7 @@ const Customer = () => {
               sendFinal={() => {
                 sendFinal(customerData, sendFinalMutate, checkboxStatus);
               }}
+              sendDelete={handleDelete}
             />
 
             {showRegister && (
@@ -230,13 +263,13 @@ const Customer = () => {
 
           {/* <div>
             <Pagination
-              pageList={pageList}
+              pageList={totalPageArray}
+              lastPage={totalPageByLimit}
+              selectOptionArray={[1, 2, 4, 10]}
               page={page}
               setPage={setPage}
               limit={limit}
               setLimit={setLimit}
-              lastPage={lastPage}
-              selectOptionArray={[1, 2, 4, 10]}
             />
           </div> */}
 

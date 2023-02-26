@@ -122,9 +122,16 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
 
                   {yo.map((value3, index3) => {
                     return (
-                      <Table.Cell align="left" key={index3}>
+                      // <Table.Cell
+                      //   align="left"
+                      //   key={index3}
+
+                      //  >
+                      //   {handleFalsyValueToHyphen(value3)}
+                      // </Table.Cell>
+                      <MyCell align="left" key={index3}>
                         {handleFalsyValueToHyphen(value3)}
-                      </Table.Cell>
+                      </MyCell>
                     );
                   })}
 
@@ -148,4 +155,11 @@ const CheckBoxTh = styled.th`
 `;
 const CheckBoxTd = styled.td`
   width: 4rem;
+`;
+
+const MyCell = styled(Table.Cell)`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 1rem;
+  white-space: nowrap;
 `;

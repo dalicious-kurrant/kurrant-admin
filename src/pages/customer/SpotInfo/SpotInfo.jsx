@@ -98,6 +98,23 @@ const SpotInfo = () => {
     };
   }, []);
 
+  const handleDelete = () => {
+    const deletedStatus = {...checkboxStatus};
+
+    console.log(checkboxStatus);
+
+    Object.entries(deletedStatus).forEach(v => {
+      if (v[1] === true) {
+        const yes = parseInt(v[0]);
+        delete deletedStatus[yes];
+      }
+    });
+
+    // 삭제 useMutate만 보내면 됨
+
+    console.log(deletedStatus);
+  };
+
   // const sendFinal = () => {
   //   const oldData = [...customerData];
 
@@ -259,6 +276,7 @@ const SpotInfo = () => {
               sendFinal={() => {
                 sendFinal(spotInfoData, sendFinalMutate);
               }}
+              sendDelete={handleDelete}
             />
 
             {showRegister && (

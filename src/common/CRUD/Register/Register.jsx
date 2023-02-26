@@ -72,7 +72,20 @@ const Register = ({
       <Form onSubmit={handleSubmit}>
         <InputWrap>
           {fieldsData.map((value, index) => {
-            if (value.inputType === 'text') {
+            if (value.inputType === 'select') {
+              return (
+                <SelectInput
+                  key={index}
+                  fieldsToOpen={fieldsToOpen}
+                  registerStatus={registerStatus}
+                  input={input}
+                  name={value.fieldName}
+                  setInput={setInput}
+                  placeholder={value.placeholder}
+                  options={value.options}
+                />
+              );
+            } else {
               return (
                 <TextInput
                   fieldsToOpen={fieldsToOpen}
@@ -85,19 +98,6 @@ const Register = ({
                   placeholder={value.placeholder}
                   maxCharLength={value.maxCharLength}
                   flex={value.flex}
-                />
-              );
-            } else if (value.inputType === 'select') {
-              return (
-                <SelectInput
-                  key={index}
-                  fieldsToOpen={fieldsToOpen}
-                  registerStatus={registerStatus}
-                  input={input}
-                  name={value.fieldName}
-                  setInput={setInput}
-                  placeholder={value.placeholder}
-                  options={value.options}
                 />
               );
             }
