@@ -6,7 +6,7 @@ import {completePlanAtom, exelCompletePlanAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 import styled from 'styled-components';
 import {formattedWeekDate} from '../../utils/dateFormatter';
-import PlanExelTable from './components/PlanExelTable';
+import CustomPlanExelTable from './components/CustomPlanExelTable';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -87,32 +87,34 @@ const CompletePlans = () => {
   return (
     <PageWrapper>
       <Wrapper>
-        <DeadLineWrapper>
-          <Label color="blue">날짜선택</Label>
-          <RecoDatePickerContainer>
-            <RecoDatePickerBox>
-              <DatePicker
-                selected={accessStartDate}
-                onChange={date => {
-                  setAccessStartDate(date);
-                }}
-                dateFormat="yyyy-MM-dd"
-                customInput={<SelectDatePicker />}
-              />
-            </RecoDatePickerBox>
-            -
-            <RecoDatePickerBox>
-              <DatePicker
-                selected={accessEndDate}
-                onChange={date => {
-                  setAccessEndDate(date);
-                }}
-                dateFormat="yyyy-MM-dd"
-                customInput={<SelectDatePicker />}
-              />
-            </RecoDatePickerBox>
-          </RecoDatePickerContainer>
-        </DeadLineWrapper>
+        {plan && (
+          <DeadLineWrapper>
+            <Label color="blue">날짜선택</Label>
+            <RecoDatePickerContainer>
+              <RecoDatePickerBox>
+                <DatePicker
+                  selected={accessStartDate}
+                  onChange={date => {
+                    setAccessStartDate(date);
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  customInput={<SelectDatePicker />}
+                />
+              </RecoDatePickerBox>
+              -
+              <RecoDatePickerBox>
+                <DatePicker
+                  selected={accessEndDate}
+                  onChange={date => {
+                    setAccessEndDate(date);
+                  }}
+                  dateFormat="yyyy-MM-dd"
+                  customInput={<SelectDatePicker />}
+                />
+              </RecoDatePickerBox>
+            </RecoDatePickerContainer>
+          </DeadLineWrapper>
+        )}
       </Wrapper>
       {/* <ContentWrapper>
         <BtnWrapper>
@@ -161,37 +163,38 @@ const CompletePlans = () => {
           </AccessBox>
         </BtnWrapper>
       </ContentWrapper> */}
-      <FilterContainer>
-        <FilterBox>
-          <DropBox>
-            <Label color="teal">메이커스</Label>
-            <Dropdown
-              placeholder="메이커스"
-              fluid
-              multiple
-              selection
-              options={options}
-              value={selectMakers}
-              onChange={(e, data) => {
-                setSelectMakers(data.value);
-              }}
-            />
-          </DropBox>
-          <DropBox>
-            <Label color="orange">고객사</Label>
-            <Dropdown
-              placeholder="고객사"
-              fluid
-              multiple
-              selection
-              options={optionsClient}
-              value={selectClient}
-              onChange={(e, data) => {
-                setSelectClient(data.value);
-              }}
-            />
-          </DropBox>
-          {/* <DropBox>
+      {plan && (
+        <FilterContainer>
+          <FilterBox>
+            <DropBox>
+              <Label color="teal">메이커스</Label>
+              <Dropdown
+                placeholder="메이커스"
+                fluid
+                multiple
+                selection
+                options={options}
+                value={selectMakers}
+                onChange={(e, data) => {
+                  setSelectMakers(data.value);
+                }}
+              />
+            </DropBox>
+            <DropBox>
+              <Label color="orange">고객사</Label>
+              <Dropdown
+                placeholder="고객사"
+                fluid
+                multiple
+                selection
+                options={optionsClient}
+                value={selectClient}
+                onChange={(e, data) => {
+                  setSelectClient(data.value);
+                }}
+              />
+            </DropBox>
+            {/* <DropBox>
             <Label>다이닝별 승인 상태</Label>
             <Dropdown
               placeholder="다이닝별 승인 상태"
@@ -205,21 +208,22 @@ const CompletePlans = () => {
               }}
             />
           </DropBox> */}
-        </FilterBox>
-        {totalPage > 0 && (
-          <PagenationBox>
-            <Pagination
-              defaultActivePage={page}
-              totalPages={totalPage}
-              boundaryRange={1}
-              onPageChange={(e, data) => {
-                setPage(data.activePage);
-              }}
-            />
-          </PagenationBox>
-        )}
-      </FilterContainer>
-      {exelPlan && <PlanExelTable />}
+          </FilterBox>
+          {totalPage > 0 && (
+            <PagenationBox>
+              <Pagination
+                defaultActivePage={page}
+                totalPages={totalPage}
+                boundaryRange={1}
+                onPageChange={(e, data) => {
+                  setPage(data.activePage);
+                }}
+              />
+            </PagenationBox>
+          )}
+        </FilterContainer>
+      )}
+      {exelPlan && <CustomPlanExelTable />}
       {plan && (
         <>
           <CustomPlanTable
