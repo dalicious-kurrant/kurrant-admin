@@ -8,13 +8,35 @@ export function usePostCalendar() {
   });
 }
 
-export function useGetCalendar(size, page) {
+export function useGetCalendar(size, page, makersId, groupId, status) {
   return useQuery('calendarList', () => {
-    return calendarApis.getDailyFood(size, page);
+    return calendarApis.getDailyFood(size, page, makersId, groupId, status);
   });
 }
-export function useGetRecommandCalendar(startDate, size, page) {
+export function useGetRecommandCalendar(
+  startDate,
+  endDate,
+  size,
+  page,
+  makersId,
+  groupId,
+  status,
+) {
   return useQuery('calendarRecommandList', () => {
-    return calendarApis.getRecommnadDailyFood(startDate, size, page);
+    return calendarApis.getRecommnadDailyFood(
+      startDate,
+      endDate,
+      size,
+      page,
+      makersId,
+      groupId,
+      status,
+    );
+  });
+}
+
+export function usePostPresetCalendar() {
+  return useMutation(data => {
+    return calendarApis.presetDailyFood(data);
   });
 }

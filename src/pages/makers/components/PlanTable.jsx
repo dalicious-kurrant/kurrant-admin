@@ -46,7 +46,7 @@ const PlanTable = ({count, testData, setTestData}) => {
             <Table.HeaderCell>고객사 케파</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">음식 승인</Table.HeaderCell>
             <Table.HeaderCell>상품</Table.HeaderCell>
-            <Table.HeaderCell>음식 상태</Table.HeaderCell>
+            {/* <Table.HeaderCell>음식 상태</Table.HeaderCell> */}
             <Table.HeaderCell>Food 케파</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -150,9 +150,9 @@ const PlanTable = ({count, testData, setTestData}) => {
                       <Table.Cell>
                         <FlexBox>{d.foodName} </FlexBox>
                       </Table.Cell>
-                      <Table.Cell>
+                      {/* <Table.Cell>
                         <DropdownBox>
-                          {/* <Dropdown
+                          <Dropdown
                           item
                           text={
                             foodStatusData.filter(
@@ -168,7 +168,7 @@ const PlanTable = ({count, testData, setTestData}) => {
                               </Dropdown.Item>
                             ))}
                           </Dropdown.Menu>
-                        </Dropdown> */}
+                        </Dropdown>
                           <Dropdown
                             placeholder="판매상태"
                             fluid
@@ -184,7 +184,7 @@ const PlanTable = ({count, testData, setTestData}) => {
                             }}
                           />
                         </DropdownBox>
-                      </Table.Cell>
+                      </Table.Cell> */}
 
                       <Table.Cell>{d.foodCapacity}</Table.Cell>
                     </Table.Row>

@@ -21,6 +21,12 @@ import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
+
+import {exelUserAtom} from 'utils/store';
+import {Table} from 'semantic-ui-react';
+import styled from 'styled-components';
+import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
+import Pagination from 'common/test/Pagination/Pagination';
 import {sendFinal} from './CustomerLogics';
 
 const Customer = () => {
@@ -29,12 +35,32 @@ const Customer = () => {
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
   const [registerStatus, setRegisterStatus] = useState('register');
-
+  const [key, setKey] = useState([]);
+  const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const queryClient = useQueryClient();
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
       const response = await instance.post(`users`, todo);
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
+  const {mutate: deleteFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.patch(`client/members`, todo);
+
+      console.log(todo);
+
       return response;
     },
     {
@@ -75,6 +101,9 @@ const Customer = () => {
   const handleClose = () => {
     setShowRegister(false);
   };
+  useEffect(() => {
+    if (exelUser) setKey(Object.keys(exelUser[0]));
+  }, [exelUser]);
 
   useEffect(() => {
     return () => {
@@ -82,68 +111,151 @@ const Customer = () => {
     };
   }, []);
 
-  useEffect(() => {
-    return () => {
-      setCheckboxStatus({});
-    };
-  }, []);
+  // 페이지네이션
 
-  if (isLoading)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
+  // 두가지만 백엔드랑 연결하면 됨
 
-  if (status === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  // 1. 페이지네이션 처리가 된 URL
+  //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
+
+  // 2. 백엔드에 있는 데이터의 총 길이
+
+  // const [page, setPage] = useState(12);
+  // const [limit, setLimit] = useState(1);
+
+  // PaginationTest(page, limit);
+
+  // const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
 
   return (
-    <PageWrapper>
-      <BtnWrapper>
-        {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
-      </BtnWrapper>
+    <>
+      {exelUser ? (
+        <PageWrapper>
+          <TableWrapper>
+            <Table celled>
+              {/* {console.log(plan)} */}
+              {exelUser &&
+                exelUser.map((p, i) => {
+                  const HeaderData = Object.values(p);
 
-      <div>
-        <CRUDBundle
-          handleBundleClick={handleBundleClick}
-          showRegister={showRegister}
-          sendFinal={() => {
-            sendFinal(customerData, sendFinalMutate);
-          }}
-        />
+                  if (i === 0) {
+                    return (
+                      <Table.Header key={'0' + i}>
+                        <Table.Row>
+                          {HeaderData.map((h, k) => {
+                            return (
+                              <Table.HeaderCell key={'0' + p.id + k}>
+                                {h}
+                              </Table.HeaderCell>
+                            );
+                          })}
+                        </Table.Row>
+                      </Table.Header>
+                    );
+                  } else {
+                    return (
+                      <Table.Body key={i}>
+                        <Table.Row>
+                          {key &&
+                            key.map((k, l) => {
+                              if (
+                                k === 'breakfastDeliveryTime' ||
+                                k === 'dinnerDeliveryTime' ||
+                                k === 'lunchDeliveryTime'
+                              ) {
+                                return (
+                                  <Table.Cell key={k + l}>
+                                    <FlexBox>
+                                      {typeof p[k] === 'object'
+                                        ? formattedTime(p[k])
+                                        : '-'}
+                                    </FlexBox>
+                                  </Table.Cell>
+                                );
+                              }
+                              if (
+                                k === 'createDateTime' ||
+                                k === 'updatedDateTime'
+                              ) {
+                                return (
+                                  <Table.Cell key={k + l}>
+                                    <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
+                                  </Table.Cell>
+                                );
+                              }
+                              return (
+                                <Table.Cell key={`${i}` + l}>
+                                  <FlexBox>{p[k]}</FlexBox>
+                                </Table.Cell>
+                              );
+                            })}
+                        </Table.Row>
+                      </Table.Body>
+                    );
+                  }
+                })}
+            </Table>
+          </TableWrapper>
+        </PageWrapper>
+      ) : (
+        <PageWrapper>
+          <BtnWrapper>
+            {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
+          </BtnWrapper>
 
-        {showRegister && (
-          <Register
-            registerStatus={registerStatus}
-            submitMutate={submitMutate}
-            editMutate={editMutate}
-            handleClose={handleClose}
-            data={dataToEdit}
-            fieldsToOpen={CustomerFieldsToOpen}
-            fieldsData={CustomerFieldsData}
-          />
-        )}
-      </div>
+          <div>
+            <CRUDBundle
+              handleBundleClick={handleBundleClick}
+              showRegister={showRegister}
+              sendFinal={() => {
+                sendFinal(customerData, sendFinalMutate, checkboxStatus);
+              }}
+            />
 
-      <TableWrapper>
-        {!!customerData && customerData.length !== 0 && (
-          <CustomTable
-            fieldsInput={CustomerFieldsToOpen}
-            dataInput={customerData}
-            // isMemo={true}
-            // handleChange={}
-          />
-        )}
-      </TableWrapper>
-    </PageWrapper>
+            {showRegister && (
+              <Register
+                registerStatus={registerStatus}
+                submitMutate={submitMutate}
+                editMutate={editMutate}
+                handleClose={handleClose}
+                data={dataToEdit}
+                fieldsToOpen={CustomerFieldsToOpen}
+                fieldsData={CustomerFieldsData}
+              />
+            )}
+          </div>
+
+          {/* <div>
+            <Pagination
+              pageList={pageList}
+              page={page}
+              setPage={setPage}
+              limit={limit}
+              setLimit={setLimit}
+              lastPage={lastPage}
+              selectOptionArray={[1, 2, 4, 10]}
+            />
+          </div> */}
+
+          <TableWrapper>
+            {!!customerData && customerData.length !== 0 && (
+              <CustomTable
+                fieldsInput={CustomerFieldsToOpen}
+                dataInput={customerData}
+                // isMemo={true}
+                // handleChange={}
+              />
+            )}
+          </TableWrapper>
+        </PageWrapper>
+      )}
+    </>
   );
 };
 
 export default Customer;
+
+const FlexBox = styled.div`
+  display: flex;
+  white-space: nowrap;
+`;

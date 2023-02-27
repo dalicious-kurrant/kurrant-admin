@@ -5,6 +5,7 @@ import {calculateTotalPages} from 'common/Pagination/Logics/PaginationLogics';
 
 const Pagination = ({
   dataTotalLength,
+
   page,
   setPage,
   dataLimit,
@@ -59,7 +60,7 @@ const Pagination = ({
       <Wrap>
         <DataLimitSelect
           currentValue={dataLimit}
-          setDataLimit={setDataLimit}
+          setLimit={setDataLimit}
           setPage={setPage}
           options={selectOptionArray}
         />

@@ -1,21 +1,29 @@
+import {handleFalsyValueToString} from 'utils/valueHandlingLogics';
+
 export const sendFinal = (data, sendFinalMutate) => {
   const oldData = [...data];
+
+  console.log(oldData);
 
   const newData = oldData.map(value => {
     let yo = {};
 
-    // yo['userId'] = handleFalsyValue(value.id);
-    // yo['userId'] = handleFalsyValue(value.email);
+    // 아래는 유저꺼임
+
+    // // yo['userId'] = handleFalsyValue(value.id);
+    // yo['userId'] = handleFalsyValueToString(value.email);
     // // yo['password'] = handleFalsyValue(value.password);
-    // yo['password'] = handleFalsyValue(value.password);
-    // yo['name'] = handleFalsyValue(value.name);
-    // yo['email'] = handleFalsyValue(value.email);
-    // yo['phone'] = handleFalsyValue(value.phone);
+    // yo['password'] = handleFalsyValueToString(value.password);
+    // yo['name'] = handleFalsyValueToString(value.name);
+    // yo['email'] = handleFalsyValueToString(value.email);
+    // yo['phone'] = handleFalsyValueToString(value.phone);
     // // yo['phone'] = `010-6565-1181`;
-    // yo['role'] = handleFalsyValue(value.role);
+    // yo['role'] = handleFalsyValueToString(value.role);
 
     return yo;
   });
+
+  // console.log(newData);
 
   const newData2 = {
     userList: newData,
@@ -23,10 +31,10 @@ export const sendFinal = (data, sendFinalMutate) => {
 
   if (
     window.confirm(
-      '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
+      '기존에 있던 데이터가 아래의 테이블에 있는 데이터로 변경됩니다 진행하시겠습니까?',
     )
   ) {
-    sendFinalMutate(newData2);
+    // sendFinalMutate(newData2);
   } else {
   }
 };

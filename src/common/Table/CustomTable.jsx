@@ -6,7 +6,10 @@ import {useState} from 'react';
 import Theme from 'style/Theme';
 import styled from 'styled-components';
 
-import {handleFalsyValue} from 'utils/valueHandlingLogics';
+import {
+  handleFalsyValueToHyphen,
+  handleFalsyValueToString,
+} from 'utils/valueHandlingLogics';
 import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom} from './store';
 
@@ -122,7 +125,7 @@ const CustomTable = ({
                   {yo.map((value3, index3) => {
                     return (
                       <td align="left" key={index3}>
-                        {handleFalsyValue(value3)}
+                        {handleFalsyValueToHyphen(value3)}
                       </td>
                     );
                   })}
