@@ -11,6 +11,7 @@ import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
 import {Button, Label, Table, Dropdown, DropBox} from 'semantic-ui-react';
+import {handleFalsyValueToHyphen} from 'utils/valueHandlingLogics';
 
 // import putId from './'
 
@@ -106,9 +107,6 @@ const TableCustom = ({
                 onChecked={onCheckCheckbox}
               />
             </CheckBoxTh>
-            {/* {tableDeleteList.length > 0 && (
-              <Table.HeaderCell>삭제취소</Table.HeaderCell>
-            )} */}
 
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput?.map((val, index) => {
@@ -154,20 +152,35 @@ const TableCustom = ({
                       />
                     </CheckBoxTd>
 
-                    {/* <Table.Cell>
-                      <DeleteCancelBtn
-                        id={value1.id}
-                        onClick={onDeleteCancelClick}>
-                        삭제취소
-                      </DeleteCancelBtn>
-                    </Table.Cell> */}
-
                     {yo?.map((value3, index3) => {
-                      return (
-                        <MyCell align="left" key={index3}>
-                          {handleFalsyValueToHyphen(Object.values(value3)[0])}
-                        </MyCell>
-                      );
+                      let ellipsisOn = undefined;
+
+                      ellipsisList &&
+                        ellipsisList.forEach(val => {
+                          if (val.key === Object.keys(value3)[0]) {
+                            ellipsisOn = val;
+                          }
+                        });
+
+                      if (ellipsisOn) {
+                        return (
+                          <Table.Cell key={index3}>
+                            <EllipsisCell
+                              length={ellipsisOn.length}
+                              align="left">
+                              {handleFalsyValueToHyphen(
+                                Object.values(value3)[0],
+                              )}
+                            </EllipsisCell>
+                          </Table.Cell>
+                        );
+                      } else {
+                        return (
+                          <MyCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                          </MyCell>
+                        );
+                      }
                     })}
 
                     {!!isMemo && (
@@ -201,10 +214,6 @@ const TableCustom = ({
                           }
                         });
 
-                      // const ifEllipsis = ellipsisList
-                      //   ? ellipsisList.includes(Object.keys(value3)[0])
-                      //   : undefined;
-
                       if (ellipsisOn) {
                         return (
                           <Table.Cell key={index3}>
@@ -213,7 +222,6 @@ const TableCustom = ({
                               align="left">
                               {handleFalsyValueToHyphen(
                                 Object.values(value3)[0],
-                                // ellipsisOn.key,
                               )}
                             </EllipsisCell>
                           </Table.Cell>
@@ -268,8 +276,3 @@ const EllipsisCell = styled.div`
   overflow: hidden;
   white-space: nowrap;
 `;
-// const
-
-const DeleteCancelBtn = styled.button``;
-
-// const HeaderCellRow = styled.div``

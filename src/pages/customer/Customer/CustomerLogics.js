@@ -4,7 +4,13 @@ import {
 } from 'common/Table/Logics';
 import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
-export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
+export const sendFinal = (
+  data,
+  sendFinalMutate,
+  checkboxStatus,
+  tableDeleteList,
+  deleteFinalMutate,
+) => {
   if (!Object.values(checkboxStatus).includes(true)) {
     window.confirm('체크된 항목이 없습니다 ');
     return;
@@ -59,6 +65,17 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
     yo['email'] = handleFalsyValueToBlank(value.email);
     yo['phone'] = handleFalsyValueToBlank(value.phone);
     yo['role'] = roleValue;
+    yo['status'] = 1;
+    yo['groupName'] = value.groupName;
+    yo['point'] = value.point;
+    yo['gourmetType'] = value.gourmetType;
+    yo['isMembership'] = value.isMembership;
+    yo['marketingAgree'] = true;
+    yo['marketingAgreedDateTime'] = '2023-02-28 10:28:30';
+    yo['marketingAlarm'] = true;
+    yo['userOrderAlarm'] = true;
+    yo['recentLoginDateTime'] = value.recentLoginDateTime;
+    yo['userCreatedDateTime'] = value.userCreatedDateTime;
 
     return yo;
   });
@@ -73,26 +90,31 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
     )
   ) {
     sendFinalMutate(newData2);
+    sendDelete(tableDeleteList, deleteFinalMutate);
   } else {
     return;
   }
 };
 
-export const sendDelete = (deleteFinalMutate, checkboxStatus) => {
-  // console.log(deleteFinalMutate);
-  // console.log(checkboxStatus)
-  console.log(extractOnlyTruesNumberArray(checkboxStatus));
+export const sendDelete = (tableDeleteList, deleteFinalMutate) => {
+  const toNumList = tableDeleteList.map(v => {
+    return parseInt(v);
+  });
+
+  // 스트링 -> 넘버
 
   const submitData = {
-    useIdList: extractOnlyTruesNumberArray(checkboxStatus),
+    useIdList: toNumList,
     groupId: 1,
   };
 
-  if (window.confirm('정보가 삭제됩니다 진행하시겠습니까?')) {
-    deleteFinalMutate(submitData);
-  } else {
-    return;
-  }
+  console.log(submitData);
+
+  // if (window.confirm('정보가 삭제됩니다 진행하시겠습니까?')) {
+  //   deleteFinalMutate(submitData);
+  // } else {
+  //   return;
+  // }
 };
 
 // 유저타입 USER -> 일반 , MANAGER -> 관리자

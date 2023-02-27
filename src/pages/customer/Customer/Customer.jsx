@@ -130,7 +130,7 @@ const Customer = () => {
       }
     });
 
-    // console.log(deleteList);
+    deleteList = [...new Set(deleteList)];
 
     let yo = [];
     const customerDataToDelete = [...customerData];
@@ -242,7 +242,13 @@ const Customer = () => {
                 handleBundleClick={handleBundleClick}
                 showRegister={showRegister}
                 sendFinal={() => {
-                  sendFinal(customerData, sendFinalMutate, checkboxStatus);
+                  sendFinal(
+                    customerData,
+                    sendFinalMutate,
+                    checkboxStatus,
+                    tableDeleteList,
+                    deleteFinalMutate,
+                  );
                 }}
                 sendDelete={handleDelete}
                 checkboxStatus={checkboxStatus}
