@@ -17,6 +17,7 @@ import {
   deadlineAtom,
   exelUserAtom,
   saveItemAtom,
+  statusOptionAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -27,6 +28,10 @@ import {
   productExel,
   productExelExport,
 } from '../utils/downloadExel/exel';
+import {
+  useAddExelProductData,
+  useEditProductStatus,
+} from 'hooks/useProductsList';
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {
   formattedDate,
@@ -36,7 +41,6 @@ import {
 import {usePostPresetCalendar} from 'hooks/useCalendars';
 import {useSaveUserData} from 'hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
-import {useAddExelProductData} from 'hooks/useProductsList';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -101,6 +105,8 @@ const Common = () => {
   const [id] = useAtom(shopInfoDetailIdAtom);
   const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
+  const [statusOption] = useAtom(statusOptionAtom);
+  const {mutateAsync: editStatus} = useEditProductStatus();
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -317,6 +323,11 @@ const Common = () => {
     }
   };
 
+  // 상품 정보 상태변경 저장
+  const statusButton = async () => {
+    await editStatus(statusOption);
+  };
+
   const noNeedButton =
     pathname !== '/sales/schedule' &&
     pathname !== '/order/info' &&
@@ -342,6 +353,9 @@ const Common = () => {
               }
               if (exelProduct) {
                 callPostCalendar();
+              }
+              if (statusOption) {
+                statusButton();
               }
             }}
           />

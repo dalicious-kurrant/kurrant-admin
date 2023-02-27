@@ -65,7 +65,7 @@ const Order = () => {
       label: el.groupName,
     };
   });
-
+  console.log(groupArr);
   const allUserArr = allUserList?.data?.users?.map(el => {
     return {
       value: el.userId,
