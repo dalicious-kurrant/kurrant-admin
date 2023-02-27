@@ -24,12 +24,21 @@ export const CustomerFieldsToOpen = {
   appleEmail: '애플_이메일',
 };
 
+export const CustomerFieldsFilterList = [
+  {
+    fieldName: 'role',
+    filterType: 'select',
+    selectList: ['일반', '관리자', '게스트'],
+  },
+  {fieldName: 'email', filterType: 'text'},
+];
+
 const inputType = {
   select: 'select',
   text: 'text',
 };
 
-export const CustomerFieldsData = [
+export const CustomerFieldsDataForRegister = [
   // {
   //   fieldName: 'userId',
   //   fieldNameKor: '아이디',
