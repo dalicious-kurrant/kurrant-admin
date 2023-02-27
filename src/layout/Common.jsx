@@ -14,8 +14,12 @@ import {
   exelSpotAtom,
   shopInfoDetailIdAtom,
   recommandPlanAtom,
+<<<<<<< HEAD
   deadlineAtom,
   exelUserAtom,
+=======
+  saveItemAtom,
+>>>>>>> develop
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -26,6 +30,7 @@ import {
   productExel,
   productExelExport,
 } from '../utils/downloadExel/exel';
+<<<<<<< HEAD
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {
   formattedDate,
@@ -35,6 +40,9 @@ import {
 import {usePostPresetCalendar} from 'hooks/useCalendars';
 import {useSaveUserData} from 'hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
+=======
+import {useAddExelProductData} from 'hooks/useProductsList';
+>>>>>>> develop
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -97,8 +105,9 @@ const Common = () => {
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
-
+  const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
+
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -106,6 +115,7 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
+<<<<<<< HEAD
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
@@ -180,6 +190,32 @@ const Common = () => {
       deadline: formattedFullDate(startDate, '-'),
       excelDataList: [...reqArray],
     });
+=======
+
+  const callProductExel = async () => {
+    const reqArray = [];
+    exelProduct.map((item, idx) => {
+      console.log(item, '000');
+      if (idx !== 0) {
+        const result = {
+          foodId: item.foodId,
+          makersId: item.makersId,
+          makersName: item.makersName,
+          foodName: item.foodName,
+          foodStatus: item.foodStatus,
+          defaultPrice: item.defaultPrice,
+          makersDiscount: item.makersDiscount,
+          eventDiscount: item.eventDiscount,
+          resultPrice: item.resultPrice,
+          description: item.description,
+          foodTags: item.foodTags.split(','),
+        };
+
+        reqArray.push(result);
+      }
+    });
+    await productPost(reqArray);
+>>>>>>> develop
     alert('저장 되었습니다.');
     window.location.reload();
   };
@@ -224,6 +260,8 @@ const Common = () => {
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
+
+          console.log(json, 'json');
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -302,6 +340,7 @@ const Common = () => {
           <Button
             color="green"
             icon="save"
+<<<<<<< HEAD
             content="저장"
             onClick={() => {
               if (plan || exelPlan || reCommandPlan) {
@@ -309,6 +348,12 @@ const Common = () => {
               }
               if (exelUser) {
                 handlerSaveUser();
+=======
+            content="저장(미완)"
+            onClick={() => {
+              if (exelProduct) {
+                callProductExel();
+>>>>>>> develop
               }
             }}
           />

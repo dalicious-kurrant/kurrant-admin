@@ -39,3 +39,9 @@ export function useEditProductStatus() {
     },
   });
 }
+
+export function useAddExelProductData() {
+  return useMutation(data => {
+    return productApis.exelProductData(data);
+  });
+}
