@@ -120,24 +120,6 @@ const TableCustom = ({
                 return (
                   <Table.HeaderCell align="left" key={index}>
                     {fieldsInput[val]}
-                    {/* {isInCheckFilterList(useFilterList, val) ? (
-                      <>
-                        <span>{fieldsInput[val]} </span>
-                        <Dropdown
-                          // placeholder="메이커스"
-                          fluid
-                          multiple
-                          selection
-                          options={options}
-                          // value={selectMakers}
-                          // onChange={(e, data) => {
-                          //   setSelectMakers(data.value);
-                          // }}
-                        />
-                      </>
-                    ) : (
-                      <span>{fieldsInput[val]} </span>
-                    )} */}
                   </Table.HeaderCell>
                 );
               })}
@@ -213,23 +195,35 @@ const TableCustom = ({
                         onChecked={onCheckCheckbox}
                       />
                     </CheckBoxTd>
-                    {/* {tableDeleteList.length > 0 && <Table.Cell></Table.Cell>} */}
 
                     {yo?.map((value3, index3) => {
-                      const define = ellipsisList
-                        ? ellipsisList.includes(Object.keys(value3)[0])
-                        : undefined;
+                      let ellipsisOn = undefined;
 
-                      if (define) {
+                      ellipsisList &&
+                        ellipsisList.forEach(val => {
+                          if (val.key === Object.keys(value3)[0]) {
+                            ellipsisOn = val;
+                          }
+                        });
+
+                      // const ifEllipsis = ellipsisList
+                      //   ? ellipsisList.includes(Object.keys(value3)[0])
+                      //   : undefined;
+
+                      if (ellipsisOn) {
                         return (
-                          <EllipsisCell align="left" key={index3}>
-                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
-                            {'sldkjf'}
-                          </EllipsisCell>
+                          <Table.Cell key={index3}>
+                            <EllipsisCell
+                              length={ellipsisOn.length}
+                              align="left">
+                              {handleFalsyValueToHyphen(
+                                Object.values(value3)[0],
+                                // ellipsisOn.key,
+                              )}
+                            </EllipsisCell>
+                          </Table.Cell>
                         );
                       } else {
-                        // console.log(value3);
-
                         return (
                           <MyCell align="left" key={index3}>
                             {handleFalsyValueToHyphen(Object.values(value3)[0])}
@@ -273,8 +267,8 @@ const DeleteListTableRow = styled(Table.Row)`
   text-decoration: line-through;
 `;
 
-const EllipsisCell = styled(Table.Cell)`
-  width: 2rem;
+const EllipsisCell = styled.div`
+  width: ${({length}) => length};
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

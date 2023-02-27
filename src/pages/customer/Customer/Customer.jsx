@@ -5,12 +5,7 @@ import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
-import {
-  CustomerFieldsDataForRegister,
-  CustomerFieldsFilterList,
-  CustomerFieldsToOpen,
-  CustomerFieldsToOpenObject,
-} from './CustomerInfoData';
+// import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 import {
   BtnWrapper,
   PageWrapper,
@@ -35,6 +30,10 @@ import usePagination from 'common/test/Pagination/usePagination';
 import PaginationTest from './PaginationTest';
 import Pagination from 'common/test/Pagination/Pagination';
 import useCustomerData from './useCustomerData';
+import {
+  CustomerFieldsDataForRegister,
+  CustomerFieldsToOpen,
+} from './CustomerInfoData';
 
 const Customer = () => {
   const [customerData, setCustomerData] = useAtom(CustomerDataAtom);
@@ -93,10 +92,6 @@ const Customer = () => {
     'users/all',
     token,
   );
-
-  useEffect(() => {
-    console.log(customerData);
-  }, [customerData]);
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -247,12 +242,7 @@ const Customer = () => {
                 handleBundleClick={handleBundleClick}
                 showRegister={showRegister}
                 sendFinal={() => {
-                  sendFinal(
-                    customerData,
-                    sendFinalMutate,
-                    checkboxStatus,
-                    tableDeleteList,
-                  );
+                  sendFinal(customerData, sendFinalMutate, checkboxStatus);
                 }}
                 sendDelete={handleDelete}
                 checkboxStatus={checkboxStatus}
@@ -286,23 +276,16 @@ const Customer = () => {
 
           <TableWrapper>
             {customerData && customerData.length > 0 && (
-              // <TableCustom
-              //   fieldsInput={CustomerFieldsToOpen}
-              //   // useFilterList={[{field: 'role', filterType: 'select', filterList:['일반', '관리자', '게스트']}]}
-              //   // useFilterList={[{field: 'role', filterType:'select'},{field: 'email', filterType:'text'} ]}
-              //   dataInput={customerData}
-              //   // isMemo={true}
-              //   // handleChange={}
-              // />
               <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
-                useFilterList={CustomerFieldsFilterList}
-                // useFilterList={[{field: 'role', filterType: 'select', filterList:['일반', '관리자', '게스트']}]}
-                // useFilterList={[{field: 'role', filterType:'select'},{field: 'email', filterType:'text'} ]}
                 dataInput={customerData}
-                ellipsisList={['password']}
                 // isMemo={true}
                 // handleChange={}
+
+                ellipsisList={[
+                  {key: 'password', length: '5rem'},
+                  {key: 'email', length: '22rem'},
+                ]}
               />
             )}
           </TableWrapper>
