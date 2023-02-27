@@ -14,12 +14,9 @@ import {
   exelSpotAtom,
   shopInfoDetailIdAtom,
   recommandPlanAtom,
-<<<<<<< HEAD
   deadlineAtom,
   exelUserAtom,
-=======
   saveItemAtom,
->>>>>>> develop
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -30,7 +27,6 @@ import {
   productExel,
   productExelExport,
 } from '../utils/downloadExel/exel';
-<<<<<<< HEAD
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {
   formattedDate,
@@ -40,9 +36,7 @@ import {
 import {usePostPresetCalendar} from 'hooks/useCalendars';
 import {useSaveUserData} from 'hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
-=======
 import {useAddExelProductData} from 'hooks/useProductsList';
->>>>>>> develop
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -115,7 +109,6 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
-<<<<<<< HEAD
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
@@ -185,15 +178,8 @@ const Common = () => {
         }
       });
     }
-    console.log(reqArray);
-    await postPresetCalendar({
-      deadline: formattedFullDate(startDate, '-'),
-      excelDataList: [...reqArray],
-    });
-=======
-
-  const callProductExel = async () => {
-    const reqArray = [];
+    if (exelProduct) {
+    }
     exelProduct.map((item, idx) => {
       console.log(item, '000');
       if (idx !== 0) {
@@ -215,7 +201,11 @@ const Common = () => {
       }
     });
     await productPost(reqArray);
->>>>>>> develop
+    console.log(reqArray);
+    await postPresetCalendar({
+      deadline: formattedFullDate(startDate, '-'),
+      excelDataList: [...reqArray],
+    });
     alert('저장 되었습니다.');
     window.location.reload();
   };
@@ -340,7 +330,6 @@ const Common = () => {
           <Button
             color="green"
             icon="save"
-<<<<<<< HEAD
             content="저장"
             onClick={() => {
               if (plan || exelPlan || reCommandPlan) {
@@ -348,12 +337,9 @@ const Common = () => {
               }
               if (exelUser) {
                 handlerSaveUser();
-=======
-            content="저장(미완)"
-            onClick={() => {
+              }
               if (exelProduct) {
                 callProductExel();
->>>>>>> develop
               }
             }}
           />
