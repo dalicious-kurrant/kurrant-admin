@@ -58,6 +58,7 @@ export const CustomerFieldsData = [
     flex: 1,
     width: undefined,
     inputType: inputType.text,
+    showCharLength: 10,
   },
 
   {
