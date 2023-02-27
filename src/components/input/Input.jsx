@@ -141,6 +141,7 @@ const StyledTextInput = styled.input`
   /* width: 100%; */
   margin-right: 10px;
   //height: 30px;
+  outline: none;
   border: 0.5px solid #c8c8d2;
   border-radius: 4px;
   padding: ${({paddings}) => paddings && paddings};
