@@ -38,3 +38,10 @@ export const sendFinal = (data, sendFinalMutate) => {
   } else {
   }
 };
+
+export const makeId = dataInput => {
+  return dataInput.map((v, i) => {
+    v['id'] = i + 1;
+    return v;
+  });
+};
