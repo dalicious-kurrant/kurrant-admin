@@ -9,6 +9,7 @@ import Select from 'react-select';
 import styled from 'styled-components';
 import {formattedWeekDate} from '../../../utils/dateFormatter';
 import {
+  useAllUserList,
   useCancelOrder,
   useGetGroupList,
   useGetMakersList,
@@ -19,6 +20,8 @@ import withCommas from '../../../utils/withCommas';
 import {useNavigate} from 'react-router-dom';
 import {useQueryClient} from 'react-query';
 import Modal from '../../../components/alertModal/AlertModal';
+import {useAtom} from 'jotai';
+import {endDateAtom, groupOptionAtom, startDateAtom} from 'utils/store';
 
 // 상품 정보 페이지
 const Order = () => {
@@ -28,14 +31,14 @@ const Order = () => {
   const spotRef = useRef(null);
   const makersRef = useRef(null);
   const diningRef = useRef(null);
-  const day = new Date();
-  const days = formattedWeekDate(day);
+  // const day = new Date();
+  // const days = formattedWeekDate(day);
   const queryClient = useQueryClient();
-  const [startDate, setStartDate] = useState(days);
-  const [endDate, setEndDate] = useState(days);
-  const [groupOption, setGroupOption] = useState('');
+  const [startDate, setStartDate] = useAtom(startDateAtom);
+  const [endDate, setEndDate] = useAtom(endDateAtom);
+  const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
   const [userOption, setUserOption] = useState('');
-  const [markersOption, setMakersOption] = useState('');
+  const [makersOption, setMakersOption] = useState('');
   const [spotOption, setSpotOption] = useState('');
   const [diningTypeOption, setDiningTypeOption] = useState('');
   const [spotList, setSpotList] = useState([]);
@@ -43,11 +46,12 @@ const Order = () => {
   const [diningType, setDiningType] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-
+  console.log(groupOption, '07');
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
+  const {data: allUserList} = useAllUserList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
-  console.log(checkItems);
+
   const groupInfoList = async id => {
     const res = await orderApis.groupInfoList(id);
     setUserList(res.data.users);
@@ -59,6 +63,13 @@ const Order = () => {
     return {
       value: el.groupId,
       label: el.groupName,
+    };
+  });
+
+  const allUserArr = allUserList?.data?.users?.map(el => {
+    return {
+      value: el.userId,
+      label: el.userName,
     };
   });
 
@@ -97,7 +108,7 @@ const Order = () => {
   const group = groupOption && `&group=${groupOption}`;
   const user = userOption && `&userId=${userOption}`;
   const spots = spotOption && `&spots=${spotOption}`;
-  const makers = markersOption && `&makersId=${markersOption}`;
+  const makers = makersOption && `&makersId=${makersOption}`;
   const diningTypecode =
     diningTypeOption && `&diningTypeCode=${diningTypeOption}`;
   const params = {
@@ -133,6 +144,9 @@ const Order = () => {
     if (groupRef.current) {
       groupRef.current.clearValue();
     }
+    if (userRef.current) {
+      userRef.current.clearValue();
+    }
     if (spotRef.current) {
       spotRef.current.clearValue();
     }
@@ -142,6 +156,7 @@ const Order = () => {
     if (diningRef.current) {
       diningRef.current.clearValue();
     }
+    window.location.reload();
   };
   const goToPage = code => {
     navigate('/order/info/detail/' + code, {
@@ -165,7 +180,7 @@ const Order = () => {
   const checkboxList = orderList?.data
     ?.map(el => el.orderItemDailyFoods)
     .flat();
-  console.log(checkboxList);
+  // console.log(checkboxList);
   const handleAllCheck = checked => {
     if (checked) {
       const idArray = [];
@@ -236,7 +251,7 @@ const Order = () => {
           <span>유저</span>
           <SelectBox
             ref={userRef}
-            options={userArr}
+            options={userArr.length === 0 ? allUserArr : userArr}
             placeholder="유저"
             onChange={e => {
               if (e) {

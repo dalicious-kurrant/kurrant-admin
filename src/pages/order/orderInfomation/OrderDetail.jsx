@@ -8,7 +8,7 @@ const OrderDetail = () => {
   const orderCode = location.state.orderCode;
 
   const {data: orderDetail} = useGetOrderDetailList(orderCode);
-  console.log(orderDetail?.data);
+
   return (
     <Wrap>
       <TableWrap>

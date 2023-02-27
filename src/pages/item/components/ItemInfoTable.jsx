@@ -73,6 +73,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
               />
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">메이커스ID</Table.HeaderCell>
             <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
             <Table.HeaderCell>식품 이름</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
@@ -107,6 +108,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
                   />
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
+                <Table.Cell textAlign="center">{el.makersId}</Table.Cell>
                 <Table.Cell>{el.makersName}</Table.Cell>
                 <Table.Cell>{el.foodName}</Table.Cell>
                 <Table.Cell onClick={e => e.stopPropagation()} width={2}>
