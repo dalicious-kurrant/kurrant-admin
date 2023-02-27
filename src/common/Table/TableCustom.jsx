@@ -149,6 +149,7 @@ const TableCustom = ({
                         checkboxStatus={checkboxStatus}
                         value={value1.id}
                         onChecked={onCheckCheckbox}
+                        disabled={true}
                       />
                     </CheckBoxTd>
 
