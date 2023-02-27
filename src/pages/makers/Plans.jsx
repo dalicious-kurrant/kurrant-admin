@@ -232,6 +232,7 @@ const Plans = () => {
   ]);
   useEffect(() => {
     return () => {
+      console.log('비우기');
       setExelPlan();
       setPlan();
     };
