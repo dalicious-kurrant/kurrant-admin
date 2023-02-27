@@ -50,9 +50,11 @@ const useCustomerData = (
   useEffect(() => {
     if (data) {
       const dataYo = shiftUserType(data);
-      setData(dataYo);
+      if (dataYo) {
+        setData(dataYo);
+      }
     }
-  }, [data]);
+  }, [data, setData]);
 
   return {
     status,
