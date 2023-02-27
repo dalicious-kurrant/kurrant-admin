@@ -7,15 +7,10 @@ import {useState} from 'react';
 import Theme from 'style/Theme';
 import styled from 'styled-components';
 
-import {
-  handleFalsyValueToHyphen,
-  handleFalsyValueToString,
-} from 'utils/valueHandlingLogics';
 import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
 import {Button, Label, Table, Dropdown, DropBox} from 'semantic-ui-react';
-import {isInCheckFilterList, makeId} from './Logics';
 
 // import putId from './'
 
@@ -142,7 +137,6 @@ const TableCustom = ({
                   yo.push({[value2]: value1[value2]});
                 }
               });
-
 
               // 삭제 리스트 따로 처리하기
 

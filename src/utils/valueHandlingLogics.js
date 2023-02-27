@@ -34,6 +34,21 @@ export const handleFalsyValueToHyphen = value => {
   }
 };
 
+export const splitNumberAndUnit = str => {
+  const onlyNumbersArray = str.match(/[0-9/.]/g);
+  const number = parseInt(str.match(/[0-9/.]/g)?.join(''));
+
+  let unit = '';
+  if (onlyNumbersArray) {
+    unit = str
+      .split('')
+      .filter(x => !onlyNumbersArray.includes(x))
+      .join('');
+  }
+
+  return {number, unit};
+};
+
 export const handleFalsyValueToBlank = value => {
   if (typeof value === 'string') {
     return value;
@@ -50,19 +65,4 @@ export const handleFalsyValueToBlank = value => {
   } else {
     return '';
   }
-};
-
-export const splitNumberAndUnit = str => {
-  const onlyNumbersArray = str.match(/[0-9/.]/g);
-  const number = parseInt(str.match(/[0-9/.]/g)?.join(''));
-
-  let unit = '';
-  if (onlyNumbersArray) {
-    unit = str
-      .split('')
-      .filter(x => !onlyNumbersArray.includes(x))
-      .join('');
-  }
-
-  return {number, unit};
 };
