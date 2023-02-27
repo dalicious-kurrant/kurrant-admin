@@ -340,6 +340,7 @@ const Plans = () => {
               fluid
               multiple
               selection
+              search
               options={options}
               value={selectMakers}
               onChange={(e, data) => {
@@ -354,6 +355,7 @@ const Plans = () => {
               fluid
               multiple
               selection
+              search
               options={optionsClient}
               value={selectClient}
               onChange={(e, data) => {
@@ -368,6 +370,7 @@ const Plans = () => {
               fluid
               multiple
               selection
+              search
               options={optionsDiningStatus}
               value={selectDiningStatus}
               onChange={(e, data) => {
