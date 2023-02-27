@@ -5,7 +5,12 @@ import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
-import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
+import {
+  CustomerFieldsDataForRegister,
+  CustomerFieldsFilterList,
+  CustomerFieldsToOpen,
+  CustomerFieldsToOpenObject,
+} from './CustomerInfoData';
 import {
   BtnWrapper,
   PageWrapper,
@@ -242,7 +247,12 @@ const Customer = () => {
                 handleBundleClick={handleBundleClick}
                 showRegister={showRegister}
                 sendFinal={() => {
-                  sendFinal(customerData, sendFinalMutate, checkboxStatus);
+                  sendFinal(
+                    customerData,
+                    sendFinalMutate,
+                    checkboxStatus,
+                    tableDeleteList,
+                  );
                 }}
                 sendDelete={handleDelete}
                 checkboxStatus={checkboxStatus}
@@ -256,7 +266,7 @@ const Customer = () => {
                   handleClose={handleClose}
                   data={dataToEdit}
                   fieldsToOpen={CustomerFieldsToOpen}
-                  fieldsData={CustomerFieldsData}
+                  fieldsData={CustomerFieldsDataForRegister}
                 />
               )}
             </div>
@@ -276,8 +286,19 @@ const Customer = () => {
 
           <TableWrapper>
             {customerData && customerData.length > 0 && (
+              // <TableCustom
+              //   fieldsInput={CustomerFieldsToOpen}
+              //   // useFilterList={[{field: 'role', filterType: 'select', filterList:['일반', '관리자', '게스트']}]}
+              //   // useFilterList={[{field: 'role', filterType:'select'},{field: 'email', filterType:'text'} ]}
+              //   dataInput={customerData}
+              //   // isMemo={true}
+              //   // handleChange={}
+              // />
               <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
+                useFilterList={CustomerFieldsFilterList}
+                // useFilterList={[{field: 'role', filterType: 'select', filterList:['일반', '관리자', '게스트']}]}
+                // useFilterList={[{field: 'role', filterType:'select'},{field: 'email', filterType:'text'} ]}
                 dataInput={customerData}
                 // isMemo={true}
                 // handleChange={}

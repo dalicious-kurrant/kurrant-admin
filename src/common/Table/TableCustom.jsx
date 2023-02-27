@@ -15,11 +15,17 @@ import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
 import {Button, Table} from 'semantic-ui-react';
-import {makeId} from './Logics';
+import {isInCheckFilterList, makeId} from './Logics';
 
 // import putId from './'
 
-const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+const TableCustom = ({
+  fieldsInput,
+  dataInput,
+  useFilterList,
+  isMemo = false,
+  handleChange,
+}) => {
   // 데이터에 'id'필드가 없을시 생성해 줌
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
@@ -100,11 +106,16 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
             )} */}
 
             {keyOfTableFieldsInput &&
-              keyOfTableFieldsInput?.map((val, index) => (
-                <Table.HeaderCell align="left" key={index}>
-                  {fieldsInput[val]}
-                </Table.HeaderCell>
-              ))}
+              keyOfTableFieldsInput?.map((val, index) => {
+                return (
+                  <Table.HeaderCell align="left" key={index}>
+                    {fieldsInput[val]}{' '}
+                    {isInCheckFilterList(useFilterList, val) ? (
+                      <button>안녕</button>
+                    ) : null}
+                  </Table.HeaderCell>
+                );
+              })}
 
             {!!isMemo && (
               <Table.HeaderCell className="memo">Memo</Table.HeaderCell>
@@ -201,7 +212,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
     </>
   );
 };
-export default TableYo;
+export default TableCustom;
 
 const CheckBoxTh = styled.th`
   width: 4rem;
