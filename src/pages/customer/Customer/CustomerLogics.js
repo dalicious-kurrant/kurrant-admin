@@ -114,3 +114,19 @@ export const shiftUserType = customerData => {
     return shiftedData;
   }
 };
+
+// 비밀번호 5자로 줄이기
+
+export const sliceStringDataByKey = (customerData, key, charLength) => {
+  if (!customerData) return;
+
+  const shifted = [...customerData];
+
+  const slicedData = shifted.map(v => {
+    v[key] = `${v[key].slice(0, charLength)}...`;
+
+    return v;
+  });
+
+  return slicedData;
+};
