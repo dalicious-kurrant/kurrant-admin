@@ -6,6 +6,7 @@ const CRUDBundle = ({
   showRegister,
   sendFinal,
   sendDelete,
+  checkboxStatus,
 }) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
@@ -41,13 +42,21 @@ const CRUDBundle = ({
               수정 열기
             </Button>
           </BtnWrap>
-        </Button.Group>
-        <Wrap2>
-          <Button.Group>
-            <Button onClick={handleSend}>최종적용하기</Button>
+          <BtnWrap>
             <Button id="delete" inverted color="red" onClick={handleDelete}>
               삭제하기
             </Button>
+          </BtnWrap>
+        </Button.Group>
+        <Wrap2>
+          <Button.Group>
+            <FinalSendButton
+              checkboxstatus={checkboxStatus}
+              onClick={handleSend}
+              // disabled={!Object.values(checkboxStatus).includes(true)}
+            >
+              최종적용하기
+            </FinalSendButton>
           </Button.Group>
         </Wrap2>
       </Wrap>
@@ -77,4 +86,14 @@ const Wrap2 = styled.div`
 
 const BtnWrap = styled.div`
   margin: 0.4rem 0.2rem;
+`;
+
+const FinalSendButton = styled(Button)`
+  /* opacity: ${({checkboxstatus}) => {
+    if (!Object.values(checkboxstatus).includes(true)) {
+      return 0.5;
+    } else {
+      return 1;
+    }
+  }}; */
 `;

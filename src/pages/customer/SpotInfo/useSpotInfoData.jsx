@@ -1,8 +1,10 @@
 import axios from 'axios';
+import {dataHasNoIdAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
+import {makeId} from './SpotInfoLogics';
 
 const useSpotInfoData = (
   uniqueQueryKey,
@@ -19,6 +21,7 @@ const useSpotInfoData = (
   // enable : useQuery를 껏다켰다 할 수 있음
 
   const [, setData] = useAtom(atom);
+  const [, setDataHasNoId] = useAtom(dataHasNoIdAtom);
 
   const {data, status, isLoading} = useQuery(
     uniqueQueryKey,
@@ -31,12 +34,30 @@ const useSpotInfoData = (
             // `${process.env.REACT_APP_SERVER_URL}/v1/client/members`,
           );
 
-          return response.data;
+          let dataInputWithId;
+
+          if (Object.keys(response.data[0]).includes('id')) {
+            dataInputWithId = response.data;
+          } else {
+            dataInputWithId = makeId(response.data);
+            setDataHasNoId(true);
+          }
+
+          return dataInputWithId;
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);
 
-          return response.data;
+          let dataInputWithId;
+
+          if (Object.keys(response.data[0]).includes('id')) {
+            dataInputWithId = response.data;
+          } else {
+            dataInputWithId = makeId(response.data);
+            setDataHasNoId(true);
+          }
+
+          return dataInputWithId;
         },
     {
       enabled: enable,

@@ -19,3 +19,17 @@ export const extractOnlyTruesNumberArray = checkboxStatus => {
 
   return yo;
 };
+
+export const makeId = dataInput => {
+  return dataInput.map((v, i) => {
+    v['id'] = i + 1;
+    return v;
+  });
+};
+
+export const removeIdToSend = dataInput => {
+  return dataInput.map((v, i) => {
+    delete v.id;
+    return v;
+  });
+};

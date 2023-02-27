@@ -35,7 +35,7 @@ const useCustomerData = (
           // console.log(response.data.items);
           // console.log(response.data);
 
-          return response.data;
+          return shiftUserType(response.data);
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);
