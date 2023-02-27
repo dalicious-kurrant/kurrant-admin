@@ -1,7 +1,7 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import useMutate from 'common/CRUD/useMutate';
-import {TableCheckboxStatusAtom} from 'common/Table/store';
+import {dataHasNoIdAtom, TableCheckboxStatusAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 import {exelSpotAtom} from 'utils/store';
@@ -15,17 +15,19 @@ import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
 import {clickButtonBundle} from '../Logics/Logics';
 import {SpotInfoDataAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
-import CustomTable from '../../../common/Table/CustomTable';
+
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
 import useSpotInfoData from './useSpotInfoData';
 import {sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
+import TableCustom from 'common/Table/TableCustom';
+import {removeIdToSend} from 'common/Table/Logics';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [spotInfoData] = useAtom(SpotInfoDataAtom);
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [plan, setPlan] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
   const [showRegister, setShowRegister] = useState(false);
@@ -38,6 +40,8 @@ const SpotInfo = () => {
 
   const queryClient = useQueryClient();
 
+  const [dataHasNoId, setDataHasNoId] = useAtom(dataHasNoIdAtom);
+
   const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
     SpotInfoDataAtom,
@@ -48,12 +52,18 @@ const SpotInfo = () => {
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
-      const response = await instance.post(`users`, todo);
+      const response = await instance.post(
+        `users`,
+        dataHasNoId ? removeIdToSend(todo) : todo,
+      );
       return response;
     },
     {
       onSuccess: () => {
         console.log('success');
+
+        setDataHasNoId(false);
+
         queryClient.invalidateQueries(['getSpotInfoJSON']);
       },
       onError: () => {
@@ -88,6 +98,32 @@ const SpotInfo = () => {
     };
   }, []);
 
+  const handleDelete = () => {
+    // console.log(deletedStatus);
+
+    const status = {...checkboxStatus};
+
+    let deleteList = [];
+
+    Object.entries(status).forEach(v => {
+      if (v[1] === true) {
+        deleteList.push(v[0]);
+      }
+    });
+
+    let yo = [];
+    const spotInfoDataToDelete = [...spotInfoData];
+
+    spotInfoDataToDelete.forEach(v => {
+      if (deleteList.includes(v.id.toString())) {
+      } else {
+        yo.push(v);
+      }
+    });
+
+    setSpotInfoData(yo);
+  };
+
   // const sendFinal = () => {
   //   const oldData = [...customerData];
 
@@ -117,6 +153,10 @@ const SpotInfo = () => {
   //   } else {
   //   }
   // };
+
+  useEffect(() => {
+    console.log(spotInfoData);
+  }, [spotInfoData]);
 
   if (isLoading)
     return (
@@ -235,10 +275,6 @@ const SpotInfo = () => {
         </PageWrapper>
       ) : (
         <PageWrapper>
-          <BtnWrapper>
-            {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
-          </BtnWrapper>
-
           <div>
             {/* {isCRUDAvaliable(pathname) && (
           
@@ -249,6 +285,8 @@ const SpotInfo = () => {
               sendFinal={() => {
                 sendFinal(spotInfoData, sendFinalMutate);
               }}
+              sendDelete={handleDelete}
+              checkboxStatus={checkboxStatus}
             />
 
             {showRegister && (
@@ -265,8 +303,16 @@ const SpotInfo = () => {
           </div>
 
           <TableWrapper>
-            {!!spotInfoData && spotInfoData.length !== 0 && (
+            {/* {!!spotInfoData && spotInfoData.length !== 0 && (
               <CustomTable
+                fieldsInput={SpotInfoFieldsToOpen}
+                dataInput={spotInfoData}
+                // isMemo={true}
+                // handleChange={}
+              />
+            )} */}
+            {!!spotInfoData && spotInfoData.length !== 0 && (
+              <TableCustom
                 fieldsInput={SpotInfoFieldsToOpen}
                 dataInput={spotInfoData}
                 // isMemo={true}

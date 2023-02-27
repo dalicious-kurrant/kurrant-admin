@@ -3,6 +3,7 @@ import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
+import {shiftUserType} from './CustomerLogics';
 
 const useCustomerData = (
   uniqueQueryKey,
@@ -47,7 +48,10 @@ const useCustomerData = (
   );
 
   useEffect(() => {
-    setData(data);
+    if (data) {
+      const dataYo = shiftUserType(data);
+      setData(dataYo);
+    }
   }, [data]);
 
   return {
