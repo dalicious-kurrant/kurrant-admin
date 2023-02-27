@@ -12,7 +12,7 @@ import {
   handleFalsyValueToString,
 } from 'utils/valueHandlingLogics';
 import MemoInput from './MemoInput/MemoInput';
-import {TableCheckboxStatusAtom} from './store';
+import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
 import {Button, Table} from 'semantic-ui-react';
 import {makeId} from './Logics';
@@ -25,6 +25,8 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
 
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
+
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   useEffect(() => {
     setKeyOfTableFieldsInput(Object.keys(fieldsInput));
@@ -65,6 +67,19 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
     }
   };
 
+  const onDeleteCancelClick = e => {
+    // const deleteTargetId = e.target.id.toString();
+    // const yes = [...tableDeleteList];
+    // let array1 = [];
+    // yes.forEach(v => {
+    //   if (v.toString() == deleteTargetId) {
+    //   } else {
+    //     array1.push(v);
+    //   }
+    // });
+    // array1
+  };
+
   return (
     <>
       <Table celled>
@@ -80,6 +95,9 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                 onChecked={onCheckCheckbox}
               />
             </CheckBoxTh>
+            {/* {tableDeleteList.length > 0 && (
+              <Table.HeaderCell>삭제취소</Table.HeaderCell>
+            )} */}
 
             {keyOfTableFieldsInput &&
               keyOfTableFieldsInput?.map((val, index) => (
@@ -107,41 +125,76 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                 }
               });
 
-              return (
-                <Table.Row key={index1}>
-                  <CheckBoxTd align="center">
-                    <TableCheckbox
-                      width="2rem"
-                      height="2rem"
-                      css="margin:auto;"
-                      checkboxStatus={checkboxStatus}
-                      value={value1.id}
-                      onChecked={onCheckCheckbox}
-                    />
-                  </CheckBoxTd>
+              // 삭제 리스트 따로 처리하기
 
-                  {yo?.map((value3, index3) => {
-                    return (
-                      // <Table.Cell
-                      //   align="left"
-                      //   key={index3}
+              if (value1.isOnDeleteList) {
+                return (
+                  <DeleteListTableRow key={index1}>
+                    <CheckBoxTd align="center">
+                      <TableCheckbox
+                        width="2rem"
+                        height="2rem"
+                        css="margin:auto;"
+                        checkboxStatus={checkboxStatus}
+                        value={value1.id}
+                        onChecked={onCheckCheckbox}
+                      />
+                    </CheckBoxTd>
 
-                      //  >
-                      //   {handleFalsyValueToHyphen(value3)}
-                      // </Table.Cell>
-                      <MyCell align="left" key={index3}>
-                        {handleFalsyValueToHyphen(value3)}
-                      </MyCell>
-                    );
-                  })}
+                    {/* <Table.Cell>
+                      <DeleteCancelBtn
+                        id={value1.id}
+                        onClick={onDeleteCancelClick}>
+                        삭제취소
+                      </DeleteCancelBtn>
+                    </Table.Cell> */}
 
-                  {!!isMemo && (
-                    <Table.Cell className="memo">
-                      <MemoInput input={value1} handleChange={handleChange} />
-                    </Table.Cell>
-                  )}
-                </Table.Row>
-              );
+                    {yo?.map((value3, index3) => {
+                      return (
+                        <MyCell align="left" key={index3}>
+                          {handleFalsyValueToHyphen(value3)}
+                        </MyCell>
+                      );
+                    })}
+
+                    {!!isMemo && (
+                      <Table.Cell className="memo">
+                        <MemoInput input={value1} handleChange={handleChange} />
+                      </Table.Cell>
+                    )}
+                  </DeleteListTableRow>
+                );
+              } else {
+                return (
+                  <Table.Row key={index1}>
+                    <CheckBoxTd align="center">
+                      <TableCheckbox
+                        width="2rem"
+                        height="2rem"
+                        css="margin:auto;"
+                        checkboxStatus={checkboxStatus}
+                        value={value1.id}
+                        onChecked={onCheckCheckbox}
+                      />
+                    </CheckBoxTd>
+                    {/* {tableDeleteList.length > 0 && <Table.Cell></Table.Cell>} */}
+
+                    {yo?.map((value3, index3) => {
+                      return (
+                        <MyCell align="left" key={index3}>
+                          {handleFalsyValueToHyphen(value3)}
+                        </MyCell>
+                      );
+                    })}
+
+                    {!!isMemo && (
+                      <Table.Cell className="memo">
+                        <MemoInput input={value1} handleChange={handleChange} />
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                );
+              }
             })}
         </Table.Body>
       </Table>
@@ -163,3 +216,10 @@ const MyCell = styled(Table.Cell)`
   width: 1rem;
   white-space: nowrap;
 `;
+
+const DeleteListTableRow = styled(Table.Row)`
+  color: red;
+  text-decoration: line-through;
+`;
+
+const DeleteCancelBtn = styled.button``;

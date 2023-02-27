@@ -1,5 +1,5 @@
 import useMutate from 'common/CRUD/useMutate';
-import {TableCheckboxStatusAtom} from 'common/Table/store';
+import {TableCheckboxStatusAtom, TableDeleteListAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
@@ -40,6 +40,8 @@ const Customer = () => {
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const queryClient = useQueryClient();
+
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
@@ -120,7 +122,7 @@ const Customer = () => {
   const handleDelete = () => {
     const status = {...checkboxStatus};
 
-    let deleteList = [];
+    let deleteList = [...tableDeleteList];
 
     Object.entries(status).forEach(v => {
       if (v[1] === true) {
@@ -128,16 +130,21 @@ const Customer = () => {
       }
     });
 
+    // console.log(deleteList);
+
     let yo = [];
     const customerDataToDelete = [...customerData];
 
     customerDataToDelete.forEach(v => {
       if (deleteList.includes(v.id.toString())) {
+        v['isOnDeleteList'] = true;
+        yo.push(v);
       } else {
         yo.push(v);
       }
     });
 
+    setTableDeleteList(deleteList);
     setCustomerData(yo);
   };
 
