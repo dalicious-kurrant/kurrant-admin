@@ -14,6 +14,7 @@ import {
   exelSpotAtom,
   shopInfoDetailIdAtom,
   recommandPlanAtom,
+  saveItemAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -24,6 +25,7 @@ import {
   productExel,
   productExelExport,
 } from '../utils/downloadExel/exel';
+import {useAddExelProductData} from 'hooks/useProductsList';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -81,8 +83,9 @@ const Common = () => {
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
-
+  const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
+
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -91,6 +94,32 @@ const Common = () => {
     inputRef.current.click();
   }, []);
 
+  const callProductExel = async () => {
+    const reqArray = [];
+    exelProduct.map((item, idx) => {
+      console.log(item, '000');
+      if (idx !== 0) {
+        const result = {
+          foodId: item.foodId,
+          makersId: item.makersId,
+          makersName: item.makersName,
+          foodName: item.foodName,
+          foodStatus: item.foodStatus,
+          defaultPrice: item.defaultPrice,
+          makersDiscount: item.makersDiscount,
+          eventDiscount: item.eventDiscount,
+          resultPrice: item.resultPrice,
+          description: item.description,
+          foodTags: item.foodTags.split(','),
+        };
+
+        reqArray.push(result);
+      }
+    });
+    await productPost(reqArray);
+    alert('저장 되었습니다.');
+    window.location.reload();
+  };
   const onUploadFile = async e => {
     if (!e.target.files) {
       return;
@@ -129,6 +158,7 @@ const Common = () => {
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
+
           console.log(json, 'json');
         }
       };
@@ -173,7 +203,16 @@ const Common = () => {
       </C.Bread>
       {noNeedButton && (
         <C.BtnWrapper>
-          <Button color="green" icon="save" content="엑셀저장(미완)" />
+          <Button
+            color="green"
+            icon="save"
+            content="저장(미완)"
+            onClick={() => {
+              if (exelProduct) {
+                callProductExel();
+              }
+            }}
+          />
           {/* <Button icon="history" content="히스토리" /> */}
           <Button.Group>
             <Button

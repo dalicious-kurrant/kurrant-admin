@@ -30,6 +30,7 @@ const Input = forwardRef(
     {
       name,
       width = '100px',
+      height = '30px',
       placeholder = '',
       isEditable = true,
       isPassword = false,
@@ -83,6 +84,7 @@ const Input = forwardRef(
                 <InputContainer>
                   <StyledTextInput
                     widths={width}
+                    heights={height}
                     paddings={padding}
                     ref={ref && ref}
                     {...textInputProps}
@@ -138,11 +140,12 @@ const InputContainer = styled.div``;
 const StyledTextInput = styled.input`
   /* width: 100%; */
   margin-right: 10px;
-  height: 30px;
+  //height: 30px;
   border: 0.5px solid #c8c8d2;
   border-radius: 4px;
   padding: ${({paddings}) => paddings && paddings};
   width: ${({widths}) => widths && widths};
+  height: ${({heights}) => heights && heights};
   ${({editable}) => {
     if (!editable) {
       return css`
