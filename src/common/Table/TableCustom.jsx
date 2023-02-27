@@ -82,7 +82,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
             </CheckBoxTh>
 
             {keyOfTableFieldsInput &&
-              keyOfTableFieldsInput.map((val, index) => (
+              keyOfTableFieldsInput?.map((val, index) => (
                 <Table.HeaderCell align="left" key={index}>
                   {fieldsInput[val]}
                 </Table.HeaderCell>
@@ -101,7 +101,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
 
               let yo = [];
 
-              keyOfTableFieldsInput.forEach((value2, index2) => {
+              keyOfTableFieldsInput?.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
                   yo.push(value1[value2]);
                 }
@@ -120,7 +120,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                     />
                   </CheckBoxTd>
 
-                  {yo.map((value3, index3) => {
+                  {yo?.map((value3, index3) => {
                     return (
                       // <Table.Cell
                       //   align="left"
