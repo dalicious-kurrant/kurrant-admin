@@ -27,6 +27,8 @@ import {
   planExelExport,
   productExel,
   productExelExport,
+  spotExel,
+  userExel,
 } from '../utils/downloadExel/exel';
 import {
   useAddExelProductData,
@@ -319,20 +321,29 @@ const Common = () => {
       return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
     }
     if (user && user.length > 0) {
-      return planExelExport(user, '유저 정보', '유저 정보.xlsx');
+      const exportUser = user.map((v, i) => {
+        delete v.lastOrderTime;
+        if (i !== 0) {
+          return v;
+        }
+      });
+      const req = exportUser.filter(element => {
+        return element !== undefined && element !== null && element !== '';
+      });
+      console.log(req);
+      return userExel(req);
     }
     if (spot && spot.length > 0) {
-      console.log('스팟', spot);
-
-      const exportSpot = spot.map(v => {
-        delete v.lastOrderTime;
-        return v;
+      const exportSpot = spot.map((v, i) => {
+        if (i !== 0) {
+          return v;
+        }
       });
-      return planExelExport(
-        exportSpot,
-        '고객 스팟 공지',
-        '고객 스팟 공지.xlsx',
-      );
+      const req = exportSpot.filter(element => {
+        return element !== undefined && element !== null && element !== '';
+      });
+      console.log('스팟', req);
+      return spotExel(req);
     }
   };
 

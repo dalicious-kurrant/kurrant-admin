@@ -125,6 +125,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                 }
               });
 
+
               // 삭제 리스트 따로 처리하기
 
               if (value1.isOnDeleteList) {
