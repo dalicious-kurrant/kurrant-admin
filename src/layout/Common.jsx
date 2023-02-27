@@ -179,29 +179,31 @@ const Common = () => {
       });
     }
     if (exelProduct) {
-    }
-    exelProduct.map((item, idx) => {
-      console.log(item, '000');
-      if (idx !== 0) {
-        const result = {
-          foodId: item.foodId,
-          makersId: item.makersId,
-          makersName: item.makersName,
-          foodName: item.foodName,
-          foodStatus: item.foodStatus,
-          defaultPrice: item.defaultPrice,
-          makersDiscount: item.makersDiscount,
-          eventDiscount: item.eventDiscount,
-          resultPrice: item.resultPrice,
-          description: item.description,
-          foodTags: item.foodTags.split(','),
-        };
+      exelProduct.map((item, idx) => {
+        console.log(item, '000');
+        if (idx !== 0) {
+          const result = {
+            foodId: item.foodId,
+            makersId: item.makersId,
+            makersName: item.makersName,
+            foodName: item.foodName,
+            foodStatus: item.foodStatus,
+            defaultPrice: item.defaultPrice,
+            makersDiscount: item.makersDiscount,
+            eventDiscount: item.eventDiscount,
+            resultPrice: item.resultPrice,
+            description: item.description,
+            foodTags: item.foodTags.split(','),
+          };
 
-        reqArray.push(result);
-      }
-    });
-    await productPost(reqArray);
-    console.log(reqArray);
+          reqArray.push(result);
+        }
+      });
+      await productPost(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
+
     await postPresetCalendar({
       deadline: formattedFullDate(startDate, '-'),
       excelDataList: [...reqArray],
@@ -339,7 +341,7 @@ const Common = () => {
                 handlerSaveUser();
               }
               if (exelProduct) {
-                callProductExel();
+                callPostCalendar();
               }
             }}
           />
