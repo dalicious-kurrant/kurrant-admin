@@ -87,6 +87,10 @@ const Customer = () => {
     token,
   );
 
+  useEffect(() => {
+    console.log(customerData);
+  }, [customerData]);
+
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
       buttonStatus,
