@@ -65,6 +65,67 @@ export function planExel(plan) {
   XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
   XLSX.writeFile(workbook, '메이커스 일정 관리.xlsx');
 }
+export function completePlanExel(plan) {
+  const reqArrays = [];
+  reqArrays.push([
+    'serviceDate',
+    'diningType',
+    'groupName',
+    'groupCapacity',
+    'deliveryTime',
+    'makersName',
+    'makersCapacity',
+    'makersCount',
+    'makersPickupTime',
+    'foodName',
+    'foodStatus',
+    'foodCapacity',
+    'foodCount',
+  ]);
+  reqArrays.push([
+    '날짜',
+    '다이닝타입',
+    '고객사 이름',
+    '고객사 식수',
+    '배송 시간',
+    '메이커스',
+    '메이커스 케파',
+    '주문가능 수량',
+    '메이커스 픽업 시간',
+    '상품',
+    '음식 승인',
+    '음식 케파',
+    '주문가능 수량',
+  ]);
+  plan.map(makers => {
+    return makers.makersSchedules.map(client => {
+      return client.foodSchedules.map(food => {
+        const reqArray = [];
+        reqArray.push(makers.serviceDate);
+        reqArray.push(makers.diningType);
+        reqArray.push(makers.groupName);
+        reqArray.push(makers.groupCapacity);
+        reqArray.push(makers.deliveryTime);
+        reqArray.push(client.makersName);
+        reqArray.push(client.makersCapacity);
+        reqArray.push(client.makersCount);
+        reqArray.push(client.makersPickupTime);
+        reqArray.push(food.foodName);
+        reqArray.push(food.foodStatus);
+        reqArray.push(food.foodCapacity);
+        reqArray.push(food.foodCount);
+        reqArrays.push(reqArray);
+        return reqArrays;
+      });
+    });
+  });
+  console.log(reqArrays);
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, '식단 현황');
+  XLSX.writeFile(workbook, '식단 현황.xlsx');
+}
 export function planExelExport(plan, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(plan, {cellDates: true});
