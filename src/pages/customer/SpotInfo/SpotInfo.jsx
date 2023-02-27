@@ -112,9 +112,9 @@ const SpotInfo = () => {
     });
 
     let yo = [];
-    const customerDataToDelete = [...spotInfoData];
+    const spotInfoDataToDelete = [...spotInfoData];
 
-    customerDataToDelete.forEach(v => {
+    spotInfoDataToDelete.forEach(v => {
       if (deleteList.includes(v.id.toString())) {
       } else {
         yo.push(v);

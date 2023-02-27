@@ -35,7 +35,7 @@ const useCustomerData = (
           // console.log(response.data.items);
           // console.log(response.data);
 
-          return shiftUserType(response.data);
+          return response.data;
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);
@@ -48,9 +48,10 @@ const useCustomerData = (
   );
 
   useEffect(() => {
-    const dataYo = shiftUserType(data);
-
-    setData(dataYo);
+    if (data) {
+      const dataYo = shiftUserType(data);
+      setData(dataYo);
+    }
   }, [data]);
 
   return {
