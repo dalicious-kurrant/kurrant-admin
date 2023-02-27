@@ -139,12 +139,9 @@ const Customer = () => {
                   const HeaderData = Object.values(p);
 
                   if (i === 0) {
-                    console.log(HeaderData, '123');
                     return (
                       <Table.Header key={'0' + i}>
                         <Table.Row>
-                          {/* <Table.HeaderCell>체크박스</Table.HeaderCell> */}
-
                           {HeaderData.map((h, k) => {
                             return (
                               <Table.HeaderCell key={'0' + p.id + k}>
@@ -156,13 +153,11 @@ const Customer = () => {
                       </Table.Header>
                     );
                   } else {
-                    console.log(p);
                     return (
                       <Table.Body key={i}>
                         <Table.Row>
                           {key &&
                             key.map((k, l) => {
-                              console.log(p[k], 'test');
                               if (
                                 k === 'breakfastDeliveryTime' ||
                                 k === 'dinnerDeliveryTime' ||

@@ -63,7 +63,7 @@ export function planExel(plan) {
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
   XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
-  XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
+  XLSX.writeFile(workbook, '메이커스 일정 관리.xlsx');
 }
 export function planExelExport(plan, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();

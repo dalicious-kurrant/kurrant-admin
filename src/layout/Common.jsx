@@ -34,6 +34,7 @@ import {
 } from 'utils/dateFormatter';
 import {usePostPresetCalendar} from 'hooks/useCalendars';
 import {useSaveUserData} from 'hooks/useUserData';
+import {CustomerDataAtom} from 'pages/customer/Customer/store';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -91,6 +92,7 @@ const Common = () => {
   const {mutateAsync: saveUserData} = useSaveUserData();
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
+  const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
@@ -195,6 +197,7 @@ const Common = () => {
       setSpot();
       setExelSpot();
       setExelUser();
+      setUser();
       setReCommandPlan();
       const reader = new FileReader();
       reader.onload = e => {
@@ -277,7 +280,10 @@ const Common = () => {
       return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
     }
     if (exelUser && exelUser.length > 0) {
-      return planExelExport(exelSpot, '유저 정보', '유저 정보.xlsx');
+      return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
+    }
+    if (user && user.length > 0) {
+      return planExelExport(user, '유저 정보', '유저 정보.xlsx');
     }
   };
 

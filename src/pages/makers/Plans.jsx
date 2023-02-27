@@ -230,6 +230,12 @@ const Plans = () => {
     calendarRefetch,
     recommandRefetch,
   ]);
+  useEffect(() => {
+    return () => {
+      setExelPlan();
+      setPlan();
+    };
+  }, [setExelPlan, setPlan]);
   return (
     <PageWrapper>
       <Wrapper>
