@@ -15,6 +15,24 @@ export const calendarApis = {
         status: status.join(','),
       },
     }),
+  getCompleteDailyFood: async (
+    startDate,
+    endDate,
+    size,
+    page,
+    makersId,
+    groupId,
+  ) =>
+    await instance.get(`dailyFoods`, {
+      params: {
+        startDate: startDate,
+        endDate: endDate,
+        // limit: size,
+        // page: page,
+        makersIds: makersId.join(','),
+        groupIds: groupId.join(','),
+      },
+    }),
   getRecommnadDailyFood: async (
     startDate,
     endDate,

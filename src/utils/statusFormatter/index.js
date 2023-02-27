@@ -14,6 +14,18 @@ export function scheduleFormatted(data) {
       return '승인';
   }
 }
+export function diningFormatted(data) {
+  switch (data) {
+    case 1:
+      return '아침';
+    case 2:
+      return '점심';
+    case 3:
+      return '저녁';
+    default:
+      return '아침';
+  }
+}
 
 export function scheduleFormatted2(data) {
   switch (data) {
@@ -57,5 +69,32 @@ export const foodStatusData = [
     key: '판매중지',
     text: '판매중지',
     value: '판매중지',
+  },
+];
+export const foodCompleteStatusData = [
+  {
+    key: '판매대기',
+    text: '판매대기',
+    value: 0,
+  },
+  {
+    key: '판매중',
+    text: '판매중',
+    value: 1,
+  },
+  {
+    key: '품절',
+    text: '품절',
+    value: 2,
+  },
+  {
+    key: '취소불가품',
+    text: '취소불가품',
+    value: 3,
+  },
+  {
+    key: '판매중지',
+    text: '판매중지',
+    value: 4,
   },
 ];

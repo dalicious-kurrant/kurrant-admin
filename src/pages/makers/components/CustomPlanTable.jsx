@@ -1,7 +1,11 @@
 import {Dropdown, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
-import {foodStatusData} from '../../../utils/statusFormatter';
+import {
+  diningFormatted,
+  foodCompleteStatusData,
+  foodStatusData,
+} from '../../../utils/statusFormatter';
 
 const CustomPlanTable = ({count, testData, setTestData}) => {
   const changeStatus = (d, b) => {
@@ -9,10 +13,10 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
       testData.map(makers => {
         return {
           ...makers,
-          clientSchedule: makers.clientSchedule.map(client => {
+          makersSchedules: makers.clientSchedule.map(client => {
             return {
               ...client,
-              foodSchedule: client.foodSchedule.map(food => {
+              foodSchedules: client.foodSchedule.map(food => {
                 if (food.presetFoodId === d.presetFoodId) {
                   return {
                     ...food,
@@ -61,8 +65,8 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
         <Table.Body>
           {testData.length > 0 &&
             testData?.map((v, i) => {
-              return v.clientSchedule.map((s, si) => {
-                return s.foodSchedule.map((d, di) => {
+              return v.makersSchedules.map((s, si) => {
+                return s.foodSchedules.map((d, di) => {
                   return (
                     <Table.Row key={`${d.foodName + di}`}>
                       <Table.Cell padding="0px" textAlign="center"></Table.Cell>
@@ -74,42 +78,42 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
 
                       {di === 0 && si === 0 && (
                         <Table.Cell rowSpan={count[i]}>
-                          <FlexBox>{v.diningType}</FlexBox>
+                          <FlexBox>{diningFormatted(v.diningType)}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && si === 0 && (
                         <Table.Cell rowSpan={count[i]}>
-                          <FlexBox>{s.clientName}</FlexBox>
+                          <FlexBox>{v.groupName}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && si === 0 && (
                         <Table.Cell rowSpan={count[i]}>
-                          <FlexBox>{s.clientCapacity}</FlexBox>
+                          <FlexBox>{v.groupCapacity}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && si === 0 && (
                         <Table.Cell rowSpan={count[i]}>
-                          <FlexBox>{s.pickupTime}</FlexBox>
+                          <FlexBox>{v.deliveryTime}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          <FlexBox>{v.makersName}</FlexBox>
+                        <Table.Cell rowSpan={s.foodSchedules.length}>
+                          <FlexBox>{s.makersName}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          <FlexBox>{v.makersCapacity}</FlexBox>
+                        <Table.Cell rowSpan={s.foodSchedules.length}>
+                          <FlexBox>{s.makersCapacity}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          <FlexBox>{v.makersCapacity}</FlexBox>
+                        <Table.Cell rowSpan={s.foodSchedules.length}>
+                          <FlexBox>{s.makersCount}</FlexBox>
                         </Table.Cell>
                       )}
                       {di === 0 && (
-                        <Table.Cell rowSpan={s.foodSchedule.length}>
-                          <FlexBox>{s.pickupTime}</FlexBox>
+                        <Table.Cell rowSpan={s.foodSchedules.length}>
+                          <FlexBox>{s.makersPickupTime}</FlexBox>
                         </Table.Cell>
                       )}
 
@@ -141,11 +145,11 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                               fluid
                               selection
                               defaultValue={
-                                foodStatusData.filter(
-                                  v => v.text === d.foodStatus,
+                                foodCompleteStatusData.filter(
+                                  v => v.value === d.foodStatus,
                                 )[0].value
                               }
-                              options={foodStatusData}
+                              options={foodCompleteStatusData}
                               onChange={(e, data) => {
                                 changeStatus(d, data.value);
                               }}
@@ -158,7 +162,7 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                         <FlexBox>{d.foodCapacity}</FlexBox>
                       </Table.Cell>
                       <Table.Cell>
-                        <FlexBox>{v.makersCapacity}</FlexBox>
+                        <FlexBox>{d.foodCount}</FlexBox>
                       </Table.Cell>
                     </Table.Row>
                   );

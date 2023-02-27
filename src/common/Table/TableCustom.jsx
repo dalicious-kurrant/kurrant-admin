@@ -115,7 +115,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                       height="2rem"
                       css="margin:auto;"
                       checkboxStatus={checkboxStatus}
-                      value={value1.id}
+                      value={value1.id || value1.spotId}
                       onChecked={onCheckCheckbox}
                     />
                   </CheckBoxTd>
