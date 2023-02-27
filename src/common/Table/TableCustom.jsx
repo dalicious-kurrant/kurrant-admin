@@ -14,10 +14,15 @@ import {
 import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
-import {Button, Table} from 'semantic-ui-react';
+import {Button, Label, Table, Dropdown, DropBox} from 'semantic-ui-react';
 import {isInCheckFilterList, makeId} from './Logics';
 
 // import putId from './'
+
+const options = [
+  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
+  {key: '커런트', text: '커런트', value: '커런트'},
+];
 
 const TableCustom = ({
   fieldsInput,
@@ -25,6 +30,7 @@ const TableCustom = ({
   useFilterList,
   isMemo = false,
   handleChange,
+  ellipsisList,
 }) => {
   // 데이터에 'id'필드가 없을시 생성해 줌
 
@@ -86,6 +92,10 @@ const TableCustom = ({
     // array1
   };
 
+  useEffect(() => {
+    console.log(dataInput);
+  }, [dataInput]);
+
   return (
     <>
       <Table celled>
@@ -109,10 +119,25 @@ const TableCustom = ({
               keyOfTableFieldsInput?.map((val, index) => {
                 return (
                   <Table.HeaderCell align="left" key={index}>
-                    {fieldsInput[val]}{' '}
-                    {isInCheckFilterList(useFilterList, val) ? (
-                      <button>안녕</button>
-                    ) : null}
+                    {fieldsInput[val]}
+                    {/* {isInCheckFilterList(useFilterList, val) ? (
+                      <>
+                        <span>{fieldsInput[val]} </span>
+                        <Dropdown
+                          // placeholder="메이커스"
+                          fluid
+                          multiple
+                          selection
+                          options={options}
+                          // value={selectMakers}
+                          // onChange={(e, data) => {
+                          //   setSelectMakers(data.value);
+                          // }}
+                        />
+                      </>
+                    ) : (
+                      <span>{fieldsInput[val]} </span>
+                    )} */}
                   </Table.HeaderCell>
                 );
               })}
@@ -132,7 +157,7 @@ const TableCustom = ({
 
               keyOfTableFieldsInput?.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
-                  yo.push(value1[value2]);
+                  yo.push({[value2]: value1[value2]});
                 }
               });
 
@@ -163,7 +188,7 @@ const TableCustom = ({
                     {yo?.map((value3, index3) => {
                       return (
                         <MyCell align="left" key={index3}>
-                          {handleFalsyValueToHyphen(value3)}
+                          {handleFalsyValueToHyphen(Object.values(value3)[0])}
                         </MyCell>
                       );
                     })}
@@ -191,11 +216,26 @@ const TableCustom = ({
                     {/* {tableDeleteList.length > 0 && <Table.Cell></Table.Cell>} */}
 
                     {yo?.map((value3, index3) => {
-                      return (
-                        <MyCell align="left" key={index3}>
-                          {handleFalsyValueToHyphen(value3)}
-                        </MyCell>
-                      );
+                      const define = ellipsisList
+                        ? ellipsisList.includes(Object.keys(value3)[0])
+                        : undefined;
+
+                      if (define) {
+                        return (
+                          <EllipsisCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                            {'sldkjf'}
+                          </EllipsisCell>
+                        );
+                      } else {
+                        // console.log(value3);
+
+                        return (
+                          <MyCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                          </MyCell>
+                        );
+                      }
                     })}
 
                     {!!isMemo && (
@@ -233,4 +273,14 @@ const DeleteListTableRow = styled(Table.Row)`
   text-decoration: line-through;
 `;
 
+const EllipsisCell = styled(Table.Cell)`
+  width: 2rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+// const
+
 const DeleteCancelBtn = styled.button``;
+
+// const HeaderCellRow = styled.div``

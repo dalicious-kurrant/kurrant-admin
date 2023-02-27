@@ -300,6 +300,7 @@ const Customer = () => {
                 // useFilterList={[{field: 'role', filterType: 'select', filterList:['일반', '관리자', '게스트']}]}
                 // useFilterList={[{field: 'role', filterType:'select'},{field: 'email', filterType:'text'} ]}
                 dataInput={customerData}
+                ellipsisList={['password']}
                 // isMemo={true}
                 // handleChange={}
               />
