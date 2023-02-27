@@ -24,6 +24,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
 import {
+  useCompleteCalendar,
   useGetCalendar,
   useGetRecommandCalendar,
   usePostCalendar,
@@ -58,7 +59,9 @@ const Plans = () => {
   const [selectDiningStatus, setSelectDiningStatus] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [isClick, setIsClick] = useState(false);
   const {mutateAsync: postCalendar} = usePostCalendar();
+  const {mutateAsync: completeCalendar} = useCompleteCalendar();
   const {
     data: calendarData,
     isSuccess,
@@ -77,6 +80,8 @@ const Plans = () => {
       selectMakers,
       selectClient,
       selectDiningStatus,
+      isClick,
+      setIsClick,
     );
   const [startDate, setStartDate] = useState(
     new Date().setDate(new Date().getDate() + 1),
@@ -84,13 +89,20 @@ const Plans = () => {
   const [accessStartDate, setAccessStartDate] = useState(new Date());
   const [accessEndDate, setAccessEndDate] = useState(new Date());
   const recommandData = () => {
+    setIsClick(true);
     setReCommandPlan();
     setExelPlan();
     setStaticPlan();
     setPlan();
     setReCommandPlan(calendarRecommandData?.data.items?.presetScheduleList);
   };
-
+  const onCreate = async () => {
+    await completeCalendar({
+      startDate: formattedWeekDate(accessStartDate),
+      endDate: formattedWeekDate(accessEndDate),
+    });
+    alert('식사 일정 최종 완료');
+  };
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
@@ -296,7 +308,7 @@ const Plans = () => {
 
         <BtnWrapper>
           <AccessBox>
-            <Button color="blue" content="식단 완료(미완)" onClick={onActive} />
+            <Button color="blue" content="식단 완료" onClick={onCreate} />
             <AccessDate>
               <AccessDatePickerBox>
                 <DatePicker
@@ -328,6 +340,7 @@ const Plans = () => {
               fluid
               multiple
               selection
+              search
               options={options}
               value={selectMakers}
               onChange={(e, data) => {
@@ -342,6 +355,7 @@ const Plans = () => {
               fluid
               multiple
               selection
+              search
               options={optionsClient}
               value={selectClient}
               onChange={(e, data) => {
@@ -356,6 +370,7 @@ const Plans = () => {
               fluid
               multiple
               selection
+              search
               options={optionsDiningStatus}
               value={selectDiningStatus}
               onChange={(e, data) => {

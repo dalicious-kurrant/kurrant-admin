@@ -229,29 +229,31 @@ const Customer = () => {
         </PageWrapper>
       ) : (
         <PageWrapper>
-          <div>
-            <CRUDBundle
-              handleBundleClick={handleBundleClick}
-              showRegister={showRegister}
-              sendFinal={() => {
-                sendFinal(customerData, sendFinalMutate, checkboxStatus);
-              }}
-              sendDelete={handleDelete}
-              checkboxStatus={checkboxStatus}
-            />
-
-            {showRegister && (
-              <Register
-                registerStatus={registerStatus}
-                submitMutate={submitMutate}
-                editMutate={editMutate}
-                handleClose={handleClose}
-                data={dataToEdit}
-                fieldsToOpen={CustomerFieldsToOpen}
-                fieldsData={CustomerFieldsData}
+          {customerData && (
+            <div>
+              <CRUDBundle
+                handleBundleClick={handleBundleClick}
+                showRegister={showRegister}
+                sendFinal={() => {
+                  sendFinal(customerData, sendFinalMutate, checkboxStatus);
+                }}
+                sendDelete={handleDelete}
+                checkboxStatus={checkboxStatus}
               />
-            )}
-          </div>
+
+              {showRegister && (
+                <Register
+                  registerStatus={registerStatus}
+                  submitMutate={submitMutate}
+                  editMutate={editMutate}
+                  handleClose={handleClose}
+                  data={dataToEdit}
+                  fieldsToOpen={CustomerFieldsToOpen}
+                  fieldsData={CustomerFieldsData}
+                />
+              )}
+            </div>
+          )}
 
           {/* <div>
             <Pagination
@@ -266,7 +268,7 @@ const Customer = () => {
           </div> */}
 
           <TableWrapper>
-            {!!customerData && customerData.length !== 0 && (
+            {customerData && customerData.length > 0 && (
               <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
                 dataInput={customerData}
