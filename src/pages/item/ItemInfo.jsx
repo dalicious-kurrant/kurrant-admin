@@ -19,7 +19,7 @@ const ItemInfo = () => {
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
-
+  console.log(exelProduct, '00');
   const checkId = (e, id) => {
     e.stopPropagation();
     console.log(id, '11');

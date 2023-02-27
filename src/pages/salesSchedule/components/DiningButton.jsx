@@ -50,4 +50,5 @@ const ButtonWrap = styled.div`
 const TypeText = styled.div`
   color: ${({theme, touch}) =>
     touch ? theme.colors.grey[0] : theme.colors.grey[5]};
+  font-weight: 600;
 `;

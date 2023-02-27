@@ -63,7 +63,7 @@ export function planExel(plan) {
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
   XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 일정 관리');
-  XLSX.writeFile(workbook, '메이커스_일정_관리.xlsx');
+  XLSX.writeFile(workbook, '메이커스 일정 관리.xlsx');
 }
 export function planExelExport(plan, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
@@ -79,6 +79,7 @@ export function productExel(product) {
   const reqArrays = [];
   reqArrays.push([
     'foodId',
+    'makersId',
     'makersName',
     'foodName',
     'foodStatus',
@@ -91,6 +92,7 @@ export function productExel(product) {
   ]);
   reqArrays.push([
     'ID',
+    '메이커스ID',
     '메이커스이름',
     '식품이름',
     '판매상태',
@@ -102,9 +104,9 @@ export function productExel(product) {
     '식사 태그',
   ]);
   product?.data?.map(el => {
-    console.log(el.foodTags);
     const reqArray = [];
     reqArray.push(el.foodId);
+    reqArray.push(el.makersId);
     reqArray.push(el.makersName);
     reqArray.push(el.foodName);
     reqArray.push(el.foodStatus);
@@ -113,7 +115,7 @@ export function productExel(product) {
     reqArray.push(el.eventDiscount);
     reqArray.push(el.resultPrice);
     reqArray.push(el.description);
-    reqArray.push(el.foodTags);
+    reqArray.push(el.foodTags.join(','));
     reqArrays.push(reqArray);
     return reqArrays;
   });

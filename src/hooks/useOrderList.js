@@ -37,3 +37,9 @@ export function useCancelOrder() {
     return orderApis.orderCancel(data);
   });
 }
+
+export function useAllUserList() {
+  return useQuery('allUserList', () => {
+    return orderApis.allUserList();
+  });
+}

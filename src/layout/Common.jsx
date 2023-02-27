@@ -16,6 +16,8 @@ import {
   recommandPlanAtom,
   deadlineAtom,
   exelUserAtom,
+  saveItemAtom,
+  statusOptionAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -26,6 +28,10 @@ import {
   productExel,
   productExelExport,
 } from '../utils/downloadExel/exel';
+import {
+  useAddExelProductData,
+  useEditProductStatus,
+} from 'hooks/useProductsList';
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {
   formattedDate,
@@ -34,6 +40,7 @@ import {
 } from 'utils/dateFormatter';
 import {usePostPresetCalendar} from 'hooks/useCalendars';
 import {useSaveUserData} from 'hooks/useUserData';
+import {CustomerDataAtom} from 'pages/customer/Customer/store';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -91,12 +98,16 @@ const Common = () => {
   const {mutateAsync: saveUserData} = useSaveUserData();
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
+  const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
-
+  const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
+  const [statusOption] = useAtom(statusOptionAtom);
+  const {mutateAsync: editStatus} = useEditProductStatus();
+
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -173,7 +184,32 @@ const Common = () => {
         }
       });
     }
-    console.log(reqArray);
+    if (exelProduct) {
+      exelProduct.map((item, idx) => {
+        console.log(item, '000');
+        if (idx !== 0) {
+          const result = {
+            foodId: item.foodId,
+            makersId: item.makersId,
+            makersName: item.makersName,
+            foodName: item.foodName,
+            foodStatus: item.foodStatus,
+            defaultPrice: item.defaultPrice,
+            makersDiscount: item.makersDiscount,
+            eventDiscount: item.eventDiscount,
+            resultPrice: item.resultPrice,
+            description: item.description,
+            foodTags: item.foodTags.split(','),
+          };
+
+          reqArray.push(result);
+        }
+      });
+      await productPost(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
+
     await postPresetCalendar({
       deadline: formattedFullDate(startDate, '-'),
       excelDataList: [...reqArray],
@@ -195,6 +231,7 @@ const Common = () => {
       setSpot();
       setExelSpot();
       setExelUser();
+      setUser();
       setReCommandPlan();
       const reader = new FileReader();
       reader.onload = e => {
@@ -221,6 +258,8 @@ const Common = () => {
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
+
+          console.log(json, 'json');
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -277,8 +316,29 @@ const Common = () => {
       return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
     }
     if (exelUser && exelUser.length > 0) {
-      return planExelExport(exelSpot, '유저 정보', '유저 정보.xlsx');
+      return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
     }
+    if (user && user.length > 0) {
+      return planExelExport(user, '유저 정보', '유저 정보.xlsx');
+    }
+    if (spot && spot.length > 0) {
+      console.log('스팟', spot);
+
+      const exportSpot = spot.map(v => {
+        delete v.lastOrderTime;
+        return v;
+      });
+      return planExelExport(
+        exportSpot,
+        '고객 스팟 공지',
+        '고객 스팟 공지.xlsx',
+      );
+    }
+  };
+
+  // 상품 정보 상태변경 저장
+  const statusButton = async () => {
+    await editStatus(statusOption);
   };
 
   const noNeedButton =
@@ -303,6 +363,12 @@ const Common = () => {
               }
               if (exelUser) {
                 handlerSaveUser();
+              }
+              if (exelProduct) {
+                callPostCalendar();
+              }
+              if (statusOption) {
+                statusButton();
               }
             }}
           />

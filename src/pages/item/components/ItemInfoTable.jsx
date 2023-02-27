@@ -2,18 +2,18 @@ import {useAtom} from 'jotai';
 import {useNavigate} from 'react-router-dom';
 import {Button, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
-import {shopInfoDetailIdAtom, shopInfoListAtom} from 'utils/store';
+import {shopInfoDetailIdAtom, statusOptionAtom} from 'utils/store';
 import withCommas from '../../../utils/withCommas';
 import Select from 'react-select';
-import {useEffect, useState} from 'react';
-import {BtnWrapper, PageWrapper} from 'style/common.style';
+import {BtnWrapper} from 'style/common.style';
 import {useEditProductStatus} from 'hooks/useProductsList';
 
 const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
-  const [statusOption, setStatusOption] = useState([]);
+  const [statusOption, setStatusOption] = useAtom(statusOptionAtom);
   const {mutateAsync: editStatus} = useEditProductStatus();
+
   const goToPage = (foodId, makersId) => {
     setId(foodId);
     navigate('/shop/info/detail/' + foodId, {
@@ -57,9 +57,9 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
 
   return (
     <div>
-      <BtnWrapper>
+      {/* <BtnWrapper>
         <Button color="blue" content="상태변경 저장" onClick={statusButton} />
-      </BtnWrapper>
+      </BtnWrapper> */}
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -73,6 +73,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
               />
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">메이커스ID</Table.HeaderCell>
             <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
             <Table.HeaderCell>식품 이름</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
@@ -107,6 +108,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
                   />
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
+                <Table.Cell textAlign="center">{el.makersId}</Table.Cell>
                 <Table.Cell>{el.makersName}</Table.Cell>
                 <Table.Cell>{el.foodName}</Table.Cell>
                 <Table.Cell onClick={e => e.stopPropagation()} width={2}>

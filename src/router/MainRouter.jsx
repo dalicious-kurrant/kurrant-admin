@@ -6,11 +6,13 @@ import {MenuList} from './menu';
 import LoginPage from '../pages/login/Login';
 import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import OrderDetail from '../pages/order/orderInfomation/OrderDetail';
+import ScrollToTop from 'shared/ScrollToTop';
 import Test from 'common/test/InputTest';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         {token !== null && (

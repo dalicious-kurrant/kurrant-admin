@@ -7,6 +7,12 @@ export function usePostCalendar() {
     return calendarApis.createDailyFood(data);
   });
 }
+export function useCompleteCalendar() {
+  return useMutation(data => {
+    console.log(data);
+    return calendarApis.completeDailyFood(data);
+  });
+}
 
 export function useGetCalendar(size, page, makersId, groupId, status) {
   return useQuery('calendarList', () => {
@@ -21,18 +27,29 @@ export function useGetRecommandCalendar(
   makersId,
   groupId,
   status,
+  isClick,
+  setIsClick,
 ) {
-  return useQuery('calendarRecommandList', () => {
-    return calendarApis.getRecommnadDailyFood(
-      startDate,
-      endDate,
-      size,
-      page,
-      makersId,
-      groupId,
-      status,
-    );
-  });
+  return useQuery(
+    'calendarRecommandList',
+    () => {
+      return calendarApis.getRecommnadDailyFood(
+        startDate,
+        endDate,
+        size,
+        page,
+        makersId,
+        groupId,
+        status,
+      );
+    },
+    {
+      enabled: isClick,
+      onSuccess: () => {
+        setIsClick(false);
+      },
+    },
+  );
 }
 
 export function usePostPresetCalendar() {
