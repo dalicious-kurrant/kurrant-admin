@@ -4,7 +4,7 @@ import useMutate from 'common/CRUD/useMutate';
 import {TableCheckboxStatusAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
-import {exelSpotAtom} from 'utils/store';
+import {exelSpotAtom, spotAtom} from 'utils/store';
 import useModal from '../../../hooks/useModal';
 import {
   BtnWrapper,
@@ -41,6 +41,13 @@ const SpotInfo = () => {
   const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
     SpotInfoDataAtom,
+    `clients/spot/all`,
+    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+    localStorage.getItem('token'),
+  );
+  useSpotInfoData(
+    ['getSpot'],
+    spotAtom,
     `clients/spot/all`,
     // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
     localStorage.getItem('token'),

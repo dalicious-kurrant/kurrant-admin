@@ -321,6 +321,19 @@ const Common = () => {
     if (user && user.length > 0) {
       return planExelExport(user, '유저 정보', '유저 정보.xlsx');
     }
+    if (spot && spot.length > 0) {
+      console.log('스팟', spot);
+
+      const exportSpot = spot.map(v => {
+        delete v.lastOrderTime;
+        return v;
+      });
+      return planExelExport(
+        exportSpot,
+        '고객 스팟 공지',
+        '고객 스팟 공지.xlsx',
+      );
+    }
   };
 
   // 상품 정보 상태변경 저장

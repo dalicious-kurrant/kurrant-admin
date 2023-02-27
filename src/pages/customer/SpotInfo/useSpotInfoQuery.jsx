@@ -4,15 +4,17 @@ import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import styled from 'styled-components';
+import {spotAtom} from 'utils/store';
 import {SpotInfoDataAtom} from './store';
 
 const useSpotInfoQuery = () => {
   const queryClient = useQueryClient();
   const [, setSpotInfoData] = useAtom(SpotInfoDataAtom);
+  const [, setSpot] = useAtom(spotAtom);
   // 일단 instance해 놓음
 
   const {
-    data: data,
+    data: spotData,
     status,
     isLoading,
   } = useQuery(
@@ -37,8 +39,9 @@ const useSpotInfoQuery = () => {
   );
 
   useEffect(() => {
-    setSpotInfoData(data);
-  }, [data]);
+    setSpotInfoData(spotData);
+    setSpot(spotData);
+  }, [spotData, setSpot, setSpotInfoData]);
 
   return {
     status,
