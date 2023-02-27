@@ -12,6 +12,7 @@ import Plans from '../pages/makers/Plans';
 import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
 import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
 import Schedule from '../pages/salesSchedule/Schedule';
+import CompletePlans from 'pages/makers/CompletePlans';
 
 export const MenuList = [
   {
@@ -85,9 +86,14 @@ export const MenuList = [
         url: '/apply',
       },
       {
-        name: '메이커스 일정',
+        name: '메이커스 일정 요청',
         url: '/plans',
         component: <Plans />,
+      },
+      {
+        name: '메이커스 일정',
+        url: '/completeplans',
+        component: <CompletePlans />,
       },
     ],
   },

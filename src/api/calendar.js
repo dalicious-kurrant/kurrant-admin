@@ -2,14 +2,35 @@ import instance from '../shared/axios';
 
 export const calendarApis = {
   createDailyFood: async data => await instance.post('schedules/excel', data),
-  getDailyFood: async (size, page) =>
-    await instance.get(`schedules/all?size=${size}&page=${page}`),
-  getRecommnadDailyFood: async (startDate, size, page) =>
+  presetDailyFood: async data => await instance.post('schedules/pause', data),
+  getDailyFood: async (size, page, makersId, groupId, status) =>
+    await instance.get(`schedules/all`, {
+      params: {
+        limit: size,
+        page: page,
+        makersId: makersId.join(','),
+        groupId: groupId.join(','),
+        status: status.join(','),
+      },
+    }),
+  getRecommnadDailyFood: async (
+    startDate,
+    endDate,
+    size,
+    page,
+    makersId,
+    groupId,
+    status,
+  ) =>
     await instance.get(`schedules/recommends`, {
       params: {
         startDate: startDate,
-        size: size,
+        endDate: endDate,
+        limit: size,
         page: page,
+        makersId: makersId.join(','),
+        groupId: groupId.join(','),
+        status: status.join(','),
       },
     }),
 };

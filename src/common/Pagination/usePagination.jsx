@@ -6,43 +6,46 @@ import {
   calculateTotalPages,
 } from './Logics/PaginationLogics';
 
-const usePagination = dataTotalLength => {
-  const [page, setPage] = useState(1);
+const usePagination = (totalLength, page, setPage, limit, setLimit) => {
+  const [pagepage, setPagePage] = useState(1);
 
-  const [dataLimit, setDataLimit] = useState(1);
+  const [dataLimitLimit, setDataLimitLimit] = useState(1);
   const [pageList, setPageList] = useState([]);
 
   useEffect(() => {
+    // 페이지 번호 리스트 [1,2,3,4,5]
+    // 페이지네이션 다시 만들기
+
     setPageList(
       calculatePageButtons(
-        page,
-        calculateTotalPages(dataTotalLength, dataLimit),
+        pagepage,
+        calculateTotalPages(totalLength, dataLimitLimit),
       ),
     );
-  }, [page, dataTotalLength, dataLimit]);
+  }, [pagepage, totalLength, dataLimitLimit]);
 
   const handleButtonClick = e => {
-    setPage(e.target.id);
+    setPagePage(e.target.id);
   };
 
   const handleGoToEdge = e => {
-    setPage(e.target.id);
+    setPagePage(e.target.id);
   };
   const handleMove = e => {
-    setPage(
+    setPagePage(
       calculatePageMove(
         e.target.id,
-        page,
-        calculateTotalPages(dataTotalLength, dataLimit),
+        pagepage,
+        calculateTotalPages(totalLength, dataLimitLimit),
       ),
     );
   };
 
   return {
-    page,
-    setPage,
-    dataLimit,
-    setDataLimit,
+    page: pagepage,
+    setPage: setPagePage,
+    dataLimit: dataLimitLimit,
+    setDataLimit: setDataLimitLimit,
     pageList,
     setPageList,
     handleButtonClick,

@@ -23,7 +23,9 @@ const Header = () => {
                 {v.children?.map(b => (
                   <Dropdown.Item
                     key={`${b.name}`}
-                    onClick={() => navi(`${v.url}${b.url}`)}>
+                    onClick={() => {
+                      navi(`${v.url}${b.url}`);
+                    }}>
                     {b.name}
                   </Dropdown.Item>
                 ))}

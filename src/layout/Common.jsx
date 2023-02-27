@@ -14,6 +14,8 @@ import {
   exelSpotAtom,
   shopInfoDetailIdAtom,
   recommandPlanAtom,
+  deadlineAtom,
+  exelUserAtom,
   saveItemAtom,
   statusOptionAtom,
 } from '../utils/store';
@@ -30,6 +32,15 @@ import {
   useAddExelProductData,
   useEditProductStatus,
 } from 'hooks/useProductsList';
+import {scheduleFormatted2} from 'utils/statusFormatter';
+import {
+  formattedDate,
+  formattedFullDate,
+  formattedTime,
+} from 'utils/dateFormatter';
+import {usePostPresetCalendar} from 'hooks/useCalendars';
+import {useSaveUserData} from 'hooks/useUserData';
+import {CustomerDataAtom} from 'pages/customer/Customer/store';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -82,7 +93,12 @@ const Common = () => {
   const [plan, setPlan] = useAtom(planAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [spot, setSpot] = useAtom(spotAtom);
+  const [startDate, setStartDate] = useAtom(deadlineAtom);
+  const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
+  const {mutateAsync: saveUserData} = useSaveUserData();
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [exelUser, setExelUser] = useAtom(exelUserAtom);
+  const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
@@ -99,30 +115,105 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
-
-  const callProductExel = async () => {
+  const callPostCalendar = async () => {
     const reqArray = [];
-    exelProduct.map((item, idx) => {
-      console.log(item, '000');
-      if (idx !== 0) {
-        const result = {
-          foodId: item.foodId,
-          makersId: item.makersId,
-          makersName: item.makersName,
-          foodName: item.foodName,
-          foodStatus: item.foodStatus,
-          defaultPrice: item.defaultPrice,
-          makersDiscount: item.makersDiscount,
-          eventDiscount: item.eventDiscount,
-          resultPrice: item.resultPrice,
-          description: item.description,
-          foodTags: item.foodTags.split(','),
-        };
+    if (plan) {
+      const req = plan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
+    }
+    if (reCommandPlan) {
+      reCommandPlan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
+    }
+    if (exelPlan) {
+      exelPlan.map((makers, i) => {
+        if (i !== 0) {
+          const result = {
+            makersName: makers.makersName,
+            makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+            serviceDate: formattedDate(makers.serviceDate, '-'),
+            diningType: makers.diningType,
+            makersCapacity: makers.makersCapacity,
+            pickupTime: formattedTime(makers.pickupTime),
+            groupName: makers.clientName,
+            groupCapacity: makers.clientCapacity,
+            foodScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+            foodName: makers.foodName,
+            foodStatus: makers.foodStatus,
+            foodCapacity: makers.foodCapacity,
+          };
+          reqArray.push(result);
+        }
+      });
+    }
+    if (exelProduct) {
+      exelProduct.map((item, idx) => {
+        console.log(item, '000');
+        if (idx !== 0) {
+          const result = {
+            foodId: item.foodId,
+            makersId: item.makersId,
+            makersName: item.makersName,
+            foodName: item.foodName,
+            foodStatus: item.foodStatus,
+            defaultPrice: item.defaultPrice,
+            makersDiscount: item.makersDiscount,
+            eventDiscount: item.eventDiscount,
+            resultPrice: item.resultPrice,
+            description: item.description,
+            foodTags: item.foodTags.split(','),
+          };
 
-        reqArray.push(result);
-      }
+          reqArray.push(result);
+        }
+      });
+      await productPost(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
+
+    await postPresetCalendar({
+      deadline: formattedFullDate(startDate, '-'),
+      excelDataList: [...reqArray],
     });
-    await productPost(reqArray);
     alert('저장 되었습니다.');
     window.location.reload();
   };
@@ -139,6 +230,8 @@ const Common = () => {
       setPlan();
       setSpot();
       setExelSpot();
+      setExelUser();
+      setUser();
       setReCommandPlan();
       const reader = new FileReader();
       reader.onload = e => {
@@ -157,10 +250,11 @@ const Common = () => {
           setExelStaticPlan(json);
         }
         if (sheetName === '고객 스팟 공지') {
-          // console.log(typeof json);
-          console.log(json);
-          // localStorage.setItem('sponInfo', JSON.stringify(json));
           setExelSpot(json);
+        }
+        if (sheetName === '유저 정보') {
+          console.log(json);
+          setExelUser(json);
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
@@ -171,7 +265,33 @@ const Common = () => {
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
-
+  const handlerSaveUser = async () => {
+    const result = exelUser.map((v, i) => {
+      if (i !== 0) {
+        return {
+          role:
+            v.role === 'USER'
+              ? '일반'
+              : v.role === 'MANAGER'
+              ? '관리자'
+              : '일반',
+          password: v.password,
+          name: v.userName,
+          email: v.email,
+          phone: v.phone,
+          userId: v.id,
+        };
+      }
+    });
+    const req = result.filter(element => {
+      return element !== undefined && element !== null && element !== '';
+    });
+    await saveUserData({
+      userList: req,
+    });
+    alert('저장 되었습니다.');
+    window.location.reload();
+  };
   const onDownloadFile = async () => {
     if (plan && plan.length > 0) {
       return planExel(plan);
@@ -180,20 +300,26 @@ const Common = () => {
       return planExelExport(
         exelPlan,
         '메이커스 일정 관리',
-        '메이커스_일정_관리.xlsx',
+        '메이커스 일정 관리.xlsx',
       );
     }
     if (reCommandPlan && reCommandPlan.length > 0) {
       return planExel(reCommandPlan);
     }
     if (exelSpot && exelSpot.length > 0) {
-      return planExelExport(exelSpot, '고객 스팟 공지', '고객_스팟_공지.xlsx');
+      return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
     }
     if (product?.data && product?.data?.length > 0) {
       return productExel(product);
     }
     if (exelProduct && exelProduct.length > 0) {
       return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
+    }
+    if (exelUser && exelUser.length > 0) {
+      return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
+    }
+    if (user && user.length > 0) {
+      return planExelExport(user, '유저 정보', '유저 정보.xlsx');
     }
   };
 
@@ -217,10 +343,16 @@ const Common = () => {
           <Button
             color="green"
             icon="save"
-            content="저장(미완)"
+            content="저장"
             onClick={() => {
+              if (plan || exelPlan || reCommandPlan) {
+                callPostCalendar();
+              }
+              if (exelUser) {
+                handlerSaveUser();
+              }
               if (exelProduct) {
-                callProductExel();
+                callPostCalendar();
               }
               if (statusOption) {
                 statusButton();
