@@ -18,11 +18,15 @@ import {
   exelUserAtom,
   saveItemAtom,
   statusOptionAtom,
+  corporationAtom,
+  exelCorporationAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
 
 import {
+  corporationExelExport,
+  corporationInfoExel,
   planExel,
   planExelExport,
   productExel,
@@ -103,6 +107,8 @@ const Common = () => {
   const [product, setProduct] = useAtom(productAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
+  const [corporation, setCorporation] = useAtom(corporationAtom);
+  const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
   const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [statusOption] = useAtom(statusOptionAtom);
@@ -210,6 +216,39 @@ const Common = () => {
       return window.location.reload();
     }
 
+    if (exelCorporation) {
+      exelCorporation.map((item, idx) => {
+        if (idx !== 0) {
+          const result = {
+            id: item.id,
+            code: item.code,
+            name: item.name,
+            zipCode: item.zipCode,
+            address1: item.address1,
+            address2: item.address2,
+            location: item.location,
+            diningTypes: item.diningTypes,
+            serviceDate: item.serviceDate,
+            managerName: item.managerName,
+            managerPhone: item.managerPhone,
+            isMemvershipSupport: item.isMemvershipSupport,
+            employeeCount: item.employeeCount,
+            isSetting: item.isSetting,
+            isGarbage: item.isGarbage,
+            isHotStorage: item.isHotStorage,
+            createdDateTime: item.createdDateTime,
+            updatedDateTime: item.updatedDateTime,
+          };
+
+          reqArray.push(result);
+        }
+      });
+
+      //await productPost(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
+
     await postPresetCalendar({
       deadline: formattedFullDate(startDate, '-'),
       excelDataList: [...reqArray],
@@ -233,6 +272,8 @@ const Common = () => {
       setExelUser();
       setUser();
       setReCommandPlan();
+      setCorporation();
+      setExelCorporation();
       const reader = new FileReader();
       reader.onload = e => {
         console.log(e.target.result);
@@ -259,6 +300,11 @@ const Common = () => {
         if (sheetName === '상품 정보') {
           setExelProduct(json);
 
+          console.log(json, 'json');
+        }
+
+        if (sheetName === '기업 정보') {
+          setExelCorporation(json);
           console.log(json, 'json');
         }
       };
@@ -321,11 +367,25 @@ const Common = () => {
     if (user && user.length > 0) {
       return planExelExport(user, '유저 정보', '유저 정보.xlsx');
     }
+    if (
+      corporation?.data &&
+      corporation?.data?.items?.groupInfoList?.length > 0
+    ) {
+      return corporationInfoExel(corporation);
+    }
+    if (exelCorporation && exelCorporation.length > 0) {
+      return corporationExelExport(
+        exelCorporation,
+        '기업 정보',
+        '기업_정보.xlsx',
+      );
+    }
   };
 
   // 상품 정보 상태변경 저장
   const statusButton = async () => {
     await editStatus(statusOption);
+    alert('상태변경 저장 완료.');
   };
 
   const noNeedButton =
@@ -345,16 +405,20 @@ const Common = () => {
             icon="save"
             content="저장"
             onClick={() => {
-              if (plan || exelPlan || reCommandPlan) {
+              if (
+                plan ||
+                exelPlan ||
+                reCommandPlan ||
+                exelProduct ||
+                exelCorporation
+              ) {
                 callPostCalendar();
               }
               if (exelUser) {
                 handlerSaveUser();
               }
-              if (exelProduct) {
-                callPostCalendar();
-              }
-              if (statusOption) {
+
+              if (statusOption.length !== 0) {
                 statusButton();
               }
             }}
