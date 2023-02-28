@@ -21,7 +21,14 @@ import {useNavigate} from 'react-router-dom';
 import {useQueryClient} from 'react-query';
 import Modal from '../../../components/alertModal/AlertModal';
 import {useAtom} from 'jotai';
-import {endDateAtom, groupOptionAtom, startDateAtom} from 'utils/store';
+import {
+  diningTypeOptionAtom,
+  endDateAtom,
+  groupOptionAtom,
+  makersOptionAtom,
+  startDateAtom,
+  userOptionAtom,
+} from 'utils/store';
 
 // 상품 정보 페이지
 const Order = () => {
@@ -36,7 +43,7 @@ const Order = () => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useAtom(startDateAtom);
   const [endDate, setEndDate] = useAtom(endDateAtom);
-  const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
+  const [groupOption, setGroupOption] = useState('');
   const [userOption, setUserOption] = useState('');
   const [makersOption, setMakersOption] = useState('');
   const [spotOption, setSpotOption] = useState('');
@@ -46,7 +53,12 @@ const Order = () => {
   const [diningType, setDiningType] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  console.log(groupOption, '07');
+  const [defaultGroup, setDefaultGroup] = useAtom(groupOptionAtom);
+  const [defaultUser, setDefaultUser] = useAtom(userOptionAtom);
+  const [defaultMakers, setDefaultMakers] = useAtom(makersOptionAtom);
+  const [defaultSpot, setDefaultSpot] = useAtom(makersOptionAtom);
+  const [defaultDining, setDefaultDining] = useAtom(diningTypeOptionAtom);
+
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
@@ -65,7 +77,7 @@ const Order = () => {
       label: el.groupName,
     };
   });
-  console.log(groupArr);
+
   const allUserArr = allUserList?.data?.users?.map(el => {
     return {
       value: el.userId,
@@ -208,6 +220,7 @@ const Order = () => {
 
   return (
     <PageWrapper>
+      <label>서비스일 날짜</label>
       <div>
         <DateInput
           type="date"
@@ -237,8 +250,10 @@ const Order = () => {
             ref={groupRef}
             options={groupArr}
             placeholder="고객사"
+            defaultValue={defaultGroup}
             onChange={e => {
               if (e) {
+                setDefaultGroup(e);
                 setGroupOption(e.value);
                 groupInfoList(e.value);
               } else {
@@ -253,9 +268,11 @@ const Order = () => {
             ref={userRef}
             options={userArr.length === 0 ? allUserArr : userArr}
             placeholder="유저"
+            defaultValue={defaultUser}
             onChange={e => {
               if (e) {
                 setUserOption(e.value);
+                setDefaultUser(e);
               } else {
                 setUserOption('');
               }
@@ -268,9 +285,11 @@ const Order = () => {
             ref={spotRef}
             options={spotArr}
             placeholder="스팟 선택"
+            defaultValue={defaultSpot}
             onChange={e => {
               if (e) {
                 setSpotOption(e.value);
+                setDefaultSpot(e);
               } else {
                 setSpotOption('');
               }
@@ -283,9 +302,11 @@ const Order = () => {
             ref={makersRef}
             options={makersArr}
             placeholder="메이커스 선택"
+            defaultValue={defaultMakers}
             onChange={e => {
               if (e) {
                 setMakersOption(e.value);
+                setDefaultMakers(e);
               } else {
                 setMakersOption('');
               }
@@ -298,9 +319,11 @@ const Order = () => {
             ref={diningRef}
             options={diningTypeArr}
             placeholder="식사타입"
+            defaultValue={defaultDining}
             onChange={e => {
               if (e) {
                 setDiningTypeOption(e.value);
+                setDefaultDining(e);
               } else {
                 setDiningTypeOption('');
               }
@@ -444,6 +467,7 @@ const DateInput = styled.input`
   width: 200px;
   border-radius: 4px;
   border: 1px solid ${({theme}) => theme.colors.grey[5]};
+  margin-top: 4px;
 `;
 
 const TableRow = styled(Table.Row)`
