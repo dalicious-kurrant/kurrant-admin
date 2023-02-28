@@ -82,12 +82,7 @@ const CorpExelTable = ({data}) => {
                         if (k === 'isHotStorage') {
                           return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                         }
-                        if (k === 'createdDateTime') {
-                          return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
-                        }
-                        if (k === 'updatedDateTime') {
-                          return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
-                        }
+
                         return (
                           <Table.Cell key={k + i}>
                             <div>{el[k]}</div>

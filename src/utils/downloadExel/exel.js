@@ -372,13 +372,12 @@ export function corporationInfoExel(corporation) {
     'diningTypes',
     'serviceDays',
     'managerName',
+    'managerPhpne',
     'isMembershipSupport',
     'employeeCount',
     'isSetting',
     'isGarbage',
     'isHotStorage',
-    'createdDateTime',
-    'updatedDateTime',
   ]);
   reqArrays.push([
     '그룹ID',
@@ -397,8 +396,6 @@ export function corporationInfoExel(corporation) {
     '식사 세팅 지원 서비스',
     '쓰레기 수거 서비스',
     '온장고 대여 서비스',
-    '생성일',
-    '수정일',
   ]);
 
   corporation?.data?.items?.groupInfoList?.map(el => {
@@ -425,8 +422,7 @@ export function corporationInfoExel(corporation) {
     reqArray.push(setting);
     reqArray.push(garbage);
     reqArray.push(hotStorage);
-    reqArray.push(formattedDate(el.createdDateTime, '년월일'));
-    reqArray.push(formattedDate(el.updatedDateTime, '년월일'));
+
     reqArrays.push(reqArray);
 
     return reqArrays;

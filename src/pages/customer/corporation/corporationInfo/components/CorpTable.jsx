@@ -72,9 +72,7 @@ const CorpTable = ({
                 이름
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">우편번호</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center" width={3}>
-                기본주소
-              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">기본주소</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">상세주소</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
@@ -99,12 +97,6 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 온장고 대여 <br />
                 서비스
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center" width={2}>
-                생성일
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center" width={2}>
-                수정일
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -136,17 +128,11 @@ const CorpTable = ({
                   <Table.Cell>{el.serviceDays.split('').join(',')}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
                   <Table.Cell>{el.managerPhone}</Table.Cell>
-                  <Table.Cell>{membership}</Table.Cell>
+                  <Table.Cell textAlign="center">{membership}</Table.Cell>
                   <Table.Cell>{el.employeeCount}</Table.Cell>
-                  <Table.Cell>{setting}</Table.Cell>
-                  <Table.Cell>{garbage}</Table.Cell>
-                  <Table.Cell>{hotStorage}</Table.Cell>
-                  <Table.Cell>
-                    {formattedDate(el.createdDateTime, '년월일')}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {formattedDate(el.updatedDateTime, '년월일')}
-                  </Table.Cell>
+                  <Table.Cell textAlign="center">{setting}</Table.Cell>
+                  <Table.Cell textAlign="center">{garbage}</Table.Cell>
+                  <Table.Cell textAlign="center">{hotStorage}</Table.Cell>
                 </Table.Row>
               );
             })}
