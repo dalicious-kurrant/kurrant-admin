@@ -22,6 +22,8 @@ import {
   exelCorporationAtom,
   completePlanAtom,
   exelCompletePlanAtom,
+  makersInfoAtom,
+  makersExelInfoAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -36,6 +38,8 @@ import {
   productExelExport,
   spotExel,
   userExel,
+  makersInfoExel,
+  makersInfoExelExport,
 } from '../utils/downloadExel/exel';
 import {
   useAddExelProductData,
@@ -117,6 +121,8 @@ const Common = () => {
   const [id] = useAtom(shopInfoDetailIdAtom);
   const [corporation, setCorporation] = useAtom(corporationAtom);
   const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
+  const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
+  const [makersExelInfo, setMakersExelInfo] = useAtom(makersExelInfoAtom);
   const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [statusOption] = useAtom(statusOptionAtom);
@@ -237,7 +243,7 @@ const Common = () => {
             address2: item.address2,
             location:
               (item.location === undefined || item.location === 'null') && null,
-            diningTypes: item.diningTypes,
+            diningTypes: [item.diningTypes],
             serviceDays: item.serviceDays,
             managerName: item.managerName,
             managerPhone: item.managerPhone,
@@ -251,10 +257,10 @@ const Common = () => {
           reqArray.push(result);
         }
       });
-      console.log(reqArray, '00');
+      //console.log(reqArray, '00');
       await corporationExel(reqArray);
-      // alert('저장 되었습니다.');
-      // return window.location.reload();
+      alert('저장 되었습니다.');
+      return window.location.reload();
     }
 
     await postPresetCalendar({
@@ -284,6 +290,8 @@ const Common = () => {
       setReCommandPlan();
       setCorporation();
       setExelCorporation();
+      setMakersInformation();
+      setMakersExelInfo();
       const reader = new FileReader();
       reader.onload = e => {
         console.log(e.target.result);
@@ -317,6 +325,10 @@ const Common = () => {
 
         if (sheetName === '기업 정보') {
           setExelCorporation(json);
+          console.log(json, 'json');
+        }
+        if (sheetName === '메이커스 정보') {
+          setMakersExelInfo(json);
           console.log(json, 'json');
         }
       };
@@ -421,6 +433,18 @@ const Common = () => {
         exelCorporation,
         '기업 정보',
         '기업_정보.xlsx',
+      );
+    }
+
+    if (makersInformation?.data && makersInformation?.data.length > 0) {
+      return makersInfoExel(makersInformation);
+    }
+
+    if (makersExelInfo && makersExelInfo.length > 0) {
+      return makersInfoExelExport(
+        makersExelInfo,
+        '메이커스 정보',
+        '메이커스_정보.xlsx',
       );
     }
   };
