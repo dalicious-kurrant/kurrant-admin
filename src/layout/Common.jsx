@@ -20,6 +20,9 @@ import {
   statusOptionAtom,
   corporationAtom,
   exelCorporationAtom,
+  completePlanAtom,
+  exelCompletePlanAtom,
+
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -27,10 +30,13 @@ import {useAtom} from 'jotai';
 import {
   corporationExelExport,
   corporationInfoExel,
+  completePlanExel,
   planExel,
   planExelExport,
   productExel,
   productExelExport,
+  spotExel,
+  userExel,
 } from '../utils/downloadExel/exel';
 import {
   useAddExelProductData,
@@ -105,6 +111,8 @@ const Common = () => {
   const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
+  const [completePlan, setCompletePlan] = useAtom(completePlanAtom);
+  const [exelCompletePlan, setExelCompletePlan] = useAtom(exelCompletePlanAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
   const [corporation, setCorporation] = useAtom(corporationAtom);
@@ -266,6 +274,8 @@ const Common = () => {
       setExelProduct();
       setExelPlan();
       setExelStaticPlan();
+      setCompletePlan();
+      setExelCompletePlan();
       setPlan();
       setSpot();
       setExelSpot();
@@ -299,8 +309,10 @@ const Common = () => {
         }
         if (sheetName === '상품 정보') {
           setExelProduct(json);
-
-          console.log(json, 'json');
+        }
+        if (sheetName === '식단 현황') {
+          console.log(json);
+          setExelCompletePlan(json);
         }
 
         if (sheetName === '기업 정보') {
@@ -365,7 +377,38 @@ const Common = () => {
       return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
     }
     if (user && user.length > 0) {
-      return planExelExport(user, '유저 정보', '유저 정보.xlsx');
+      const exportUser = user.map((v, i) => {
+        delete v.lastOrderTime;
+        if (i !== 0) {
+          return v;
+        }
+      });
+      const req = exportUser.filter(element => {
+        return element !== undefined && element !== null && element !== '';
+      });
+      return userExel(req);
+    }
+    if (spot && spot.length > 0) {
+      const exportSpot = spot.map((v, i) => {
+        if (i !== 0) {
+          return v;
+        }
+      });
+      const req = exportSpot.filter(element => {
+        return element !== undefined && element !== null && element !== '';
+      });
+      return spotExel(req);
+    }
+    if (completePlan && completePlan.length > 0) {
+      const exportCompletePlan = completePlan.map((v, i) => {
+        if (i !== 0) {
+          return v;
+        }
+      });
+      const req = exportCompletePlan.filter(element => {
+        return element !== undefined && element !== null && element !== '';
+      });
+      return completePlanExel(req);
     }
     if (
       corporation?.data &&

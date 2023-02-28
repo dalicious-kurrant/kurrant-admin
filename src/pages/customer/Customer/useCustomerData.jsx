@@ -3,6 +3,7 @@ import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
+import {shiftUserType, sliceStringDataByKey} from './CustomerLogics';
 
 const useCustomerData = (
   uniqueQueryKey,
@@ -47,8 +48,15 @@ const useCustomerData = (
   );
 
   useEffect(() => {
-    setData(data);
-  }, [data]);
+    if (data) {
+      // const dataYo = sliceStringDataByKey(shiftUserType(data), 'password', 5);
+      const dataYo = shiftUserType(data);
+
+      if (dataYo) {
+        setData(dataYo);
+      }
+    }
+  }, [data, setData]);
 
   return {
     status,

@@ -9,6 +9,8 @@ import {
   tellAlertLogic,
 } from './logics/RegisterLogics';
 import TextInput from './TextInput';
+import {Button} from 'semantic-ui-react';
+import SelectInput from './SelectInput';
 
 const Register = ({
   fieldsToOpen,
@@ -62,37 +64,58 @@ const Register = ({
       <TitleButtonWrap>
         <H2>
           리스트
-          {registerStatus === 'register' ? '추가 입력란' : ' 수정 기입란'}
+          {registerStatus === 'register' ? ' 추가 입력란' : ' 수정 기입란'}
         </H2>
-        <button onClick={handleCloseBtn}> 닫기 </button>
+        <Button onClick={handleCloseBtn}> 닫기 </Button>
       </TitleButtonWrap>
 
       <Form onSubmit={handleSubmit}>
         <InputWrap>
-          {fieldsData.map((value, index) => (
-            <TextInput
-              fieldsToOpen={fieldsToOpen}
-              registerStatus={registerStatus}
-              key={index}
-              input={input}
-              setInput={setInput}
-              required
-              name={value.fieldName}
-              placeholder={value.placeholder}
-              maxCharLength={value.maxCharLength}
-              flex={value.flex}
-            />
-          ))}
+          {fieldsData.map((value, index) => {
+            if (value.inputType === 'select') {
+              return (
+                <SelectInput
+                  key={index}
+                  fieldsToOpen={fieldsToOpen}
+                  registerStatus={registerStatus}
+                  input={input}
+                  name={value.fieldName}
+                  setInput={setInput}
+                  placeholder={value.placeholder}
+                  options={value.options}
+                />
+              );
+            } else {
+              return (
+                <TextInput
+                  fieldsToOpen={fieldsToOpen}
+                  registerStatus={registerStatus}
+                  key={index}
+                  input={input}
+                  setInput={setInput}
+                  required
+                  name={value.fieldName}
+                  placeholder={value.placeholder}
+                  maxCharLength={value.maxCharLength}
+                  flex={value.flex}
+                />
+              );
+            }
+          })}
         </InputWrap>
 
         {tellAlert(submitStatus)}
 
-        <SubmitButton>
-          {registerStatus === 'register'
-            ? '아래 리스트에 추가'
-            : '해당 정보 수정'}
-          하기
-        </SubmitButton>
+        <Button.Group>
+          <BtnWrap>
+            <Button>
+              {registerStatus === 'register'
+                ? '아래 리스트에 추가'
+                : '해당 정보 수정'}
+              하기
+            </Button>
+          </BtnWrap>
+        </Button.Group>
       </Form>
     </Container>
   );
@@ -110,7 +133,8 @@ const Form = styled.form`
 `;
 
 const H2 = styled.h2`
-  font-size: 1.2rem;
+  font-size: 1.7rem;
+  font-weight: 500;
 
   margin-bottom: 1rem;
 `;
@@ -130,4 +154,8 @@ const InputWrap = styled.div`
 const SubmitButton = styled.button`
   font-size: 1.2rem;
   margin: 1rem 0;
+`;
+
+const BtnWrap = styled.div`
+  margin-top: 1rem;
 `;

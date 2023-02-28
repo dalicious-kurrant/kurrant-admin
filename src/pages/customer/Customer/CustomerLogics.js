@@ -2,12 +2,20 @@ import {
   extractOnlyTruesNumberArray,
   removeParentKeyInCheckbox,
 } from 'common/Table/Logics';
-import {
-  handleFalsyValueToBlank,
-  handleFalsyValueToString,
-} from 'utils/valueHandlingLogics';
+import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
-export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
+export const sendFinal = (
+  data,
+  sendFinalMutate,
+  checkboxStatus,
+  tableDeleteList,
+  deleteFinalMutate,
+) => {
+  if (!Object.values(checkboxStatus).includes(true)) {
+    window.confirm('체크된 항목이 없습니다 ');
+    return;
+  }
+
   const checkboxStatusNow = {...removeParentKeyInCheckbox(checkboxStatus)};
 
   let selectedData = [];
@@ -26,8 +34,6 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
     }
   });
 
-  // console.log(finalLaunch);
-
   const newData = finalLaunch.map(value => {
     let yo = {};
 
@@ -42,7 +48,11 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
       roleValue = '일반';
     } else if (value.role === 'MANAGER') {
       roleValue = '관리자';
-    } else if (value.role === '일반' || value.role === '관리자') {
+    } else if (
+      value.role === '일반' ||
+      value.role === '관리자' ||
+      value.role === '게스트'
+    ) {
       roleValue = value.role;
     } else {
       window.confirm("유저타입의 값은 '일반' 아니면 '관리자'로 해주세요");
@@ -55,6 +65,17 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
     yo['email'] = handleFalsyValueToBlank(value.email);
     yo['phone'] = handleFalsyValueToBlank(value.phone);
     yo['role'] = roleValue;
+    yo['status'] = 1;
+    yo['groupName'] = value.groupName;
+    yo['point'] = value.point;
+    yo['gourmetType'] = value.gourmetType;
+    yo['isMembership'] = value.isMembership;
+    yo['marketingAgree'] = true;
+    yo['marketingAgreedDateTime'] = '2023-02-28 10:28:30';
+    yo['marketingAlarm'] = true;
+    yo['userOrderAlarm'] = true;
+    yo['recentLoginDateTime'] = value.recentLoginDateTime;
+    yo['userCreatedDateTime'] = value.userCreatedDateTime;
 
     return yo;
   });
@@ -69,43 +90,65 @@ export const sendFinal = (data, sendFinalMutate, checkboxStatus) => {
     )
   ) {
     sendFinalMutate(newData2);
+    sendDelete(tableDeleteList, deleteFinalMutate);
   } else {
     return;
   }
 };
 
-export const sendDelete = (deleteFinalMutate, checkboxStatus) => {
-  // console.log(deleteFinalMutate);
-  // console.log(checkboxStatus)
-  console.log(extractOnlyTruesNumberArray(checkboxStatus));
+export const sendDelete = (tableDeleteList, deleteFinalMutate) => {
+  const toNumList = tableDeleteList.map(v => {
+    return parseInt(v);
+  });
+
+  // 스트링 -> 넘버
 
   const submitData = {
-    useIdList: extractOnlyTruesNumberArray(checkboxStatus),
+    useIdList: toNumList,
     groupId: 1,
   };
 
-  if (window.confirm('정보가 삭제됩니다 진행하시겠습니까?')) {
-    deleteFinalMutate(submitData);
-  } else {
-    return;
-  }
+  console.log(submitData);
+
+  // if (window.confirm('정보가 삭제됩니다 진행하시겠습니까?')) {
+  //   deleteFinalMutate(submitData);
+  // } else {
+  //   return;
+  // }
 };
 
 // 유저타입 USER -> 일반 , MANAGER -> 관리자
 
 export const shiftUserType = customerData => {
+  if (customerData.length > 0) {
+    const shifted = [...customerData];
+
+    const shiftedData = shifted.map(value => {
+      if (value.role === 'USER') {
+        value.role = '일반';
+      } else if (value.role === 'MANAGER') {
+        value.role = '관리자';
+      } else if (value.role === 'GUEST') {
+        value.role = '게스트';
+      }
+      return value;
+    });
+    return shiftedData;
+  }
+};
+
+// 비밀번호 5자로 줄이기
+
+export const sliceStringDataByKey = (customerData, key, charLength) => {
+  if (!customerData) return;
+
   const shifted = [...customerData];
 
-  const shiftedData = shifted.map(value => {
-    if (value.role === 'USER') {
-      value.role = '일반';
-    } else if (value.role === 'MANAGER') {
-      value.role = '관리자';
-    } else if (value.role === 'GUEST') {
-      value.role = '게스트';
-    }
-    return value;
+  const slicedData = shifted.map(v => {
+    v[key] = `${v[key].slice(0, charLength)}...`;
+
+    return v;
   });
 
-  return shiftedData;
+  return slicedData;
 };

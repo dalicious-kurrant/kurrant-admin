@@ -1,13 +1,11 @@
 import useMutate from 'common/CRUD/useMutate';
-import {TableCheckboxStatusAtom} from 'common/Table/store';
+import {TableCheckboxStatusAtom, TableDeleteListAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
-
 import {clickButtonBundle} from '../Logics/Logics';
-import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
-
+// import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 import {
   BtnWrapper,
   PageWrapper,
@@ -16,8 +14,6 @@ import {
 
 import {CustomerDataAtom} from './store';
 
-import useCustomerData from './useCustomerData';
-import CustomTable from 'common/Table/CustomTable';
 import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
@@ -26,11 +22,21 @@ import {exelUserAtom} from 'utils/store';
 import {Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
-import Pagination from 'common/test/Pagination/Pagination';
+
 import {sendFinal} from './CustomerLogics';
 
+import TableCustom from 'common/Table/TableCustom';
+import usePagination from 'common/test/Pagination/usePagination';
+import PaginationTest from './PaginationTest';
+import Pagination from 'common/test/Pagination/Pagination';
+import useCustomerData from './useCustomerData';
+import {
+  CustomerFieldsDataForRegister,
+  CustomerFieldsToOpen,
+} from './CustomerInfoData';
+
 const Customer = () => {
-  const [customerData] = useAtom(CustomerDataAtom);
+  const [customerData, setCustomerData] = useAtom(CustomerDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
@@ -38,6 +44,8 @@ const Customer = () => {
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const queryClient = useQueryClient();
+
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
@@ -111,11 +119,41 @@ const Customer = () => {
     };
   }, []);
 
+  const handleDelete = () => {
+    const status = {...checkboxStatus};
+
+    let deleteList = [...tableDeleteList];
+
+    Object.entries(status).forEach(v => {
+      if (v[1] === true) {
+        deleteList.push(v[0]);
+      }
+    });
+
+    deleteList = [...new Set(deleteList)];
+
+    let yo = [];
+    const customerDataToDelete = [...customerData];
+
+    customerDataToDelete.forEach(v => {
+      if (deleteList.includes(v.id.toString())) {
+        v['isOnDeleteList'] = true;
+        yo.push(v);
+      } else {
+        yo.push(v);
+      }
+    });
+
+    setTableDeleteList(deleteList);
+    setCustomerData(yo);
+  };
+
   // 페이지네이션
 
-  // 두가지만 백엔드랑 연결하면 됨
+  // 두 가지가 필요함
 
-  // 1. 페이지네이션 처리가 된 URL
+  // 1. 페이지네이션 처리가 된 Get Api
+  // '현재 페이지'랑 '한 페이지당 보여줄 페이지의 갯수'
   //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
 
   // 2. 백엔드에 있는 데이터의 총 길이
@@ -133,7 +171,6 @@ const Customer = () => {
         <PageWrapper>
           <TableWrapper>
             <Table celled>
-              {/* {console.log(plan)} */}
               {exelUser &&
                 exelUser.map((p, i) => {
                   const HeaderData = Object.values(p);
@@ -199,51 +236,62 @@ const Customer = () => {
         </PageWrapper>
       ) : (
         <PageWrapper>
-          <BtnWrapper>
-            {/* <Button color="red" content="삭제" icon="delete" onClick={onActive} /> */}
-          </BtnWrapper>
-
-          <div>
-            <CRUDBundle
-              handleBundleClick={handleBundleClick}
-              showRegister={showRegister}
-              sendFinal={() => {
-                sendFinal(customerData, sendFinalMutate, checkboxStatus);
-              }}
-            />
-
-            {showRegister && (
-              <Register
-                registerStatus={registerStatus}
-                submitMutate={submitMutate}
-                editMutate={editMutate}
-                handleClose={handleClose}
-                data={dataToEdit}
-                fieldsToOpen={CustomerFieldsToOpen}
-                fieldsData={CustomerFieldsData}
+          {customerData && (
+            <div>
+              <CRUDBundle
+                handleBundleClick={handleBundleClick}
+                showRegister={showRegister}
+                sendFinal={() => {
+                  sendFinal(
+                    customerData,
+                    sendFinalMutate,
+                    checkboxStatus,
+                    tableDeleteList,
+                    deleteFinalMutate,
+                  );
+                }}
+                sendDelete={handleDelete}
+                checkboxStatus={checkboxStatus}
               />
-            )}
-          </div>
+
+              {showRegister && (
+                <Register
+                  registerStatus={registerStatus}
+                  submitMutate={submitMutate}
+                  editMutate={editMutate}
+                  handleClose={handleClose}
+                  data={dataToEdit}
+                  fieldsToOpen={CustomerFieldsToOpen}
+                  fieldsData={CustomerFieldsDataForRegister}
+                />
+              )}
+            </div>
+          )}
 
           {/* <div>
             <Pagination
-              pageList={pageList}
+              pageList={totalPageArray}
+              lastPage={totalPageByLimit}
+              selectOptionArray={[1, 2, 4, 10]}
               page={page}
               setPage={setPage}
               limit={limit}
               setLimit={setLimit}
-              lastPage={lastPage}
-              selectOptionArray={[1, 2, 4, 10]}
             />
           </div> */}
 
           <TableWrapper>
-            {!!customerData && customerData.length !== 0 && (
-              <CustomTable
+            {customerData && customerData.length > 0 && (
+              <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
                 dataInput={customerData}
                 // isMemo={true}
                 // handleChange={}
+
+                ellipsisList={[
+                  {key: 'password', length: '5rem'},
+                  {key: 'email', length: '22rem'},
+                ]}
               />
             )}
           </TableWrapper>
