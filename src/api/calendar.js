@@ -33,6 +33,7 @@ export const calendarApis = {
         groupIds: groupId.join(','),
       },
     }),
+  getFilterList: async () => await instance.get(`dailyFoods/groupsAndMakers`),
   getRecommnadDailyFood: async (
     startDate,
     endDate,

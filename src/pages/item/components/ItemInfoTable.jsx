@@ -87,7 +87,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
         </Table.Header>
 
         <Table.Body>
-          {data?.data?.map((el, idx) => {
+          {data?.map((el, idx) => {
             const defaultValue = statusValue.filter(
               v => v.label === el.foodStatus,
             );

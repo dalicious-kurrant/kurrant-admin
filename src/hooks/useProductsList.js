@@ -1,9 +1,9 @@
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {productApis} from '../api/product';
 
-export function useGetAllProductsList() {
+export function useGetAllProductsList(limit, page) {
   return useQuery('allList', () => {
-    return productApis.allProductsList();
+    return productApis.allProductsList(limit, page);
   });
 }
 

@@ -20,7 +20,7 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                 if (food.presetFoodId === d.presetFoodId) {
                   return {
                     ...food,
-                    foodStatus: b,
+                    dailyFoodStatus: b,
                   };
                 }
                 return food;
@@ -147,8 +147,8 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                               selection
                               defaultValue={
                                 foodCompleteStatusData.filter(
-                                  v => v.value === d.foodStatus,
-                                )[0].value
+                                  v => v.value === d.dailyFoodStatus,
+                                )[0]?.value
                               }
                               options={foodCompleteStatusData}
                               onChange={(e, data) => {

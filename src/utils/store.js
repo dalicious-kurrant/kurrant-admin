@@ -19,6 +19,9 @@ export const exelProductAtom = atomWithReset();
 export const shopInfoDetailIdAtom = atomWithReset('');
 export const productDataAtom = atomWithReset();
 
+export const corporationAtom = atomWithReset();
+export const exelCorporationAtom = atomWithReset();
+
 //order
 
 const day = new Date();
@@ -31,3 +34,10 @@ export const makersOptionAtom = atomWithReset('');
 export const spotOptionAtom = atomWithReset('');
 export const diningTypeOptionAtom = atomWithReset('');
 export const statusOptionAtom = atomWithReset([]);
+
+// 기업정보
+export const corpNameOptionAtom = atomWithReset('');
+
+// 메이커스 정보
+export const makersInfoAtom = atomWithReset();
+export const makersExelInfoAtom = atomWithReset();
