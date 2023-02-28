@@ -59,26 +59,50 @@ export const sendFinal = (
       return;
     }
 
+    // yo['userId'] = parseInt(value.id);
+    // yo['password'] = handleFalsyValueToBlank(value.password);
+    // yo['name'] = handleFalsyValueToBlank(value.userName);
+    // yo['email'] = handleFalsyValueToBlank(value.email);
+    // yo['phone'] = handleFalsyValueToBlank(value.phone);
+    // yo['role'] = roleValue;
+    // yo['status'] = 1;
+    // yo['groupName'] = value.groupName;
+    // yo['point'] = value.point;
+    // yo['gourmetType'] = value.gourmetType;
+    // yo['isMembership'] = value.isMembership;
+    // yo['marketingAgree'] = true;
+    // yo['marketingAgreedDateTime'] = '2023-02-28 10:28:30';
+    // yo['marketingAlarm'] = true;
+    // yo['userOrderAlarm'] = true;
+    // yo['recentLoginDateTime'] = value.recentLoginDateTime;
+    // yo['userCreatedDateTime'] = value.userCreatedDateTime;
+
+    /////
+
     yo['userId'] = parseInt(value.id);
     yo['password'] = handleFalsyValueToBlank(value.password);
     yo['name'] = handleFalsyValueToBlank(value.userName);
     yo['email'] = handleFalsyValueToBlank(value.email);
-    yo['phone'] = handleFalsyValueToBlank(value.phone);
-    yo['role'] = roleValue;
-    yo['status'] = 1;
-    yo['groupName'] = value.groupName;
-    yo['point'] = value.point;
-    yo['gourmetType'] = value.gourmetType;
-    yo['isMembership'] = value.isMembership;
+    yo['phone'] = handleFalsyValueToBlank(value.phone)
+      ? handleFalsyValueToBlank(value.phone)
+      : '010-1111-1111';
+    yo['role'] = roleValue ? roleValue : '일반';
+    yo['status'] = 0;
+    yo['groupName'] = '달리셔스';
+    yo['point'] = 1;
+    yo['gourmetType'] = 0;
+    yo['isMembership'] = true;
     yo['marketingAgree'] = true;
     yo['marketingAgreedDateTime'] = '2023-02-28 10:28:30';
     yo['marketingAlarm'] = true;
     yo['userOrderAlarm'] = true;
-    yo['recentLoginDateTime'] = value.recentLoginDateTime;
-    yo['userCreatedDateTime'] = value.userCreatedDateTime;
+    yo['recentLoginDateTime'] = '2023-02-28 10:28:30';
+    yo['userCreatedDateTime'] = '2023-02-28 10:28:30';
 
     return yo;
   });
+
+  console.log(newData);
 
   const newData2 = {
     userList: newData,
