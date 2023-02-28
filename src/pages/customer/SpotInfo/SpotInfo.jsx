@@ -322,6 +322,7 @@ const SpotInfo = () => {
               <TableCustom
                 fieldsInput={SpotInfoFieldsToOpen}
                 dataInput={spotInfoData}
+
                 // isMemo={true}
                 // handleChange={}
               />

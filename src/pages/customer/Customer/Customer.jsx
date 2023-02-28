@@ -1,11 +1,11 @@
 import useMutate from 'common/CRUD/useMutate';
-import {TableCheckboxStatusAtom} from 'common/Table/store';
+import {TableCheckboxStatusAtom, TableDeleteListAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
-import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
+// import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 import {
   BtnWrapper,
   PageWrapper,
@@ -30,6 +30,10 @@ import usePagination from 'common/test/Pagination/usePagination';
 import PaginationTest from './PaginationTest';
 import Pagination from 'common/test/Pagination/Pagination';
 import useCustomerData from './useCustomerData';
+import {
+  CustomerFieldsDataForRegister,
+  CustomerFieldsToOpen,
+} from './CustomerInfoData';
 
 const Customer = () => {
   const [customerData, setCustomerData] = useAtom(CustomerDataAtom);
@@ -40,6 +44,8 @@ const Customer = () => {
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const queryClient = useQueryClient();
+
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
@@ -116,7 +122,7 @@ const Customer = () => {
   const handleDelete = () => {
     const status = {...checkboxStatus};
 
-    let deleteList = [];
+    let deleteList = [...tableDeleteList];
 
     Object.entries(status).forEach(v => {
       if (v[1] === true) {
@@ -124,16 +130,21 @@ const Customer = () => {
       }
     });
 
+    deleteList = [...new Set(deleteList)];
+
     let yo = [];
     const customerDataToDelete = [...customerData];
 
     customerDataToDelete.forEach(v => {
       if (deleteList.includes(v.id.toString())) {
+        v['isOnDeleteList'] = true;
+        yo.push(v);
       } else {
         yo.push(v);
       }
     });
 
+    setTableDeleteList(deleteList);
     setCustomerData(yo);
   };
 
@@ -231,7 +242,13 @@ const Customer = () => {
                 handleBundleClick={handleBundleClick}
                 showRegister={showRegister}
                 sendFinal={() => {
-                  sendFinal(customerData, sendFinalMutate, checkboxStatus);
+                  sendFinal(
+                    customerData,
+                    sendFinalMutate,
+                    checkboxStatus,
+                    tableDeleteList,
+                    deleteFinalMutate,
+                  );
                 }}
                 sendDelete={handleDelete}
                 checkboxStatus={checkboxStatus}
@@ -245,7 +262,7 @@ const Customer = () => {
                   handleClose={handleClose}
                   data={dataToEdit}
                   fieldsToOpen={CustomerFieldsToOpen}
-                  fieldsData={CustomerFieldsData}
+                  fieldsData={CustomerFieldsDataForRegister}
                 />
               )}
             </div>
@@ -270,6 +287,11 @@ const Customer = () => {
                 dataInput={customerData}
                 // isMemo={true}
                 // handleChange={}
+
+                ellipsisList={[
+                  {key: 'password', length: '5rem'},
+                  {key: 'email', length: '22rem'},
+                ]}
               />
             )}
           </TableWrapper>

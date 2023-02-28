@@ -7,24 +7,34 @@ import {useState} from 'react';
 import Theme from 'style/Theme';
 import styled from 'styled-components';
 
-import {
-  handleFalsyValueToHyphen,
-  handleFalsyValueToString,
-} from 'utils/valueHandlingLogics';
 import MemoInput from './MemoInput/MemoInput';
-import {TableCheckboxStatusAtom} from './store';
+import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
-import {Button, Table} from 'semantic-ui-react';
-import {makeId} from './Logics';
+import {Button, Label, Table, Dropdown, DropBox} from 'semantic-ui-react';
+import {handleFalsyValueToHyphen} from 'utils/valueHandlingLogics';
 
 // import putId from './'
 
-const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+const options = [
+  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
+  {key: '커런트', text: '커런트', value: '커런트'},
+];
+
+const TableCustom = ({
+  fieldsInput,
+  dataInput,
+  useFilterList,
+  isMemo = false,
+  handleChange,
+  ellipsisList,
+}) => {
   // 데이터에 'id'필드가 없을시 생성해 줌
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
 
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
+
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   useEffect(() => {
     setKeyOfTableFieldsInput(Object.keys(fieldsInput));
@@ -65,6 +75,23 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
     }
   };
 
+  const onDeleteCancelClick = e => {
+    // const deleteTargetId = e.target.id.toString();
+    // const yes = [...tableDeleteList];
+    // let array1 = [];
+    // yes.forEach(v => {
+    //   if (v.toString() == deleteTargetId) {
+    //   } else {
+    //     array1.push(v);
+    //   }
+    // });
+    // array1
+  };
+
+  useEffect(() => {
+    console.log(dataInput);
+  }, [dataInput]);
+
   return (
     <>
       <Table celled>
@@ -82,11 +109,13 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
             </CheckBoxTh>
 
             {keyOfTableFieldsInput &&
-              keyOfTableFieldsInput?.map((val, index) => (
-                <Table.HeaderCell align="left" key={index}>
-                  {fieldsInput[val]}
-                </Table.HeaderCell>
-              ))}
+              keyOfTableFieldsInput?.map((val, index) => {
+                return (
+                  <Table.HeaderCell align="left" key={index}>
+                    {fieldsInput[val]}
+                  </Table.HeaderCell>
+                );
+              })}
 
             {!!isMemo && (
               <Table.HeaderCell className="memo">Memo</Table.HeaderCell>
@@ -103,52 +132,125 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
 
               keyOfTableFieldsInput?.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
-                  yo.push(value1[value2]);
+                  yo.push({[value2]: value1[value2]});
                 }
               });
 
-              return (
-                <Table.Row key={index1}>
-                  <CheckBoxTd align="center">
-                    <TableCheckbox
-                      width="2rem"
-                      height="2rem"
-                      css="margin:auto;"
-                      checkboxStatus={checkboxStatus}
-                      value={value1.id}
-                      onChecked={onCheckCheckbox}
-                    />
-                  </CheckBoxTd>
+              // 삭제 리스트 따로 처리하기
 
-                  {yo?.map((value3, index3) => {
-                    return (
-                      // <Table.Cell
-                      //   align="left"
-                      //   key={index3}
+              if (value1.isOnDeleteList) {
+                return (
+                  <DeleteListTableRow key={index1}>
+                    <CheckBoxTd align="center">
+                      <TableCheckbox
+                        width="2rem"
+                        height="2rem"
+                        css="margin:auto;"
+                        checkboxStatus={checkboxStatus}
+                        value={value1.id}
+                        onChecked={onCheckCheckbox}
+                        disabled={true}
+                      />
+                    </CheckBoxTd>
 
-                      //  >
-                      //   {handleFalsyValueToHyphen(value3)}
-                      // </Table.Cell>
-                      <MyCell align="left" key={index3}>
-                        {handleFalsyValueToHyphen(value3)}
-                      </MyCell>
-                    );
-                  })}
+                    {yo?.map((value3, index3) => {
+                      let ellipsisOn = undefined;
 
-                  {!!isMemo && (
-                    <Table.Cell className="memo">
-                      <MemoInput input={value1} handleChange={handleChange} />
-                    </Table.Cell>
-                  )}
-                </Table.Row>
-              );
+                      ellipsisList &&
+                        ellipsisList.forEach(val => {
+                          if (val.key === Object.keys(value3)[0]) {
+                            ellipsisOn = val;
+                          }
+                        });
+
+                      if (ellipsisOn) {
+                        return (
+                          <Table.Cell key={index3}>
+                            <EllipsisCell
+                              length={ellipsisOn.length}
+                              align="left">
+                              {handleFalsyValueToHyphen(
+                                Object.values(value3)[0],
+                              )}
+                            </EllipsisCell>
+                          </Table.Cell>
+                        );
+                      } else {
+                        return (
+                          <MyCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                          </MyCell>
+                        );
+                      }
+                    })}
+
+                    {!!isMemo && (
+                      <Table.Cell className="memo">
+                        <MemoInput input={value1} handleChange={handleChange} />
+                      </Table.Cell>
+                    )}
+                  </DeleteListTableRow>
+                );
+              } else {
+                return (
+                  <Table.Row key={index1}>
+                    <CheckBoxTd align="center">
+                      <TableCheckbox
+                        width="2rem"
+                        height="2rem"
+                        css="margin:auto;"
+                        checkboxStatus={checkboxStatus}
+                        value={value1.id}
+                        onChecked={onCheckCheckbox}
+                      />
+                    </CheckBoxTd>
+
+                    {yo?.map((value3, index3) => {
+                      let ellipsisOn = undefined;
+
+                      ellipsisList &&
+                        ellipsisList.forEach(val => {
+                          if (val.key === Object.keys(value3)[0]) {
+                            ellipsisOn = val;
+                          }
+                        });
+
+                      if (ellipsisOn) {
+                        return (
+                          <Table.Cell key={index3}>
+                            <EllipsisCell
+                              length={ellipsisOn.length}
+                              align="left">
+                              {handleFalsyValueToHyphen(
+                                Object.values(value3)[0],
+                              )}
+                            </EllipsisCell>
+                          </Table.Cell>
+                        );
+                      } else {
+                        return (
+                          <MyCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                          </MyCell>
+                        );
+                      }
+                    })}
+
+                    {!!isMemo && (
+                      <Table.Cell className="memo">
+                        <MemoInput input={value1} handleChange={handleChange} />
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                );
+              }
             })}
         </Table.Body>
       </Table>
     </>
   );
 };
-export default TableYo;
+export default TableCustom;
 
 const CheckBoxTh = styled.th`
   width: 4rem;
@@ -161,5 +263,17 @@ const MyCell = styled(Table.Cell)`
   text-overflow: ellipsis;
   overflow: hidden;
   width: 1rem;
+  white-space: nowrap;
+`;
+
+const DeleteListTableRow = styled(Table.Row)`
+  color: red;
+  text-decoration: line-through;
+`;
+
+const EllipsisCell = styled.div`
+  width: ${({length}) => length};
+  text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
 `;

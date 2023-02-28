@@ -18,6 +18,11 @@ import {
 } from 'utils/store';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
+import {
+  dataHasNoIdAtom,
+  TableCheckboxStatusAtom,
+  TableDeleteListAtom,
+} from 'common/Table/store';
 
 const Header = () => {
   const navi = useNavigate();
@@ -29,6 +34,13 @@ const Header = () => {
   const resetAtom5 = useResetAtom(productDataAtom);
   const resetAtom6 = useResetAtom(CustomerDataAtom);
   const resetAtom7 = useResetAtom(SpotInfoDataAtom);
+
+  const resetAtom8 = useResetAtom(TableCheckboxStatusAtom);
+  const resetAtom9 = useResetAtom(TableDeleteListAtom);
+  const resetAtom10 = useResetAtom(dataHasNoIdAtom);
+  const resetAtom11 = useResetAtom(CustomerDataAtom);
+  const resetAtom12 = useResetAtom(SpotInfoDataAtom);
+
   const logOutButton = () => {
     localStorage.removeItem('token');
     window.location.replace('/');
@@ -42,6 +54,11 @@ const Header = () => {
     resetAtom5();
     resetAtom6();
     resetAtom7();
+    resetAtom8();
+    resetAtom9();
+    resetAtom10();
+    resetAtom11();
+    resetAtom12();
   };
   return (
     <H.Wrapper>

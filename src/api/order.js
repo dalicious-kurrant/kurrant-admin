@@ -13,4 +13,6 @@ export const orderApis = {
   orderCancel: async data =>
     await instance.post('orders/orderItems/cancel', data),
   allUserList: async () => await instance.get('orders/groupInfo'),
+  editOrderStatus: async data =>
+    await instance.post('orders/orderItems/status', data),
 };

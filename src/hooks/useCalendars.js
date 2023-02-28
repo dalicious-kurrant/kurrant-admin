@@ -14,9 +14,33 @@ export function useCompleteCalendar() {
   });
 }
 
+export function useGetCompleteCalendar(
+  startDate,
+  endDate,
+  size,
+  page,
+  makersId,
+  groupId,
+) {
+  return useQuery('calendarCompleteList', () => {
+    return calendarApis.getCompleteDailyFood(
+      startDate,
+      endDate,
+      size,
+      page,
+      makersId,
+      groupId,
+    );
+  });
+}
 export function useGetCalendar(size, page, makersId, groupId, status) {
   return useQuery('calendarList', () => {
     return calendarApis.getDailyFood(size, page, makersId, groupId, status);
+  });
+}
+export function useGetFilter() {
+  return useQuery('filterList', () => {
+    return calendarApis.getFilterList();
   });
 }
 export function useGetRecommandCalendar(
@@ -45,6 +69,7 @@ export function useGetRecommandCalendar(
     },
     {
       enabled: isClick,
+      retry: false,
       onSuccess: () => {
         setIsClick(false);
       },

@@ -33,3 +33,19 @@ export const removeIdToSend = dataInput => {
     return v;
   });
 };
+
+export const isInCheckFilterList = (filterList, fieldName) => {
+  // console.log(filterList);
+  // console.log(fieldName);
+
+  const yo = [...filterList];
+  let jojo = false;
+  yo.forEach(v => {
+    if (v.fieldName === fieldName) {
+      console.log(fieldName);
+      jojo = true;
+    }
+  });
+
+  return jojo;
+};

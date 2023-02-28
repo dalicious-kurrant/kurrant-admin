@@ -1,5 +1,5 @@
 import useModal from '../../hooks/useModal';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Button, Dropdown, Label, Pagination, Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 import {
@@ -52,6 +52,7 @@ const Plans = () => {
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [exelStatic, setStaticPlan] = useAtom(exelStaticAtom);
   const [plan, setPlan] = useAtom(planAtom);
+  const pageRef = useRef(null);
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
@@ -94,6 +95,7 @@ const Plans = () => {
     setExelPlan();
     setStaticPlan();
     setPlan();
+    setTotalPage();
     setReCommandPlan(calendarRecommandData?.data.items?.presetScheduleList);
   };
   const onCreate = async () => {
@@ -185,7 +187,8 @@ const Plans = () => {
   useEffect(() => {
     if (!exelPlan && !reCommandPlan) {
       if (isSuccess) {
-        setTotalPage(calendarData?.data?.totalPage);
+        console.log(calendarData?.data);
+        setTotalPage(calendarData?.data?.total);
         setPlan(calendarData?.data?.items?.presetScheduleList);
         setOption(
           calendarData?.data?.items?.makersInfoList.map(v => {
@@ -344,6 +347,9 @@ const Plans = () => {
               options={options}
               value={selectMakers}
               onChange={(e, data) => {
+                if (pageRef.current !== null)
+                  pageRef.current.state.activePage = 1;
+                setPage(1);
                 setSelectMakers(data.value);
               }}
             />
@@ -359,6 +365,9 @@ const Plans = () => {
               options={optionsClient}
               value={selectClient}
               onChange={(e, data) => {
+                if (pageRef.current !== null)
+                  pageRef.current.state.activePage = 1;
+                setPage(1);
                 setSelectClient(data.value);
               }}
             />
@@ -374,6 +383,9 @@ const Plans = () => {
               options={optionsDiningStatus}
               value={selectDiningStatus}
               onChange={(e, data) => {
+                if (pageRef.current !== null)
+                  pageRef.current.state.activePage = 1;
+                setPage(1);
                 setSelectDiningStatus(data.value);
               }}
             />
@@ -385,6 +397,7 @@ const Plans = () => {
               defaultActivePage={page}
               totalPages={totalPage}
               boundaryRange={1}
+              ref={pageRef}
               onPageChange={(e, data) => {
                 setPage(data.activePage);
               }}
