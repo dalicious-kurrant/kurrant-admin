@@ -91,7 +91,7 @@ export const MenuList = [
         component: <Plans />,
       },
       {
-        name: '메이커스 일정',
+        name: '식단 현황',
         url: '/completeplans',
         component: <CompletePlans />,
       },

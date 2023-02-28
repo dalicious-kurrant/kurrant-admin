@@ -38,6 +38,11 @@ export function useGetCalendar(size, page, makersId, groupId, status) {
     return calendarApis.getDailyFood(size, page, makersId, groupId, status);
   });
 }
+export function useGetFilter() {
+  return useQuery('filterList', () => {
+    return calendarApis.getFilterList();
+  });
+}
 export function useGetRecommandCalendar(
   startDate,
   endDate,

@@ -11,7 +11,7 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
-import {useGetCompleteCalendar} from 'hooks/useCalendars';
+import {useGetCompleteCalendar, useGetFilter} from 'hooks/useCalendars';
 import CustomPlanTable from './components/CustomPlanTable';
 
 // 메이커스 정보 페이지
@@ -25,15 +25,8 @@ const CompletePlans = () => {
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
 
-  const [options, setOption] = useState([
-    {value: 1, text: '라무진', key: '라무진'},
-    {value: 2, text: '마라하오', key: '마라하오'},
-  ]);
-  const [optionsClient, setOptionsClient] = useState([
-    {value: 1, text: '1번', key: '1번'},
-    {value: 2, text: '2번', key: '2번'},
-    {value: 3, text: '3번', key: '3번'},
-  ]);
+  const [options, setOption] = useState([]);
+  const [optionsClient, setOptionsClient] = useState([]);
   const [accessStartDate, setAccessStartDate] = useState(new Date());
   const [accessEndDate, setAccessEndDate] = useState(new Date());
   const {
@@ -48,11 +41,22 @@ const CompletePlans = () => {
     selectMakers,
     selectClient,
   );
+  const {data: filterList} = useGetFilter();
   useEffect(() => {
     if (!exelPlan) {
       if (isSuccess) {
         console.log(calendarData?.data);
         setPlan(calendarData?.data);
+        setOption(
+          filterList?.data?.makers?.map(v => {
+            return {key: v.makersName, text: v.makersName, value: v.makersId};
+          }),
+        );
+        setOptionsClient(
+          filterList?.data?.groups?.map(v => {
+            return {key: v.groupName, text: v.groupName, value: v.groupId};
+          }),
+        );
       }
     } else {
       setPlan();
