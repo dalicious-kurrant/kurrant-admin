@@ -148,7 +148,7 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                               defaultValue={
                                 foodCompleteStatusData.filter(
                                   v => v.value === d.foodStatus,
-                                )[0].value
+                                )[0]?.value
                               }
                               options={foodCompleteStatusData}
                               onChange={(e, data) => {
