@@ -125,7 +125,7 @@ const CorpTable = ({
                   <Table.Cell>{el.address2}</Table.Cell>
                   <Table.Cell>{el.location}</Table.Cell>
                   <Table.Cell>{diningType}</Table.Cell>
-                  <Table.Cell>{el.serviceDays.split('').join(',')}</Table.Cell>
+                  <Table.Cell>{el.serviceDays}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
                   <Table.Cell>{el.managerPhone}</Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
