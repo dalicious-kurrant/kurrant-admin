@@ -79,7 +79,7 @@ export function completePlanExel(plan) {
     'makersCount',
     'makersPickupTime',
     'foodName',
-    'foodStatus',
+    'dailyFoodStatus',
     'foodCapacity',
     'foodCount',
     'dailyfoodId',
@@ -114,9 +114,10 @@ export function completePlanExel(plan) {
         reqArray.push(client.makersCount);
         reqArray.push(client.makersPickupTime);
         reqArray.push(food.foodName);
-        reqArray.push(food.foodStatus);
+        reqArray.push(food.dailyFoodStatus);
         reqArray.push(food.foodCapacity);
         reqArray.push(food.foodCount);
+        reqArray.push(food.dailyfoodId);
         reqArrays.push(reqArray);
         return reqArrays;
       });
