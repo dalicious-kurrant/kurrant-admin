@@ -11,6 +11,7 @@ import {formattedWeekDate} from '../../../utils/dateFormatter';
 import {
   useAllUserList,
   useCancelOrder,
+  useEditOrderStatus,
   useGetGroupList,
   useGetMakersList,
   useGetOrderList,
@@ -48,6 +49,7 @@ const Order = () => {
   const [makersOption, setMakersOption] = useState('');
   const [spotOption, setSpotOption] = useState('');
   const [diningTypeOption, setDiningTypeOption] = useState('');
+  const [orderStatus, setOrderStatus] = useState('');
   const [spotList, setSpotList] = useState([]);
   const [userList, setUserList] = useState([]);
   const [diningType, setDiningType] = useState([]);
@@ -63,7 +65,7 @@ const Order = () => {
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
-
+  const {mutateAsync: statusChange} = useEditOrderStatus();
   const groupInfoList = async id => {
     const res = await orderApis.groupInfoList(id);
     setUserList(res.data.users);
@@ -116,6 +118,14 @@ const Order = () => {
       label: el.makersName,
     };
   });
+
+  const orderStatusArr = [
+    {value: 5, label: '결제완료'},
+    {value: 6, label: '배송대기'},
+    {value: 9, label: '배송중'},
+    {value: 10, label: '배송완료'},
+    {value: 11, label: '수령완료'},
+  ];
 
   const group = groupOption && `&group=${groupOption}`;
   const user = userOption && `&userId=${userOption}`;
@@ -214,6 +224,15 @@ const Order = () => {
     queryClient.invalidateQueries('orderList');
   };
 
+  const orderStatusChange = async e => {
+    const data = {
+      status: e.value,
+      idList: checkItems,
+    };
+    // console.log(data, '86');
+    await statusChange(data);
+  };
+
   useEffect(() => {
     refetch();
   }, [group, spots, makers, diningTypecode, startDate, endDate, user, refetch]);
@@ -297,21 +316,31 @@ const Order = () => {
           />
         </div>
         <div>
-          <span>메이커스 선택</span>
-          <SelectBox
-            ref={makersRef}
-            options={makersArr}
-            placeholder="메이커스 선택"
-            defaultValue={defaultMakers}
-            onChange={e => {
-              if (e) {
-                setMakersOption(e.value);
-                setDefaultMakers(e);
-              } else {
-                setMakersOption('');
-              }
-            }}
-          />
+          <div>
+            <span>메이커스 선택</span>
+            <SelectBox
+              ref={makersRef}
+              options={makersArr}
+              placeholder="메이커스 선택"
+              defaultValue={defaultMakers}
+              onChange={e => {
+                if (e) {
+                  setMakersOption(e.value);
+                  setDefaultMakers(e);
+                } else {
+                  setMakersOption('');
+                }
+              }}
+            />
+          </div>
+          <OrderStatus>
+            <span>주문상태 변경</span>
+            <SelectBox
+              options={orderStatusArr}
+              placeholder="주문상태 변경"
+              onChange={e => orderStatusChange(e)}
+            />
+          </OrderStatus>
         </div>
         <div>
           <span>식사타입</span>
@@ -452,7 +481,7 @@ const SelectBoxWrap = styled.div`
 
 const SelectBoxWrapper = styled.div`
   display: flex;
-  margin: 24px 0px 50px 0px;
+  margin: 24px 0px 24px 0px;
   width: 80%;
   justify-content: space-between;
 `;
@@ -487,4 +516,8 @@ const DateSpan = styled.span`
 
 const OrderCancel = styled.span`
   color: ${({theme}) => theme.colors.red[500]};
+`;
+
+const OrderStatus = styled.div`
+  margin-top: 12px;
 `;

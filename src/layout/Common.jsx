@@ -22,7 +22,6 @@ import {
   exelCorporationAtom,
   completePlanAtom,
   exelCompletePlanAtom,
-
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -51,6 +50,7 @@ import {
 import {usePostPresetCalendar} from 'hooks/useCalendars';
 import {useSaveUserData} from 'hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
+import {useSaveExelCorporation} from 'hooks/useCorporation';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -121,6 +121,7 @@ const Common = () => {
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [statusOption] = useAtom(statusOptionAtom);
   const {mutateAsync: editStatus} = useEditProductStatus();
+  const {mutateAsync: corporationExel} = useSaveExelCorporation();
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -234,27 +235,26 @@ const Common = () => {
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
-            location: item.location,
+            location:
+              (item.location === undefined || item.location === 'null') && null,
             diningTypes: item.diningTypes,
-            serviceDate: item.serviceDate,
+            serviceDays: item.serviceDays,
             managerName: item.managerName,
             managerPhone: item.managerPhone,
-            isMemvershipSupport: item.isMemvershipSupport,
+            isMembershipSupport: item.isMembershipSupport,
             employeeCount: item.employeeCount,
             isSetting: item.isSetting,
             isGarbage: item.isGarbage,
             isHotStorage: item.isHotStorage,
-            createdDateTime: item.createdDateTime,
-            updatedDateTime: item.updatedDateTime,
           };
 
           reqArray.push(result);
         }
       });
-
-      //await productPost(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      console.log(reqArray, '00');
+      await corporationExel(reqArray);
+      // alert('저장 되었습니다.');
+      // return window.location.reload();
     }
 
     await postPresetCalendar({

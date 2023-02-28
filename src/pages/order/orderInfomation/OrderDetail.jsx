@@ -85,7 +85,13 @@ const OrderDetail = () => {
                       {withCommas(v.discountedPrice) || 0}원
                     </Table.Cell>
                     <Table.Cell textAlign="center">{v.count}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.orderStatus}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {v.orderStatus === '취소' ? (
+                        <OrderCancel>{v.orderStatus}</OrderCancel>
+                      ) : (
+                        v.orderStatus
+                      )}
+                    </Table.Cell>
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
@@ -149,4 +155,8 @@ const TableRow = styled(Table.Row)`
 
 const TableDetail = styled(Table)`
   margin-top: 50px;
+`;
+
+const OrderCancel = styled.span`
+  color: ${({theme}) => theme.colors.red[500]};
 `;
