@@ -1,4 +1,4 @@
-import {useGetMakersInfomation} from 'hooks/useMakers';
+import {useGetMakersInfomation} from '../../../hooks/useMakers';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 

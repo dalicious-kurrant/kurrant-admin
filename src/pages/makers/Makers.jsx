@@ -1,4 +1,4 @@
-import {useGetMakersInfomation} from 'hooks/useMakers';
+import {useGetMakersInfomation} from '../../hooks/useMakers';
 import {useAtom} from 'jotai';
 import React, {useEffect} from 'react';
 import {Table} from 'semantic-ui-react';
