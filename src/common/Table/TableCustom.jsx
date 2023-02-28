@@ -88,9 +88,9 @@ const TableCustom = ({
     // array1
   };
 
-  useEffect(() => {
-    console.log(dataInput);
-  }, [dataInput]);
+  // useEffect(() => {
+  //   console.log(dataInput);
+  // }, [dataInput]);
 
   return (
     <>
