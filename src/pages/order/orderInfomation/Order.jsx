@@ -11,6 +11,7 @@ import {formattedWeekDate} from '../../../utils/dateFormatter';
 import {
   useAllUserList,
   useCancelOrder,
+  useEditOrderStatus,
   useGetGroupList,
   useGetMakersList,
   useGetOrderList,
@@ -21,7 +22,14 @@ import {useNavigate} from 'react-router-dom';
 import {useQueryClient} from 'react-query';
 import Modal from '../../../components/alertModal/AlertModal';
 import {useAtom} from 'jotai';
-import {endDateAtom, groupOptionAtom, startDateAtom} from 'utils/store';
+import {
+  diningTypeOptionAtom,
+  endDateAtom,
+  groupOptionAtom,
+  makersOptionAtom,
+  startDateAtom,
+  userOptionAtom,
+} from 'utils/store';
 
 // 상품 정보 페이지
 const Order = () => {
@@ -36,22 +44,28 @@ const Order = () => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useAtom(startDateAtom);
   const [endDate, setEndDate] = useAtom(endDateAtom);
-  const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
+  const [groupOption, setGroupOption] = useState('');
   const [userOption, setUserOption] = useState('');
   const [makersOption, setMakersOption] = useState('');
   const [spotOption, setSpotOption] = useState('');
   const [diningTypeOption, setDiningTypeOption] = useState('');
+  const [orderStatus, setOrderStatus] = useState('');
   const [spotList, setSpotList] = useState([]);
   const [userList, setUserList] = useState([]);
   const [diningType, setDiningType] = useState([]);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  console.log(groupOption, '07');
+  const [defaultGroup, setDefaultGroup] = useAtom(groupOptionAtom);
+  const [defaultUser, setDefaultUser] = useAtom(userOptionAtom);
+  const [defaultMakers, setDefaultMakers] = useAtom(makersOptionAtom);
+  const [defaultSpot, setDefaultSpot] = useAtom(makersOptionAtom);
+  const [defaultDining, setDefaultDining] = useAtom(diningTypeOptionAtom);
+
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
-
+  const {mutateAsync: statusChange} = useEditOrderStatus();
   const groupInfoList = async id => {
     const res = await orderApis.groupInfoList(id);
     setUserList(res.data.users);
@@ -65,7 +79,7 @@ const Order = () => {
       label: el.groupName,
     };
   });
-  console.log(groupArr);
+
   const allUserArr = allUserList?.data?.users?.map(el => {
     return {
       value: el.userId,
@@ -104,6 +118,14 @@ const Order = () => {
       label: el.makersName,
     };
   });
+
+  const orderStatusArr = [
+    {value: 5, label: '결제완료'},
+    {value: 6, label: '배송대기'},
+    {value: 9, label: '배송중'},
+    {value: 10, label: '배송완료'},
+    {value: 11, label: '수령완료'},
+  ];
 
   const group = groupOption && `&group=${groupOption}`;
   const user = userOption && `&userId=${userOption}`;
@@ -202,12 +224,22 @@ const Order = () => {
     queryClient.invalidateQueries('orderList');
   };
 
+  const orderStatusChange = async e => {
+    const data = {
+      status: e.value,
+      idList: checkItems,
+    };
+    // console.log(data, '86');
+    await statusChange(data);
+  };
+
   useEffect(() => {
     refetch();
   }, [group, spots, makers, diningTypecode, startDate, endDate, user, refetch]);
 
   return (
     <PageWrapper>
+      <label>서비스일 날짜</label>
       <div>
         <DateInput
           type="date"
@@ -237,8 +269,10 @@ const Order = () => {
             ref={groupRef}
             options={groupArr}
             placeholder="고객사"
+            defaultValue={defaultGroup}
             onChange={e => {
               if (e) {
+                setDefaultGroup(e);
                 setGroupOption(e.value);
                 groupInfoList(e.value);
               } else {
@@ -253,9 +287,11 @@ const Order = () => {
             ref={userRef}
             options={userArr.length === 0 ? allUserArr : userArr}
             placeholder="유저"
+            defaultValue={defaultUser}
             onChange={e => {
               if (e) {
                 setUserOption(e.value);
+                setDefaultUser(e);
               } else {
                 setUserOption('');
               }
@@ -268,9 +304,11 @@ const Order = () => {
             ref={spotRef}
             options={spotArr}
             placeholder="스팟 선택"
+            defaultValue={defaultSpot}
             onChange={e => {
               if (e) {
                 setSpotOption(e.value);
+                setDefaultSpot(e);
               } else {
                 setSpotOption('');
               }
@@ -278,19 +316,31 @@ const Order = () => {
           />
         </div>
         <div>
-          <span>메이커스 선택</span>
-          <SelectBox
-            ref={makersRef}
-            options={makersArr}
-            placeholder="메이커스 선택"
-            onChange={e => {
-              if (e) {
-                setMakersOption(e.value);
-              } else {
-                setMakersOption('');
-              }
-            }}
-          />
+          <div>
+            <span>메이커스 선택</span>
+            <SelectBox
+              ref={makersRef}
+              options={makersArr}
+              placeholder="메이커스 선택"
+              defaultValue={defaultMakers}
+              onChange={e => {
+                if (e) {
+                  setMakersOption(e.value);
+                  setDefaultMakers(e);
+                } else {
+                  setMakersOption('');
+                }
+              }}
+            />
+          </div>
+          <OrderStatus>
+            <span>주문상태 변경</span>
+            <SelectBox
+              options={orderStatusArr}
+              placeholder="주문상태 변경"
+              onChange={e => orderStatusChange(e)}
+            />
+          </OrderStatus>
         </div>
         <div>
           <span>식사타입</span>
@@ -298,9 +348,11 @@ const Order = () => {
             ref={diningRef}
             options={diningTypeArr}
             placeholder="식사타입"
+            defaultValue={defaultDining}
             onChange={e => {
               if (e) {
                 setDiningTypeOption(e.value);
+                setDefaultDining(e);
               } else {
                 setDiningTypeOption('');
               }
@@ -429,7 +481,7 @@ const SelectBoxWrap = styled.div`
 
 const SelectBoxWrapper = styled.div`
   display: flex;
-  margin: 24px 0px 50px 0px;
+  margin: 24px 0px 24px 0px;
   width: 80%;
   justify-content: space-between;
 `;
@@ -444,6 +496,7 @@ const DateInput = styled.input`
   width: 200px;
   border-radius: 4px;
   border: 1px solid ${({theme}) => theme.colors.grey[5]};
+  margin-top: 4px;
 `;
 
 const TableRow = styled(Table.Row)`
@@ -463,4 +516,8 @@ const DateSpan = styled.span`
 
 const OrderCancel = styled.span`
   color: ${({theme}) => theme.colors.red[500]};
+`;
+
+const OrderStatus = styled.div`
+  margin-top: 12px;
 `;

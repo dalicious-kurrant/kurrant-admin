@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
-import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
+// import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 import {
   BtnWrapper,
   PageWrapper,
@@ -30,6 +30,10 @@ import usePagination from 'common/test/Pagination/usePagination';
 import PaginationTest from './PaginationTest';
 import Pagination from 'common/test/Pagination/Pagination';
 import useCustomerData from './useCustomerData';
+import {
+  CustomerFieldsDataForRegister,
+  CustomerFieldsToOpen,
+} from './CustomerInfoData';
 
 const Customer = () => {
   const [customerData, setCustomerData] = useAtom(CustomerDataAtom);
@@ -89,10 +93,6 @@ const Customer = () => {
     token,
   );
 
-  useEffect(() => {
-    console.log(customerData);
-  }, [customerData]);
-
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
       buttonStatus,
@@ -130,7 +130,7 @@ const Customer = () => {
       }
     });
 
-    // console.log(deleteList);
+    deleteList = [...new Set(deleteList)];
 
     let yo = [];
     const customerDataToDelete = [...customerData];
@@ -242,7 +242,13 @@ const Customer = () => {
                 handleBundleClick={handleBundleClick}
                 showRegister={showRegister}
                 sendFinal={() => {
-                  sendFinal(customerData, sendFinalMutate, checkboxStatus);
+                  sendFinal(
+                    customerData,
+                    sendFinalMutate,
+                    checkboxStatus,
+                    tableDeleteList,
+                    deleteFinalMutate,
+                  );
                 }}
                 sendDelete={handleDelete}
                 checkboxStatus={checkboxStatus}
@@ -256,7 +262,7 @@ const Customer = () => {
                   handleClose={handleClose}
                   data={dataToEdit}
                   fieldsToOpen={CustomerFieldsToOpen}
-                  fieldsData={CustomerFieldsData}
+                  fieldsData={CustomerFieldsDataForRegister}
                 />
               )}
             </div>
@@ -281,6 +287,11 @@ const Customer = () => {
                 dataInput={customerData}
                 // isMemo={true}
                 // handleChange={}
+
+                ellipsisList={[
+                  {key: 'password', length: '5rem'},
+                  {key: 'email', length: '22rem'},
+                ]}
               />
             )}
           </TableWrapper>

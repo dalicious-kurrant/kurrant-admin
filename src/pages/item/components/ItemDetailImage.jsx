@@ -94,6 +94,7 @@ const Wrapper = styled.div`
 const Wrap = styled.div`
   display: flex;
   margin-top: 10px;
+  flex-wrap: wrap;
 `;
 
 const ImgWrap = styled.div`
@@ -102,6 +103,7 @@ const ImgWrap = styled.div`
     height: 300px;
     object-fit: cover;
     margin-right: 10px;
+    margin-bottom: 10px;
   }
 `;
 

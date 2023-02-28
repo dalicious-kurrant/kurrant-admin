@@ -69,6 +69,7 @@ const ProductDetailPage = () => {
       lunchCapacity: lunchCapacity,
       dinnerCapacity: dinnerCapacity,
       images: dataList?.foodImages,
+      description: text,
     };
 
     const json = JSON.stringify(data);
@@ -157,7 +158,7 @@ const ProductDetailPage = () => {
           <FormProvider {...form}>
             <div>
               <PriceWrap>
-                <Input name="foodName" label="메뉴명" width="200px" readOnly />
+                <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="foodPrice" label="매장가" />
                 <Input name="discountRate" label="할인율" />
                 <Input name="discountPrice" label="할인가" readOnly />
@@ -215,14 +216,6 @@ const ProductDetailPage = () => {
           onChange={e => dscOnChange(e)}
           key={listData?.description}
         />
-        {/* <FormProvider {...form}>
-          <Input
-            name="description"
-            label="메뉴 설명"
-            width="500px"
-            height="80px"
-          />
-        </FormProvider> */}
         <ModifyButtonWrap>
           <ModifyButton onClick={modifyButton}>수정하기</ModifyButton>
         </ModifyButtonWrap>
@@ -276,12 +269,14 @@ const ModifyButton = styled.div`
 const ImageWrap = styled.div`
   display: flex;
   margin-top: 10px;
+  flex-wrap: wrap;
   img {
     width: 300px;
     height: 300px;
     object-fit: cover;
     position: relative;
     margin-right: 10px;
+    margin-bottom: 10px;
   }
 `;
 

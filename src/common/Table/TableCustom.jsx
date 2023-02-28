@@ -7,19 +7,27 @@ import {useState} from 'react';
 import Theme from 'style/Theme';
 import styled from 'styled-components';
 
-import {
-  handleFalsyValueToHyphen,
-  handleFalsyValueToString,
-} from 'utils/valueHandlingLogics';
 import MemoInput from './MemoInput/MemoInput';
 import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
 
-import {Button, Table} from 'semantic-ui-react';
-import {makeId} from './Logics';
+import {Button, Label, Table, Dropdown, DropBox} from 'semantic-ui-react';
+import {handleFalsyValueToHyphen} from 'utils/valueHandlingLogics';
 
 // import putId from './'
 
-const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
+const options = [
+  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
+  {key: '커런트', text: '커런트', value: '커런트'},
+];
+
+const TableCustom = ({
+  fieldsInput,
+  dataInput,
+  useFilterList,
+  isMemo = false,
+  handleChange,
+  ellipsisList,
+}) => {
   // 데이터에 'id'필드가 없을시 생성해 줌
 
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
@@ -80,6 +88,10 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
     // array1
   };
 
+  useEffect(() => {
+    console.log(dataInput);
+  }, [dataInput]);
+
   return (
     <>
       <Table celled>
@@ -95,16 +107,15 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                 onChecked={onCheckCheckbox}
               />
             </CheckBoxTh>
-            {/* {tableDeleteList.length > 0 && (
-              <Table.HeaderCell>삭제취소</Table.HeaderCell>
-            )} */}
 
             {keyOfTableFieldsInput &&
-              keyOfTableFieldsInput?.map((val, index) => (
-                <Table.HeaderCell align="left" key={index}>
-                  {fieldsInput[val]}
-                </Table.HeaderCell>
-              ))}
+              keyOfTableFieldsInput?.map((val, index) => {
+                return (
+                  <Table.HeaderCell align="left" key={index}>
+                    {fieldsInput[val]}
+                  </Table.HeaderCell>
+                );
+              })}
 
             {!!isMemo && (
               <Table.HeaderCell className="memo">Memo</Table.HeaderCell>
@@ -121,10 +132,9 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
 
               keyOfTableFieldsInput?.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
-                  yo.push(value1[value2]);
+                  yo.push({[value2]: value1[value2]});
                 }
               });
-
 
               // 삭제 리스트 따로 처리하기
 
@@ -139,23 +149,39 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                         checkboxStatus={checkboxStatus}
                         value={value1.id}
                         onChecked={onCheckCheckbox}
+                        disabled={true}
                       />
                     </CheckBoxTd>
 
-                    {/* <Table.Cell>
-                      <DeleteCancelBtn
-                        id={value1.id}
-                        onClick={onDeleteCancelClick}>
-                        삭제취소
-                      </DeleteCancelBtn>
-                    </Table.Cell> */}
-
                     {yo?.map((value3, index3) => {
-                      return (
-                        <MyCell align="left" key={index3}>
-                          {handleFalsyValueToHyphen(value3)}
-                        </MyCell>
-                      );
+                      let ellipsisOn = undefined;
+
+                      ellipsisList &&
+                        ellipsisList.forEach(val => {
+                          if (val.key === Object.keys(value3)[0]) {
+                            ellipsisOn = val;
+                          }
+                        });
+
+                      if (ellipsisOn) {
+                        return (
+                          <Table.Cell key={index3}>
+                            <EllipsisCell
+                              length={ellipsisOn.length}
+                              align="left">
+                              {handleFalsyValueToHyphen(
+                                Object.values(value3)[0],
+                              )}
+                            </EllipsisCell>
+                          </Table.Cell>
+                        );
+                      } else {
+                        return (
+                          <MyCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                          </MyCell>
+                        );
+                      }
                     })}
 
                     {!!isMemo && (
@@ -178,14 +204,36 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                         onChecked={onCheckCheckbox}
                       />
                     </CheckBoxTd>
-                    {/* {tableDeleteList.length > 0 && <Table.Cell></Table.Cell>} */}
 
                     {yo?.map((value3, index3) => {
-                      return (
-                        <MyCell align="left" key={index3}>
-                          {handleFalsyValueToHyphen(value3)}
-                        </MyCell>
-                      );
+                      let ellipsisOn = undefined;
+
+                      ellipsisList &&
+                        ellipsisList.forEach(val => {
+                          if (val.key === Object.keys(value3)[0]) {
+                            ellipsisOn = val;
+                          }
+                        });
+
+                      if (ellipsisOn) {
+                        return (
+                          <Table.Cell key={index3}>
+                            <EllipsisCell
+                              length={ellipsisOn.length}
+                              align="left">
+                              {handleFalsyValueToHyphen(
+                                Object.values(value3)[0],
+                              )}
+                            </EllipsisCell>
+                          </Table.Cell>
+                        );
+                      } else {
+                        return (
+                          <MyCell align="left" key={index3}>
+                            {handleFalsyValueToHyphen(Object.values(value3)[0])}
+                          </MyCell>
+                        );
+                      }
                     })}
 
                     {!!isMemo && (
@@ -202,7 +250,7 @@ const TableYo = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
     </>
   );
 };
-export default TableYo;
+export default TableCustom;
 
 const CheckBoxTh = styled.th`
   width: 4rem;
@@ -223,4 +271,9 @@ const DeleteListTableRow = styled(Table.Row)`
   text-decoration: line-through;
 `;
 
-const DeleteCancelBtn = styled.button``;
+const EllipsisCell = styled.div`
+  width: ${({length}) => length};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;

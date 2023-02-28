@@ -1,24 +1,16 @@
-import useModal from '../../hooks/useModal';
 import React from 'react';
-import {Button, Checkbox, Table} from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
 import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
 
 // 메이커스 정보 페이지
 const Makers = () => {
-  const {onActive} = useModal();
-
   return (
     <PageWrapper>
-      <BtnWrapper>
-        <Button color="red" content="삭제" icon="delete" onClick={onActive} />
-      </BtnWrapper>
+      <BtnWrapper></BtnWrapper>
       <TableWrapper>
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell width={1} textAlign="center">
-                <Checkbox />
-              </Table.HeaderCell>
               <Table.HeaderCell>ID</Table.HeaderCell>
               <Table.HeaderCell>메이커스 코드</Table.HeaderCell>
               <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
@@ -52,9 +44,6 @@ const Makers = () => {
 
           <Table.Body>
             <Table.Row>
-              <Table.Cell textAlign="center">
-                <Checkbox />
-              </Table.Cell>
               <Table.Cell>13</Table.Cell>
               <Table.Cell>Unknown</Table.Cell>
               <Table.Cell>Unknown</Table.Cell>

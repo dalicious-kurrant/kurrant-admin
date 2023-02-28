@@ -1,3 +1,4 @@
+import {formattedDate} from 'utils/dateFormatter';
 import * as XLSX from 'xlsx';
 import {scheduleFormatted} from '../statusFormatter';
 
@@ -353,6 +354,92 @@ export function spotExel(spot) {
 export function productExelExport(product, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(product, {cellDates: true});
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  XLSX.writeFile(workbook, fileName);
+}
+
+// 기업 정보 엑셀
+
+export function corporationInfoExel(corporation) {
+  const reqArrays = [];
+  reqArrays.push([
+    'id',
+    'code',
+    'name',
+    'zipCode',
+    'address1',
+    'address2',
+    'location',
+    'diningTypes',
+    'serviceDays',
+    'managerName',
+    'managerPhpne',
+    'isMembershipSupport',
+    'employeeCount',
+    'isSetting',
+    'isGarbage',
+    'isHotStorage',
+  ]);
+  reqArrays.push([
+    '그룹ID',
+    '기업코드',
+    '이름',
+    '우편번호',
+    '기본주소',
+    '상세주소',
+    '위치',
+    '식사 타입',
+    '식사 요일',
+    '담당자',
+    '담당자 전화번호',
+    '기업멤버십 지원여부',
+    '사원수',
+    '식사 세팅 지원 서비스',
+    '쓰레기 수거 서비스',
+    '온장고 대여 서비스',
+  ]);
+
+  corporation?.data?.items?.groupInfoList?.map(el => {
+    const diningType =
+      el.diningTypes === 1 ? '아침' : el.diningTypes === 2 ? '점심' : '저녁';
+    const membership = el.isMembershipSupport ? '지원' : '미지원';
+    const setting = el.isSetting ? '사용' : '미사용';
+    const garbage = el.isGarbage ? '사용' : '미사용';
+    const hotStorage = el.isHotStorage ? '사용' : '미사용';
+    const reqArray = [];
+    reqArray.push(el.id);
+    reqArray.push(el.code);
+    reqArray.push(el.name);
+    reqArray.push(el.zipCode);
+    reqArray.push(el.address1);
+    reqArray.push(el.address2);
+    reqArray.push(el.location);
+    reqArray.push(diningType);
+    reqArray.push(el.serviceDays);
+    reqArray.push(el.managerName);
+    reqArray.push(el.managerPhone);
+    reqArray.push(membership);
+    reqArray.push(el.employeeCount);
+    reqArray.push(setting);
+    reqArray.push(garbage);
+    reqArray.push(hotStorage);
+
+    reqArrays.push(reqArray);
+
+    return reqArrays;
+  });
+  console.log(reqArrays);
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, '기업 정보');
+  XLSX.writeFile(workbook, '기업_정보.xlsx');
+}
+
+export function corporationExelExport(corporation, sheetName, fileName) {
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(corporation, {cellDates: true});
 
   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   XLSX.writeFile(workbook, fileName);

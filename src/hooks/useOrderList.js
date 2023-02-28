@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {orderApis} from '../api/order';
 
 export function useGetGroupList() {
@@ -33,7 +33,6 @@ export function useGetOrderDetailList(orderCode) {
 
 export function useCancelOrder() {
   return useMutation(data => {
-    console.log(data, '244');
     return orderApis.orderCancel(data);
   });
 }
@@ -41,5 +40,17 @@ export function useCancelOrder() {
 export function useAllUserList() {
   return useQuery('allUserList', () => {
     return orderApis.allUserList();
+  });
+}
+
+export function useEditOrderStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(data => orderApis.editOrderStatus(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('orderList');
+    },
+    onError: err => {
+      alert(err.response.data.message);
+    },
   });
 }
