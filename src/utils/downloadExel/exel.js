@@ -445,3 +445,91 @@ export function corporationExelExport(corporation, sheetName, fileName) {
   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   XLSX.writeFile(workbook, fileName);
 }
+
+// 메이커스 정보
+export function makersInfoExel(corporation) {
+  const reqArrays = [];
+  reqArrays.push([
+    'id',
+    'code',
+    'name',
+    'companyName',
+    'ceo',
+    'ceoPhone',
+    'managerName',
+    'managerPhone',
+    'diningTypes',
+    'dailyCapacity',
+    'serviceType',
+    'serviceForm',
+    'isParentCompany',
+    'parentCompanyId',
+    'zipCode',
+    'address1',
+    'address2',
+    'location',
+    'companyRegistrationNumber',
+    'contractStartDate',
+    'contractEndDate',
+    'isNutritionInformation',
+    'openTime',
+    'closeTime',
+    'bank',
+    'depositHolder',
+    'accountNumber',
+  ]);
+  reqArrays.push([
+    'ID',
+    '메이커스 코드',
+    '메이커스 이름',
+    '법인명',
+    '사업자대표',
+    '대표자 전화번호',
+    '담당자 이름',
+    '담당자 전화번호',
+    '가능 다이닝타입',
+    '일일최대수량',
+    '서비스 업종',
+    '서비스 형태',
+    '모회사 여부',
+    '모회사 ID',
+    '우편번호',
+    '기본주소',
+    '상세주소',
+    '위치',
+    '사업자 등록번호',
+    '계약 시작날짜',
+    '계약 종료날짜',
+    '외식영양정보 표시 대상 여부',
+    '영업 시작시간',
+    '영업 종료시간',
+    '은행',
+    '예금주 명',
+    '계좌번호',
+  ]);
+
+  corporation.map(el => {
+    const reqArray = [];
+    reqArray.push(el.id);
+    reqArray.push(el.code);
+    reqArray.push(el.name);
+
+    reqArrays.push(reqArray);
+
+    return reqArrays;
+  });
+  console.log(reqArrays);
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, '메이커스 정보');
+  XLSX.writeFile(workbook, '메이커스_정보.xlsx');
+}
+
+export function makersInfoExelExport(corporation, sheetName, fileName) {
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(corporation, {cellDates: true});
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+  XLSX.writeFile(workbook, fileName);
+}

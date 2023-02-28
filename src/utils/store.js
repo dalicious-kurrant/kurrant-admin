@@ -37,3 +37,7 @@ export const statusOptionAtom = atomWithReset([]);
 
 // 기업정보
 export const corpNameOptionAtom = atomWithReset('');
+
+// 메이커스 정보
+export const makersInfoAtom = atomWithReset();
+export const makersExelInfoAtom = atomWithReset();
