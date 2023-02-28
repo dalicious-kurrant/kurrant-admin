@@ -82,7 +82,7 @@ export function completePlanExel(plan) {
     'dailyFoodStatus',
     'foodCapacity',
     'foodCount',
-    'dailyfoodId',
+    'dailyFoodId',
   ]);
   reqArrays.push([
     '날짜',
@@ -117,7 +117,7 @@ export function completePlanExel(plan) {
         reqArray.push(food.dailyFoodStatus);
         reqArray.push(food.foodCapacity);
         reqArray.push(food.foodCount);
-        reqArray.push(food.dailyfoodId);
+        reqArray.push(food.dailyFoodId);
         reqArrays.push(reqArray);
         return reqArrays;
       });
