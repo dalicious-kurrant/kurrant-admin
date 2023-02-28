@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Layout from '../layout/Layout';
 import {MenuList} from './menu';
 import LoginPage from '../pages/login/Login';
+import Success from '../pages/Success';
 import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import OrderDetail from '../pages/order/orderInfomation/OrderDetail';
 import ScrollToTop from 'shared/ScrollToTop';
@@ -15,6 +16,7 @@ const MainRouter = () => {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<LoginPage />} />
+        <Route path="/success" element={<Success />} />
         {token !== null && (
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />

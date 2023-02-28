@@ -82,6 +82,7 @@ export function completePlanExel(plan) {
     'foodStatus',
     'foodCapacity',
     'foodCount',
+    'dailyfoodId',
   ]);
   reqArrays.push([
     '날짜',
@@ -97,6 +98,7 @@ export function completePlanExel(plan) {
     '음식 승인',
     '음식 케파',
     '주문가능 수량',
+    '데일리푸드아이디',
   ]);
   plan.map(makers => {
     return makers.makersSchedules.map(client => {
