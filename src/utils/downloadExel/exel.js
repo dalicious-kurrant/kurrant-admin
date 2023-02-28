@@ -79,10 +79,10 @@ export function completePlanExel(plan) {
     'makersCount',
     'makersPickupTime',
     'foodName',
-    'foodStatus',
+    'dailyFoodStatus',
     'foodCapacity',
     'foodCount',
-    'dailyfoodId',
+    'dailyFoodId',
   ]);
   reqArrays.push([
     '날짜',
@@ -114,9 +114,10 @@ export function completePlanExel(plan) {
         reqArray.push(client.makersCount);
         reqArray.push(client.makersPickupTime);
         reqArray.push(food.foodName);
-        reqArray.push(food.foodStatus);
+        reqArray.push(food.dailyFoodStatus);
         reqArray.push(food.foodCapacity);
         reqArray.push(food.foodCount);
+        reqArray.push(food.dailyFoodId);
         reqArrays.push(reqArray);
         return reqArrays;
       });

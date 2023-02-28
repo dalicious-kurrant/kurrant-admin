@@ -53,7 +53,7 @@ const PlanExelTable = () => {
                           </Table.Cell>
                         );
                       }
-                      if (k === 'foodStatus') {
+                      if (k === 'dailyFoodStatus') {
                         return (
                           <Table.Cell key={k + kid}>
                             <DropdownBox>
@@ -91,7 +91,7 @@ const PlanExelTable = () => {
                                       if (pid === i) {
                                         return {
                                           ...plan,
-                                          foodStatus: data.value,
+                                          dailyFoodStatus: data.value,
                                         };
                                       }
                                       return plan;
