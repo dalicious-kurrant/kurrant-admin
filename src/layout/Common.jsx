@@ -44,17 +44,20 @@ import {
 import {
   useAddExelProductData,
   useEditProductStatus,
-} from 'hooks/useProductsList';
+} from '../hooks/useProductsList';
 import {scheduleFormatted2} from 'utils/statusFormatter';
 import {
   formattedDate,
   formattedFullDate,
   formattedTime,
 } from 'utils/dateFormatter';
-import {usePostPresetCalendar} from 'hooks/useCalendars';
-import {useSaveUserData} from 'hooks/useUserData';
+import {
+  usePostCompleteCalendar,
+  usePostPresetCalendar,
+} from '../hooks/useCalendars';
+import {useSaveUserData} from '../hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
-import {useSaveExelCorporation} from 'hooks/useCorporation';
+import {useSaveExelCorporation} from '../hooks/useCorporation';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -128,6 +131,7 @@ const Common = () => {
   const [statusOption] = useAtom(statusOptionAtom);
   const {mutateAsync: editStatus} = useEditProductStatus();
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
+  const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -136,6 +140,66 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
+
+  const completePost = async () => {
+    const reqArray = [];
+    if (completePlan) {
+      const req = completePlan.map(makers => {
+        return makers.makersSchedules.map(client => {
+          return client.foodSchedules.map(food => {
+            const result = {
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              groupName: makers.groupName,
+              groupCapacity: makers.groupCapacity,
+              deliveryTime: makers.deliveryTime,
+              makersName: client.makersName,
+              makersCapacity: client.makersCapacity,
+              makersCount: client.makersCount,
+              makersPickupTime: client.makersPickupTime,
+              foodName: food.foodName,
+              foodStatus: food.dailyFoodStatus,
+              dailyFoodId: food.dailyFoodId || null,
+              foodCapacity: food.foodCapacity,
+              foodCount: food.foodCount,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
+      await completePostCalendar(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
+    if (exelCompletePlan) {
+      const req = exelCompletePlan.map((makers, i) => {
+        if (i !== 0) {
+          const result = {
+            serviceDate: formattedDate(makers.serviceDate, '-'),
+            diningType: makers.diningType,
+            groupName: makers.groupName,
+            groupCapacity: makers.groupCapacity,
+            deliveryTime: makers.deliveryTime,
+            makersName: makers.makersName,
+            makersCapacity: makers.makersCapacity,
+            makersCount: makers.makersCount,
+            makersPickupTime: makers.makersPickupTime,
+            foodName: makers.foodName,
+            foodStatus: makers.dailyFoodStatus,
+            dailyFoodId: makers.dailyFoodId || null,
+            foodCapacity: makers.foodCapacity,
+            foodCount: makers.foodCount,
+          };
+          reqArray.push(result);
+        }
+      });
+
+      await completePostCalendar(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
+  };
+
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
@@ -161,6 +225,7 @@ const Common = () => {
         });
       });
     }
+
     if (reCommandPlan) {
       reCommandPlan.map(makers => {
         return makers.clientSchedule.map(client => {
@@ -335,30 +400,52 @@ const Common = () => {
       reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
-  const handlerSaveUser = async () => {
+  const handlerSaveExelUser = async () => {
     const result = exelUser.map((v, i) => {
+      console.log(v);
       if (i !== 0) {
         return {
-          role:
-            v.role === 'USER'
-              ? '일반'
-              : v.role === 'MANAGER'
-              ? '관리자'
-              : '일반',
-          password: v.password,
+          password: v.password || null,
           name: v.userName,
           email: v.email,
-          phone: v.phone,
-          userId: v.id,
+          phone: v.phone || null,
+          role: v.role || null,
+          status: v.status || null,
+          groupName: v.groupName || null,
+          point: v.point || 0,
+          marketingAgree: v.marketingAgree || null,
+          marketingAlarm: v.marketingAlarm || null,
+          orderAlarm: v.orderAlarm || null,
         };
       }
     });
     const req = result.filter(element => {
       return element !== undefined && element !== null && element !== '';
     });
-    await saveUserData({
-      userList: req,
+    await saveUserData(req);
+    alert('저장 되었습니다.');
+    window.location.reload();
+  };
+  const handlerSaveUser = async () => {
+    const result = user.map((v, i) => {
+      return {
+        password: v.password || null,
+        name: v.userName,
+        email: v.email,
+        phone: v.phone || null,
+        role: v.role || null,
+        status: v.status || null,
+        groupName: v.groupName || null,
+        point: v.point,
+        marketingAgree: v.marketingAgree || null,
+        marketingAlarm: v.marketingAlarm || null,
+        orderAlarm: v.orderAlarm || null,
+      };
     });
+    const req = result.filter(element => {
+      return element !== undefined && element !== null && element !== '';
+    });
+    await saveUserData(req);
     alert('저장 되었습니다.');
     window.location.reload();
   };
@@ -389,16 +476,7 @@ const Common = () => {
       return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
     }
     if (user && user.length > 0) {
-      const exportUser = user.map((v, i) => {
-        delete v.lastOrderTime;
-        if (i !== 0) {
-          return v;
-        }
-      });
-      const req = exportUser.filter(element => {
-        return element !== undefined && element !== null && element !== '';
-      });
-      return userExel(req);
+      return userExel(user);
     }
     if (spot && spot.length > 0) {
       const exportSpot = spot.map((v, i) => {
@@ -412,12 +490,7 @@ const Common = () => {
       return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {
-      const exportCompletePlan = completePlan.map((v, i) => {
-        if (i !== 0) {
-          return v;
-        }
-      });
-      const req = exportCompletePlan.filter(element => {
+      const req = completePlan.filter(element => {
         return element !== undefined && element !== null && element !== '';
       });
       return completePlanExel(req);
@@ -482,9 +555,15 @@ const Common = () => {
                 callPostCalendar();
               }
               if (exelUser) {
+                handlerSaveExelUser();
+              }
+              if (user) {
                 handlerSaveUser();
               }
 
+              if (completePlan || exelCompletePlan) {
+                completePost();
+              }
               if (statusOption.length !== 0) {
                 statusButton();
               }

@@ -13,6 +13,7 @@ import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
 import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
 import Schedule from '../pages/salesSchedule/Schedule';
 import CompletePlans from 'pages/makers/CompletePlans';
+import CustomerCustom from 'pages/customer/Customer/CustomerCustom';
 
 export const MenuList = [
   {
@@ -38,7 +39,7 @@ export const MenuList = [
       {
         name: '유저 정보',
         url: '/info',
-        component: <Customer />,
+        component: <CustomerCustom />,
         // component: <></>,
       },
       {

@@ -37,6 +37,11 @@ export const handleSubmitLogic = (
     //   return;
     // }
     setSubmitStatus('doneRegister');
+    if (input.status) {
+      console.log(input);
+      const req = {...input, status: Number(input.status)};
+      return submitMutate(req);
+    }
     submitMutate(input);
   } else if (registerStatus === 'edit') {
     // if (fieldsArray.includes('')) {

@@ -95,7 +95,7 @@ export function completePlanExel(plan) {
     '주문가능 수량',
     '메이커스 픽업 시간',
     '상품',
-    '음식 승인',
+    '음식 상태',
     '음식 케파',
     '주문가능 수량',
     '데일리푸드아이디',
@@ -194,18 +194,19 @@ export function productExel(product) {
 export function userExel(user) {
   const reqArrays = [];
   reqArrays.push([
-    'id',
+    'status',
+    'email',
     'password',
     'userName',
     'role',
     'phone',
-    'email',
     'groupName',
     'point',
     'gourmetType',
     'isMembership',
-    'userEmailAgreed',
-    'userEmailAgreedDateTime',
+    'marketingAgreed',
+    'marketingAgreedDateTime',
+    'marketingAlarm',
     'userOrderAlarm',
     'recentLoginDateTime',
     'userCreatedDateTime',
@@ -217,12 +218,12 @@ export function userExel(user) {
     'appleEmail',
   ]);
   reqArrays.push([
-    '아이디',
+    '유저 상태',
+    '이메일',
     '비밀번호',
     '사용자 명',
     '유저 타입',
     '폰 번호',
-    '이메일',
     '그룹이름',
     '보유 포인트',
     '미식가 타입',
@@ -243,17 +244,19 @@ export function userExel(user) {
 
   user?.map(el => {
     const reqArray = [];
-    reqArray.push(el.id);
+    reqArray.push(el.status);
+    reqArray.push(el.email);
     reqArray.push(el.password);
+    reqArray.push(el.userName);
     reqArray.push(el.role);
     reqArray.push(el.phone);
-    reqArray.push(el.email);
     reqArray.push(el.groupName);
     reqArray.push(el.point);
     reqArray.push(el.gourmetType);
     reqArray.push(el.isMembership);
-    reqArray.push(el.userEmailAgreed);
-    reqArray.push(el.userEmailAgreedDateTime);
+    reqArray.push(el.marketingAgreed);
+    reqArray.push(el.marketingAgreedDateTime);
+    reqArray.push(el.marketingAlarm);
     reqArray.push(el.userOrderAlarm);
     reqArray.push(el.recentLoginDateTime);
     reqArray.push(el.userCreatedDateTime);
@@ -533,3 +536,164 @@ export function makersInfoExelExport(corporation, sheetName, fileName) {
   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   XLSX.writeFile(workbook, fileName);
 }
+
+const data = {
+  userList: [
+    {
+      password: '$2a$10$GF5aqxlKT/IhxM8PhQeM1.8N/9Jyu7Oa.sYRDHXAU2Y2huFbKaBfW',
+      name: 'adsf',
+      email: 'sadf@sdvd',
+      phone: '235',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$d5WEZ9b6okVOw/it/Ybjtu2OdFsi5vccd7CGJsDmKvwRpS.lKEOGm',
+      name: 'esse',
+      email: 'asdf@veve',
+      phone: 'awef',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$focufPazy0pk1qeJAcclmetunIzqaVEyzqAVR/ts/BiitTcSpMQ2e',
+      name: 'sdf',
+      email: 'sdfsd@sdfsdf',
+      phone: '010-4594-9188',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$YgWpyeoF0TbbFchQeHGPluGmIVUddy1nkMfx419L9SogzWUmD.NCS',
+      name: 'sdgsgd',
+      email: 'sdf@sdgsdg',
+      phone: '010-9529-4951',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$0CNZ0MTzSud64TFdt3e6rO6DSxmDg/6tx.jg6.p2jp8X1p0QWMOKW',
+      name: '테스트',
+      email: '테스트1@미낭',
+      phone: '010-1111-1111',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$siuW9mIFcLZ4HiLviv8jcOf7t6L22zRF7LgMKmOPSUP.GvZBRF/l.',
+      name: 'ㄴ이ㅏㄹ',
+      email: '테스트2@ㅁ니알',
+      phone: '010-0000-0000',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$HZUaANcVkE1JC5Q0KLneoOngH.Cup0iWdPQ14G6XB0j9gA64fqA8G',
+      name: '조재신',
+      email: '재신@ㄴ이ㅏ',
+      phone: '010-0000-0000',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: '$2a$10$f/AysGoe1kVr.CqLgApseOkVAzG.AFRuOjrbZhLUM7cJ2MjwtuFQC',
+      name: '테스트',
+      email: 'TEST1',
+      phone: '010-0000-0000',
+      role: '일반',
+      status: 1,
+      groupName: '없음',
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: null,
+      name: '전정호',
+      email: 'jeongho.jeon@dalicious.co',
+      phone: null,
+      role: null,
+      status: 1,
+      groupName: null,
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: null,
+      name: '전정호2',
+      email: 'jeongho.jeon2@dalicious.co',
+      phone: null,
+      role: null,
+      status: 1,
+      groupName: null,
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: null,
+      name: '전정호3',
+      email: 'jeongho.jeon3@dalicious.co',
+      phone: null,
+      role: null,
+      status: 1,
+      groupName: null,
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+    {
+      password: null,
+      name: '전정호4',
+      email: 'jeongho.jeon4@dalicious.co',
+      phone: null,
+      role: null,
+      status: 1,
+      groupName: null,
+      point: null,
+      marketingAgree: null,
+      marketingAlarm: null,
+      orderAlarm: null,
+    },
+  ],
+};

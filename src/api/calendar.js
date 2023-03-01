@@ -3,6 +3,8 @@ import instance from '../shared/axios';
 export const calendarApis = {
   createDailyFood: async data => await instance.post('schedules/excel', data),
   presetDailyFood: async data => await instance.post('schedules/pause', data),
+  completePostDailyFood: async data =>
+    await instance.post('dailyFoods/excel', data),
   completeDailyFood: async data =>
     await instance.post('dailyFoods/approval', data),
   getDailyFood: async (size, page, makersId, groupId, status) =>

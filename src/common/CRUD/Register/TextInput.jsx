@@ -5,6 +5,7 @@ const TextInput = ({
   fieldsToOpen,
   registerStatus,
   input,
+  inputType = 'text',
   name,
   setInput,
   placeholder,
@@ -33,7 +34,7 @@ const TextInput = ({
         </TitleWrap>
 
         <TextInputInput
-          type="text"
+          type={inputType}
           maxLength={maxCharLength}
           name={name}
           onChange={handleChange}

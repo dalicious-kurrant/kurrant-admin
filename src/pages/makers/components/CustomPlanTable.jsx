@@ -13,11 +13,11 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
       testData.map(makers => {
         return {
           ...makers,
-          makersSchedules: makers.clientSchedule.map(client => {
+          makersSchedules: makers.makersSchedules.map(client => {
             return {
               ...client,
-              foodSchedules: client.foodSchedule.map(food => {
-                if (food.presetFoodId === d.presetFoodId) {
+              foodSchedules: client.foodSchedules.map(food => {
+                if (food.dailyFoodId === d.dailyFoodId) {
                   return {
                     ...food,
                     dailyFoodStatus: b,
