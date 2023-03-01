@@ -84,13 +84,13 @@ export const sendFinal = (
     )
   ) {
     sendFinalMutate(newData2);
-    // sendDelete(tableDeleteList, deleteFinalMutate);
+    sendDelete(tableDeleteList);
   } else {
     return;
   }
 };
 
-const sendDelete = (tableDeleteList, deleteFinalMutate) => {
+const sendDelete = tableDeleteList => {
   const toNumList = tableDeleteList.map(v => {
     return parseInt(v);
   });
@@ -98,7 +98,7 @@ const sendDelete = (tableDeleteList, deleteFinalMutate) => {
   // 스트링 -> 넘버
 
   const submitData = {
-    useIdList: toNumList,
+    userIdList: toNumList,
     groupId: 1,
   };
 

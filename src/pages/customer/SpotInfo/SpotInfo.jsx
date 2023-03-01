@@ -1,7 +1,11 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import useMutate from 'common/CRUD/useMutate';
-import {dataHasNoIdAtom, TableCheckboxStatusAtom} from 'common/Table/store';
+import {
+  dataHasNoIdAtom,
+  TableCheckboxStatusAtom,
+  TableDeleteListAtom,
+} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 import {exelSpotAtom, spotAtom} from 'utils/store';
@@ -23,7 +27,6 @@ import {sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
-import {removeIdToSend} from 'common/Table/Logics';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
@@ -33,6 +36,8 @@ const SpotInfo = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
+
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const [registerStatus, setRegisterStatus] = useState('register');
 
@@ -74,6 +79,25 @@ const SpotInfo = () => {
     },
   );
 
+  const {mutate: deleteFinalMutate} = useMutation(
+    async todo => {
+      const response = await instance.patch(`clients`, todo);
+
+      console.log(todo);
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('success');
+        queryClient.invalidateQueries(['getSpotInfoJSON']);
+      },
+      onError: () => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+      },
+    },
+  );
+
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
       buttonStatus,
@@ -97,6 +121,7 @@ const SpotInfo = () => {
   useEffect(() => {
     return () => {
       setCheckboxStatus({});
+      setTableDeleteList([]);
     };
   }, []);
 
@@ -105,24 +130,28 @@ const SpotInfo = () => {
 
     const status = {...checkboxStatus};
 
-    let deleteList = [];
+    let deleteList = [...tableDeleteList];
 
     Object.entries(status).forEach(v => {
       if (v[1] === true) {
         deleteList.push(v[0]);
       }
     });
+    deleteList = [...new Set(deleteList)];
 
     let yo = [];
     const spotInfoDataToDelete = [...spotInfoData];
 
     spotInfoDataToDelete.forEach(v => {
       if (deleteList.includes(v.id.toString())) {
+        v['isOnDeleteList'] = true;
+        yo.push(v);
       } else {
         yo.push(v);
       }
     });
 
+    setTableDeleteList(deleteList);
     setSpotInfoData(yo);
   };
 
@@ -285,7 +314,13 @@ const SpotInfo = () => {
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
               sendFinal={() => {
-                sendFinal(spotInfoData, sendFinalMutate, checkboxStatus);
+                sendFinal(
+                  spotInfoData,
+                  sendFinalMutate,
+                  checkboxStatus,
+                  tableDeleteList,
+                  deleteFinalMutate,
+                );
               }}
               sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}

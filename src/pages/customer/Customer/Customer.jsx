@@ -49,7 +49,7 @@ const Customer = () => {
     },
     {
       onSuccess: () => {
-        console.log('success');
+        console.log('수정 success');
         queryClient.invalidateQueries(['getCustomerJSON']);
       },
       onError: () => {
@@ -59,9 +59,10 @@ const Customer = () => {
   );
   const {mutate: deleteFinalMutate} = useMutation(
     async todo => {
-      const response = await instance.patch(`client/members`, todo);
-
+      console.log('sendDelete');
       console.log(todo);
+
+      const response = await instance.patch(`users`, todo);
 
       return response;
     },
@@ -87,6 +88,10 @@ const Customer = () => {
     token,
   );
 
+  useEffect(() => {
+    console.log(customerData);
+  }, [customerData]);
+
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
       buttonStatus,
@@ -110,6 +115,7 @@ const Customer = () => {
   useEffect(() => {
     return () => {
       setCheckboxStatus({});
+      setTableDeleteList([]);
     };
   }, []);
 

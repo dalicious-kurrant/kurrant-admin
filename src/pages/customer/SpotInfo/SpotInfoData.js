@@ -5,11 +5,9 @@ export const SpotInfoFieldsToOpen = {
   spotId: '스팟아이디',
   spotName: '스팟이름',
   zipCode: '우편번호',
-  //
   address1: '기본주소',
   address2: '상세주소',
   location: '위치',
-  //
   diningType: '식타입',
   breakfastDeliveryTime: '배송시아침',
   breakfastSupportPrice: '지원아침',
