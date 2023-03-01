@@ -73,7 +73,7 @@ function CostomerEditModal({
                     onChange={(e, data) => {
                       setNowData({
                         ...nowData,
-                        password: data.value ? data.value : 1234,
+                        password: data.value ? data.value : null,
                       });
                     }}
                   />
