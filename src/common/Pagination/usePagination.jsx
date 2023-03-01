@@ -1,59 +1,14 @@
-import {useEffect} from 'react';
-import {useState} from 'react';
-import {
-  calculatePageButtons,
-  calculatePageMove,
-  calculateTotalPages,
-} from './Logics/PaginationLogics';
+import {calculatePageButtons} from 'common/Pagination/Logics/PaginationLogics';
+import {calculateTotalPages} from './PaginationLogics';
 
-const usePagination = (totalLength, page, setPage, limit, setLimit) => {
-  const [pagepage, setPagePage] = useState(1);
+const usePagination = (totalLength, limit, page) => {
+  // const totalPage = Math.ceil(totalLength / limit);
 
-  const [dataLimitLimit, setDataLimitLimit] = useState(1);
-  const [pageList, setPageList] = useState([]);
+  const totalPageByLimit = calculateTotalPages(totalLength, limit);
 
-  useEffect(() => {
-    // 페이지 번호 리스트 [1,2,3,4,5]
-    // 페이지네이션 다시 만들기
+  const totalPageArray = calculatePageButtons(page, totalPageByLimit);
 
-    setPageList(
-      calculatePageButtons(
-        pagepage,
-        calculateTotalPages(totalLength, dataLimitLimit),
-      ),
-    );
-  }, [pagepage, totalLength, dataLimitLimit]);
-
-  const handleButtonClick = e => {
-    setPagePage(e.target.id);
-  };
-
-  const handleGoToEdge = e => {
-    setPagePage(e.target.id);
-  };
-  const handleMove = e => {
-    setPagePage(
-      calculatePageMove(
-        e.target.id,
-        pagepage,
-        calculateTotalPages(totalLength, dataLimitLimit),
-      ),
-    );
-  };
-
-  return {
-    page: pagepage,
-    setPage: setPagePage,
-    dataLimit: dataLimitLimit,
-    setDataLimit: setDataLimitLimit,
-    pageList,
-    setPageList,
-    handleButtonClick,
-    handleGoToEdge,
-    handleMove,
-  };
+  return {totalPageArray, totalPageByLimit};
 };
 
 export default usePagination;
-
-// .dataTotalLength

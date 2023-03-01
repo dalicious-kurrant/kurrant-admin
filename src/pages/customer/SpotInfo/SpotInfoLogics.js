@@ -1,6 +1,40 @@
 import {removeParentKeyInCheckbox} from 'common/Table/Logics';
 import {handleFalsyValueToString} from 'utils/valueHandlingLogics';
 
+export const handleSpotInfoDelete = (
+  checkboxStatus,
+  tableDeleteList,
+  spotInfoData,
+  setTableDeleteList,
+  setSpotInfoData,
+) => {
+  const status = {...checkboxStatus};
+
+  let deleteList = [...tableDeleteList];
+
+  Object.entries(status).forEach(v => {
+    if (v[1] === true) {
+      deleteList.push(v[0]);
+    }
+  });
+  deleteList = [...new Set(deleteList)];
+
+  let yo = [];
+  const spotInfoDataToDelete = [...spotInfoData];
+
+  spotInfoDataToDelete.forEach(v => {
+    if (deleteList.includes(v.id.toString())) {
+      v['isOnDeleteList'] = true;
+      yo.push(v);
+    } else {
+      yo.push(v);
+    }
+  });
+
+  setTableDeleteList(deleteList);
+  setSpotInfoData(yo);
+};
+
 export const sendFinal = (
   data,
   sendFinalMutate,

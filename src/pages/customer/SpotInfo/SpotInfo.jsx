@@ -22,8 +22,8 @@ import {Button, Checkbox, Table} from 'semantic-ui-react';
 
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
-import useSpotInfoData from './useSpotInfoData';
-import {sendFinal} from './SpotInfoLogics';
+import useSpotInfoQuery from './useSpotInfoQuery';
+import {handleSpotInfoDelete, sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
@@ -39,60 +39,17 @@ const SpotInfo = () => {
   const [dataToEdit, setDataToEdit] = useState({});
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
   const [registerStatus, setRegisterStatus] = useState('register');
-  const queryClient = useQueryClient();
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
-  const {status, isLoading} = useSpotInfoData(
-    ['getSpotInfoJSON'],
-    SpotInfoDataAtom,
-    `clients/spot/all`,
-    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-    localStorage.getItem('token'),
-  );
-  useSpotInfoData(
-    ['getSpot'],
-    spotAtom,
-    `clients/spot/all`,
-    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-    localStorage.getItem('token'),
-  );
-
-  const {mutate: sendFinalMutate} = useMutation(
-    async todo => {
-      console.log(todo);
-
-      const response = await instance.post(`clients`, todo);
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('스팟정보 등록, 수정 success');
-
-        queryClient.invalidateQueries(['getSpotInfoJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
-
-  const {mutate: deleteFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.patch(`clients`, todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-        queryClient.invalidateQueries(['getSpotInfoJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
+  const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
+    useSpotInfoQuery(
+      ['getSpotInfoJSON'],
+      SpotInfoDataAtom,
+      `clients/spot/all`,
+      // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+      localStorage.getItem('token'),
+    );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -122,31 +79,13 @@ const SpotInfo = () => {
   }, []);
 
   const handleDelete = () => {
-    const status = {...checkboxStatus};
-
-    let deleteList = [...tableDeleteList];
-
-    Object.entries(status).forEach(v => {
-      if (v[1] === true) {
-        deleteList.push(v[0]);
-      }
-    });
-    deleteList = [...new Set(deleteList)];
-
-    let yo = [];
-    const spotInfoDataToDelete = [...spotInfoData];
-
-    spotInfoDataToDelete.forEach(v => {
-      if (deleteList.includes(v.id.toString())) {
-        v['isOnDeleteList'] = true;
-        yo.push(v);
-      } else {
-        yo.push(v);
-      }
-    });
-
-    setTableDeleteList(deleteList);
-    setSpotInfoData(yo);
+    handleSpotInfoDelete(
+      checkboxStatus,
+      tableDeleteList,
+      spotInfoData,
+      setTableDeleteList,
+      setSpotInfoData,
+    );
   };
 
   if (isLoading)

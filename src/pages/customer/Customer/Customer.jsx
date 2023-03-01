@@ -19,11 +19,11 @@ import {Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 
-import {sendFinal} from './CustomerLogics';
+import {handleCustomerDelete, sendFinal} from './CustomerLogics';
 
 import TableCustom from 'common/Table/TableCustom';
 
-import useCustomerData from './useCustomerData';
+import useCustomerQuery from './useCustomerQuery';
 import {
   CustomerFieldsDataForRegister,
   CustomerFieldsToOpen,
@@ -37,60 +37,19 @@ const Customer = () => {
   const [registerStatus, setRegisterStatus] = useState('register');
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
-  const queryClient = useQueryClient();
 
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
-
-  const {mutate: sendFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.post(`users`, todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('유저정보 등록, 수정 success');
-        queryClient.invalidateQueries(['getCustomerJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
-  const {mutate: deleteFinalMutate} = useMutation(
-    async todo => {
-      console.log('sendDelete');
-      console.log(todo);
-
-      const response = await instance.patch(`users`, todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('유저정보 삭제 success');
-        queryClient.invalidateQueries(['getCustomerJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
   const token = localStorage.getItem('token');
 
-  const {status, isLoading} = useCustomerData(
+  const {sendFinalMutate, deleteFinalMutate} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
     'users/all',
     token,
   );
-
-  useEffect(() => {
-    console.log(customerData);
-  }, [customerData]);
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -120,32 +79,13 @@ const Customer = () => {
   }, []);
 
   const handleDelete = () => {
-    const status = {...checkboxStatus};
-
-    let deleteList = [...tableDeleteList];
-
-    Object.entries(status).forEach(v => {
-      if (v[1] === true) {
-        deleteList.push(v[0]);
-      }
-    });
-
-    deleteList = [...new Set(deleteList)];
-
-    let yo = [];
-    const customerDataToDelete = [...customerData];
-
-    customerDataToDelete.forEach(v => {
-      if (deleteList.includes(v.id.toString())) {
-        v['isOnDeleteList'] = true;
-        yo.push(v);
-      } else {
-        yo.push(v);
-      }
-    });
-
-    setTableDeleteList(deleteList);
-    setCustomerData(yo);
+    handleCustomerDelete(
+      checkboxStatus,
+      tableDeleteList,
+      customerData,
+      setTableDeleteList,
+      setCustomerData,
+    );
   };
 
   // 페이지네이션

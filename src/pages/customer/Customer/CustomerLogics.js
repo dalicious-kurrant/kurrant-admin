@@ -4,6 +4,41 @@ import {
 } from 'common/Table/Logics';
 import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
+export const handleCustomerDelete = (
+  checkboxStatus,
+  tableDeleteList,
+  customerData,
+  setTableDeleteList,
+  setCustomerData,
+) => {
+  const status = {...checkboxStatus};
+
+  let deleteList = [...tableDeleteList];
+
+  Object.entries(status).forEach(v => {
+    if (v[1] === true) {
+      deleteList.push(v[0]);
+    }
+  });
+
+  deleteList = [...new Set(deleteList)];
+
+  let yo = [];
+  const customerDataToDelete = [...customerData];
+
+  customerDataToDelete.forEach(v => {
+    if (deleteList.includes(v.id.toString())) {
+      v['isOnDeleteList'] = true;
+      yo.push(v);
+    } else {
+      yo.push(v);
+    }
+  });
+
+  setTableDeleteList(deleteList);
+  setCustomerData(yo);
+};
+
 export const sendFinal = (
   data,
   sendFinalMutate,
