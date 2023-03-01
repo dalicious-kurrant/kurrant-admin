@@ -9,6 +9,7 @@ import {
   exelPlanAtom,
   exelProductAtom,
   exelSpotAtom,
+  exelUserAtom,
   planAtom,
   productAtom,
   productDataAtom,
@@ -40,6 +41,7 @@ const Header = () => {
   const resetAtom10 = useResetAtom(dataHasNoIdAtom);
   const resetAtom11 = useResetAtom(CustomerDataAtom);
   const resetAtom12 = useResetAtom(SpotInfoDataAtom);
+  const resetAtom13 = useResetAtom(exelUserAtom);
 
   const logOutButton = () => {
     localStorage.removeItem('token');
@@ -59,6 +61,7 @@ const Header = () => {
     resetAtom10();
     resetAtom11();
     resetAtom12();
+    resetAtom13();
   };
   return (
     <H.Wrapper>

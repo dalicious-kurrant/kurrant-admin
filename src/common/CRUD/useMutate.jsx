@@ -4,7 +4,7 @@ const useMutate = atom => {
   const [dataList, setDataList] = useAtom(atom);
 
   const submitMutate = input => {
-    const newDataList = [...dataList, input];
+    const newDataList = [input, ...dataList];
 
     setDataList(newDataList);
   };

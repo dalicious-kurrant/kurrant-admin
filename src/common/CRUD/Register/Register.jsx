@@ -19,6 +19,7 @@ const Register = ({
   handleClose,
   data,
   fieldsData,
+  type = 'nomal',
   editMutate,
 }) => {
   // 현재 location측정
@@ -66,7 +67,7 @@ const Register = ({
           리스트
           {registerStatus === 'register' ? ' 추가 입력란' : ' 수정 기입란'}
         </H2>
-        <Button onClick={handleCloseBtn}> 닫기 </Button>
+        {type === 'nomal' && <Button onClick={handleCloseBtn}> 닫기 </Button>}
       </TitleButtonWrap>
 
       <Form onSubmit={handleSubmit}>
@@ -83,6 +84,22 @@ const Register = ({
                   setInput={setInput}
                   placeholder={value.placeholder}
                   options={value.options}
+                />
+              );
+            } else if (value.inputType === 'number') {
+              return (
+                <TextInput
+                  fieldsToOpen={fieldsToOpen}
+                  registerStatus={registerStatus}
+                  key={index}
+                  input={input}
+                  setInput={setInput}
+                  inputType={value.inputType}
+                  required
+                  name={value.fieldName}
+                  placeholder={value.placeholder}
+                  maxCharLength={value.maxCharLength}
+                  flex={value.flex}
                 />
               );
             } else {

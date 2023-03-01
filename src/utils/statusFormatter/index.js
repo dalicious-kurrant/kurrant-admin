@@ -26,6 +26,18 @@ export function diningFormatted(data) {
       return '아침';
   }
 }
+export function userStatusFormatted(data) {
+  switch (data) {
+    case 0:
+      return '탈퇴 요청';
+    case 1:
+      return '활성';
+    case 2:
+      return '탈퇴';
+    default:
+      return '비인가';
+  }
+}
 
 export function scheduleFormatted2(data) {
   switch (data) {

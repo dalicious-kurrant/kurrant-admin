@@ -13,6 +13,11 @@ export function useCompleteCalendar() {
     return calendarApis.completeDailyFood(data);
   });
 }
+export function usePostCompleteCalendar() {
+  return useMutation(data => {
+    return calendarApis.completePostDailyFood(data);
+  });
+}
 
 export function useGetCompleteCalendar(
   startDate,

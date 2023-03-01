@@ -1,6 +1,7 @@
 export const CustomerFieldsToOpen = {
   // id: '아이디이이',
   // userId: '아이디',
+  status: '유저 상태',
   email: '이메일',
   password: '비밀번호',
   userName: '사용자 명',
@@ -36,18 +37,19 @@ export const CustomerFieldsFilterList = [
 const inputType = {
   select: 'select',
   text: 'text',
+  number: 'number',
 };
 
 export const CustomerFieldsDataForRegister = [
-  // {
-  //   fieldName: 'userId',
-  //   fieldNameKor: '아이디',
-  //   placeholder: '',
-  //   maxCharLength: 20,
-  //   flex: 1,
-
-  //   width: undefined,
-  // },
+  {
+    fieldName: 'status',
+    fieldNameKor: '유저 상태',
+    placeholder: 1,
+    maxCharLength: 1,
+    flex: 1,
+    width: undefined,
+    inputType: inputType.number,
+  },
 
   {
     fieldName: 'email',
