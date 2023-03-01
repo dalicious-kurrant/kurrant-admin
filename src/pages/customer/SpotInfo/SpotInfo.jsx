@@ -30,20 +30,18 @@ import TableCustom from 'common/Table/TableCustom';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [plan, setPlan] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
+
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
-
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
-
   const [registerStatus, setRegisterStatus] = useState('register');
+  const queryClient = useQueryClient();
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
-
-  const queryClient = useQueryClient();
 
   const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
@@ -69,7 +67,7 @@ const SpotInfo = () => {
     },
     {
       onSuccess: () => {
-        console.log('success');
+        console.log('스팟정보 등록, 수정 success');
 
         queryClient.invalidateQueries(['getSpotInfoJSON']);
       },
@@ -82,8 +80,6 @@ const SpotInfo = () => {
   const {mutate: deleteFinalMutate} = useMutation(
     async todo => {
       const response = await instance.patch(`clients`, todo);
-
-      console.log(todo);
 
       return response;
     },
@@ -126,8 +122,6 @@ const SpotInfo = () => {
   }, []);
 
   const handleDelete = () => {
-    // console.log(deletedStatus);
-
     const status = {...checkboxStatus};
 
     let deleteList = [...tableDeleteList];
@@ -154,40 +148,6 @@ const SpotInfo = () => {
     setTableDeleteList(deleteList);
     setSpotInfoData(yo);
   };
-
-  // const sendFinal = () => {
-  //   const oldData = [...customerData];
-
-  //   const newData = oldData.map(value => {
-  //     let yo = {};
-
-  //     yo['userId'] = handleFalsyValue(value.email);
-  //     yo['password'] = handleFalsyValue(value.password);
-  //     yo['name'] = handleFalsyValue(value.name);
-  //     yo['email'] = handleFalsyValue(value.email);
-  //     yo['phone'] = handleFalsyValue(value.phone);
-  //     yo['role'] = handleFalsyValue(value.role);
-
-  //     return yo;
-  //   });
-
-  //   const newData2 = {
-  //     userList: newData,
-  //   };
-
-  //   if (
-  //     window.confirm(
-  //       '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
-  //     )
-  //   ) {
-  //     sendFinalMutate(newData2);
-  //   } else {
-  //   }
-  // };
-
-  useEffect(() => {
-    console.log(spotInfoData);
-  }, [spotInfoData]);
 
   if (isLoading)
     return (

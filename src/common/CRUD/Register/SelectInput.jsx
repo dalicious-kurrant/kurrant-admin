@@ -49,8 +49,8 @@ const SelectInput = ({
 
           {options.map((val, index) => {
             return (
-              <Option key={index} value={val}>
-                {val}
+              <Option key={index} value={val.value}>
+                {val.name}
               </Option>
             );
           })}

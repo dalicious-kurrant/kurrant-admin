@@ -42,10 +42,7 @@ export const sendFinal = (
       }
     });
 
-    console.log(finalLaunch);
-    let newData = [];
-
-    newData = finalLaunch.map(value => {
+    const newData = finalLaunch.map(value => {
       let yo = {};
 
       // 우선 아래의 항목만 수정가능하게 만듬
@@ -108,8 +105,6 @@ export const sendFinal = (
       return yo;
     });
 
-    console.log(newData);
-
     newData2 = {
       userList: newData,
     };
@@ -123,8 +118,6 @@ export const sendFinal = (
     if (newData2.userList.length > 0) {
       sendFinalMutate(newData2);
     }
-
-    console.log(tableDeleteList);
 
     if (tableDeleteList.length > 0) {
       sendDelete(tableDeleteList, deleteFinalMutate);

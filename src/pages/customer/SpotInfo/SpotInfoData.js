@@ -23,14 +23,24 @@ export const SpotInfoFieldsToOpen = {
   updatedDateTime: '수정일',
 };
 
+const inputType = {
+  select: 'select',
+  text: 'text',
+};
 export const SpotInfoFieldsData = [
   {
     fieldName: 'groupId',
     fieldNameKor: '그룹아이디',
-    placeholder: '',
+    placeholder: '선택',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    inputType: inputType.select,
+    options: [
+      {name: '1', value: '1'},
+      {name: '2', value: '2'},
+      {name: '3', value: '3'},
+    ],
   },
   {
     fieldName: 'groupName',
@@ -51,7 +61,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'spotName',
     fieldNameKor: '스팟이름',
-    placeholder: '',
+    placeholder: '필수',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -59,7 +69,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'zipCode',
     fieldNameKor: '우편번호',
-    placeholder: '',
+    placeholder: '예) 00000',
     maxCharLength: 40,
     flex: 1,
     width: undefined,

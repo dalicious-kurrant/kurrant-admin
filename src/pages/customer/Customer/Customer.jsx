@@ -49,7 +49,7 @@ const Customer = () => {
     },
     {
       onSuccess: () => {
-        console.log('수정 success');
+        console.log('유저정보 등록, 수정 success');
         queryClient.invalidateQueries(['getCustomerJSON']);
       },
       onError: () => {
@@ -68,7 +68,7 @@ const Customer = () => {
     },
     {
       onSuccess: () => {
-        console.log('success');
+        console.log('유저정보 삭제 success');
         queryClient.invalidateQueries(['getCustomerJSON']);
       },
       onError: () => {
