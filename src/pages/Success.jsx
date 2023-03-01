@@ -1,5 +1,6 @@
 import {orderApis} from 'api/order';
 import {successApi} from 'api/success';
+import axios from 'axios';
 import React, {useEffect} from 'react';
 import {useParams, useSearchParams} from 'react-router-dom';
 import {PageWrapper} from '../style/common.style';
@@ -15,7 +16,10 @@ const Success = () => {
       orderItems: JSON.parse(searchParams.get('orderItems')),
     };
     const callOrder = async () => {
-      const res = await successApi.orderSuccess(req);
+      const res = await axios.post('/users/me/orders', {
+        ...req,
+      });
+      // const res = await successApi.orderSuccess(req);
       window.ReactNativeWebView.postMessage(
         JSON.stringify({...res, type: 'NOMAL'}),
       );
