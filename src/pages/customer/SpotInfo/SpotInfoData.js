@@ -5,9 +5,12 @@ export const SpotInfoFieldsToOpen = {
   spotId: '스팟아이디',
   spotName: '스팟이름',
   zipCode: '우편번호',
+  //
   address1: '기본주소',
   address2: '상세주소',
   location: '위치',
+  //
+  diningType: '식타입',
   breakfastDeliveryTime: '배송시아침',
   breakfastSupportPrice: '지원아침',
   breakfastUseDays: '주문요일아침',
@@ -17,10 +20,9 @@ export const SpotInfoFieldsToOpen = {
   dinnerDeliveryTime: '배송시간저녁',
   dinnerSupportPrice: '지원금저녁',
   dinnerUseDays: '주문요일저녁',
-  createdDateTime: '생성일',
   lastOrderTime: '주문마감시간',
+  createdDateTime: '생성일',
   updatedDateTime: '수정일',
-  // diningType: '식타입',
 };
 
 export const SpotInfoFieldsData = [
@@ -83,6 +85,14 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'location',
     fieldNameKor: '위치',
+    placeholder: '',
+    maxCharLength: 40,
+    flex: 1,
+    width: undefined,
+  },
+  {
+    fieldName: 'diningType',
+    fieldNameKor: '식타입',
     placeholder: '',
     maxCharLength: 40,
     flex: 1,
@@ -160,17 +170,18 @@ export const SpotInfoFieldsData = [
     flex: 1,
     width: undefined,
   },
+
   {
-    fieldName: 'createdDateTime',
-    fieldNameKor: '생성일',
+    fieldName: 'lastOrderTime',
+    fieldNameKor: '주문마감시간',
     placeholder: '',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
   },
   {
-    fieldName: 'lastOrderTime',
-    fieldNameKor: '주문마감시간',
+    fieldName: 'createdDateTime',
+    fieldNameKor: '생성일',
     placeholder: '',
     maxCharLength: 40,
     flex: 1,

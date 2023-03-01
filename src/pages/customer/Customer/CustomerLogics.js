@@ -117,7 +117,7 @@ export const sendFinal = (
   }
 };
 
-export const sendDelete = (tableDeleteList, deleteFinalMutate) => {
+const sendDelete = (tableDeleteList, deleteFinalMutate) => {
   const toNumList = tableDeleteList.map(v => {
     return parseInt(v);
   });

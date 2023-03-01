@@ -6,11 +6,7 @@ import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
 // import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
-import {
-  BtnWrapper,
-  PageWrapper,
-  TableWrapper,
-} from '../../../style/common.style';
+import {PageWrapper, TableWrapper} from '../../../style/common.style';
 
 import {CustomerDataAtom} from './store';
 
@@ -26,9 +22,7 @@ import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import {sendFinal} from './CustomerLogics';
 
 import TableCustom from 'common/Table/TableCustom';
-import usePagination from 'common/test/Pagination/usePagination';
-import PaginationTest from './PaginationTest';
-import Pagination from 'common/test/Pagination/Pagination';
+
 import useCustomerData from './useCustomerData';
 import {
   CustomerFieldsDataForRegister,
@@ -285,9 +279,6 @@ const Customer = () => {
               <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
                 dataInput={customerData}
-                // isMemo={true}
-                // handleChange={}
-
                 ellipsisList={[
                   {key: 'password', length: '5rem'},
                   {key: 'email', length: '22rem'},

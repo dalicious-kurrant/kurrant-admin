@@ -40,8 +40,6 @@ const SpotInfo = () => {
 
   const queryClient = useQueryClient();
 
-  const [dataHasNoId, setDataHasNoId] = useAtom(dataHasNoIdAtom);
-
   const {status, isLoading} = useSpotInfoData(
     ['getSpotInfoJSON'],
     SpotInfoDataAtom,
@@ -59,17 +57,14 @@ const SpotInfo = () => {
 
   const {mutate: sendFinalMutate} = useMutation(
     async todo => {
-      const response = await instance.post(
-        `users`,
-        dataHasNoId ? removeIdToSend(todo) : todo,
-      );
+      console.log(todo);
+
+      const response = await instance.post(`clients`, todo);
       return response;
     },
     {
       onSuccess: () => {
         console.log('success');
-
-        setDataHasNoId(false);
 
         queryClient.invalidateQueries(['getSpotInfoJSON']);
       },
@@ -290,7 +285,7 @@ const SpotInfo = () => {
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
               sendFinal={() => {
-                sendFinal(spotInfoData, sendFinalMutate);
+                sendFinal(spotInfoData, sendFinalMutate, checkboxStatus);
               }}
               sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}
