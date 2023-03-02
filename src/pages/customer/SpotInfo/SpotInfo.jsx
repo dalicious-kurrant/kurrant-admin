@@ -194,7 +194,7 @@ const SpotInfo = () => {
                                     <FlexBox>
                                       {typeof p[k] === 'object'
                                         ? formattedTime(p[k])
-                                        : '-'}
+                                        : p[k]}
                                     </FlexBox>
                                   </Table.Cell>
                                 );
