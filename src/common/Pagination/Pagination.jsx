@@ -1,66 +1,99 @@
-import styled from 'styled-components';
-
 import DataLimitSelect from 'common/Pagination/Childs/DataLimitSelect';
-import {calculateTotalPages} from 'common/Pagination/Logics/PaginationLogics';
+import {useEffect} from 'react';
+import styled from 'styled-components';
+import {calculatePageMove} from './PaginationLogics';
 
 const Pagination = ({
-  dataTotalLength,
-
+  pageList,
   page,
   setPage,
-  dataLimit,
-  setDataLimit,
-  pageList,
-
-  handleButtonClick,
-  handleGoToEdge,
-  handleMove,
+  limit,
+  setLimit,
+  lastPage,
   selectOptionArray,
 }) => {
+  const handleNumberButtonClick = e => {
+    e.preventDefault();
+    const id = e.target.id;
+
+    setPage(parseInt(id));
+  };
+
+  const handleButtonClick = e => {
+    e.preventDefault();
+    const id = e.target.id;
+
+    if (page + 10 > lastPage) {
+      setPage(lastPage);
+    }
+
+    if (page < 1) {
+      return;
+    }
+
+    setPage(calculatePageMove(id, page, lastPage));
+
+    if (id === 'first') {
+      setPage(1);
+    } else if (id === 'last') {
+      setPage(lastPage);
+    }
+  };
+
   return (
     <Container>
       <ButtonWrap>
-        <Button id={1} onClick={handleGoToEdge}>
+        <Button
+          id="first"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
           {'<<'}
         </Button>
-        <Button id="move-back" onClick={handleMove}>
+        <Button
+          id="move-back"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
           {'<'}
         </Button>
 
         {Array.isArray(pageList) &&
           !!pageList.length &&
           pageList.map((value, index) => {
-            let selected = false;
-
-            if (value == page) {
-              selected = true;
-            }
+            const selected = page === value ? true : false;
 
             return (
-              <Button
+              <NumberButton
                 key={index}
-                selected={selected}
                 id={value}
-                onClick={handleButtonClick}>
+                selected={selected}
+                onClick={handleNumberButtonClick}>
                 {value}
-              </Button>
+              </NumberButton>
             );
           })}
 
-        <Button id="move-forward" onClick={handleMove}>
+        <Button
+          id="move-forward"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
           {'>'}
         </Button>
 
         <Button
-          id={calculateTotalPages(dataTotalLength, dataLimit)}
-          onClick={handleGoToEdge}>
+          id="last"
+          onClick={e => {
+            handleButtonClick(e);
+          }}>
           {'>>'}
         </Button>
       </ButtonWrap>
       <Wrap>
         <DataLimitSelect
-          currentValue={dataLimit}
-          setLimit={setDataLimit}
+          currentValue={limit}
+          setLimit={setLimit}
           setPage={setPage}
           options={selectOptionArray}
         />
@@ -88,8 +121,13 @@ const ButtonWrap = styled.div`
   }
 `;
 const Button = styled.button`
+  font-size: 1.8rem;
+`;
+
+const NumberButton = styled.button`
   color: ${props =>
-    props.selected ? props.theme.colors.Blue04 : props.theme.colors.black};
+    props.selected ? `${props.theme.colors.blue[400]}` : `black`};
+
   font-size: 1.8rem;
 `;
 

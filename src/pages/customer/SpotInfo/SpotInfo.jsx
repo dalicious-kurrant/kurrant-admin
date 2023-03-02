@@ -1,7 +1,11 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import useMutate from 'common/CRUD/useMutate';
-import {dataHasNoIdAtom, TableCheckboxStatusAtom} from 'common/Table/store';
+import {
+  dataHasNoIdAtom,
+  TableCheckboxStatusAtom,
+  TableDeleteListAtom,
+} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 import {exelSpotAtom, spotAtom} from 'utils/store';
@@ -18,66 +22,34 @@ import {Button, Checkbox, Table} from 'semantic-ui-react';
 
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
-import useSpotInfoData from './useSpotInfoData';
-import {sendFinal} from './SpotInfoLogics';
+import useSpotInfoQuery from './useSpotInfoQuery';
+import {handleSpotInfoDelete, sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
-import {removeIdToSend} from 'common/Table/Logics';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [plan, setPlan] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
+
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
-
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
   const [registerStatus, setRegisterStatus] = useState('register');
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
-  const queryClient = useQueryClient();
-
-  const [dataHasNoId, setDataHasNoId] = useAtom(dataHasNoIdAtom);
-
-  const {status, isLoading} = useSpotInfoData(
-    ['getSpotInfoJSON'],
-    SpotInfoDataAtom,
-    `clients/spot/all`,
-    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-    localStorage.getItem('token'),
-  );
-  useSpotInfoData(
-    ['getSpot'],
-    spotAtom,
-    `clients/spot/all`,
-    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-    localStorage.getItem('token'),
-  );
-
-  const {mutate: sendFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.post(
-        `users`,
-        dataHasNoId ? removeIdToSend(todo) : todo,
-      );
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-
-        setDataHasNoId(false);
-
-        queryClient.invalidateQueries(['getSpotInfoJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
+  const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
+    useSpotInfoQuery(
+      ['getSpotInfoJSON'],
+      SpotInfoDataAtom,
+      `clients/spot/all`,
+      // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+      localStorage.getItem('token'),
+    );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -102,68 +74,19 @@ const SpotInfo = () => {
   useEffect(() => {
     return () => {
       setCheckboxStatus({});
+      setTableDeleteList([]);
     };
   }, []);
 
   const handleDelete = () => {
-    // console.log(deletedStatus);
-
-    const status = {...checkboxStatus};
-
-    let deleteList = [];
-
-    Object.entries(status).forEach(v => {
-      if (v[1] === true) {
-        deleteList.push(v[0]);
-      }
-    });
-
-    let yo = [];
-    const spotInfoDataToDelete = [...spotInfoData];
-
-    spotInfoDataToDelete.forEach(v => {
-      if (deleteList.includes(v.id.toString())) {
-      } else {
-        yo.push(v);
-      }
-    });
-
-    setSpotInfoData(yo);
+    handleSpotInfoDelete(
+      checkboxStatus,
+      tableDeleteList,
+      spotInfoData,
+      setTableDeleteList,
+      setSpotInfoData,
+    );
   };
-
-  // const sendFinal = () => {
-  //   const oldData = [...customerData];
-
-  //   const newData = oldData.map(value => {
-  //     let yo = {};
-
-  //     yo['userId'] = handleFalsyValue(value.email);
-  //     yo['password'] = handleFalsyValue(value.password);
-  //     yo['name'] = handleFalsyValue(value.name);
-  //     yo['email'] = handleFalsyValue(value.email);
-  //     yo['phone'] = handleFalsyValue(value.phone);
-  //     yo['role'] = handleFalsyValue(value.role);
-
-  //     return yo;
-  //   });
-
-  //   const newData2 = {
-  //     userList: newData,
-  //   };
-
-  //   if (
-  //     window.confirm(
-  //       '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
-  //     )
-  //   ) {
-  //     sendFinalMutate(newData2);
-  //   } else {
-  //   }
-  // };
-
-  useEffect(() => {
-    console.log(spotInfoData);
-  }, [spotInfoData]);
 
   if (isLoading)
     return (
@@ -290,7 +213,13 @@ const SpotInfo = () => {
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
               sendFinal={() => {
-                sendFinal(spotInfoData, sendFinalMutate);
+                sendFinal(
+                  spotInfoData,
+                  sendFinalMutate,
+                  checkboxStatus,
+                  tableDeleteList,
+                  deleteFinalMutate,
+                );
               }}
               sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}
