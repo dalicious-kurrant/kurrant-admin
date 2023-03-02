@@ -534,6 +534,7 @@ const Common = () => {
       const req = exportSpot.filter(element => {
         return element !== undefined && element !== null && element !== '';
       });
+      console.log(req);
       return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {

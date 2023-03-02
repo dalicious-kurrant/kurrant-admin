@@ -167,7 +167,6 @@ export function productExel(product) {
   ]);
 
   product?.map(el => {
-
     const reqArray = [];
     reqArray.push(el.foodId);
     reqArray.push(el.makersId);
@@ -279,9 +278,9 @@ export function spotExel(spot) {
   const reqArrays = [];
   reqArrays.push([
     'spotId',
+    'groupName',
     'spotName',
     'groupId',
-    'groupName',
     'zipCode',
     'address1',
     'address2',
@@ -324,9 +323,9 @@ export function spotExel(spot) {
   spot?.map(el => {
     const reqArray = [];
     reqArray.push(el.spotId);
+    reqArray.push(el.groupName);
     reqArray.push(el.spotName);
     reqArray.push(el.groupId);
-    reqArray.push(el.groupName);
     reqArray.push(el.zipCode);
     reqArray.push(el.address1);
     reqArray.push(el.address2);
