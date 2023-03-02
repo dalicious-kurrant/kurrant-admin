@@ -1,8 +1,8 @@
 export const SpotInfoRegisterFieldsToOpen = {
   // id: '아이디',
   // groupId: '그룹아이디', // 1, 2, 3
-  groupId: ' 그룹이름',
-  groupName: '그룹이름',
+  groupId: ' 상세스팟 이름',
+  groupName: '상세스팟 이름',
   spotId: '스팟아이디',
   spotName: '스팟이름',
   zipCode: '우편번호', // 빈칸이면 안됨, 00000
@@ -19,7 +19,7 @@ export const SpotInfoRegisterFieldsToOpen = {
   dinnerDeliveryTime: '배송시간저녁', // null 가능
   dinnerSupportPrice: '지원금저녁', // null 가능
   dinnerUseDays: '주문요일저녁', // null 가능
-  lastOrderTime: '주문마감시간', //  "00:00:00"형식 준수
+  // lastOrderTime: '주문마감시간', //  "00:00:00"형식 준수
   createdDateTime: '생성일',
   updatedDateTime: '수정일',
 };
@@ -27,7 +27,7 @@ export const SpotInfoRegisterFieldsToOpen = {
 export const SpotInfoFieldsToOpen = {
   // id: '아이디',
   // groupId: '그룹아이디', // 1, 2, 3
-  groupName: '그룹이름',
+  groupName: '상세스팟 이름',
 
   spotId: '스팟아이디',
   spotName: '스팟이름',
@@ -45,7 +45,7 @@ export const SpotInfoFieldsToOpen = {
   dinnerDeliveryTime: '배송시간저녁', // null 가능
   dinnerSupportPrice: '지원금저녁', // null 가능
   dinnerUseDays: '주문요일저녁', // null 가능
-  lastOrderTime: '주문마감시간', //  "00:00:00"형식 준수
+  // lastOrderTime: '주문마감시간', //  "00:00:00"형식 준수
   createdDateTime: '생성일',
   updatedDateTime: '수정일',
 };
@@ -58,7 +58,7 @@ const inputType = {
 export const SpotInfoFieldsData = [
   {
     fieldName: 'groupId',
-    fieldNameKor: '그룹이름',
+    fieldNameKor: '상세스팟 이름',
     placeholder: '선택',
     maxCharLength: 40,
     flex: 1,
@@ -215,15 +215,15 @@ export const SpotInfoFieldsData = [
     width: undefined,
   },
 
-  {
-    fieldName: 'lastOrderTime',
-    fieldNameKor: '주문마감시간',
-    placeholder: '예) 00:00:00',
-    maxCharLength: 40,
-    flex: 1,
-    width: undefined,
-    headerWidth: 180,
-  },
+  // {
+  //   fieldName: 'lastOrderTime',
+  //   fieldNameKor: '주문마감시간',
+  //   placeholder: '예) 00:00:00',
+  //   maxCharLength: 40,
+  //   flex: 1,
+  //   width: undefined,
+  //   headerWidth: 180,
+  // },
   {
     fieldName: 'createdDateTime',
     fieldNameKor: '생성일',

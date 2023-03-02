@@ -12,8 +12,8 @@ dinnerSupportPrice: null;
 dinnerUseDays: null;
 groupId: 1;
 groupName: '달리셔스';
-id: 62;
-lastOrderTime: null;
+// id: 62;
+// lastOrderTime: null;
 location: null;
 lunchDeliveryTime: null;
 lunchSupportPrice: null;
@@ -22,6 +22,8 @@ spotId: 89;
 spotName: '달리셔스';
 updatedDateTime: '2023-03-02';
 zipCode: '12345';
+22;
+20;
 
 // 엑셀 데이터
 
@@ -44,3 +46,4 @@ spotId: 3;
 spotName: '3층';
 updatedDateTime: '2023-02-14';
 zipCode: '10002';
+19;
