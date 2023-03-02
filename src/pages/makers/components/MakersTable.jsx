@@ -1,6 +1,7 @@
-import {useGetMakersInfomation} from '../../../hooks/useMakers';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
+import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
+import {bizNoFormatter} from 'utils/bizNumberFormatter';
 
 const MakersTable = ({data}) => {
   return (
@@ -82,20 +83,30 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.name}</Table.Cell>
                 <Table.Cell>{el.companyName}</Table.Cell>
                 <Table.Cell>{el.ceo}</Table.Cell>
-                <Table.Cell>{el.ceoPhone}</Table.Cell>
-                <Table.Cell>{el.managerName}</Table.Cell>
-                <Table.Cell>{el.managerPhone}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {phoneNumberFormmatter(el.managerPhone)}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.managerName ?? '-'}
+                </Table.Cell>
+                <Table.Cell>
+                  {phoneNumberFormmatter(el.managerPhone)}
+                </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
                 <Table.Cell textAlign="center">{el.serviceType}</Table.Cell>
                 <Table.Cell>{el.serviceForm}</Table.Cell>
                 <Table.Cell textAlign="center">{parentCompany}</Table.Cell>
-                <Table.Cell>{el.parentCompanyId}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.parentCompanyId ?? '-'}
+                </Table.Cell>
                 <Table.Cell>{el.zipCode}</Table.Cell>
                 <Table.Cell>{el.address1}</Table.Cell>
                 <Table.Cell>{el.address2}</Table.Cell>
-                <Table.Cell>{el.location}</Table.Cell>
-                <Table.Cell>{el.companyRegistrationNumber}</Table.Cell>
+                <Table.Cell textAlign="center">{el.location ?? '-'}</Table.Cell>
+                <Table.Cell>
+                  {bizNoFormatter(el.companyRegistrationNumber)}
+                </Table.Cell>
                 <Table.Cell>{el.contractStartDate}</Table.Cell>
                 <Table.Cell>{el.contractEndDate}</Table.Cell>
                 <Table.Cell textAlign="center">

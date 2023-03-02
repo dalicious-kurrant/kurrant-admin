@@ -1,8 +1,10 @@
 import {useEffect, useState} from 'react';
 import {Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
+import {bankNumberFormatter} from 'utils/bankNumberFormatter';
 import {bizNoFormatter, bizNumberFormatter} from 'utils/bizNumberFormatter';
 import {formattedDate, formattedTime} from 'utils/dateFormatter';
+import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
 
 const MakersExelTable = ({data}) => {
   const [key, setKey] = useState();
@@ -37,7 +39,7 @@ const MakersExelTable = ({data}) => {
                 <Table.Row>
                   {key &&
                     key.map((k, i) => {
-                      console.log(el['companyRegistrationNumber'], '000');
+                      // console.log(el['companyRegistrationNumber'], '000');
                       if (k === 'id') {
                         return (
                           <Table.Cell key={k + i} textAlign="center">
@@ -52,19 +54,35 @@ const MakersExelTable = ({data}) => {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'companyName') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 100}}>{el[k]}</div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'ceo') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'ceoPhone') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 120}}>
+                              {phoneNumberFormmatter(el[k])}
+                            </div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'managerName') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'managerPhone') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 120}}>
+                              {phoneNumberFormmatter(el[k])}
+                            </div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'diningTypes') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
@@ -115,15 +133,25 @@ const MakersExelTable = ({data}) => {
                       if (k === 'companyRegistrationNumber') {
                         return (
                           <Table.Cell key={k + i}>
-                            {bizNoFormatter(el[k].toString())}
+                            <div style={{width: 120}}>
+                              {bizNoFormatter(el[k].toString())}
+                            </div>
                           </Table.Cell>
                         );
                       }
                       if (k === 'contractStartDate') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 130}}>{el[k]}</div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'contractEndDate') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 130}}>{el[k]}</div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'isNutritionInformation') {
                         return (
