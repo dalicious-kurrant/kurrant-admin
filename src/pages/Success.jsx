@@ -18,6 +18,7 @@ const Success = () => {
     };
 
     const callOrder = async () => {
+      alert(JSON.stringify(req));
       const res = await instanceOrder.post('/users/me/orders', {
         ...req,
       });
