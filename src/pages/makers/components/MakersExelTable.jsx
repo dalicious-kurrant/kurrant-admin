@@ -1,10 +1,11 @@
 import {useEffect, useState} from 'react';
 import {Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
+import {formattedDate, formattedTime} from 'utils/dateFormatter';
 
 const MakersExelTable = ({data}) => {
   const [key, setKey] = useState();
-
+  //   console.log(key, '00');
   useEffect(() => {
     if (data) setKey(Object.keys(data[0]));
   }, [data]);
@@ -31,8 +32,13 @@ const MakersExelTable = ({data}) => {
                 <Table.Row>
                   {key &&
                     key.map((k, i) => {
+                      console.log(el['isParentCompany'], '000');
                       if (k === 'id') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i} textAlign="center">
+                            {el[k]}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'code') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
@@ -68,10 +74,18 @@ const MakersExelTable = ({data}) => {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'isParentCompany') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            {el[k] ? '여' : '부'}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'parentCompanyId') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            {!el[k] ? '부' : el[k]}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'zipCode') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
@@ -95,7 +109,11 @@ const MakersExelTable = ({data}) => {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'isNutritionInformation') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            {el[k] ? '여' : '부'}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'openTime') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;

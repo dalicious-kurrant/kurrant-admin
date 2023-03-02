@@ -1,4 +1,4 @@
-import {formattedDate} from 'utils/dateFormatter';
+import {formattedDate, formattedTime} from 'utils/dateFormatter';
 import * as XLSX from 'xlsx';
 import {scheduleFormatted} from '../statusFormatter';
 
@@ -79,10 +79,9 @@ export function completePlanExel(plan) {
     'makersCount',
     'makersPickupTime',
     'foodName',
-    'dailyFoodStatus',
+    'foodStatus',
     'foodCapacity',
     'foodCount',
-    'dailyFoodId',
   ]);
   reqArrays.push([
     '날짜',
@@ -98,7 +97,6 @@ export function completePlanExel(plan) {
     '음식 상태',
     '음식 케파',
     '주문가능 수량',
-    '데일리푸드아이디',
   ]);
   plan.map(makers => {
     return makers.makersSchedules.map(client => {
@@ -114,10 +112,9 @@ export function completePlanExel(plan) {
         reqArray.push(client.makersCount);
         reqArray.push(client.makersPickupTime);
         reqArray.push(food.foodName);
-        reqArray.push(food.dailyFoodStatus);
+        reqArray.push(food.foodStatus);
         reqArray.push(food.foodCapacity);
         reqArray.push(food.foodCount);
-        reqArray.push(food.dailyFoodId);
         reqArrays.push(reqArray);
         return reqArrays;
       });
@@ -450,7 +447,7 @@ export function corporationExelExport(corporation, sheetName, fileName) {
 }
 
 // 메이커스 정보
-export function makersInfoExel(corporation) {
+export function makersInfoExel(makersInformation) {
   const reqArrays = [];
   reqArrays.push([
     'id',
@@ -511,14 +508,38 @@ export function makersInfoExel(corporation) {
     '계좌번호',
   ]);
 
-  corporation.map(el => {
+  makersInformation?.data?.map(el => {
+    console.log(el.openTime, '9999');
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(el.code);
     reqArray.push(el.name);
+    reqArray.push(el.companyName);
+    reqArray.push(el.ceo);
+    reqArray.push(el.ceoPhone);
+    reqArray.push(el.managerName);
+    reqArray.push(el.managerPhone);
+    reqArray.push(el.diningTypes.join(','));
+    reqArray.push(el.dailyCapacity);
+    reqArray.push(el.serviceType);
+    reqArray.push(el.serviceForm);
+    reqArray.push(el.isParentCompany);
+    reqArray.push(el.parentCompanyId);
+    reqArray.push(el.zipCode);
+    reqArray.push(el.address1);
+    reqArray.push(el.address2);
+    reqArray.push(el.location);
+    reqArray.push(el.companyRegistrationNumber);
+    reqArray.push(el.contractStartDate);
+    reqArray.push(el.contractEndDate);
+    reqArray.push(el.isNutritionInformation);
+    reqArray.push(el.openTime);
+    reqArray.push(el.closeTime);
+    reqArray.push(el.bank);
+    reqArray.push(el.depositHolder);
+    reqArray.push(el.accountNumber);
 
     reqArrays.push(reqArray);
-
     return reqArrays;
   });
   console.log(reqArrays);
@@ -529,9 +550,11 @@ export function makersInfoExel(corporation) {
   XLSX.writeFile(workbook, '메이커스_정보.xlsx');
 }
 
-export function makersInfoExelExport(corporation, sheetName, fileName) {
+export function makersInfoExelExport(makersInformation, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
-  const worksheet = XLSX.utils.json_to_sheet(corporation, {cellDates: true});
+  const worksheet = XLSX.utils.json_to_sheet(makersInformation, {
+    cellDates: true,
+  });
 
   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   XLSX.writeFile(workbook, fileName);
