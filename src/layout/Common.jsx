@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {useLocation} from 'react-router';
 import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
@@ -142,6 +142,10 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
+
+  useEffect(() => {
+    console.log(exelSpot);
+  }, [exelSpot]);
 
   const completePost = async () => {
     const reqArray = [];
@@ -532,6 +536,7 @@ const Common = () => {
       const req = exportSpot.filter(element => {
         return element !== undefined && element !== null && element !== '';
       });
+      console.log(req);
       return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {
@@ -598,21 +603,29 @@ const Common = () => {
                 exelCorporation ||
                 makersExelInfo
               ) {
+                console.log('callPostCalendar');
                 callPostCalendar();
               }
+              if (exelSpot) {
+                console.log('exelSpot 엑셀 스팟');
+              }
+
               if (exelUser) {
+                console.log('handlerSaveExelUser');
                 handlerSaveExelUser();
               }
               if (user && user.length !== 0) {
                 handlerSaveUser();
               }
-
               if (completePlan || exelCompletePlan) {
+                console.log('completePost');
                 completePost();
               }
               if (statusOption.length !== 0) {
+                console.log('statusButton');
                 statusButton();
               }
+              console.log('아무것도 없음');
             }}
           />
           {/* <Button icon="history" content="히스토리" /> */}
