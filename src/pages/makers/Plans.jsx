@@ -76,7 +76,7 @@ const Plans = () => {
     useGetRecommandCalendar(
       formattedWeekDate(recommandStartDate),
       formattedWeekDate(recommandEndDate),
-      20,
+      2000,
       page,
       selectMakers,
       selectClient,
@@ -90,6 +90,7 @@ const Plans = () => {
   const [accessStartDate, setAccessStartDate] = useState(new Date());
   const [accessEndDate, setAccessEndDate] = useState(new Date());
   const recommandData = () => {
+    console.log(calendarRecommandData?.data);
     setIsClick(true);
     setReCommandPlan();
     setExelPlan();
@@ -97,6 +98,17 @@ const Plans = () => {
     setPlan();
     setTotalPage();
     setReCommandPlan(calendarRecommandData?.data.items?.presetScheduleList);
+    setTotalPage(calendarRecommandData?.data?.total);
+    setOption(
+      calendarRecommandData?.data?.items?.makersInfoList.map(v => {
+        return {key: v.makersId, text: v.makersName, value: v.makersId};
+      }),
+    );
+    setOptionsClient(
+      calendarRecommandData?.data?.items?.groupInfoList.map(v => {
+        return {key: v.groupId, text: v.groupName, value: v.groupId};
+      }),
+    );
   };
   const onCreate = async () => {
     await completeCalendar({
@@ -131,19 +143,20 @@ const Plans = () => {
       });
     }
     if (reCommandPlan) {
+      console.log(reCommandPlan);
       reCommandPlan.map(makers => {
         return makers.clientSchedule.map(client => {
           return client.foodSchedule.map(food => {
             const result = {
               makersName: makers.makersName,
-              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              makersScheduleStatus: makers.scheduleStatus,
               serviceDate: makers.serviceDate,
               diningType: makers.diningType,
               makersCapacity: makers.makersCapacity,
               pickupTime: client.pickupTime,
               groupName: client.clientName,
               groupCapacity: client.clientCapacity,
-              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodScheduleStatus: food.scheduleStatus,
               foodName: food.foodName,
               foodStatus: food.foodStatus,
               foodCapacity: food.foodCapacity,
@@ -192,12 +205,12 @@ const Plans = () => {
         setPlan(calendarData?.data?.items?.presetScheduleList);
         setOption(
           calendarData?.data?.items?.makersInfoList.map(v => {
-            return {key: v.makersName, text: v.makersName, value: v.makersId};
+            return {key: v.makersId, text: v.makersName, value: v.makersId};
           }),
         );
         setOptionsClient(
           calendarData?.data?.items?.groupInfoList.map(v => {
-            return {key: v.groupName, text: v.groupName, value: v.groupId};
+            return {key: v.groupId, text: v.groupName, value: v.groupId};
           }),
         );
       }
