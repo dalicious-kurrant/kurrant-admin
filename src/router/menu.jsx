@@ -26,9 +26,11 @@ export const MenuList = [
         component: <Order />,
       },
       {
-        name: '식단 정보 (진행중)',
-        url: '/diet',
-        component: <Diet />,
+
+        name: '식단 현황',
+        url: '/completeplans',
+        component: <CompletePlans />,
+
       },
     ],
   },
@@ -90,11 +92,6 @@ export const MenuList = [
         name: '메이커스 일정 요청',
         url: '/plans',
         component: <Plans />,
-      },
-      {
-        name: '식단 현황',
-        url: '/completeplans',
-        component: <CompletePlans />,
       },
     ],
   },

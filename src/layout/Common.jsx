@@ -238,14 +238,14 @@ const Common = () => {
           return client.foodSchedule.map(food => {
             const result = {
               makersName: makers.makersName,
-              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              makersScheduleStatus: makers.scheduleStatus,
               serviceDate: makers.serviceDate,
               diningType: makers.diningType,
               makersCapacity: makers.makersCapacity,
               pickupTime: client.pickupTime,
               groupName: client.clientName,
               groupCapacity: client.clientCapacity,
-              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodScheduleStatus: food.scheduleStatus,
               foodName: food.foodName,
               foodStatus: food.foodStatus,
               foodCapacity: food.foodCapacity,
