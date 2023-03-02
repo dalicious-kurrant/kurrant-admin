@@ -277,10 +277,10 @@ export function userExel(user) {
 export function spotExel(spot) {
   const reqArrays = [];
   reqArrays.push([
-    'spotId',
-    'spotName',
     'groupId',
     'groupName',
+    'spotId',
+    'spotName',
     'zipCode',
     'address1',
     'address2',
