@@ -18,11 +18,10 @@ const Success = () => {
     };
 
     const callOrder = async () => {
-      alert(JSON.stringify(req));
       const res = await instanceOrder.post('/users/me/orders', {
         ...req,
       });
-
+      alert(JSON.stringify(res));
       // const res = await successApi.orderSuccess(req);
       window.ReactNativeWebView.postMessage(
         JSON.stringify({...res, type: 'NOMAL'}),
