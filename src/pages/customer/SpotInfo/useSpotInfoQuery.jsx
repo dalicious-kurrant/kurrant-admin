@@ -22,7 +22,8 @@ const useSpotInfoQuery = (
 
   const queryClient = useQueryClient();
 
-  const [, setData] = useAtom(atom);
+  const [, setData] = useAtom(atom[0]);
+  const [, setExcelData] = useAtom(atom[1]);
   const [, setDataHasNoId] = useAtom(dataHasNoIdAtom);
 
   const {data, status, isLoading} = useQuery(
@@ -100,6 +101,7 @@ const useSpotInfoQuery = (
 
   useEffect(() => {
     setData(data);
+    setExcelData(data);
   }, [data]);
 
   return {

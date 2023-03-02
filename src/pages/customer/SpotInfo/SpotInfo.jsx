@@ -45,11 +45,19 @@ const SpotInfo = () => {
   const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
     useSpotInfoQuery(
       ['getSpotInfoJSON'],
-      SpotInfoDataAtom,
+      [SpotInfoDataAtom, spotAtom],
       `clients/spot/all`,
       // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
       localStorage.getItem('token'),
     );
+
+  // useSpotInfoQuery(
+  //   ['getSpot'],
+  //   spotAtom,
+  //   `clients/spot/all`,
+  //   // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+  //   localStorage.getItem('token'),
+  // );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
