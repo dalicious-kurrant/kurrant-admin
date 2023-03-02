@@ -15,11 +15,12 @@ const Success = () => {
       amount: Number(searchParams.get('amount')),
       orderItems: JSON.parse(searchParams.get('orderItems')),
     };
-    alert(req);
+
     const callOrder = async () => {
       const res = await axios.post('/users/me/orders', {
         ...req,
       });
+      alert(JSON.stringify(res));
       // const res = await successApi.orderSuccess(req);
       window.ReactNativeWebView.postMessage(
         JSON.stringify({...res, type: 'NOMAL'}),
