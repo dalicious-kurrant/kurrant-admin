@@ -132,7 +132,7 @@ const MakersExelTable = ({data}) => {
                         return (
                           <Table.Cell key={k + i}>
                             <div style={{width: 120}}>
-                              {bizNoFormatter(el[k].toString())}
+                              {bizNoFormatter(el[k]?.toString())}
                             </div>
                           </Table.Cell>
                         );

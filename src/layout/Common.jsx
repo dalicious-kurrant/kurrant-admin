@@ -395,7 +395,7 @@ const Common = () => {
             address2: item.address2,
             location: item.location || null,
             companyRegistrationNumber:
-              item.companyRegistrationNumber.toString(),
+              item.companyRegistrationNumber?.toString(),
             contractStartDate: item.contractStartDate,
             contractEndDate: item.contractEndDate,
             isNutritionInformation: nutrition,
