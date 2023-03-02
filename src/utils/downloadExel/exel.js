@@ -167,7 +167,6 @@ export function productExel(product) {
   ]);
 
   product?.map(el => {
-
     const reqArray = [];
     reqArray.push(el.foodId);
     reqArray.push(el.makersId);
@@ -376,9 +375,13 @@ export function corporationInfoExel(corporation) {
     'location',
     'diningTypes',
     'serviceDays',
+    'managerId',
     'managerName',
     'managerPhpne',
     'isMembershipSupport',
+    'morningSupportPrice',
+    'lunchSupportPrice',
+    'dinnerSupportPrice',
     'employeeCount',
     'isSetting',
     'isGarbage',
@@ -394,9 +397,13 @@ export function corporationInfoExel(corporation) {
     '위치',
     '식사 타입',
     '식사 요일',
+    '담당자 ID',
     '담당자',
     '담당자 전화번호',
     '기업멤버십 지원여부',
+    '아침 지원금',
+    '점심 지원금',
+    '저녁 지원금',
     '사원수',
     '식사 세팅 지원 서비스',
     '쓰레기 수거 서비스',

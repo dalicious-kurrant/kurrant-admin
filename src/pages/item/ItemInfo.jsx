@@ -31,7 +31,7 @@ const ItemInfo = () => {
   };
 
   useEffect(() => {
-    console.log(productList?.data);
+    // console.log(productList?.data);
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
