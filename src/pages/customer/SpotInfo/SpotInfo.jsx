@@ -15,7 +15,11 @@ import {
   PageWrapper,
   TableWrapper,
 } from '../../../style/common.style';
-import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
+import {
+  SpotInfoFieldsData,
+  SpotInfoFieldsToOpen,
+  SpotInfoRegisterFieldsToOpen,
+} from './SpotInfoData';
 import {clickButtonBundle} from '../Logics/Logics';
 import {SpotInfoDataAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
@@ -80,8 +84,12 @@ const SpotInfo = () => {
   }, [exelSpot]);
 
   useEffect(() => {
-    console.log(exelSpot);
-  }, [exelSpot]);
+    console.log(spotInfoData);
+  }, [spotInfoData]);
+
+  // useEffect(() => {
+  //   console.log(exelSpot);
+  // }, [exelSpot]);
 
   useEffect(() => {
     return () => {
@@ -244,7 +252,7 @@ const SpotInfo = () => {
                 editMutate={editMutate}
                 handleClose={handleClose}
                 data={dataToEdit}
-                fieldsToOpen={SpotInfoFieldsToOpen}
+                fieldsToOpen={SpotInfoRegisterFieldsToOpen}
                 fieldsData={SpotInfoFieldsData}
               />
             )}
