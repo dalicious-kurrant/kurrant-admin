@@ -58,6 +58,7 @@ import {
 import {useSaveUserData} from '../hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {useSaveExelCorporation} from '../hooks/useCorporation';
+import {useSaveMakersInformation} from 'hooks/useMakers';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -132,7 +133,8 @@ const Common = () => {
   const {mutateAsync: editStatus} = useEditProductStatus();
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
-
+  const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
+  console.log(user, '9779');
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -369,9 +371,9 @@ const Common = () => {
         }
       });
       console.log(reqArray, '00');
-      //await corporationExel(reqArray);
-      //alert('저장 되었습니다.');
-      // return window.location.reload();
+      await saveMakersInfo(reqArray);
+      alert('저장 되었습니다.');
+      return window.location.reload();
     }
 
     await postPresetCalendar({
@@ -379,7 +381,7 @@ const Common = () => {
       excelDataList: [...reqArray],
     });
     alert('저장 되었습니다.');
-    window.location.reload();
+    return window.location.reload();
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
@@ -471,7 +473,7 @@ const Common = () => {
     });
     await saveUserData(req);
     alert('저장 되었습니다.');
-    window.location.reload();
+    return window.location.reload();
   };
   const handlerSaveUser = async () => {
     const result = user.map((v, i) => {
@@ -493,8 +495,8 @@ const Common = () => {
       return element !== undefined && element !== null && element !== '';
     });
     await saveUserData(req);
-    alert('저장 되었습니다.');
-    window.location.reload();
+    alert('저장 되었습니다123 .');
+    return window.location.reload();
   };
   const onDownloadFile = async () => {
     if (plan && plan.length > 0) {
@@ -612,8 +614,7 @@ const Common = () => {
                 console.log('handlerSaveExelUser');
                 handlerSaveExelUser();
               }
-              if (user) {
-                console.log('handlerSaveUser');
+              if (user.length !== 0) {
                 handlerSaveUser();
               }
               if (completePlan || exelCompletePlan) {
