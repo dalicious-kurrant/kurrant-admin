@@ -26,7 +26,7 @@ export const MenuList = [
         component: <Order />,
       },
       {
-        name: '식단 정보',
+        name: '식단 정보 (진행중)',
         url: '/diet',
         component: <Diet />,
       },
@@ -48,7 +48,7 @@ export const MenuList = [
         component: <Company />,
       },
       {
-        name: '기업 가입리스트',
+        name: '기업 가입리스트 (진행중)',
         url: '/company-list',
         component: <CompanyList />,
       },
@@ -59,7 +59,7 @@ export const MenuList = [
         // component: <Spot />,
       },
       {
-        name: '아파트 정보',
+        name: '아파트 정보 (진행중)',
         url: '/apartment',
         component: <Apartment />,
       },
@@ -75,7 +75,7 @@ export const MenuList = [
         component: <Makers />,
       },
       {
-        name: '메이커스 정보 변경',
+        name: '메이커스 정보 변경 (진행중)',
         url: '/modify',
       },
       {
@@ -83,7 +83,7 @@ export const MenuList = [
         url: '/holiday',
       },
       {
-        name: '메이커스 변경 요청',
+        name: '메이커스 변경 요청 (진행중)',
         url: '/apply',
       },
       {
@@ -108,89 +108,89 @@ export const MenuList = [
         component: <ItemInfo />,
       },
       {
-        name: '상품 등록요청',
+        name: '상품 등록요청 (진행중)',
         url: '/register',
       },
       {
-        name: '상품정보 변경요청',
+        name: '상품정보 변경요청 (진행중)',
         url: '/modify',
       },
       {
-        name: '카테고리 관리',
+        name: '카테고리 관리 (진행중)',
         url: '/category',
       },
     ],
   },
   {
-    name: '신청',
+    name: '신청 (진행중)',
     url: '/apply',
     children: [
       {
-        name: '메이커스 신청',
+        name: '메이커스 신청 (진행중)',
         url: '/makers',
       },
       {
-        name: '스팟 신청',
+        name: '스팟 신청 (진행중)',
         url: '/spot',
       },
       {
-        name: '정기식사 신청',
+        name: '정기식사 신청 (진행중)',
         url: '/diet',
       },
       {
-        name: '케이터링 신청',
+        name: '케이터링 신청 (진행중)',
         url: '/catering',
       },
     ],
   },
   {
-    name: '게시판&리뷰',
+    name: '게시판&리뷰 (진행중)',
     url: '/board',
     children: [
       {
-        name: '리뷰 및 신고',
+        name: '리뷰 및 신고 (진행중)',
         url: '/review',
       },
       {
-        name: '컨텐츠 관리',
+        name: '컨텐츠 관리 (진행중)',
         url: '/contents',
       },
       {
-        name: '공지사항',
+        name: '공지사항 (진행중)',
         url: '/notice',
       },
       {
-        name: '푸쉬알림',
+        name: '푸쉬알림 (진행중)',
         url: '/notification',
       },
       {
-        name: '이용 가이드',
+        name: '이용 가이드 (진행중)',
         url: '/guide',
       },
     ],
   },
   {
-    name: '정산',
+    name: '정산 (진행중)',
     url: '/calc',
     children: [
       {
-        name: '정산 조회',
+        name: '정산 조회 (진행중)',
         url: '/info',
       },
       {
-        name: '메이커스 정산',
+        name: '메이커스 정산 (진행중)',
         url: '/makers',
       },
       {
-        name: '수수료 관리',
+        name: '수수료 관리 (진행중)',
         url: '/charge',
       },
       {
-        name: '정산 수정 요청',
+        name: '정산 수정 요청 (진행중)',
         url: '/modify',
       },
       {
-        name: '정산 이슈',
+        name: '정산 이슈 (진행중)',
         url: '/issue',
       },
     ],

@@ -4,6 +4,7 @@ import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
 import {bizNoFormatter} from 'utils/bizNumberFormatter';
 
 const MakersTable = ({data}) => {
+  console.log(data, '09');
   return (
     <TableWrapper>
       <Table celled>
@@ -84,13 +85,17 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.companyName}</Table.Cell>
                 <Table.Cell>{el.ceo}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {phoneNumberFormmatter(el.managerPhone)}
+                  <div style={{width: 150}}>
+                    {phoneNumberFormmatter(el.ceoPhone)}
+                  </div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.managerName ?? '-'}
                 </Table.Cell>
-                <Table.Cell>
-                  {phoneNumberFormmatter(el.managerPhone)}
+                <Table.Cell textAlign="center">
+                  <div style={{width: 150}}>
+                    {phoneNumberFormmatter(el.managerPhone)}
+                  </div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
@@ -104,13 +109,15 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.address1}</Table.Cell>
                 <Table.Cell>{el.address2}</Table.Cell>
                 <Table.Cell textAlign="center">{el.location ?? '-'}</Table.Cell>
-                <Table.Cell>
-                  {bizNoFormatter(el.companyRegistrationNumber)}
+                <Table.Cell textAlign="center">
+                  <div style={{width: 150}}>
+                    {bizNoFormatter(el.companyRegistrationNumber)}
+                  </div>
                 </Table.Cell>
                 <Table.Cell>{el.contractStartDate}</Table.Cell>
                 <Table.Cell>{el.contractEndDate}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {el.isNutritionInformation ?? '부'}
+                  {el.isNutritionInformation ? '여' : '부'}
                 </Table.Cell>
                 <Table.Cell>{el.openTime}</Table.Cell>
                 <Table.Cell>{el.closeTime}</Table.Cell>

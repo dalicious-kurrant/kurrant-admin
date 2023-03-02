@@ -312,8 +312,7 @@ const Common = () => {
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
-            location:
-              (item.location === undefined || item.location === 'null') && null,
+            location: item.location || null,
             diningTypes: [item.diningTypes],
             serviceDays: item.serviceDays,
             managerId: item.managerId,
@@ -340,6 +339,28 @@ const Common = () => {
     if (makersExelInfo) {
       makersExelInfo.map((item, idx) => {
         if (idx !== 0) {
+          const nutrition = item.isNutritionInformation ? 1 : 0;
+
+          const typeArr = [];
+          if (item.morningCapa) {
+            typeArr.push({
+              diningType: 1,
+              capacity: item.morningCapa,
+            });
+          }
+          if (item.lunchCapa) {
+            typeArr.push({
+              diningType: 2,
+              capacity: item.lunchCapa,
+            });
+          }
+          if (item.dinnerCapa) {
+            typeArr.push({
+              diningType: 3,
+              capacity: item.dinnerCapa,
+            });
+          }
+
           const result = {
             id: item.id,
             code: item.code,
@@ -349,21 +370,21 @@ const Common = () => {
             ceoPhone: item.ceoPhone,
             managerName: item.managerName,
             managerPhone: item.managerPhone,
-            diningTypes: item.diningTypes,
+            diningTypes: typeArr,
             dailyCapacity: item.dailyCapacity,
             serviceType: item.serviceType,
             serviceForm: item.serviceForm,
             isParentCompany: item.isParentCompany,
-            parentCompanyId: item.parentCompanyId,
+            parentCompanyId: item.parentCompanyId || null,
             zipCode: item.zipCode.toString(),
             address1: item.address1,
             address2: item.address2,
-            location: item.location === undefined && null,
+            location: item.location || null,
             companyRegistrationNumber:
               item.companyRegistrationNumber.toString(),
             contractStartDate: item.contractStartDate,
             contractEndDate: item.contractEndDate,
-            isNutritionInformation: item.isNutritionInformation,
+            isNutritionInformation: nutrition,
             openTime: item.openTime,
             closeTime: item.closeTime,
             bank: item.bank,
@@ -375,7 +396,7 @@ const Common = () => {
         }
       });
       console.log(reqArray, '00');
-      await saveMakersInfo(reqArray);
+      await saveMakersInfo({saveMakersRequestDto: reqArray});
       alert('저장 되었습니다.');
       return window.location.reload();
     }
