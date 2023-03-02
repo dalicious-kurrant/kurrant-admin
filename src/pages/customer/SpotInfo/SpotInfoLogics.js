@@ -159,16 +159,20 @@ export const makeId = dataInput => {
   });
 };
 
-export const saveSpotToDb = (data, mutate) => {
+export const saveSpotToDb = (data, mutate, deleteList) => {
   if (data.length < 1) {
     window.confirm('등록할 값들이 들어있는지 다시한번 확인해 주세요');
     return;
   }
 
+  // id 지우기
+
+  // delete추가하기
+
   const yo = {
     saveSpotList: [...data],
   };
 
-  // console.log(yo);
+  console.log(yo);
   mutate(yo);
 };

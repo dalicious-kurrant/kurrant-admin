@@ -63,6 +63,8 @@ import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
 import {saveSpotToDb} from 'pages/customer/SpotInfo/SpotInfoLogics';
 import useSpotInfoExelForceQuery from 'pages/customer/SpotInfo/useSpotInfoExelForceQuery';
 
+import {TableDeleteListAtom} from 'common/Table/store';
+
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
 
@@ -145,6 +147,7 @@ const Common = () => {
   // console.log(user, '9779');
 
   const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -620,10 +623,14 @@ const Common = () => {
               // 스팟
               if (exelSpot) {
                 console.log('exelSpot 엑셀 스팟 저장');
-                saveSpotToDb(exelSpot, sendExcelForceMutate);
+                saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
               } else if (spotInfoData) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
-                saveSpotToDb(spotInfoData, sendExcelForceMutate);
+                saveSpotToDb(
+                  spotInfoData,
+                  sendExcelForceMutate,
+                  tableDeleteList,
+                );
               }
 
               //
