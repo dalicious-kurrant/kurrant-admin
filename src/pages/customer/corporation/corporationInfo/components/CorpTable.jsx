@@ -1,4 +1,4 @@
-import {Pagination, Table, TableRow} from 'semantic-ui-react';
+import {Label, Pagination, Table, TableRow} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import Select from 'react-select';
@@ -65,6 +65,7 @@ const CorpTable = ({
         />
       </PaginationWrap>
       <TableWrapper>
+        <Label content="기업코드 미 입력시 아파트로 저장됩니다." color="red" />
         <Table celled>
           <Table.Header>
             <Table.Row>
