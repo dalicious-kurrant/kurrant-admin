@@ -432,10 +432,10 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.managerId);
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
+    reqArray.push(membership);
     reqArray.push(el.morningSupportPrice);
     reqArray.push(el.lunchSupportPrice);
     reqArray.push(el.dinnerSupportPrice);
-    reqArray.push(membership);
     reqArray.push(el.employeeCount);
     reqArray.push(setting);
     reqArray.push(garbage);
