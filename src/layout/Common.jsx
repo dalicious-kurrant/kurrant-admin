@@ -58,6 +58,7 @@ import {
 import {useSaveUserData} from '../hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {useSaveExelCorporation} from '../hooks/useCorporation';
+import {useSaveMakersInformation} from 'hooks/useMakers';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -132,6 +133,7 @@ const Common = () => {
   const {mutateAsync: editStatus} = useEditProductStatus();
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
+  const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -365,7 +367,7 @@ const Common = () => {
         }
       });
       console.log(reqArray, '00');
-      //await corporationExel(reqArray);
+      await saveMakersInfo(reqArray);
       //alert('저장 되었습니다.');
       // return window.location.reload();
     }
