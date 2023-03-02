@@ -41,7 +41,6 @@ const Header = () => {
   const resetAtom8 = useResetAtom(TableCheckboxStatusAtom);
   const resetAtom9 = useResetAtom(TableDeleteListAtom);
   const resetAtom10 = useResetAtom(dataHasNoIdAtom);
-  const resetAtom11 = useResetAtom(CustomerDataAtom);
   const resetAtom12 = useResetAtom(SpotInfoDataAtom);
   const resetAtom13 = useResetAtom(exelUserAtom);
 
@@ -64,7 +63,6 @@ const Header = () => {
     resetAtom8();
     resetAtom9();
     resetAtom10();
-    resetAtom11();
     resetAtom12();
     resetAtom13();
     resetAtom14();

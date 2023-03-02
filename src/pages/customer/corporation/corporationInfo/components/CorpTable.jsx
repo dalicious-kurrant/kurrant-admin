@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Select from 'react-select';
 
 import {useEffect, useState} from 'react';
-import {formattedDate} from 'utils/dateFormatter';
+import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 
 const CorpTable = ({
   data,
@@ -68,12 +68,16 @@ const CorpTable = ({
                 ID
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기업코드</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center" width={2}>
-                이름
+              <Table.HeaderCell textAlign="center">
+                <div style={{width: 150}}>이름</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">우편번호</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">기본주소</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">상세주소</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                <div style={{width: 280}}>기본주소</div>
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                <div style={{width: 150}}>상세주소</div>
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
@@ -123,11 +127,19 @@ const CorpTable = ({
                   <Table.Cell>{el.zipCode}</Table.Cell>
                   <Table.Cell>{el.address1}</Table.Cell>
                   <Table.Cell>{el.address2}</Table.Cell>
-                  <Table.Cell>{el.location}</Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 50}}>{el.location}</div>
+                  </Table.Cell>
                   <Table.Cell>{diningType}</Table.Cell>
-                  <Table.Cell>{el.serviceDays}</Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 150}}>{el.serviceDays}</div>
+                  </Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
-                  <Table.Cell>{el.managerPhone}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <div style={{width: 150}}>
+                      {phoneNumberFormmatter(el.managerPhone)}
+                    </div>
+                  </Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
                   <Table.Cell>{el.employeeCount}</Table.Cell>
                   <Table.Cell textAlign="center">{setting}</Table.Cell>

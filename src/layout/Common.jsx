@@ -134,7 +134,7 @@ const Common = () => {
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
-
+  console.log(user, '9779');
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -368,8 +368,8 @@ const Common = () => {
       });
       console.log(reqArray, '00');
       await saveMakersInfo(reqArray);
-      //alert('저장 되었습니다.');
-      // return window.location.reload();
+      alert('저장 되었습니다.');
+      return window.location.reload();
     }
 
     await postPresetCalendar({
@@ -377,7 +377,7 @@ const Common = () => {
       excelDataList: [...reqArray],
     });
     alert('저장 되었습니다.');
-    window.location.reload();
+    return window.location.reload();
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
@@ -469,7 +469,7 @@ const Common = () => {
     });
     await saveUserData(req);
     alert('저장 되었습니다.');
-    window.location.reload();
+    return window.location.reload();
   };
   const handlerSaveUser = async () => {
     const result = user.map((v, i) => {
@@ -491,8 +491,8 @@ const Common = () => {
       return element !== undefined && element !== null && element !== '';
     });
     await saveUserData(req);
-    alert('저장 되었습니다.');
-    window.location.reload();
+    alert('저장 되었습니다123 .');
+    return window.location.reload();
   };
   const onDownloadFile = async () => {
     if (plan && plan.length > 0) {
@@ -603,7 +603,7 @@ const Common = () => {
               if (exelUser) {
                 handlerSaveExelUser();
               }
-              if (user) {
+              if (user.length !== 0) {
                 handlerSaveUser();
               }
 
