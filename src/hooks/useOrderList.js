@@ -47,6 +47,7 @@ export function useEditOrderStatus() {
   const queryClient = useQueryClient();
   return useMutation(data => orderApis.editOrderStatus(data), {
     onSuccess: () => {
+      alert('상태변경 완료');
       queryClient.invalidateQueries('orderList');
     },
     onError: err => {

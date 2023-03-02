@@ -6,10 +6,12 @@ import {H} from '../style/header.style';
 import styled from 'styled-components';
 import {useResetAtom} from 'jotai/utils';
 import {
+  exelCorporationAtom,
   exelPlanAtom,
   exelProductAtom,
   exelSpotAtom,
   exelUserAtom,
+  makersExelInfoAtom,
   planAtom,
   productAtom,
   productDataAtom,
@@ -43,6 +45,9 @@ const Header = () => {
   const resetAtom12 = useResetAtom(SpotInfoDataAtom);
   const resetAtom13 = useResetAtom(exelUserAtom);
 
+  const resetAtom14 = useResetAtom(makersExelInfoAtom);
+  const resetAtom15 = useResetAtom(exelCorporationAtom);
+
   const logOutButton = () => {
     localStorage.removeItem('token');
     window.location.replace('/');
@@ -62,6 +67,8 @@ const Header = () => {
     resetAtom11();
     resetAtom12();
     resetAtom13();
+    resetAtom14();
+    resetAtom15();
   };
   return (
     <H.Wrapper>

@@ -327,6 +327,48 @@ const Common = () => {
       alert('저장 되었습니다.');
       return window.location.reload();
     }
+    if (makersExelInfo) {
+      makersExelInfo.map((item, idx) => {
+        if (idx !== 0) {
+          const result = {
+            id: item.id,
+            code: item.code,
+            name: item.name,
+            companyName: item.companyName,
+            ceo: item.ceo,
+            ceoPhone: item.ceoPhone,
+            managerName: item.managerName,
+            managerPhone: item.managerPhone,
+            diningTypes: item.diningTypes,
+            dailyCapacity: item.dailyCapacity,
+            serviceType: item.serviceType,
+            serviceForm: item.serviceForm,
+            isParentCompany: item.isParentCompany,
+            parentCompanyId: item.parentCompanyId,
+            zipCode: item.zipCode.toString(),
+            address1: item.address1,
+            address2: item.address2,
+            location: item.location === undefined && null,
+            companyRegistrationNumber:
+              item.companyRegistrationNumber.toString(),
+            contractStartDate: item.contractStartDate,
+            contractEndDate: item.contractEndDate,
+            isNutritionInformation: item.isNutritionInformation,
+            openTime: item.openTime,
+            closeTime: item.closeTime,
+            bank: item.bank,
+            depositHolder: item.depositHolder,
+            accountNumber: item.accountNumber,
+          };
+
+          reqArray.push(result);
+        }
+      });
+      console.log(reqArray, '00');
+      //await corporationExel(reqArray);
+      //alert('저장 되었습니다.');
+      // return window.location.reload();
+    }
 
     await postPresetCalendar({
       deadline: formattedFullDate(startDate, '-'),
@@ -381,6 +423,7 @@ const Common = () => {
           setExelUser(json);
         }
         if (sheetName === '상품 정보') {
+          console.log(json);
           setExelProduct(json);
         }
         if (sheetName === '식단 현황') {
@@ -466,7 +509,7 @@ const Common = () => {
     if (exelSpot && exelSpot.length > 0) {
       return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
     }
-    if (product?.data && product?.data?.length > 0) {
+    if (product && product?.length > 0) {
       return productExel(product);
     }
     if (exelProduct && exelProduct.length > 0) {
@@ -550,7 +593,8 @@ const Common = () => {
                 exelPlan ||
                 reCommandPlan ||
                 exelProduct ||
-                exelCorporation
+                exelCorporation ||
+                makersExelInfo
               ) {
                 callPostCalendar();
               }
