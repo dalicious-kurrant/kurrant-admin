@@ -158,3 +158,17 @@ export const makeId = dataInput => {
     return v;
   });
 };
+
+export const saveSpotToDb = (data, mutate) => {
+  if (data.length < 1) {
+    window.confirm('등록할 값들이 들어있는지 다시한번 확인해 주세요');
+    return;
+  }
+
+  const yo = {
+    saveSpotList: [...data],
+  };
+
+  // console.log(yo);
+  mutate(yo);
+};

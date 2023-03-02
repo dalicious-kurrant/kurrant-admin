@@ -1,10 +1,10 @@
 export const SpotInfoRegisterFieldsToOpen = {
   // id: '아이디',
-  // groupId: '그룹아이디', // 1, 2, 3
-  groupId: ' 상세스팟 이름',
-  groupName: '상세스팟 이름',
-  spotId: '스팟아이디',
-  spotName: '스팟이름',
+
+  groupId: '스팟 아이디', // 1, 2, 3
+  groupName: '스팟 이름',
+  spotId: '상세스팟 아이디',
+  spotName: '상세스팟 이름',
   zipCode: '우편번호', // 빈칸이면 안됨, 00000
   address1: '기본주소', // 빈칸 가능
   address2: '상세주소', // 빈칸 가능
@@ -29,10 +29,10 @@ export const SpotInfoRegisterFieldsToOpen = {
 
 export const SpotInfoFieldsToOpen = {
   // id: '아이디',
-  // groupId: '그룹아이디', // 1, 2, 3
-  groupName: '상세스팟 이름',
-  spotId: '스팟아이디',
-  spotName: '스팟이름',
+  // groupId: '스팟 아이디', // 1, 2, 3
+  groupName: '스팟 이름',
+  // spotId: '상세스팟 아이디',
+  spotName: '상세스팟 이름',
   zipCode: '우편번호', // 빈칸이면 안됨, 00000
   address1: '기본주소', // 빈칸 가능
   address2: '상세주소', // 빈칸 가능
@@ -64,8 +64,8 @@ const inputType = {
 export const SpotInfoFieldsData = [
   {
     fieldName: 'groupId',
-    fieldNameKor: '상세스팟 이름',
-    placeholder: '선택',
+    fieldNameKor: '스팟 이름',
+    placeholder: '필수',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -78,24 +78,24 @@ export const SpotInfoFieldsData = [
   },
   // {
   //   fieldName: 'groupName',
-  //   fieldNameKor: '그룹이름',
-  //   placeholder: '',
+  //   fieldNameKor: '스팟 이름',
+  //   placeholder: '필수',
   //   maxCharLength: 40,
   //   flex: 1,
   //   width: undefined,
-  // },
-  // {
-  //   fieldName: 'spotId',
-  //   fieldNameKor: '스팟아이디',
-  //   placeholder: '',
-  //   maxCharLength: 40,
-  //   flex: 1,
-  //   width: undefined,
-  //   headerWidth: 130,
   // },
   {
+    fieldName: 'spotId',
+    fieldNameKor: '상세스팟 아이디',
+    placeholder: '필수',
+    maxCharLength: 40,
+    flex: 1,
+    width: undefined,
+    headerWidth: 160,
+  },
+  {
     fieldName: 'spotName',
-    fieldNameKor: '스팟이름',
+    fieldNameKor: '상세스팟 이름',
     placeholder: '필수',
     maxCharLength: 40,
     flex: 1,
@@ -137,11 +137,19 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'diningType',
     fieldNameKor: '식타입',
-    placeholder: '예 1,2,3 중 택',
+    placeholder: '아침, 점심, 저녁 복수선택',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
-    headerWidth: 230,
+
+    inputType: inputType.text,
+    // inputType: inputType.select,
+    // options: [
+    //   {name: '아침', value: '아침'},
+    //   {name: '점심', value: '점심'},
+    //   {name: '저녁', value: '저녁'},
+    // ],
+    headerWidth: 400,
   },
   {
     fieldName: 'breakfastDeliveryTime',

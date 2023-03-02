@@ -60,7 +60,8 @@ import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {useSaveExelCorporation} from '../hooks/useCorporation';
 import {useSaveMakersInformation} from 'hooks/useMakers';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
-import saveSpotToDb from 'hooks/saveSpotToDb';
+import {saveSpotToDb} from 'pages/customer/SpotInfo/SpotInfoLogics';
+import useSpotInfoExelForceQuery from 'pages/customer/SpotInfo/useSpotInfoExelForceQuery';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -142,6 +143,9 @@ const Common = () => {
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
   // console.log(user, '9779');
+
+  const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
+
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -616,10 +620,10 @@ const Common = () => {
               // 스팟
               if (exelSpot) {
                 console.log('exelSpot 엑셀 스팟 저장');
-                saveSpotToDb(exelSpot);
+                saveSpotToDb(exelSpot, sendExcelForceMutate);
               } else if (spotInfoData) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
-                saveSpotToDb(spotInfoData);
+                saveSpotToDb(spotInfoData, sendExcelForceMutate);
               }
 
               //
