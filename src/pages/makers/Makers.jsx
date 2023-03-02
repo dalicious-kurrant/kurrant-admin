@@ -1,4 +1,4 @@
-import {useGetMakersInfomation} from '../../hooks/useMakers';
+import {useGetMakersInformation} from '../../hooks/useMakers';
 import {useAtom} from 'jotai';
 import React, {useEffect} from 'react';
 import {Table} from 'semantic-ui-react';
@@ -11,8 +11,8 @@ import MakersTable from './components/MakersTable';
 const Makers = () => {
   const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
   const [makersExelInfo, setMakersExelInfo] = useAtom(makersExelInfoAtom);
-  const {data: makersInfoList} = useGetMakersInfomation();
-
+  const {data: makersInfoList} = useGetMakersInformation();
+  // console.log(makersInfoList);
   useEffect(() => {
     setMakersInformation(makersInfoList);
   }, [makersInfoList, setMakersInformation]);

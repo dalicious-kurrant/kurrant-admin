@@ -98,7 +98,10 @@ export const CustomerFieldsDataForRegister = [
     flex: 2,
     width: undefined,
     inputType: inputType.select,
-    options: ['일반', '관리자'],
+    options: [
+      {name: '일반', value: '일반'},
+      {name: '관리자', value: '관리자'},
+    ],
   },
 
   {

@@ -72,32 +72,44 @@ const Plans = () => {
   const [recommandEndDate, setRecommandEndDate] = useState(new Date());
   const [options, setOption] = useState([]);
   const [optionsClient, setOptionsClient] = useState([]);
-  const {data: calendarRecommandData, refetch: recommandRefetch} =
-    useGetRecommandCalendar(
-      formattedWeekDate(recommandStartDate),
-      formattedWeekDate(recommandEndDate),
-      20,
-      page,
-      selectMakers,
-      selectClient,
-      selectDiningStatus,
-      isClick,
-      setIsClick,
-    );
+  const {
+    data: calendarRecommandData,
+    isSuccess: isRecommandSuccess,
+    refetch: recommandRefetch,
+  } = useGetRecommandCalendar(
+    formattedWeekDate(recommandStartDate),
+    formattedWeekDate(recommandEndDate),
+    2000,
+    page,
+    selectMakers,
+    selectClient,
+    selectDiningStatus,
+    isClick,
+    setIsClick,
+  );
   const [startDate, setStartDate] = useState(
     new Date().setDate(new Date().getDate() + 1),
   );
   const [accessStartDate, setAccessStartDate] = useState(new Date());
   const [accessEndDate, setAccessEndDate] = useState(new Date());
-  const recommandData = () => {
-    setIsClick(true);
+  const recommandData = useCallback(() => {
     setReCommandPlan();
-    setExelPlan();
-    setStaticPlan();
-    setPlan();
-    setTotalPage();
-    setReCommandPlan(calendarRecommandData?.data.items?.presetScheduleList);
-  };
+    if (isRecommandSuccess) {
+      console.log(calendarRecommandData?.data);
+      setTotalPage(calendarRecommandData?.data?.total);
+      setReCommandPlan(calendarRecommandData?.data?.items?.presetScheduleList);
+      setOption(
+        calendarRecommandData?.data?.items?.makersInfoList.map(v => {
+          return {key: v.makersId, text: v.makersName, value: v.makersId};
+        }),
+      );
+      setOptionsClient(
+        calendarRecommandData?.data?.items?.groupInfoList.map(v => {
+          return {key: v.groupId, text: v.groupName, value: v.groupId};
+        }),
+      );
+    }
+  }, [calendarRecommandData?.data, isRecommandSuccess, setReCommandPlan]);
   const onCreate = async () => {
     await completeCalendar({
       startDate: formattedWeekDate(accessStartDate),
@@ -131,19 +143,20 @@ const Plans = () => {
       });
     }
     if (reCommandPlan) {
+      console.log(reCommandPlan);
       reCommandPlan.map(makers => {
         return makers.clientSchedule.map(client => {
           return client.foodSchedule.map(food => {
             const result = {
               makersName: makers.makersName,
-              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              makersScheduleStatus: makers.scheduleStatus,
               serviceDate: makers.serviceDate,
               diningType: makers.diningType,
               makersCapacity: makers.makersCapacity,
               pickupTime: client.pickupTime,
               groupName: client.clientName,
               groupCapacity: client.clientCapacity,
-              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodScheduleStatus: food.scheduleStatus,
               foodName: food.foodName,
               foodStatus: food.foodStatus,
               foodCapacity: food.foodCapacity,
@@ -183,7 +196,7 @@ const Plans = () => {
   };
   useEffect(() => {
     recommandRefetch();
-  }, [recommandRefetch, recommandStartDate]);
+  }, [recommandRefetch, recommandStartDate, recommandEndDate]);
   useEffect(() => {
     if (!exelPlan && !reCommandPlan) {
       if (isSuccess) {
@@ -192,19 +205,29 @@ const Plans = () => {
         setPlan(calendarData?.data?.items?.presetScheduleList);
         setOption(
           calendarData?.data?.items?.makersInfoList.map(v => {
-            return {key: v.makersName, text: v.makersName, value: v.makersId};
+            return {key: v.makersId, text: v.makersName, value: v.makersId};
           }),
         );
         setOptionsClient(
           calendarData?.data?.items?.groupInfoList.map(v => {
-            return {key: v.groupName, text: v.groupName, value: v.groupId};
+            return {key: v.groupId, text: v.groupName, value: v.groupId};
           }),
         );
       }
     } else {
       setPlan();
     }
-  }, [calendarData, exelPlan, isSuccess, reCommandPlan, setPlan]);
+  }, [
+    calendarData,
+    calendarRecommandData?.data,
+    exelPlan,
+    isRecommandSuccess,
+    isSuccess,
+    plan,
+    reCommandPlan,
+    setPlan,
+    setReCommandPlan,
+  ]);
 
   useEffect(() => {
     if (plan && !exelPlan && !reCommandPlan) {
@@ -235,8 +258,12 @@ const Plans = () => {
     }
   }, [exelPlan, plan, reCommandPlan]);
   useEffect(() => {
-    calendarRefetch();
-    recommandRefetch();
+    if (plan) {
+      calendarRefetch();
+    }
+    if (reCommandPlan) {
+      recommandRefetch();
+    }
   }, [
     page,
     selectMakers,
@@ -244,6 +271,8 @@ const Plans = () => {
     selectDiningStatus,
     calendarRefetch,
     recommandRefetch,
+    plan,
+    reCommandPlan,
   ]);
   useEffect(() => {
     return () => {
@@ -413,15 +442,6 @@ const Plans = () => {
       )}
       {reCommandPlan && (
         <>
-          <PagenationBox>
-            <Pagination
-              defaultActivePage={page}
-              totalPages={totalPage}
-              onPageChange={(e, data) => {
-                console.log(data.activePage);
-              }}
-            />
-          </PagenationBox>
           <PlanTable
             count={count}
             testData={reCommandPlan}

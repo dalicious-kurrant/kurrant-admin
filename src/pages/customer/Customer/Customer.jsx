@@ -6,11 +6,7 @@ import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
 // import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
-import {
-  BtnWrapper,
-  PageWrapper,
-  TableWrapper,
-} from '../../../style/common.style';
+import {PageWrapper, TableWrapper} from '../../../style/common.style';
 
 import {CustomerDataAtom} from './store';
 
@@ -23,13 +19,11 @@ import {Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 
-import {sendFinal} from './CustomerLogics';
+import {handleCustomerDelete, sendFinal} from './CustomerLogics';
 
 import TableCustom from 'common/Table/TableCustom';
-import usePagination from 'common/test/Pagination/usePagination';
-import PaginationTest from './PaginationTest';
-import Pagination from 'common/test/Pagination/Pagination';
-import useCustomerData from './useCustomerData';
+
+import useCustomerQuery from './useCustomerQuery';
 import {
   CustomerFieldsDataForRegister,
   CustomerFieldsToOpen,
@@ -43,50 +37,14 @@ const Customer = () => {
   const [registerStatus, setRegisterStatus] = useState('register');
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
-  const queryClient = useQueryClient();
 
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
-
-  const {mutate: sendFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.post(`users`, todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-        queryClient.invalidateQueries(['getCustomerJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
-  const {mutate: deleteFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.patch(`client/members`, todo);
-
-      console.log(todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-        queryClient.invalidateQueries(['getCustomerJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
   const token = localStorage.getItem('token');
 
-  const {status, isLoading} = useCustomerData(
+  const {sendFinalMutate, deleteFinalMutate} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
     'users/all',
@@ -116,36 +74,18 @@ const Customer = () => {
   useEffect(() => {
     return () => {
       setCheckboxStatus({});
+      setTableDeleteList([]);
     };
   }, []);
 
   const handleDelete = () => {
-    const status = {...checkboxStatus};
-
-    let deleteList = [...tableDeleteList];
-
-    Object.entries(status).forEach(v => {
-      if (v[1] === true) {
-        deleteList.push(v[0]);
-      }
-    });
-
-    deleteList = [...new Set(deleteList)];
-
-    let yo = [];
-    const customerDataToDelete = [...customerData];
-
-    customerDataToDelete.forEach(v => {
-      if (deleteList.includes(v.id.toString())) {
-        v['isOnDeleteList'] = true;
-        yo.push(v);
-      } else {
-        yo.push(v);
-      }
-    });
-
-    setTableDeleteList(deleteList);
-    setCustomerData(yo);
+    handleCustomerDelete(
+      checkboxStatus,
+      tableDeleteList,
+      customerData,
+      setTableDeleteList,
+      setCustomerData,
+    );
   };
 
   // 페이지네이션
@@ -285,9 +225,6 @@ const Customer = () => {
               <TableCustom
                 fieldsInput={CustomerFieldsToOpen}
                 dataInput={customerData}
-                // isMemo={true}
-                // handleChange={}
-
                 ellipsisList={[
                   {key: 'password', length: '5rem'},
                   {key: 'email', length: '22rem'},

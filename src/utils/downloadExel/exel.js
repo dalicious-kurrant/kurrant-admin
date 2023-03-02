@@ -1,4 +1,4 @@
-import {formattedDate} from 'utils/dateFormatter';
+import {formattedDate, formattedTime} from 'utils/dateFormatter';
 import * as XLSX from 'xlsx';
 import {scheduleFormatted} from '../statusFormatter';
 
@@ -98,7 +98,7 @@ export function completePlanExel(plan) {
     '음식 상태',
     '음식 케파',
     '주문가능 수량',
-    '데일리푸드아이디',
+    '데일리푸드 ID (추가시 빈값)',
   ]);
   plan.map(makers => {
     return makers.makersSchedules.map(client => {
@@ -168,6 +168,7 @@ export function productExel(product) {
     '설명',
     '식사 태그',
   ]);
+
   product?.map(el => {
     const reqArray = [];
     reqArray.push(el.foodId);
@@ -279,10 +280,10 @@ export function userExel(user) {
 export function spotExel(spot) {
   const reqArrays = [];
   reqArrays.push([
-    'spotId',
-    'spotName',
     'groupId',
     'groupName',
+    'spotId',
+    'spotName',
     'zipCode',
     'address1',
     'address2',
@@ -302,9 +303,9 @@ export function spotExel(spot) {
   ]);
   reqArrays.push([
     '스팟 아이디',
-    '그룹 이름',
     '스팟 이름',
-    '그룹 아이디',
+    '상세스팟 아이디',
+    '상세스팟 이름',
     '우편번호',
     '기본주소',
     '상세주소',
@@ -324,10 +325,10 @@ export function spotExel(spot) {
   ]);
   spot?.map(el => {
     const reqArray = [];
-    reqArray.push(el.spotId);
-    reqArray.push(el.spotName);
     reqArray.push(el.groupId);
     reqArray.push(el.groupName);
+    reqArray.push(el.spotId);
+    reqArray.push(el.spotName);
     reqArray.push(el.zipCode);
     reqArray.push(el.address1);
     reqArray.push(el.address2);
@@ -377,9 +378,13 @@ export function corporationInfoExel(corporation) {
     'location',
     'diningTypes',
     'serviceDays',
+    'managerId',
     'managerName',
-    'managerPhpne',
+    'managerPhone',
     'isMembershipSupport',
+    'morningSupportPrice',
+    'lunchSupportPrice',
+    'dinnerSupportPrice',
     'employeeCount',
     'isSetting',
     'isGarbage',
@@ -395,9 +400,13 @@ export function corporationInfoExel(corporation) {
     '위치',
     '식사 타입',
     '식사 요일',
+    '담당자 ID',
     '담당자',
     '담당자 전화번호',
     '기업멤버십 지원여부',
+    '아침 지원금',
+    '점심 지원금',
+    '저녁 지원금',
     '사원수',
     '식사 세팅 지원 서비스',
     '쓰레기 수거 서비스',
@@ -405,8 +414,10 @@ export function corporationInfoExel(corporation) {
   ]);
 
   corporation?.data?.items?.groupInfoList?.map(el => {
-    const diningType =
-      el.diningTypes === 1 ? '아침' : el.diningTypes === 2 ? '점심' : '저녁';
+    const diningType = el.diningTypes.map(v =>
+      v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
+    );
+
     const membership = el.isMembershipSupport ? '지원' : '미지원';
     const setting = el.isSetting ? '사용' : '미사용';
     const garbage = el.isGarbage ? '사용' : '미사용';
@@ -419,11 +430,15 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
-    reqArray.push(diningType);
+    reqArray.push(diningType.join(','));
     reqArray.push(el.serviceDays);
+    reqArray.push(el.managerId);
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(membership);
+    reqArray.push(el.morningSupportPrice);
+    reqArray.push(el.lunchSupportPrice);
+    reqArray.push(el.dinnerSupportPrice);
     reqArray.push(el.employeeCount);
     reqArray.push(setting);
     reqArray.push(garbage);
@@ -450,7 +465,7 @@ export function corporationExelExport(corporation, sheetName, fileName) {
 }
 
 // 메이커스 정보
-export function makersInfoExel(corporation) {
+export function makersInfoExel(makersInformation) {
   const reqArrays = [];
   reqArrays.push([
     'id',
@@ -511,14 +526,38 @@ export function makersInfoExel(corporation) {
     '계좌번호',
   ]);
 
-  corporation.map(el => {
+  makersInformation?.data?.map(el => {
+    console.log(el.openTime, '9999');
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(el.code);
     reqArray.push(el.name);
+    reqArray.push(el.companyName);
+    reqArray.push(el.ceo);
+    reqArray.push(el.ceoPhone);
+    reqArray.push(el.managerName);
+    reqArray.push(el.managerPhone);
+    reqArray.push(el.diningTypes.join(','));
+    reqArray.push(el.dailyCapacity);
+    reqArray.push(el.serviceType);
+    reqArray.push(el.serviceForm);
+    reqArray.push(el.isParentCompany);
+    reqArray.push(el.parentCompanyId);
+    reqArray.push(el.zipCode);
+    reqArray.push(el.address1);
+    reqArray.push(el.address2);
+    reqArray.push(el.location);
+    reqArray.push(el.companyRegistrationNumber);
+    reqArray.push(el.contractStartDate);
+    reqArray.push(el.contractEndDate);
+    reqArray.push(el.isNutritionInformation);
+    reqArray.push(el.openTime);
+    reqArray.push(el.closeTime);
+    reqArray.push(el.bank);
+    reqArray.push(el.depositHolder);
+    reqArray.push(el.accountNumber);
 
     reqArrays.push(reqArray);
-
     return reqArrays;
   });
   console.log(reqArrays);
@@ -529,171 +568,12 @@ export function makersInfoExel(corporation) {
   XLSX.writeFile(workbook, '메이커스_정보.xlsx');
 }
 
-export function makersInfoExelExport(corporation, sheetName, fileName) {
+export function makersInfoExelExport(makersInformation, sheetName, fileName) {
   const workbook = XLSX.utils.book_new();
-  const worksheet = XLSX.utils.json_to_sheet(corporation, {cellDates: true});
+  const worksheet = XLSX.utils.json_to_sheet(makersInformation, {
+    cellDates: true,
+  });
 
   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   XLSX.writeFile(workbook, fileName);
 }
-
-const data = {
-  userList: [
-    {
-      password: '$2a$10$GF5aqxlKT/IhxM8PhQeM1.8N/9Jyu7Oa.sYRDHXAU2Y2huFbKaBfW',
-      name: 'adsf',
-      email: 'sadf@sdvd',
-      phone: '235',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$d5WEZ9b6okVOw/it/Ybjtu2OdFsi5vccd7CGJsDmKvwRpS.lKEOGm',
-      name: 'esse',
-      email: 'asdf@veve',
-      phone: 'awef',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$focufPazy0pk1qeJAcclmetunIzqaVEyzqAVR/ts/BiitTcSpMQ2e',
-      name: 'sdf',
-      email: 'sdfsd@sdfsdf',
-      phone: '010-4594-9188',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$YgWpyeoF0TbbFchQeHGPluGmIVUddy1nkMfx419L9SogzWUmD.NCS',
-      name: 'sdgsgd',
-      email: 'sdf@sdgsdg',
-      phone: '010-9529-4951',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$0CNZ0MTzSud64TFdt3e6rO6DSxmDg/6tx.jg6.p2jp8X1p0QWMOKW',
-      name: '테스트',
-      email: '테스트1@미낭',
-      phone: '010-1111-1111',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$siuW9mIFcLZ4HiLviv8jcOf7t6L22zRF7LgMKmOPSUP.GvZBRF/l.',
-      name: 'ㄴ이ㅏㄹ',
-      email: '테스트2@ㅁ니알',
-      phone: '010-0000-0000',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$HZUaANcVkE1JC5Q0KLneoOngH.Cup0iWdPQ14G6XB0j9gA64fqA8G',
-      name: '조재신',
-      email: '재신@ㄴ이ㅏ',
-      phone: '010-0000-0000',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: '$2a$10$f/AysGoe1kVr.CqLgApseOkVAzG.AFRuOjrbZhLUM7cJ2MjwtuFQC',
-      name: '테스트',
-      email: 'TEST1',
-      phone: '010-0000-0000',
-      role: '일반',
-      status: 1,
-      groupName: '없음',
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: null,
-      name: '전정호',
-      email: 'jeongho.jeon@dalicious.co',
-      phone: null,
-      role: null,
-      status: 1,
-      groupName: null,
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: null,
-      name: '전정호2',
-      email: 'jeongho.jeon2@dalicious.co',
-      phone: null,
-      role: null,
-      status: 1,
-      groupName: null,
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: null,
-      name: '전정호3',
-      email: 'jeongho.jeon3@dalicious.co',
-      phone: null,
-      role: null,
-      status: 1,
-      groupName: null,
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-    {
-      password: null,
-      name: '전정호4',
-      email: 'jeongho.jeon4@dalicious.co',
-      phone: null,
-      role: null,
-      status: 1,
-      groupName: null,
-      point: null,
-      marketingAgree: null,
-      marketingAlarm: null,
-      orderAlarm: null,
-    },
-  ],
-};

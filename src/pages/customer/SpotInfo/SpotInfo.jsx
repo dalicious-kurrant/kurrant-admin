@@ -1,7 +1,11 @@
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
 import useMutate from 'common/CRUD/useMutate';
-import {dataHasNoIdAtom, TableCheckboxStatusAtom} from 'common/Table/store';
+import {
+  dataHasNoIdAtom,
+  TableCheckboxStatusAtom,
+  TableDeleteListAtom,
+} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
 import {exelSpotAtom, spotAtom} from 'utils/store';
@@ -11,73 +15,53 @@ import {
   PageWrapper,
   TableWrapper,
 } from '../../../style/common.style';
-import {SpotInfoFieldsData, SpotInfoFieldsToOpen} from './SpotInfoData';
+import {
+  SpotInfoFieldsData,
+  SpotInfoFieldsToOpen,
+  SpotInfoRegisterFieldsToOpen,
+} from './SpotInfoData';
 import {clickButtonBundle} from '../Logics/Logics';
 import {SpotInfoDataAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
-import useSpotInfoData from './useSpotInfoData';
-import {sendFinal} from './SpotInfoLogics';
+import useSpotInfoQuery from './useSpotInfoQuery';
+import {handleSpotInfoDelete, sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
-import {removeIdToSend} from 'common/Table/Logics';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
-  const [plan, setPlan] = useAtom(exelSpotAtom);
+  const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
+
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
-
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
   const [registerStatus, setRegisterStatus] = useState('register');
 
   const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
 
-  const queryClient = useQueryClient();
+  const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
+    useSpotInfoQuery(
+      ['getSpotInfoJSON'],
+      [SpotInfoDataAtom, spotAtom],
+      `clients/spot/all`,
+      // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+      localStorage.getItem('token'),
+    );
 
-  const [dataHasNoId, setDataHasNoId] = useAtom(dataHasNoIdAtom);
-
-  const {status, isLoading} = useSpotInfoData(
-    ['getSpotInfoJSON'],
-    SpotInfoDataAtom,
-    `clients/spot/all`,
-    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-    localStorage.getItem('token'),
-  );
-  useSpotInfoData(
-    ['getSpot'],
-    spotAtom,
-    `clients/spot/all`,
-    // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-    localStorage.getItem('token'),
-  );
-
-  const {mutate: sendFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.post(
-        `users`,
-        dataHasNoId ? removeIdToSend(todo) : todo,
-      );
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-
-        setDataHasNoId(false);
-
-        queryClient.invalidateQueries(['getSpotInfoJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
+  // useSpotInfoQuery(
+  //   ['getSpot'],
+  //   spotAtom,
+  //   `clients/spot/all`,
+  //   // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
+  //   localStorage.getItem('token'),
+  // );
 
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
@@ -96,74 +80,33 @@ const SpotInfo = () => {
     setShowRegister(false);
   };
   useEffect(() => {
-    if (plan) setKey(Object.keys(plan[0]));
-  }, [plan]);
-
-  useEffect(() => {
-    return () => {
-      setCheckboxStatus({});
-    };
-  }, []);
-
-  const handleDelete = () => {
-    // console.log(deletedStatus);
-
-    const status = {...checkboxStatus};
-
-    let deleteList = [];
-
-    Object.entries(status).forEach(v => {
-      if (v[1] === true) {
-        deleteList.push(v[0]);
-      }
-    });
-
-    let yo = [];
-    const spotInfoDataToDelete = [...spotInfoData];
-
-    spotInfoDataToDelete.forEach(v => {
-      if (deleteList.includes(v.id.toString())) {
-      } else {
-        yo.push(v);
-      }
-    });
-
-    setSpotInfoData(yo);
-  };
-
-  // const sendFinal = () => {
-  //   const oldData = [...customerData];
-
-  //   const newData = oldData.map(value => {
-  //     let yo = {};
-
-  //     yo['userId'] = handleFalsyValue(value.email);
-  //     yo['password'] = handleFalsyValue(value.password);
-  //     yo['name'] = handleFalsyValue(value.name);
-  //     yo['email'] = handleFalsyValue(value.email);
-  //     yo['phone'] = handleFalsyValue(value.phone);
-  //     yo['role'] = handleFalsyValue(value.role);
-
-  //     return yo;
-  //   });
-
-  //   const newData2 = {
-  //     userList: newData,
-  //   };
-
-  //   if (
-  //     window.confirm(
-  //       '테이블에 있는 데이터를 최종적으로 변경합니다 진행하시겠습니까?',
-  //     )
-  //   ) {
-  //     sendFinalMutate(newData2);
-  //   } else {
-  //   }
-  // };
+    if (exelSpot) setKey(Object.keys(exelSpot[0]));
+  }, [exelSpot]);
 
   useEffect(() => {
     console.log(spotInfoData);
   }, [spotInfoData]);
+
+  // useEffect(() => {
+  //   console.log(exelSpot);
+  // }, [exelSpot]);
+
+  useEffect(() => {
+    return () => {
+      setCheckboxStatus({});
+      setTableDeleteList([]);
+    };
+  }, []);
+
+  const handleDelete = () => {
+    handleSpotInfoDelete(
+      checkboxStatus,
+      tableDeleteList,
+      spotInfoData,
+      setTableDeleteList,
+      setSpotInfoData,
+    );
+  };
 
   if (isLoading)
     return (
@@ -183,7 +126,7 @@ const SpotInfo = () => {
 
   return (
     <>
-      {plan ? (
+      {exelSpot ? (
         <PageWrapper>
           <BtnWrapper>
             <Button
@@ -196,12 +139,12 @@ const SpotInfo = () => {
           <TableWrapper>
             <Table celled>
               {/* {console.log(plan)} */}
-              {plan &&
-                plan.map((p, i) => {
+              {exelSpot &&
+                exelSpot.map((p, i) => {
                   const HeaderData = Object.values(p);
 
                   if (i === 0) {
-                    console.log(HeaderData, '123');
+                    // console.log(HeaderData, '123');
                     return (
                       <Table.Header key={'0' + i}>
                         <Table.Row>
@@ -220,19 +163,19 @@ const SpotInfo = () => {
                       </Table.Header>
                     );
                   } else {
-                    console.log(p);
+                    // console.log(p);
                     return (
                       <Table.Body key={i}>
                         <Table.Row>
                           <Table.Cell textAlign="center">
                             <Checkbox
-                              checked={chkData.includes(p.id)}
+                              checked={chkData.includes(p.spotId)}
                               onChange={(v, data) => {
                                 if (data.checked) {
-                                  setChkData([...chkData, p.id]);
+                                  setChkData([...chkData, p.spotId]);
                                 } else {
                                   setChkData(
-                                    chkData.filter(v => v.id !== p.id),
+                                    chkData.filter(v => v.spotId !== p.spotId),
                                   );
                                 }
                               }}
@@ -240,7 +183,7 @@ const SpotInfo = () => {
                           </Table.Cell>
                           {key &&
                             key.map((k, l) => {
-                              console.log(p[k], 'test');
+                              // console.log(p[k], 'test');
                               if (
                                 k === 'breakfastDeliveryTime' ||
                                 k === 'dinnerDeliveryTime' ||
@@ -251,7 +194,7 @@ const SpotInfo = () => {
                                     <FlexBox>
                                       {typeof p[k] === 'object'
                                         ? formattedTime(p[k])
-                                        : '-'}
+                                        : p[k]}
                                     </FlexBox>
                                   </Table.Cell>
                                 );
@@ -290,7 +233,13 @@ const SpotInfo = () => {
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
               sendFinal={() => {
-                sendFinal(spotInfoData, sendFinalMutate);
+                sendFinal(
+                  spotInfoData,
+                  sendFinalMutate,
+                  checkboxStatus,
+                  tableDeleteList,
+                  deleteFinalMutate,
+                );
               }}
               sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}
@@ -303,7 +252,7 @@ const SpotInfo = () => {
                 editMutate={editMutate}
                 handleClose={handleClose}
                 data={dataToEdit}
-                fieldsToOpen={SpotInfoFieldsToOpen}
+                fieldsToOpen={SpotInfoRegisterFieldsToOpen}
                 fieldsData={SpotInfoFieldsData}
               />
             )}

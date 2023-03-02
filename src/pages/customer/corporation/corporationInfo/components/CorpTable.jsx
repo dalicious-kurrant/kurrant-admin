@@ -1,10 +1,11 @@
-import {Pagination, Table, TableRow} from 'semantic-ui-react';
+import {Label, Pagination, Table, TableRow} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import Select from 'react-select';
 
 import {useEffect, useState} from 'react';
-import {formattedDate} from 'utils/dateFormatter';
+import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
+import withCommas from 'utils/withCommas';
 
 const CorpTable = ({
   data,
@@ -26,6 +27,13 @@ const CorpTable = ({
     };
   });
 
+  // const diningType = corpListData?.map(el => {
+  //   return el.diningTypes.map(v => {
+  //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
+  //     return type;
+  //   });
+  // });
+  // console.log(diningType, '896');
   useEffect(() => {
     if (isSuccess) {
       setTotalPage(data?.data?.total);
@@ -57,6 +65,7 @@ const CorpTable = ({
         />
       </PaginationWrap>
       <TableWrapper>
+        <Label content="기업코드 미 입력시 아파트로 저장됩니다." color="red" />
         <Table celled>
           <Table.Header>
             <Table.Row>
@@ -68,15 +77,20 @@ const CorpTable = ({
                 ID
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기업코드</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center" width={2}>
-                이름
+              <Table.HeaderCell textAlign="center">
+                <div style={{width: 150}}>이름</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">우편번호</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">기본주소</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">상세주소</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                <div style={{width: 280}}>기본주소</div>
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                <div style={{width: 150}}>상세주소</div>
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 담당자 <br /> 전화번호
@@ -84,6 +98,15 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 기업멤버십 <br />
                 지원여부
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                아침 지원금
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                점심 지원금
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                저녁 지원금
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">사원수</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -102,12 +125,10 @@ const CorpTable = ({
           </Table.Header>
           <Table.Body>
             {corpListData?.map((el, idx) => {
-              const diningType =
-                el.diningTypes === 1
-                  ? '아침'
-                  : el.diningTypes === 2
-                  ? '점심'
-                  : '저녁';
+              const diningType = el.diningTypes.map(v =>
+                v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
+              );
+
               const membership = el.isMembershipSupport ? '지원' : '미지원';
               const setting = el.isSetting ? '사용' : '미사용';
               const garbage = el.isGarbage ? '사용' : '미사용';
@@ -123,13 +144,32 @@ const CorpTable = ({
                   <Table.Cell>{el.zipCode}</Table.Cell>
                   <Table.Cell>{el.address1}</Table.Cell>
                   <Table.Cell>{el.address2}</Table.Cell>
-                  <Table.Cell>{el.location}</Table.Cell>
-                  <Table.Cell>{diningType}</Table.Cell>
-                  <Table.Cell>{el.serviceDays}</Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 50}}>{el.location}</div>
+                  </Table.Cell>
+                  <Table.Cell>{diningType.join(',')}</Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 150}}>{el.serviceDays}</div>
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{el.managerId}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
-                  <Table.Cell>{el.managerPhone}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    <div style={{width: 150}}>
+                      {phoneNumberFormmatter(el.managerPhone)}
+                    </div>
+                  </Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
-                  <Table.Cell>{el.employeeCount}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.morningSupportPrice) || '-'}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.lunchSupportPrice) || '-'}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.dinnerSupportPrice) || '-'}
+                  </Table.Cell>
+
+                  <Table.Cell>{withCommas(el.employeeCount)}</Table.Cell>
                   <Table.Cell textAlign="center">{setting}</Table.Cell>
                   <Table.Cell textAlign="center">{garbage}</Table.Cell>
                   <Table.Cell textAlign="center">{hotStorage}</Table.Cell>

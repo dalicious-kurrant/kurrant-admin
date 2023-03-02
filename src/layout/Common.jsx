@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {useLocation} from 'react-router';
 import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
@@ -58,6 +58,12 @@ import {
 import {useSaveUserData} from '../hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {useSaveExelCorporation} from '../hooks/useCorporation';
+import {useSaveMakersInformation} from 'hooks/useMakers';
+import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
+import {saveSpotToDb} from 'pages/customer/SpotInfo/SpotInfoLogics';
+import useSpotInfoExelForceQuery from 'pages/customer/SpotInfo/useSpotInfoExelForceQuery';
+
+import {TableDeleteListAtom} from 'common/Table/store';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -109,11 +115,16 @@ const Common = () => {
   const inputRef = useRef();
   const [plan, setPlan] = useAtom(planAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
-  const [spot, setSpot] = useAtom(spotAtom);
+
   const [startDate, setStartDate] = useAtom(deadlineAtom);
   const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
   const {mutateAsync: saveUserData} = useSaveUserData();
+
+  // 스팟
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
+  const [spot, setSpot] = useAtom(spotAtom);
+
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
@@ -132,6 +143,11 @@ const Common = () => {
   const {mutateAsync: editStatus} = useEditProductStatus();
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
+  const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
+  // console.log(user, '9779');
+
+  const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -140,6 +156,10 @@ const Common = () => {
     inputRef.current.value = '';
     inputRef.current.click();
   }, []);
+
+  useEffect(() => {
+    console.log(exelSpot);
+  }, [exelSpot]);
 
   const completePost = async () => {
     const reqArray = [];
@@ -232,14 +252,14 @@ const Common = () => {
           return client.foodSchedule.map(food => {
             const result = {
               makersName: makers.makersName,
-              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              makersScheduleStatus: makers.scheduleStatus,
               serviceDate: makers.serviceDate,
               diningType: makers.diningType,
               makersCapacity: makers.makersCapacity,
               pickupTime: client.pickupTime,
               groupName: client.clientName,
               groupCapacity: client.clientCapacity,
-              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodScheduleStatus: food.scheduleStatus,
               foodName: food.foodName,
               foodStatus: food.foodStatus,
               foodCapacity: food.foodCapacity,
@@ -306,13 +326,16 @@ const Common = () => {
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
-            location:
-              (item.location === undefined || item.location === 'null') && null,
+            location: item.location || null,
             diningTypes: [item.diningTypes],
             serviceDays: item.serviceDays,
+            managerId: item.managerId,
             managerName: item.managerName,
             managerPhone: item.managerPhone,
             isMembershipSupport: item.isMembershipSupport,
+            morningSupportPrice: item.morningSupportPrice,
+            lunchSupportPrice: item.lunchSupportPrice,
+            dinnerSupportPrice: item.dinnerSupportPrice,
             employeeCount: item.employeeCount,
             isSetting: item.isSetting,
             isGarbage: item.isGarbage,
@@ -327,13 +350,77 @@ const Common = () => {
       alert('저장 되었습니다.');
       return window.location.reload();
     }
+    if (makersExelInfo) {
+      makersExelInfo.map((item, idx) => {
+        if (idx !== 0) {
+          const nutrition = item.isNutritionInformation ? 1 : 0;
+
+          const typeArr = [];
+          if (item.morningCapa) {
+            typeArr.push({
+              diningType: 1,
+              capacity: item.morningCapa,
+            });
+          }
+          if (item.lunchCapa) {
+            typeArr.push({
+              diningType: 2,
+              capacity: item.lunchCapa,
+            });
+          }
+          if (item.dinnerCapa) {
+            typeArr.push({
+              diningType: 3,
+              capacity: item.dinnerCapa,
+            });
+          }
+
+          const result = {
+            id: item.id,
+            code: item.code,
+            name: item.name,
+            companyName: item.companyName,
+            ceo: item.ceo,
+            ceoPhone: item.ceoPhone,
+            managerName: item.managerName,
+            managerPhone: item.managerPhone,
+            diningTypes: typeArr,
+            dailyCapacity: item.dailyCapacity,
+            serviceType: item.serviceType,
+            serviceForm: item.serviceForm,
+            isParentCompany: item.isParentCompany,
+            parentCompanyId: item.parentCompanyId || null,
+            zipCode: item.zipCode.toString(),
+            address1: item.address1,
+            address2: item.address2,
+            location: item.location || null,
+            companyRegistrationNumber:
+              item.companyRegistrationNumber?.toString(),
+            contractStartDate: item.contractStartDate,
+            contractEndDate: item.contractEndDate,
+            isNutritionInformation: nutrition,
+            openTime: item.openTime,
+            closeTime: item.closeTime,
+            bank: item.bank,
+            depositHolder: item.depositHolder,
+            accountNumber: item.accountNumber,
+          };
+
+          reqArray.push(result);
+        }
+      });
+      console.log(reqArray, '00');
+      await saveMakersInfo({saveMakersRequestDto: reqArray});
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    }
 
     await postPresetCalendar({
       deadline: formattedFullDate(startDate, '-'),
       excelDataList: [...reqArray],
     });
     alert('저장 되었습니다.');
-    window.location.reload();
+    return window.location.reload();
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
@@ -359,7 +446,7 @@ const Common = () => {
       setMakersExelInfo();
       const reader = new FileReader();
       reader.onload = e => {
-        console.log(e.target.result);
+        // console.log(e.target.result);
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array', cellDates: true});
         const sheetName = workbook.SheetNames[0];
@@ -381,6 +468,7 @@ const Common = () => {
           setExelUser(json);
         }
         if (sheetName === '상품 정보') {
+          console.log(json);
           setExelProduct(json);
         }
         if (sheetName === '식단 현황') {
@@ -424,7 +512,7 @@ const Common = () => {
     });
     await saveUserData(req);
     alert('저장 되었습니다.');
-    window.location.reload();
+    return window.location.reload();
   };
   const handlerSaveUser = async () => {
     const result = user.map((v, i) => {
@@ -446,8 +534,8 @@ const Common = () => {
       return element !== undefined && element !== null && element !== '';
     });
     await saveUserData(req);
-    alert('저장 되었습니다.');
-    window.location.reload();
+    alert('저장 되었습니다123 .');
+    return window.location.reload();
   };
   const onDownloadFile = async () => {
     if (plan && plan.length > 0) {
@@ -487,6 +575,7 @@ const Common = () => {
       const req = exportSpot.filter(element => {
         return element !== undefined && element !== null && element !== '';
       });
+      console.log(req);
       return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {
@@ -550,23 +639,43 @@ const Common = () => {
                 exelPlan ||
                 reCommandPlan ||
                 exelProduct ||
-                exelCorporation
+                exelCorporation ||
+                makersExelInfo
               ) {
+                console.log('callPostCalendar');
                 callPostCalendar();
               }
-              if (exelUser) {
-                handlerSaveExelUser();
-              }
-              if (user) {
-                handlerSaveUser();
+              // 스팟
+              if (exelSpot) {
+                console.log('exelSpot 엑셀 스팟 저장');
+                saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
+              } else if (spotInfoData) {
+                console.log('spotInfoData 스팟정보 데이터 저장');
+                saveSpotToDb(
+                  spotInfoData,
+                  sendExcelForceMutate,
+                  tableDeleteList,
+                );
               }
 
+              //
+
+              if (exelUser) {
+                console.log('handlerSaveExelUser');
+                handlerSaveExelUser();
+              }
+              if (user && user.length !== 0) {
+                handlerSaveUser();
+              }
               if (completePlan || exelCompletePlan) {
+                console.log('completePost');
                 completePost();
               }
               if (statusOption.length !== 0) {
+                console.log('statusButton');
                 statusButton();
               }
+              console.log('아무것도 없음');
             }}
           />
           {/* <Button icon="history" content="히스토리" /> */}

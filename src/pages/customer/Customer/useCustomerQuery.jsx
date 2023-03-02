@@ -1,12 +1,11 @@
 import axios from 'axios';
-import {dataHasNoIdAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
-import {makeId} from './SpotInfoLogics';
+import {shiftUserType, sliceStringDataByKey} from './CustomerLogics';
 
-const useSpotInfoQuery = (
+const useCustomerQuery = (
   uniqueQueryKey,
   atom,
   url,
@@ -20,43 +19,21 @@ const useSpotInfoQuery = (
   // url : url
   // enable : useQuery를 껏다켰다 할 수 있음
 
+  const [, setData] = useAtom(atom);
   const queryClient = useQueryClient();
-
-  const [, setData] = useAtom(atom[0]);
-  const [, setExcelData] = useAtom(atom[1]);
-  const [, setDataHasNoId] = useAtom(dataHasNoIdAtom);
-
   const {data, status, isLoading} = useQuery(
     uniqueQueryKey,
 
     token
       ? async ({queryKey}) => {
-          const response = await instance.get(url);
+          const response = await instance.get(`${url}?limit=50`);
 
-          let dataInputWithId;
-
-          if (Object.keys(response.data[0]).includes('id')) {
-            dataInputWithId = response.data;
-          } else {
-            dataInputWithId = makeId(response.data);
-            setDataHasNoId(true);
-          }
-
-          return dataInputWithId;
+          return response.data;
         }
       : async ({queryKey}) => {
           const response = await axios.get(url);
 
-          let dataInputWithId;
-
-          if (Object.keys(response.data[0]).includes('id')) {
-            dataInputWithId = response.data;
-          } else {
-            dataInputWithId = makeId(response.data);
-            setDataHasNoId(true);
-          }
-
-          return dataInputWithId;
+          return response.data;
         },
     {
       enabled: enable,
@@ -67,31 +44,33 @@ const useSpotInfoQuery = (
     async todo => {
       console.log(todo);
 
-      const response = await instance.post(`clients`, todo);
+      const response = await instance.post(`users`, todo);
+
       return response;
     },
     {
       onSuccess: () => {
-        console.log('스팟정보 등록, 수정 success');
-
-        queryClient.invalidateQueries(['getSpotInfoJSON']);
+        console.log('유저정보 등록, 수정 success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
       },
       onError: () => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
       },
     },
   );
-
   const {mutate: deleteFinalMutate} = useMutation(
     async todo => {
-      const response = await instance.patch(`clients`, todo);
+      console.log('sendDelete');
+      console.log(todo);
+
+      const response = await instance.patch(`users`, todo);
 
       return response;
     },
     {
       onSuccess: () => {
-        console.log('success');
-        queryClient.invalidateQueries(['getSpotInfoJSON']);
+        console.log('유저정보 삭제 success');
+        queryClient.invalidateQueries(['getCustomerJSON']);
       },
       onError: () => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
@@ -100,16 +79,23 @@ const useSpotInfoQuery = (
   );
 
   useEffect(() => {
-    setData(data);
-    setExcelData(data);
-  }, [data]);
+    if (data) {
+      // const dataYo = sliceStringDataByKey(shiftUserType(data), 'password', 5);
+      const dataYo = shiftUserType(data);
+
+      if (dataYo) {
+        setData(dataYo);
+      }
+    }
+  }, [data, setData]);
 
   return {
     status,
     isLoading,
+
     sendFinalMutate,
     deleteFinalMutate,
   };
 };
 
-export default useSpotInfoQuery;
+export default useCustomerQuery;

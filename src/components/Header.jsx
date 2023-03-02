@@ -6,10 +6,12 @@ import {H} from '../style/header.style';
 import styled from 'styled-components';
 import {useResetAtom} from 'jotai/utils';
 import {
+  exelCorporationAtom,
   exelPlanAtom,
   exelProductAtom,
   exelSpotAtom,
   exelUserAtom,
+  makersExelInfoAtom,
   planAtom,
   productAtom,
   productDataAtom,
@@ -39,9 +41,11 @@ const Header = () => {
   const resetAtom8 = useResetAtom(TableCheckboxStatusAtom);
   const resetAtom9 = useResetAtom(TableDeleteListAtom);
   const resetAtom10 = useResetAtom(dataHasNoIdAtom);
-  const resetAtom11 = useResetAtom(CustomerDataAtom);
   const resetAtom12 = useResetAtom(SpotInfoDataAtom);
   const resetAtom13 = useResetAtom(exelUserAtom);
+
+  const resetAtom14 = useResetAtom(makersExelInfoAtom);
+  const resetAtom15 = useResetAtom(exelCorporationAtom);
 
   const logOutButton = () => {
     localStorage.removeItem('token');
@@ -59,17 +63,18 @@ const Header = () => {
     resetAtom8();
     resetAtom9();
     resetAtom10();
-    resetAtom11();
     resetAtom12();
     resetAtom13();
+    resetAtom14();
+    resetAtom15();
   };
   return (
     <H.Wrapper>
       <Segment inverted>
         <Menu inverted secondary>
           <Menu.Item active onClick={() => navi('/main')} icon="home" />
-          {MenuList.map(v => (
-            <Dropdown key={`${v.name}`} item text={v.name}>
+          {MenuList.map((v, i) => (
+            <DropDownMenu key={`${v.name}`} item text={v.name} name={i}>
               <Dropdown.Menu>
                 {v.children?.map(b => (
                   <Dropdown.Item
@@ -82,7 +87,7 @@ const Header = () => {
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
-            </Dropdown>
+            </DropDownMenu>
           ))}
         </Menu>
       </Segment>
@@ -99,4 +104,11 @@ const Logout = styled.div`
   top: 45%;
   color: white;
   cursor: pointer;
+`;
+
+const DropDownMenu = styled(Dropdown)`
+  .text {
+    color: ${({name}) =>
+      name === 4 || name === 5 || name === 6 ? 'red' : 'white'};
+  }
 `;

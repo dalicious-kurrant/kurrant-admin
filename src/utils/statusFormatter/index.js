@@ -47,10 +47,7 @@ export function scheduleFormatted2(data) {
       return 1;
     case '거절':
       return 2;
-    case '대기':
-      return 3;
-    case '완료':
-      return 4;
+
     default:
       return 1;
   }

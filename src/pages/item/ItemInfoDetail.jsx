@@ -160,10 +160,14 @@ const ProductDetailPage = () => {
               <PriceWrap>
                 <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="foodPrice" label="매장가" />
-                <Input name="discountRate" label="할인율" />
-                <Input name="discountPrice" label="할인가" readOnly />
-                <Input name="periodDiscountRate" label="기간할인율" />
-                <Input name="periodDiscountPrice" label="기간할인가" readOnly />
+                <Input name="discountRate" label="매장 할인율" />
+                <Input name="discountPrice" label="매장 할인가" readOnly />
+                <Input name="periodDiscountRate" label="이벤트 할인율" />
+                <Input
+                  name="periodDiscountPrice"
+                  label="이벤트 할인가"
+                  readOnly
+                />
                 <Input name="customPrice" label="커스텀가" />
               </PriceWrap>
               <CapaWrap>

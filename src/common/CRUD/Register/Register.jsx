@@ -84,6 +84,7 @@ const Register = ({
                   setInput={setInput}
                   placeholder={value.placeholder}
                   options={value.options}
+                  headerWidth={value.headerWidth}
                 />
               );
             } else if (value.inputType === 'number') {
@@ -100,6 +101,7 @@ const Register = ({
                   placeholder={value.placeholder}
                   maxCharLength={value.maxCharLength}
                   flex={value.flex}
+                  headerWidth={value.headerWidth}
                 />
               );
             } else {
@@ -114,6 +116,7 @@ const Register = ({
                   name={value.fieldName}
                   placeholder={value.placeholder}
                   maxCharLength={value.maxCharLength}
+                  headerWidth={value.headerWidth}
                   flex={value.flex}
                 />
               );

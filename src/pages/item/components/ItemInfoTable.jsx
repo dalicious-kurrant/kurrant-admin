@@ -5,14 +5,11 @@ import styled from 'styled-components';
 import {shopInfoDetailIdAtom, statusOptionAtom} from 'utils/store';
 import withCommas from '../../../utils/withCommas';
 import Select from 'react-select';
-import {BtnWrapper} from 'style/common.style';
-import {useEditProductStatus} from 'hooks/useProductsList';
 
 const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
   const [statusOption, setStatusOption] = useAtom(statusOptionAtom);
-  const {mutateAsync: editStatus} = useEditProductStatus();
 
   const goToPage = (foodId, makersId) => {
     setId(foodId);
@@ -51,10 +48,6 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
     {value: 2, label: '판매중지'},
   ];
 
-  const statusButton = async () => {
-    await editStatus(statusOption);
-  };
-
   return (
     <div>
       {/* <BtnWrapper>
@@ -74,15 +67,21 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">메이커스ID</Table.HeaderCell>
-            <Table.HeaderCell>메이커스 이름</Table.HeaderCell>
-            <Table.HeaderCell>식품 이름</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              메이커스 이름
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">식품 이름</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
-            <Table.HeaderCell>매장가격</Table.HeaderCell>
-            <Table.HeaderCell>매장할인률</Table.HeaderCell>
-            <Table.HeaderCell>이벤트할인률</Table.HeaderCell>
-            <Table.HeaderCell>최종가격</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">설명</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">식사태그</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">매장가격</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">매장할인률</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">이벤트할인률</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">최종가격</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              <div style={{width: 150}}>설명</div>
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              <div style={{width: 150}}>식사태그</div>
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 

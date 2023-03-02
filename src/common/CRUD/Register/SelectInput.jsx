@@ -12,6 +12,7 @@ const SelectInput = ({
   options,
   width = '100%',
   flex = 1,
+  headerWidth = undefined,
   maxCharLength = 36,
 }) => {
   const handleChange = e => {
@@ -30,7 +31,7 @@ const SelectInput = ({
   return (
     <>
       <Container flex={flex} width={width}>
-        <TitleWrap>
+        <TitleWrap style={headerWidth ? {width: headerWidth} : undefined}>
           <Title>{fieldsToOpen[name]}</Title>
         </TitleWrap>
 
@@ -49,8 +50,8 @@ const SelectInput = ({
 
           {options.map((val, index) => {
             return (
-              <Option key={index} value={val}>
-                {val}
+              <Option key={index} value={val.value}>
+                {val.name}
               </Option>
             );
           })}
