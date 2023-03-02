@@ -23,9 +23,11 @@ import {Button, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
 
+import useCustomerQuery from './useCustomerQuery';
+
 import {sendFinal} from './CustomerLogics';
 
-import useCustomerData from './useCustomerData';
+// import useCustomerData from './useCustomerData';
 import {
   CustomerFieldsDataForRegister,
   CustomerFieldsToOpen,
@@ -86,7 +88,14 @@ const CustomerCustom = () => {
 
   const token = localStorage.getItem('token');
 
-  const {status, isLoading} = useCustomerData(
+  // const {status, isLoading} = useCustomerData(
+  //   ['getCustomerJSON'],
+  //   CustomerDataAtom,
+  //   'users/all',
+  //   token,
+  // );
+
+  const {} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
     'users/all',

@@ -11,6 +11,7 @@ const TextInput = ({
   placeholder,
   width = '100%',
   flex = 1,
+  headerWidth = undefined,
   maxCharLength = 36,
 }) => {
   const handleChange = e => {
@@ -29,7 +30,7 @@ const TextInput = ({
   return (
     <>
       <Container flex={flex} width={width}>
-        <TitleWrap>
+        <TitleWrap style={headerWidth ? {width: headerWidth} : undefined}>
           <Title>{fieldsToOpen[name]}</Title>
         </TitleWrap>
 
@@ -63,6 +64,8 @@ const Container = styled.div`
       return `width:${width};`;
     }
   }}
+
+  width: 12rem;
 `;
 
 const TitleWrap = styled.div`
@@ -70,6 +73,7 @@ const TitleWrap = styled.div`
   padding: 0 1rem;
   height: 3rem;
   font-size: 1.2rem;
+  /* width: 5rem; */
   /* text-align: center; */
   display: flex;
   align-items: center;
