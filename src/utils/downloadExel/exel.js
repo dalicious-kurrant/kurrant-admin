@@ -98,7 +98,7 @@ export function completePlanExel(plan) {
     '음식 상태',
     '음식 케파',
     '주문가능 수량',
-    '데일리푸드 ID',
+    '데일리푸드 ID (추가시 빈값)',
   ]);
   plan.map(makers => {
     return makers.makersSchedules.map(client => {
