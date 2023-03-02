@@ -73,8 +73,8 @@ const Header = () => {
       <Segment inverted>
         <Menu inverted secondary>
           <Menu.Item active onClick={() => navi('/main')} icon="home" />
-          {MenuList.map(v => (
-            <Dropdown key={`${v.name}`} item text={v.name}>
+          {MenuList.map((v, i) => (
+            <DropDownMenu key={`${v.name}`} item text={v.name} name={i}>
               <Dropdown.Menu>
                 {v.children?.map(b => (
                   <Dropdown.Item
@@ -87,7 +87,7 @@ const Header = () => {
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
-            </Dropdown>
+            </DropDownMenu>
           ))}
         </Menu>
       </Segment>
@@ -104,4 +104,11 @@ const Logout = styled.div`
   top: 45%;
   color: white;
   cursor: pointer;
+`;
+
+const DropDownMenu = styled(Dropdown)`
+  .text {
+    color: ${({name}) =>
+      name === 4 || name === 5 || name === 6 ? 'red' : 'white'};
+  }
 `;

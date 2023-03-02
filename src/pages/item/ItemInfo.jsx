@@ -18,7 +18,7 @@ const ItemInfo = () => {
   const [product, setProduct] = useAtom(productAtom);
   const [page, setPage] = useState(1);
   const {data: productList, refetch: productRefetch} = useGetAllProductsList(
-    20,
+    2000,
     page,
   );
   const [totalPage, setTotalPage] = useState(0);

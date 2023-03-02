@@ -277,10 +277,10 @@ export function userExel(user) {
 export function spotExel(spot) {
   const reqArrays = [];
   reqArrays.push([
-    'spotId',
-    'spotName',
     'groupId',
     'groupName',
+    'spotId',
+    'spotName',
     'zipCode',
     'address1',
     'address2',
@@ -375,9 +375,13 @@ export function corporationInfoExel(corporation) {
     'location',
     'diningTypes',
     'serviceDays',
+    'managerId',
     'managerName',
-    'managerPhpne',
+    'managerPhone',
     'isMembershipSupport',
+    'morningSupportPrice',
+    'lunchSupportPrice',
+    'dinnerSupportPrice',
     'employeeCount',
     'isSetting',
     'isGarbage',
@@ -393,9 +397,13 @@ export function corporationInfoExel(corporation) {
     '위치',
     '식사 타입',
     '식사 요일',
+    '담당자 ID',
     '담당자',
     '담당자 전화번호',
     '기업멤버십 지원여부',
+    '아침 지원금',
+    '점심 지원금',
+    '저녁 지원금',
     '사원수',
     '식사 세팅 지원 서비스',
     '쓰레기 수거 서비스',
@@ -403,8 +411,10 @@ export function corporationInfoExel(corporation) {
   ]);
 
   corporation?.data?.items?.groupInfoList?.map(el => {
-    const diningType =
-      el.diningTypes === 1 ? '아침' : el.diningTypes === 2 ? '점심' : '저녁';
+    const diningType = el.diningTypes.map(v =>
+      v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
+    );
+
     const membership = el.isMembershipSupport ? '지원' : '미지원';
     const setting = el.isSetting ? '사용' : '미사용';
     const garbage = el.isGarbage ? '사용' : '미사용';
@@ -417,11 +427,15 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
-    reqArray.push(diningType);
+    reqArray.push(diningType.join(','));
     reqArray.push(el.serviceDays);
+    reqArray.push(el.managerId);
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(membership);
+    reqArray.push(el.morningSupportPrice);
+    reqArray.push(el.lunchSupportPrice);
+    reqArray.push(el.dinnerSupportPrice);
     reqArray.push(el.employeeCount);
     reqArray.push(setting);
     reqArray.push(garbage);

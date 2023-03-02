@@ -23,7 +23,7 @@ const Company = () => {
     isSuccess,
     refetch,
   } = useGetCorporationInfo(20, page, name && name);
-
+  console.log(corpList);
   useEffect(() => {
     setCorporation(corpList);
   }, [corpList, setCorporation]);
