@@ -147,8 +147,10 @@ export const shiftUserType = customerData => {
     const shiftedData = shifted.map(value => {
       if (value.role === 'USER') {
         value.role = '일반';
-      } else if (value.role === 'MANAGER') {
+      } else if (value.role === 'ADMIN') {
         value.role = '관리자';
+      } else if (value.role === 'MANAGER') {
+        value.role = '매니저';
       } else if (value.role === 'GUEST') {
         value.role = '게스트';
       }
