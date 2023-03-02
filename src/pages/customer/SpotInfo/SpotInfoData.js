@@ -1,7 +1,7 @@
 export const SpotInfoFieldsToOpen = {
   // id: '아이디',
   groupId: '그룹아이디', // 1, 2, 3
-  groupName: '그룹이름',
+  // groupName: '그룹이름',
   spotId: '스팟아이디',
   spotName: '스팟이름',
   zipCode: '우편번호', // 빈칸이면 안됨, 00000
@@ -38,28 +38,28 @@ export const SpotInfoFieldsData = [
     width: undefined,
     inputType: inputType.select,
     options: [
-      {name: '1', value: '1'},
-      {name: '2', value: '2'},
-      {name: '3', value: '3'},
+      {name: '달리셔스', value: '1'},
+      {name: '위시티지이아파트', value: '2'},
+      {name: '밀당PT 여의도', value: '3'},
     ],
   },
-  {
-    fieldName: 'groupName',
-    fieldNameKor: '그룹이름',
-    placeholder: '',
-    maxCharLength: 40,
-    flex: 1,
-    width: undefined,
-  },
-  {
-    fieldName: 'spotId',
-    fieldNameKor: '스팟아이디',
-    placeholder: '',
-    maxCharLength: 40,
-    flex: 1,
-    width: undefined,
-    headerWidth: 130,
-  },
+  // {
+  //   fieldName: 'groupName',
+  //   fieldNameKor: '그룹이름',
+  //   placeholder: '',
+  //   maxCharLength: 40,
+  //   flex: 1,
+  //   width: undefined,
+  // },
+  // {
+  //   fieldName: 'spotId',
+  //   fieldNameKor: '스팟아이디',
+  //   placeholder: '',
+  //   maxCharLength: 40,
+  //   flex: 1,
+  //   width: undefined,
+  //   headerWidth: 130,
+  // },
   {
     fieldName: 'spotName',
     fieldNameKor: '스팟이름',
