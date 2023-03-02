@@ -466,7 +466,7 @@ const Common = () => {
     if (exelSpot && exelSpot.length > 0) {
       return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
     }
-    if (product?.data && product?.data?.length > 0) {
+    if (product && product?.length > 0) {
       return productExel(product);
     }
     if (exelProduct && exelProduct.length > 0) {
