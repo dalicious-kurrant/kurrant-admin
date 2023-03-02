@@ -92,7 +92,7 @@ const Plans = () => {
   const recommandData = () => {
     console.log(calendarRecommandData?.data);
     setIsClick(true);
-    setReCommandPlan();
+    // setReCommandPlan();
     setExelPlan();
     setStaticPlan();
     setPlan();
@@ -248,8 +248,12 @@ const Plans = () => {
     }
   }, [exelPlan, plan, reCommandPlan]);
   useEffect(() => {
-    calendarRefetch();
-    recommandRefetch();
+    if (plan) {
+      calendarRefetch();
+    }
+    if (reCommandPlan) {
+      recommandRefetch();
+    }
   }, [
     page,
     selectMakers,
@@ -257,6 +261,8 @@ const Plans = () => {
     selectDiningStatus,
     calendarRefetch,
     recommandRefetch,
+    plan,
+    reCommandPlan,
   ]);
   useEffect(() => {
     return () => {
@@ -426,15 +432,6 @@ const Plans = () => {
       )}
       {reCommandPlan && (
         <>
-          <PagenationBox>
-            <Pagination
-              defaultActivePage={page}
-              totalPages={totalPage}
-              onPageChange={(e, data) => {
-                console.log(data.activePage);
-              }}
-            />
-          </PagenationBox>
           <PlanTable
             count={count}
             testData={reCommandPlan}
