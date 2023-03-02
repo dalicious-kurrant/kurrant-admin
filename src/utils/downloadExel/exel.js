@@ -79,9 +79,10 @@ export function completePlanExel(plan) {
     'makersCount',
     'makersPickupTime',
     'foodName',
-    'foodStatus',
+    'dailyFoodStatus',
     'foodCapacity',
     'foodCount',
+    'dailyFoodId',
   ]);
   reqArrays.push([
     '날짜',
@@ -97,6 +98,7 @@ export function completePlanExel(plan) {
     '음식 상태',
     '음식 케파',
     '주문가능 수량',
+    '데일리푸드 ID',
   ]);
   plan.map(makers => {
     return makers.makersSchedules.map(client => {
@@ -112,9 +114,10 @@ export function completePlanExel(plan) {
         reqArray.push(client.makersCount);
         reqArray.push(client.makersPickupTime);
         reqArray.push(food.foodName);
-        reqArray.push(food.foodStatus);
+        reqArray.push(food.dailyFoodStatus);
         reqArray.push(food.foodCapacity);
         reqArray.push(food.foodCount);
+        reqArray.push(food.dailyFoodId);
         reqArrays.push(reqArray);
         return reqArrays;
       });
