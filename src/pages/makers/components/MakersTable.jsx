@@ -5,6 +5,7 @@ import {TableWrapper} from 'style/common.style';
 const MakersTable = ({data}) => {
   //   const {data: makersInfoList} = useGetMakersInfomation();
   //   console.log(makersInfoList);
+  console.log(data);
   return (
     <TableWrapper>
       <Table celled>
@@ -19,6 +20,7 @@ const MakersTable = ({data}) => {
             <Table.HeaderCell>담당자 이름</Table.HeaderCell>
             <Table.HeaderCell>담당자 전화번호</Table.HeaderCell>
             <Table.HeaderCell>일일최대수량</Table.HeaderCell>
+            <Table.HeaderCell>가능 다이닝타입</Table.HeaderCell>
             <Table.HeaderCell>서비스 업종</Table.HeaderCell>
             <Table.HeaderCell>서비스 형태</Table.HeaderCell>
             <Table.HeaderCell>모회사 여부</Table.HeaderCell>
@@ -56,6 +58,7 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.managerName}</Table.Cell>
                 <Table.Cell>{el.managerPhone}</Table.Cell>
                 <Table.Cell>{el.dailyCapacity}</Table.Cell>
+                <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
                 <Table.Cell>{el.serviceType}</Table.Cell>
                 <Table.Cell>{el.serviceForm}</Table.Cell>
                 <Table.Cell>{parentCompany}</Table.Cell>

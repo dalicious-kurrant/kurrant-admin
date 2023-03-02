@@ -12,7 +12,7 @@ const Makers = () => {
   const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
   const [makersExelInfo, setMakersExelInfo] = useAtom(makersExelInfoAtom);
   const {data: makersInfoList} = useGetMakersInfomation();
-
+  console.log(makersInfoList);
   useEffect(() => {
     setMakersInformation(makersInfoList);
   }, [makersInfoList, setMakersInformation]);

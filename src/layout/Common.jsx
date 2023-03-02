@@ -439,7 +439,7 @@ const Common = () => {
     if (makersInformation?.data && makersInformation?.data.length > 0) {
       return makersInfoExel(makersInformation);
     }
-
+    console.log(makersExelInfo, '8666');
     if (makersExelInfo && makersExelInfo.length > 0) {
       return makersInfoExelExport(
         makersExelInfo,
