@@ -5,6 +5,7 @@ import Select from 'react-select';
 
 import {useEffect, useState} from 'react';
 import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
+import withCommas from 'utils/withCommas';
 
 const CorpTable = ({
   data,
@@ -26,6 +27,13 @@ const CorpTable = ({
     };
   });
 
+  // const diningType = corpListData?.map(el => {
+  //   return el.diningTypes.map(v => {
+  //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
+  //     return type;
+  //   });
+  // });
+  // console.log(diningType, '896');
   useEffect(() => {
     if (isSuccess) {
       setTotalPage(data?.data?.total);
@@ -81,6 +89,7 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 담당자 <br /> 전화번호
@@ -88,6 +97,15 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 기업멤버십 <br />
                 지원여부
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                아침 지원금
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                점심 지원금
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                저녁 지원금
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">사원수</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -106,12 +124,10 @@ const CorpTable = ({
           </Table.Header>
           <Table.Body>
             {corpListData?.map((el, idx) => {
-              const diningType =
-                el.diningTypes === 1
-                  ? '아침'
-                  : el.diningTypes === 2
-                  ? '점심'
-                  : '저녁';
+              const diningType = el.diningTypes.map(v =>
+                v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
+              );
+
               const membership = el.isMembershipSupport ? '지원' : '미지원';
               const setting = el.isSetting ? '사용' : '미사용';
               const garbage = el.isGarbage ? '사용' : '미사용';
@@ -130,10 +146,11 @@ const CorpTable = ({
                   <Table.Cell>
                     <div style={{width: 50}}>{el.location}</div>
                   </Table.Cell>
-                  <Table.Cell>{diningType}</Table.Cell>
+                  <Table.Cell>{diningType.join(',')}</Table.Cell>
                   <Table.Cell>
                     <div style={{width: 150}}>{el.serviceDays}</div>
                   </Table.Cell>
+                  <Table.Cell textAlign="center">{el.managerId}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
                   <Table.Cell textAlign="center">
                     <div style={{width: 150}}>
@@ -141,7 +158,17 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
-                  <Table.Cell>{el.employeeCount}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.morningSupportPrice) || '-'}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.lunchSupportPrice) || '-'}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.dinnerSupportPrice) || '-'}
+                  </Table.Cell>
+
+                  <Table.Cell>{withCommas(el.employeeCount)}</Table.Cell>
                   <Table.Cell textAlign="center">{setting}</Table.Cell>
                   <Table.Cell textAlign="center">{garbage}</Table.Cell>
                   <Table.Cell textAlign="center">{hotStorage}</Table.Cell>

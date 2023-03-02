@@ -134,7 +134,7 @@ const Common = () => {
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
-  // console.log(user, '9779');
+
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -614,7 +614,7 @@ const Common = () => {
                 console.log('handlerSaveExelUser');
                 handlerSaveExelUser();
               }
-              if (user.length !== 0) {
+              if (user && user.length !== 0) {
                 handlerSaveUser();
               }
               if (completePlan || exelCompletePlan) {

@@ -60,6 +60,9 @@ const CorpExelTable = ({data}) => {
                         if (k === 'serviceDays') {
                           return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                         }
+                        if (k === 'managerId') {
+                          return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        }
                         if (k === 'managerName') {
                           return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                         }
@@ -70,6 +73,16 @@ const CorpExelTable = ({data}) => {
                         if (k === 'isMembershipSupport') {
                           return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                         }
+                        if (k === 'morningSupportPrice') {
+                          return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        }
+                        if (k === 'lunchSupportPrice') {
+                          return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        }
+                        if (k === 'dinnerSupportPrice') {
+                          return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        }
+
                         if (k === 'employeeCount') {
                           return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                         }
