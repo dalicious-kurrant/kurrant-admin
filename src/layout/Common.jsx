@@ -646,10 +646,10 @@ const Common = () => {
                 callPostCalendar();
               }
               // 스팟
-              if (exelSpot) {
+              if (exelSpot && exelSpot.length) {
                 console.log('exelSpot 엑셀 스팟 저장');
                 saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
-              } else if (spotInfoData) {
+              } else if (spotInfoData && spotInfoData.length) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
                 saveSpotToDb(
                   spotInfoData,
@@ -675,7 +675,7 @@ const Common = () => {
                 console.log('statusButton');
                 statusButton();
               }
-              console.log('아무것도 없음');
+              // console.log('아무것도 없음');
             }}
           />
           {/* <Button icon="history" content="히스토리" /> */}

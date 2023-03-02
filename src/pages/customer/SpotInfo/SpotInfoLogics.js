@@ -166,11 +166,39 @@ export const saveSpotToDb = (data, mutate, deleteList) => {
   }
 
   // id 지우기
+  const spreadData = [...data];
+
+  const idRemove = spreadData.map(v => {
+    const {id, ...otherValue} = v;
+
+    return otherValue;
+  });
 
   // delete추가하기
 
+  let removeDelete = [];
+
+  idRemove.forEach(v => {
+    if (!Object.keys(v).includes('isOnDeleteList')) {
+      removeDelete.push(v);
+    }
+  });
+
+  // 값이 하나도 없을 때
+  console.log(removeDelete);
+  if (removeDelete.length < 1) {
+    if (
+      window.confirm(
+        '등록하려는 값이 하나도 없습니다 이대로 진행해면 모든 데이터들은 초기화됩니다 이대로 진행하시겠습니까?',
+      )
+    ) {
+    } else {
+      return;
+    }
+  }
+
   const yo = {
-    saveSpotList: [...data],
+    saveSpotList: [...removeDelete],
   };
 
   console.log(yo);
