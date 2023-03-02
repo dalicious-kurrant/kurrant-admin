@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
+import {bizNoFormatter, bizNumberFormatter} from 'utils/bizNumberFormatter';
 import {formattedDate, formattedTime} from 'utils/dateFormatter';
 
 const MakersExelTable = ({data}) => {
@@ -21,7 +22,11 @@ const MakersExelTable = ({data}) => {
               <Table.Header key={el.id + i}>
                 <Table.Row>
                   {HeaderData.map((h, i) => {
-                    return <Table.HeaderCell key={h + i}>{h}</Table.HeaderCell>;
+                    return (
+                      <Table.HeaderCell key={h + i} textAlign="center">
+                        {h}
+                      </Table.HeaderCell>
+                    );
                   })}
                 </Table.Row>
               </Table.Header>
@@ -32,7 +37,7 @@ const MakersExelTable = ({data}) => {
                 <Table.Row>
                   {key &&
                     key.map((k, i) => {
-                      console.log(el['isParentCompany'], '000');
+                      console.log(el['companyRegistrationNumber'], '000');
                       if (k === 'id') {
                         return (
                           <Table.Cell key={k + i} textAlign="center">
@@ -91,16 +96,28 @@ const MakersExelTable = ({data}) => {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'address1') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 200}}>{el[k]}</div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'address2') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            <div style={{width: 200}}>{el[k]}</div>
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'location') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
                       if (k === 'companyRegistrationNumber') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            {bizNoFormatter(el[k].toString())}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'contractStartDate') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;

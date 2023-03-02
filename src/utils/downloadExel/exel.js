@@ -165,7 +165,9 @@ export function productExel(product) {
     '설명',
     '식사 태그',
   ]);
+
   product?.map(el => {
+
     const reqArray = [];
     reqArray.push(el.foodId);
     reqArray.push(el.makersId);
