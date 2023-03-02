@@ -3,6 +3,7 @@ import {successApi} from 'api/success';
 import axios from 'axios';
 import React, {useEffect} from 'react';
 import {useParams, useSearchParams} from 'react-router-dom';
+import instanceOrder from 'shared/axiosSuccess';
 import {PageWrapper} from '../style/common.style';
 
 const Success = () => {
@@ -17,10 +18,11 @@ const Success = () => {
     };
 
     const callOrder = async () => {
-      const res = await axios.post('/users/me/orders', {
+      alert(JSON.stringify(req));
+      const res = await instanceOrder.post('/users/me/orders', {
         ...req,
       });
-      alert(JSON.stringify(res));
+
       // const res = await successApi.orderSuccess(req);
       window.ReactNativeWebView.postMessage(
         JSON.stringify({...res, type: 'NOMAL'}),
