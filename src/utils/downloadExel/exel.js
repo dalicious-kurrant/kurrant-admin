@@ -377,7 +377,7 @@ export function corporationInfoExel(corporation) {
     'serviceDays',
     'managerId',
     'managerName',
-    'managerPhpne',
+    'managerPhone',
     'isMembershipSupport',
     'morningSupportPrice',
     'lunchSupportPrice',
@@ -411,8 +411,10 @@ export function corporationInfoExel(corporation) {
   ]);
 
   corporation?.data?.items?.groupInfoList?.map(el => {
-    const diningType =
-      el.diningTypes === 1 ? '아침' : el.diningTypes === 2 ? '점심' : '저녁';
+    const diningType = el.diningTypes.map(v =>
+      v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
+    );
+
     const membership = el.isMembershipSupport ? '지원' : '미지원';
     const setting = el.isSetting ? '사용' : '미사용';
     const garbage = el.isGarbage ? '사용' : '미사용';
@@ -425,10 +427,14 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
-    reqArray.push(diningType);
+    reqArray.push(diningType.join(','));
     reqArray.push(el.serviceDays);
+    reqArray.push(el.managerId);
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
+    reqArray.push(el.morningSupportPrice);
+    reqArray.push(el.lunchSupportPrice);
+    reqArray.push(el.dinnerSupportPrice);
     reqArray.push(membership);
     reqArray.push(el.employeeCount);
     reqArray.push(setting);
