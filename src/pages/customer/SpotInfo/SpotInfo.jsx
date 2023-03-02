@@ -30,7 +30,7 @@ import TableCustom from 'common/Table/TableCustom';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [plan, setPlan] = useAtom(exelSpotAtom);
+  const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
 
   const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
@@ -76,8 +76,12 @@ const SpotInfo = () => {
     setShowRegister(false);
   };
   useEffect(() => {
-    if (plan) setKey(Object.keys(plan[0]));
-  }, [plan]);
+    if (exelSpot) setKey(Object.keys(exelSpot[0]));
+  }, [exelSpot]);
+
+  useEffect(() => {
+    console.log(exelSpot);
+  }, [exelSpot]);
 
   useEffect(() => {
     return () => {
@@ -114,7 +118,7 @@ const SpotInfo = () => {
 
   return (
     <>
-      {plan ? (
+      {exelSpot ? (
         <PageWrapper>
           <BtnWrapper>
             <Button
@@ -127,12 +131,12 @@ const SpotInfo = () => {
           <TableWrapper>
             <Table celled>
               {/* {console.log(plan)} */}
-              {plan &&
-                plan.map((p, i) => {
+              {exelSpot &&
+                exelSpot.map((p, i) => {
                   const HeaderData = Object.values(p);
 
                   if (i === 0) {
-                    console.log(HeaderData, '123');
+                    // console.log(HeaderData, '123');
                     return (
                       <Table.Header key={'0' + i}>
                         <Table.Row>
@@ -151,19 +155,19 @@ const SpotInfo = () => {
                       </Table.Header>
                     );
                   } else {
-                    console.log(p);
+                    // console.log(p);
                     return (
                       <Table.Body key={i}>
                         <Table.Row>
                           <Table.Cell textAlign="center">
                             <Checkbox
-                              checked={chkData.includes(p.id)}
+                              checked={chkData.includes(p.spotId)}
                               onChange={(v, data) => {
                                 if (data.checked) {
-                                  setChkData([...chkData, p.id]);
+                                  setChkData([...chkData, p.spotId]);
                                 } else {
                                   setChkData(
-                                    chkData.filter(v => v.id !== p.id),
+                                    chkData.filter(v => v.spotId !== p.spotId),
                                   );
                                 }
                               }}
@@ -171,7 +175,7 @@ const SpotInfo = () => {
                           </Table.Cell>
                           {key &&
                             key.map((k, l) => {
-                              console.log(p[k], 'test');
+                              // console.log(p[k], 'test');
                               if (
                                 k === 'breakfastDeliveryTime' ||
                                 k === 'dinnerDeliveryTime' ||
