@@ -59,6 +59,11 @@ import {useSaveUserData} from '../hooks/useUserData';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {useSaveExelCorporation} from '../hooks/useCorporation';
 import {useSaveMakersInformation} from 'hooks/useMakers';
+import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
+import {saveSpotToDb} from 'pages/customer/SpotInfo/SpotInfoLogics';
+import useSpotInfoExelForceQuery from 'pages/customer/SpotInfo/useSpotInfoExelForceQuery';
+
+import {TableDeleteListAtom} from 'common/Table/store';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -110,11 +115,16 @@ const Common = () => {
   const inputRef = useRef();
   const [plan, setPlan] = useAtom(planAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
-  const [spot, setSpot] = useAtom(spotAtom);
+
   const [startDate, setStartDate] = useAtom(deadlineAtom);
   const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
   const {mutateAsync: saveUserData} = useSaveUserData();
+
+  // 스팟
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
+  const [spot, setSpot] = useAtom(spotAtom);
+
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
@@ -134,6 +144,10 @@ const Common = () => {
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
+  // console.log(user, '9779');
+
+  const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
+  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -407,7 +421,7 @@ const Common = () => {
       setMakersExelInfo();
       const reader = new FileReader();
       reader.onload = e => {
-        console.log(e.target.result);
+        // console.log(e.target.result);
         const data = e.target.result;
         const workbook = XLSX.read(data, {type: 'array', cellDates: true});
         const sheetName = workbook.SheetNames[0];
@@ -606,9 +620,20 @@ const Common = () => {
                 console.log('callPostCalendar');
                 callPostCalendar();
               }
+              // 스팟
               if (exelSpot) {
-                console.log('exelSpot 엑셀 스팟');
+                console.log('exelSpot 엑셀 스팟 저장');
+                saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
+              } else if (spotInfoData) {
+                console.log('spotInfoData 스팟정보 데이터 저장');
+                saveSpotToDb(
+                  spotInfoData,
+                  sendExcelForceMutate,
+                  tableDeleteList,
+                );
               }
+
+              //
 
               if (exelUser) {
                 console.log('handlerSaveExelUser');

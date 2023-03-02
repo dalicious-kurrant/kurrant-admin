@@ -48,7 +48,7 @@ const CRUDBundle = ({
             </Button>
           </BtnWrap>
         </Button.Group>
-        <Wrap2>
+        {/* <Wrap2>
           <Button.Group>
             <FinalSendButton
               checkboxstatus={checkboxStatus}
@@ -58,7 +58,7 @@ const CRUDBundle = ({
               최종적용하기
             </FinalSendButton>
           </Button.Group>
-        </Wrap2>
+        </Wrap2> */}
       </Wrap>
     </Container>
   );
