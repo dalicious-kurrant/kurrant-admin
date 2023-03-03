@@ -33,6 +33,15 @@ const MakersTable = ({data}) => {
             <Table.HeaderCell textAlign="center">
               가능 다이닝타입
             </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              아침 가능케파
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              점심 가능케파
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              저녁 가능케파
+            </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">서비스 업종</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">서비스 형태</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">모회사 여부</Table.HeaderCell>
@@ -99,7 +108,11 @@ const MakersTable = ({data}) => {
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
-                <Table.Cell textAlign="center">{el.serviceType}</Table.Cell>
+                <Table.Cell textAlign="center">{el.morningCapacity}</Table.Cell>
+                <Table.Cell textAlign="center">{el.lunchCapacity}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.dinnerCapacity || '-'}
+                </Table.Cell>
                 <Table.Cell>{el.serviceForm}</Table.Cell>
                 <Table.Cell textAlign="center">{parentCompany}</Table.Cell>
                 <Table.Cell textAlign="center">
