@@ -22,14 +22,14 @@ export const tellAlertLogic = statusName => {
 
 export const handleSubmitLogic = (
   input,
-  fieldsInput,
+  // fieldsInput,
   registerStatus,
   setSubmitStatus,
   submitMutate,
   editMutate,
   handleClose,
 ) => {
-  const fieldsArray = fieldsInput.map(value => input[value.fieldName]);
+  // const fieldsArray = fieldsInput.map(value => input[value.fieldName]);
 
   if (registerStatus === 'register') {
     // if (fieldsArray.includes('')) {

@@ -288,14 +288,17 @@ export function spotExel(spot) {
     'location',
     'diningType',
     'breakfastDeliveryTime',
-    'breakfastUseDays',
     'breakfastSupportPrice',
+    'breakfastUseDays',
+    'breakfastLastOrderTime',
     'lunchDeliveryTime',
-    'lunchUseDays',
     'lunchSupportPrice',
+    'lunchUseDays',
+    'lunchLastOrderTime',
     'dinnerDeliveryTime',
-    'dinnerUseDays',
     'dinnerSupportPrice',
+    'dinnerUseDays',
+    'dinnerLastOrderTime',
     'createdDateTime',
     'updatedDateTime',
   ]);
@@ -309,16 +312,19 @@ export function spotExel(spot) {
     '기본주소',
     '상세주소',
     '위치',
-    '식사 타입',
+    '식타입',
     '배송시간 아침',
-    '주문요일 아침',
     '지원금 아침',
+    '주문요일 아침',
+    '아침주문마감시간',
     '배송시간 점심',
-    '주문요일 점심',
     '지원금 점심',
+    '주문요일 점심',
+    '점심주문마감시간',
     '배송시간 저녁',
-    '주문요일 저녁',
     '지원금 저녁',
+    '주문요일저녁',
+    '저녁주문마감시간',
     '생성일',
     '수정일',
   ]);
@@ -335,15 +341,19 @@ export function spotExel(spot) {
     reqArray.push(el.address2);
     reqArray.push(el.location);
     reqArray.push(el.diningType);
+
     reqArray.push(el.breakfastDeliveryTime);
-    reqArray.push(el.breakfastUseDays);
     reqArray.push(el.breakfastSupportPrice);
+    reqArray.push(el.breakfastUseDays);
+    reqArray.push(el.breakfastLastOrderTime);
     reqArray.push(el.lunchDeliveryTime);
-    reqArray.push(el.lunchUseDays);
     reqArray.push(el.lunchSupportPrice);
+    reqArray.push(el.lunchUseDays);
+    reqArray.push(el.lunchLastOrderTime);
     reqArray.push(el.dinnerDeliveryTime);
-    reqArray.push(el.dinnerUseDays);
     reqArray.push(el.dinnerSupportPrice);
+    reqArray.push(el.dinnerUseDays);
+    reqArray.push(el.dinnerLastOrderTime);
     reqArray.push(el.createdDateTime);
     reqArray.push(el.updatedDateTime);
     reqArrays.push(reqArray);

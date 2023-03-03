@@ -64,6 +64,7 @@ import {saveSpotToDb} from 'pages/customer/SpotInfo/SpotInfoLogics';
 import useSpotInfoExelForceQuery from 'pages/customer/SpotInfo/useSpotInfoExelForceQuery';
 
 import {TableDeleteListAtom} from 'common/Table/store';
+import {SpotInfoTotalRequiredFields} from 'pages/customer/SpotInfo/SpotInfoData';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -650,9 +651,40 @@ const Common = () => {
               // 스팟
               if (exelSpot && exelSpot.length) {
                 console.log('exelSpot 엑셀 스팟 저장');
-                saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
+
+                // 디비 저장 여기임
+                // 여기서 값 정리를 다 해야됨
+
+                // 엑셀의 첫번재값을 지우기 (키값이니까)
+                let yo = [];
+
+                exelSpot.forEach((v, i) => {
+                  if (i === 0) {
+                  } else {
+                    yo.push(v);
+                  }
+                });
+
+                // 키가 안들어있으면 키 채우고 값을 null 넣어주기
+
+                const yo2 = yo.map(v => {
+                  Object.keys(SpotInfoTotalRequiredFields).forEach(k => {
+                    if (!Object.keys(v).includes(k)) {
+                      v[k] = null;
+                    }
+                  });
+
+                  return v;
+                });
+                // console.log(yo2);
+
+                // const yo3 = [...yo2].slice(8);
+                // console.log(yo3);
+                // saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
+                saveSpotToDb(yo2, sendExcelForceMutate, tableDeleteList);
               } else if (spotInfoData && spotInfoData.length) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
+
                 saveSpotToDb(
                   spotInfoData,
                   sendExcelForceMutate,

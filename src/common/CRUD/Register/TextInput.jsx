@@ -3,6 +3,7 @@ import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 const TextInput = ({
   fieldsToOpen,
+  fieldName,
   registerStatus,
   input,
   inputType = 'text',
@@ -34,7 +35,8 @@ const TextInput = ({
     <>
       <Container flex={flex} width={width}>
         <TitleWrap style={headerWidth ? {width: headerWidth} : undefined}>
-          <Title>{fieldsToOpen[name]}</Title>
+          {/* <Title>{fieldsToOpen[name]}</Title> */}
+          <Title>{fieldName}</Title>
         </TitleWrap>
 
         <TextInputInput

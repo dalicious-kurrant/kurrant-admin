@@ -41,7 +41,7 @@ const Register = ({
 
     handleSubmitLogic(
       input,
-      fieldsData,
+      // fieldsData,
       registerStatus,
       setSubmitStatus,
       submitMutate,
@@ -82,7 +82,8 @@ const Register = ({
               return (
                 <SelectInput
                   key={index}
-                  fieldsToOpen={fieldsToOpen}
+                  // fieldsToOpen={fieldsToOpen}
+                  fieldName={value.fieldNameKor}
                   registerStatus={registerStatus}
                   input={input}
                   name={value.fieldName}
@@ -97,7 +98,9 @@ const Register = ({
             } else if (value.inputType === 'number') {
               return (
                 <NumberInput
-                  fieldsToOpen={fieldsToOpen}
+                  // fieldsToOpen={fieldsToOpen}
+                  // fieldName={value.fieldName}
+                  fieldName={value.fieldNameKor}
                   registerStatus={registerStatus}
                   key={index}
                   input={input}
@@ -122,7 +125,9 @@ const Register = ({
             else {
               return (
                 <TextInput
-                  fieldsToOpen={fieldsToOpen}
+                  // fieldsToOpen={fieldsToOpen}
+                  // fieldName={value.fieldNameKor}
+                  fieldName={value.fieldNameKor}
                   registerStatus={registerStatus}
                   key={index}
                   input={input}

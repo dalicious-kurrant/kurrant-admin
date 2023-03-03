@@ -1,3 +1,32 @@
+export const SpotInfoTotalRequiredFields = {
+  spotId: '상세스팟 아이디',
+  spotName: '상세스팟 이름',
+  groupId: '스팟 아이디',
+  groupName: '스팟 이름',
+  zipCode: '우편번호',
+  address1: '기본주소',
+
+  address2: '상세주소',
+  location: '위치',
+  diningType: '식타입',
+  breakfastLastOrderTime: '아침주문마감시간',
+  breakfastDeliveryTime: '배송시간아침',
+
+  breakfastUseDays: '주문요일아침',
+  breakfastSupportPrice: '아침주문마감시간',
+  lunchLastOrderTime: '점심주문마감시간',
+  lunchDeliveryTime: '배송시간점심',
+  lunchUseDays: '주문요일점심',
+  lunchSupportPrice: '지원금점심',
+  dinnerLastOrderTime: '저녁주문마감시간',
+  dinnerDeliveryTime: '배송시간저녁',
+  dinnerUseDays: '주문요일저녁',
+  dinnerSupportPrice: '지원금저녁',
+  createdDateTime: '생성일',
+  updatedDateTime: '수정일',
+  status: '상태',
+};
+
 export const SpotInfoRegisterFieldsToOpen = {
   // id: '아이디',
 
@@ -31,7 +60,7 @@ export const SpotInfoFieldsToOpen = {
   // id: '아이디',
   // groupId: '스팟 아이디', // 1, 2, 3
   groupName: '스팟 이름',
-  // spotId: '상세스팟 아이디',
+  spotId: '상세스팟 아이디',
   spotName: '상세스팟 이름',
   zipCode: '우편번호', // 빈칸이면 안됨, 00000
   address1: '기본주소', // 빈칸 가능
@@ -78,6 +107,7 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    headerWidth: 140,
     inputType: inputType.select,
     valueType: 'number',
     defaultValue: {name: '달리셔스', value: 1},
@@ -147,8 +177,9 @@ export const SpotInfoFieldsData = [
   },
   {
     fieldName: 'diningType',
-    fieldNameKor: '식타입',
-    placeholder: '아침, 점심, 저녁 복수선택',
+    fieldNameKor: '식타입 ',
+    placeholder:
+      "적어도 하나 선택 '아침', '점심', '저녁'후 해당 식사의 배송시간, 지원금, 주문요일, 주문마감시간 작성요 ",
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -160,11 +191,11 @@ export const SpotInfoFieldsData = [
     //   {name: '점심', value: '점심'},
     //   {name: '저녁', value: '저녁'},
     // ],
-    headerWidth: 400,
+    headerWidth: 800,
   },
   {
     fieldName: 'breakfastDeliveryTime',
-    fieldNameKor: '배송시아침',
+    fieldNameKor: '배송시간아침',
     placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,

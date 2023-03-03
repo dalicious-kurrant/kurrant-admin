@@ -4,6 +4,7 @@ import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 const SelectInput = ({
   fieldsToOpen,
+  fieldName,
   registerStatus,
   input,
   name,
@@ -40,7 +41,8 @@ const SelectInput = ({
     <>
       <Container flex={flex} width={width}>
         <TitleWrap style={headerWidth ? {width: headerWidth} : undefined}>
-          <Title>{fieldsToOpen[name]}</Title>
+          {/* <Title>{fieldsToOpen[name]}</Title> */}
+          <Title>{fieldName}</Title>
         </TitleWrap>
 
         <Select
@@ -53,9 +55,7 @@ const SelectInput = ({
           flex={flex}
           // defaultValue={defaultValue.value}
           value={input[name]}>
-          <Option value={defaultValue.value} disabled>
-            선택
-          </Option>
+          <Option value={defaultValue.value}>필수 선택</Option>
           {options.map((val, index) => {
             return (
               <Option key={index} value={val.value}>
