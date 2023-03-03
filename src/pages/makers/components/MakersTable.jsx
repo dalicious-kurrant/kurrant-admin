@@ -114,6 +114,7 @@ const MakersTable = ({data}) => {
                   {el.dinnerCapacity || '-'}
                 </Table.Cell>
                 <Table.Cell>{el.serviceForm}</Table.Cell>
+                <Table.Cell>{el.serviceType}</Table.Cell>
                 <Table.Cell textAlign="center">{parentCompany}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.parentCompanyId ?? '-'}
@@ -121,7 +122,7 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.zipCode}</Table.Cell>
                 <Table.Cell>{el.address1}</Table.Cell>
                 <Table.Cell>{el.address2}</Table.Cell>
-                <Table.Cell textAlign="center">{el.location ?? '-'}</Table.Cell>
+                <Table.Cell textAlign="center">{el.location}</Table.Cell>
                 <Table.Cell textAlign="center">
                   <div style={{width: 150}}>
                     {bizNoFormatter(el.companyRegistrationNumber)}
