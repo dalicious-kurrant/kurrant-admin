@@ -567,16 +567,7 @@ const Common = () => {
       return userExel(user);
     }
     if (spot && spot.length > 0) {
-      const exportSpot = spot.map((v, i) => {
-        if (i !== 0) {
-          return v;
-        }
-      });
-      const req = exportSpot.filter(element => {
-        return element !== undefined && element !== null && element !== '';
-      });
-      console.log(req);
-      return spotExel(req);
+      return spotExel(spot);
     }
     if (completePlan && completePlan.length > 0) {
       const req = completePlan.filter(element => {
