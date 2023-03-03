@@ -113,8 +113,8 @@ const MakersTable = ({data}) => {
                 <Table.Cell textAlign="center">
                   {el.dinnerCapacity || '-'}
                 </Table.Cell>
-                <Table.Cell>{el.serviceForm}</Table.Cell>
-                <Table.Cell>{el.serviceType}</Table.Cell>
+                <Table.Cell textAlign="center">{el.serviceForm}</Table.Cell>
+                <Table.Cell textAlign="center">{el.serviceType}</Table.Cell>
                 <Table.Cell textAlign="center">{parentCompany}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.parentCompanyId ?? '-'}
@@ -131,7 +131,7 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.contractStartDate}</Table.Cell>
                 <Table.Cell>{el.contractEndDate}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {el.isNutritionInformation ? '여' : '부'}
+                  {el.isNutritionInformation ? '대상' : '비대상'}
                 </Table.Cell>
                 <Table.Cell>{el.openTime}</Table.Cell>
                 <Table.Cell>{el.closeTime}</Table.Cell>
