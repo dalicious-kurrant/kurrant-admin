@@ -547,7 +547,7 @@ export function makersInfoExel(makersInformation) {
   ]);
 
   makersInformation?.data?.map(el => {
-    // console.log(el.openTime, '9999');
+    console.log(el, '9999');
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(el.code);
@@ -558,9 +558,9 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(el.diningTypes.join(','));
-    reqArray.push(el.morningCapa);
-    reqArray.push(el.lunchCapa);
-    reqArray.push(el.dinnerCapa);
+    reqArray.push(el.morningCapacity);
+    reqArray.push(el.lunchCapacity);
+    reqArray.push(el.dinnerCapacity);
     reqArray.push(el.dailyCapacity);
     reqArray.push(el.serviceType);
     reqArray.push(el.serviceForm);
