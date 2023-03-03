@@ -197,10 +197,14 @@ export const saveSpotToDb = (data, mutate, deleteList) => {
     }
   }
 
+  // const test = [...removeDelete].slice(7);
+  const test = [...removeDelete];
   const yo = {
-    saveSpotList: [...removeDelete],
+    saveSpotList: [...test],
   };
 
   console.log(yo);
+
+  // localStorage.setItem('hi', JSON.stringify(removeDelete));
   mutate(yo);
 };

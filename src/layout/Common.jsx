@@ -460,7 +460,7 @@ const Common = () => {
           setExelPlan(json);
           setExelStaticPlan(json);
         }
-        if (sheetName === '고객 스팟 공지') {
+        if (sheetName === '고객 스팟 정보') {
           setExelSpot(json);
         }
         if (sheetName === '유저 정보') {
@@ -568,14 +568,16 @@ const Common = () => {
     }
     if (spot && spot.length > 0) {
       const exportSpot = spot.map((v, i) => {
-        if (i !== 0) {
-          return v;
-        }
+        // if (i !== 0) {
+        //   return v;
+        // }
+        return v;
       });
       const req = exportSpot.filter(element => {
         return element !== undefined && element !== null && element !== '';
       });
       console.log(req);
+      // 스팟 여기
       return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {

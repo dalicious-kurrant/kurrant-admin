@@ -11,7 +11,7 @@ export const SpotInfoRegisterFieldsToOpen = {
   location: '위치', // 빈칸 가능
   diningType: '식타입', //  1,2,3, 복수선택 가능 스트링임
   breakfastDeliveryTime: '배송시아침', //  "00:00:00"형식 준수
-  breakfastSupportPrice: '지원아침', // null가능number, 0 가능
+  breakfastSupportPrice: '지원금아침', // null가능number, 0 가능
   breakfastUseDays: '주문요일아침', //null가능 빈칸 가능 월, 수 금
   breakfastLastOrderTime: '아침주문마감시간',
   lunchDeliveryTime: '배송시간점심', // null가능"00:00:00"형식 준수
@@ -39,7 +39,7 @@ export const SpotInfoFieldsToOpen = {
   location: '위치', // 빈칸 가능
   diningType: '식타입', //  1,2,3, 복수선택 가능 스트링임
   breakfastDeliveryTime: '배송시아침', //  "00:00"형식 준수
-  breakfastSupportPrice: '지원아침', // null가능number, 0 가능
+  breakfastSupportPrice: '지원금아침', // null가능number, 0 가능
   breakfastUseDays: '주문요일아침', //null가능 빈칸 가능 월, 수 금
   breakfastLastOrderTime: '아침주문마감시간', //  "00:00"형식 준수
   lunchDeliveryTime: '배송시간점심', // null가능"00:00:00"형식 준수
@@ -58,9 +58,18 @@ export const SpotInfoFieldsToOpen = {
 
 const inputType = {
   select: 'select',
+
   text: 'text',
   dependent: 'dependent',
+  number: 'number',
 };
+
+export const groupIdOptions = [
+  {name: '달리셔스', value: 1},
+  {name: '위시티지이아파트', value: 2},
+  {name: '밀당PT 여의도', value: 3},
+];
+
 export const SpotInfoFieldsData = [
   {
     fieldName: 'groupId',
@@ -70,12 +79,11 @@ export const SpotInfoFieldsData = [
     flex: 1,
     width: undefined,
     inputType: inputType.select,
-    options: [
-      {name: '달리셔스', value: '1'},
-      {name: '위시티지이아파트', value: '2'},
-      {name: '밀당PT 여의도', value: '3'},
-    ],
+    valueType: 'number',
+    defaultValue: {name: '달리셔스', value: 1},
+    options: groupIdOptions,
   },
+
   // {
   //   fieldName: 'groupName',
   //   fieldNameKor: '스팟 이름',
@@ -83,15 +91,17 @@ export const SpotInfoFieldsData = [
   //   maxCharLength: 40,
   //   flex: 1,
   //   width: undefined,
+
   // },
   {
     fieldName: 'spotId',
     fieldNameKor: '상세스팟 아이디',
-    placeholder: '필수',
+    placeholder: '필수 1 이상 숫자',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
-    headerWidth: 160,
+    headerWidth: 260,
+    inputType: inputType.number,
   },
   {
     fieldName: 'spotName',
@@ -99,6 +109,7 @@ export const SpotInfoFieldsData = [
     placeholder: '필수',
     maxCharLength: 40,
     flex: 1,
+    headerWidth: 260,
     width: undefined,
   },
   {
@@ -154,7 +165,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'breakfastDeliveryTime',
     fieldNameKor: '배송시아침',
-    placeholder: '예) 00:00:00',
+    placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -162,11 +173,14 @@ export const SpotInfoFieldsData = [
   },
   {
     fieldName: 'breakfastSupportPrice',
-    fieldNameKor: '지원아침',
-    placeholder: '숫자 입력',
+    fieldNameKor: '지원금아침',
+    placeholder: '가격 입력',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    inputType: inputType.number,
+    defaultValue: 0,
+    headerWidth: 150,
   },
   {
     fieldName: 'breakfastUseDays',
@@ -180,7 +194,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'breakfastLastOrderTime',
     fieldNameKor: '아침주문마감시간',
-    placeholder: '예) 월, 화, 수',
+    placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -190,7 +204,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'lunchDeliveryTime',
     fieldNameKor: '배송시간점심',
-    placeholder: ' 예) 00:00:00 ',
+    placeholder: ' 예) 00:00 ',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -203,11 +217,13 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    inputType: inputType.number,
+    defaultValue: 0,
   },
   {
     fieldName: 'lunchUseDays',
     fieldNameKor: '주문요일점심',
-    placeholder: '예) 00:00:00',
+    placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -216,7 +232,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'lunchLastOrderTime',
     fieldNameKor: '점심주문마감시간',
-    placeholder: '예) 00:00:00',
+    placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -225,7 +241,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'dinnerDeliveryTime',
     fieldNameKor: '배송시간저녁',
-    placeholder: '예) 00:00:00',
+    placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -238,6 +254,8 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    inputType: inputType.number,
+    defaultValue: 0,
   },
   {
     fieldName: 'dinnerUseDays',

@@ -13,19 +13,27 @@ const SelectInput = ({
   width = '100%',
   flex = 1,
   headerWidth = undefined,
+  valueType = 'string',
   maxCharLength = 36,
+  defaultValue,
 }) => {
   const handleChange = e => {
     e.preventDefault();
     const {name, value} = e.target;
 
     if (registerStatus === 'register') {
-      setInput({...input, [name]: value, id: Date.now().toString()});
+      setInput({
+        ...input,
+        [name]: valueType === 'string' ? value : parseInt(value),
+        id: Date.now().toString(),
+      });
     } else if (registerStatus === 'edit') {
       setInput({...input, [name]: value});
     } else {
       console.log(registerStatus);
     }
+
+    console.log({...input, [name]: value, id: Date.now().toString()});
   };
 
   return (
@@ -43,11 +51,11 @@ const SelectInput = ({
           placeholder={placeholder}
           width={width}
           flex={flex}
-          value={handleFalsyValueToBlank(input[name])}>
-          <PlaceholderOption value="" disabled>
-            {placeholder}
-          </PlaceholderOption>
-
+          // defaultValue={defaultValue.value}
+          value={input[name]}>
+          <Option value={defaultValue.value} disabled>
+            선택
+          </Option>
           {options.map((val, index) => {
             return (
               <Option key={index} value={val.value}>

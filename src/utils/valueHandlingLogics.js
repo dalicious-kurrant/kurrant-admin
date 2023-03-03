@@ -53,7 +53,7 @@ export const handleFalsyValueToBlank = value => {
   if (typeof value === 'string') {
     return value;
   } else if (typeof value === 'number') {
-    return value;
+    return parseInt(value);
   } else if (typeof value === 'undefined') {
     return '';
   } else if (typeof value === 'null') {

@@ -1,7 +1,8 @@
+import {useEffect} from 'react';
 import styled from 'styled-components';
 import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
-const TextInput = ({
+const NumberInput = ({
   fieldsToOpen,
   registerStatus,
   input,
@@ -20,15 +21,37 @@ const TextInput = ({
     const {name, value} = e.target;
 
     if (registerStatus === 'register') {
-      setInput({...input, [name]: value, id: Date.now().toString()});
+      setInput({
+        ...input,
+        [name]: parseInt(value) || 0,
+        id: Date.now().toString(),
+      });
     } else if (registerStatus === 'edit') {
-      setInput({...input, [name]: value});
+      setInput({...input, [name]: parseInt(value)});
     } else {
       console.log(registerStatus);
     }
 
-    // console.log({...input, [name]: value, id: Date.now().toString()});
+    // console.log(value);
+    // console.log({...input, [name]: parseInt(value), id: Date.now().toString()});
+    // console.log(parseInt(value));
   };
+
+  // 일단 ""을 숫자로 시작해줘야 할 듯
+
+  //   useEffect(() => {
+  //     if (registerStatus === 'register') {
+  //       setInput({
+  //         ...input,
+  //         [name]: 0,
+  //         id: Date.now().toString(),
+  //       });
+  //     } else if (registerStatus === 'edit') {
+  //       setInput({...input, [name]: 0});
+  //     } else {
+  //       console.log(registerStatus);
+  //     }
+  //   }, []);
 
   return (
     <>
@@ -38,23 +61,24 @@ const TextInput = ({
         </TitleWrap>
 
         <TextInputInput
-          type={inputType}
+          //   type={inputType}
           maxLength={maxCharLength}
           name={name}
           onChange={handleChange}
           placeholder={placeholder}
           width={width}
           flex={flex}
-          defaultValue={defaultValue ? defaultValue : undefined}
-          // value={input[name]}
-          value={handleFalsyValueToBlank(input[name])}
+          //   defaultValue={defaultValue ? defaultValue : undefined}
+          value={typeof input[name] === 'number' ? input[name] : undefined}
+          //   value={input[name]}
+          //   value={handleFalsyValueToBlank(input[name])}
         />
       </Container>
     </>
   );
 };
 
-export default TextInput;
+export default NumberInput;
 
 const Container = styled.div`
   ${({flex}) => {

@@ -277,6 +277,7 @@ export function userExel(user) {
 export function spotExel(spot) {
   const reqArrays = [];
   reqArrays.push([
+    'status',
     'groupId',
     'groupName',
     'spotId',
@@ -299,6 +300,7 @@ export function spotExel(spot) {
     'updatedDateTime',
   ]);
   reqArrays.push([
+    '상태',
     '스팟 아이디',
     '스팟 이름',
     '상세스팟 아이디',
@@ -320,8 +322,10 @@ export function spotExel(spot) {
     '생성일',
     '수정일',
   ]);
+  console.log(spot);
   spot?.map(el => {
     const reqArray = [];
+    reqArray.push(el.status);
     reqArray.push(el.groupId);
     reqArray.push(el.groupName);
     reqArray.push(el.spotId);
@@ -349,8 +353,8 @@ export function spotExel(spot) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '고객 스팟 공지');
-  XLSX.writeFile(workbook, '고객 스팟 공지.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '고객 스팟 정보');
+  XLSX.writeFile(workbook, '고객 스팟 정보.xlsx');
 }
 
 export function productExelExport(product, sheetName, fileName) {

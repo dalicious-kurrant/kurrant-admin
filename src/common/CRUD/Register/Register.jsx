@@ -11,6 +11,7 @@ import {
 import TextInput from './TextInput';
 import {Button} from 'semantic-ui-react';
 import SelectInput from './SelectInput';
+import NumberInput from './NumberInput';
 
 const Register = ({
   fieldsToOpen,
@@ -60,6 +61,10 @@ const Register = ({
     return tellAlertLogic(statusName);
   };
 
+  useEffect(() => {
+    console.log(input);
+  }, [input]);
+
   return (
     <Container>
       <TitleButtonWrap>
@@ -85,11 +90,13 @@ const Register = ({
                   placeholder={value.placeholder}
                   options={value.options}
                   headerWidth={value.headerWidth}
+                  defaultValue={value.defaultValue}
+                  valueType={value.valueType}
                 />
               );
             } else if (value.inputType === 'number') {
               return (
-                <TextInput
+                <NumberInput
                   fieldsToOpen={fieldsToOpen}
                   registerStatus={registerStatus}
                   key={index}
@@ -102,9 +109,17 @@ const Register = ({
                   maxCharLength={value.maxCharLength}
                   flex={value.flex}
                   headerWidth={value.headerWidth}
+                  defaultValue={value.defaultValue}
                 />
               );
-            } else {
+            }
+            // else if (value.inputType === 'dependent'){
+            //   {
+
+            //   }
+
+            // }
+            else {
               return (
                 <TextInput
                   fieldsToOpen={fieldsToOpen}
@@ -118,6 +133,7 @@ const Register = ({
                   maxCharLength={value.maxCharLength}
                   headerWidth={value.headerWidth}
                   flex={value.flex}
+                  defaultValue={value.defaultValue}
                 />
               );
             }
