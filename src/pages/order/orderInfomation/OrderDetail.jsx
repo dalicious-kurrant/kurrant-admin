@@ -60,7 +60,9 @@ const OrderDetail = () => {
           </Table.Header>
           <Table.Body>
             {orderDetail?.data.orderItemDailyFoodGroups.map((el, index) => {
+              console.log(el);
               return el.orderItemDailyFoods.map((v, idx) => {
+                console.log(v);
                 return (
                   <TableRow key={idx}>
                     {idx === 0 && (
@@ -121,7 +123,7 @@ const OrderDetail = () => {
                         rowSpan={el.orderItemDailyFoods.length}
                         verticalAlign="middle"
                         textAlign="right">
-                        {withCommas(el.deliveryFee) || 0}원
+                        {withCommas(el.deliveryPrice) || 0}원
                       </Table.Cell>
                     )}
                   </TableRow>

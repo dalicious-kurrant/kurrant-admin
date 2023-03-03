@@ -474,6 +474,9 @@ export function makersInfoExel(makersInformation) {
     'managerName',
     'managerPhone',
     'diningTypes',
+    'morningCapa',
+    'lunchCapa',
+    'dinnerCapa',
     'dailyCapacity',
     'serviceType',
     'serviceForm',
@@ -503,6 +506,9 @@ export function makersInfoExel(makersInformation) {
     '담당자 이름',
     '담당자 전화번호',
     '가능 다이닝타입',
+    '아침가능 케파',
+    '점심가능 케파',
+    '저녁가능 케파',
     '일일최대수량',
     '서비스 업종',
     '서비스 형태',
@@ -524,7 +530,7 @@ export function makersInfoExel(makersInformation) {
   ]);
 
   makersInformation?.data?.map(el => {
-    console.log(el.openTime, '9999');
+    // console.log(el.openTime, '9999');
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(el.code);
@@ -535,6 +541,9 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(el.diningTypes.join(','));
+    reqArray.push(el.morningCapa);
+    reqArray.push(el.lunchCapa);
+    reqArray.push(el.dinnerCapa);
     reqArray.push(el.dailyCapacity);
     reqArray.push(el.serviceType);
     reqArray.push(el.serviceForm);
