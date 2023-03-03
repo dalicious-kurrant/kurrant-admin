@@ -97,14 +97,14 @@ const MakersExelTable = ({data}) => {
                       if (k === 'isParentCompany') {
                         return (
                           <Table.Cell key={k + i}>
-                            {el[k] ? '여' : '부'}
+                            {el[k] ? '있음' : '없음'}
                           </Table.Cell>
                         );
                       }
                       if (k === 'parentCompanyId') {
                         return (
                           <Table.Cell key={k + i}>
-                            {!el[k] ? '부' : el[k]}
+                            {!el[k] ? '없음' : el[k]}
                           </Table.Cell>
                         );
                       }
@@ -154,7 +154,7 @@ const MakersExelTable = ({data}) => {
                       if (k === 'isNutritionInformation') {
                         return (
                           <Table.Cell key={k + i}>
-                            {el[k] ? '여' : '부'}
+                            {el[k] ? '대상' : '비대상'}
                           </Table.Cell>
                         );
                       }
