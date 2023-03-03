@@ -322,12 +322,13 @@ const Common = () => {
           const result = {
             id: item.id,
             code: item.code,
+            groupType: item.groupType,
             name: item.name,
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
             location: item.location || null,
-            diningTypes: [item.diningTypes],
+            diningTypes: [...item.diningTypes.split(',')],
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
@@ -340,12 +341,15 @@ const Common = () => {
             isSetting: item.isSetting,
             isGarbage: item.isGarbage,
             isHotStorage: item.isHotStorage,
+            minimumSpend: item.minimumSpend,
+            maximumSpend: item.maximumSpend,
           };
 
           reqArray.push(result);
         }
       });
       //console.log(reqArray, '00');
+      console.log(reqArray);
       await corporationExel(reqArray);
       alert('저장 되었습니다.');
       return window.location.reload();
