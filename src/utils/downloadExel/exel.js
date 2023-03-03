@@ -280,6 +280,7 @@ export function userExel(user) {
 export function spotExel(spot) {
   const reqArrays = [];
   reqArrays.push([
+    'status',
     'groupId',
     'groupName',
     'spotId',
@@ -290,18 +291,22 @@ export function spotExel(spot) {
     'location',
     'diningType',
     'breakfastDeliveryTime',
-    'breakfastUseDays',
     'breakfastSupportPrice',
+    'breakfastUseDays',
+    'breakfastLastOrderTime',
     'lunchDeliveryTime',
-    'lunchUseDays',
     'lunchSupportPrice',
+    'lunchUseDays',
+    'lunchLastOrderTime',
     'dinnerDeliveryTime',
-    'dinnerUseDays',
     'dinnerSupportPrice',
+    'dinnerUseDays',
+    'dinnerLastOrderTime',
     'createdDateTime',
     'updatedDateTime',
   ]);
   reqArrays.push([
+    '상태',
     '스팟 아이디',
     '스팟 이름',
     '상세스팟 아이디',
@@ -310,21 +315,26 @@ export function spotExel(spot) {
     '기본주소',
     '상세주소',
     '위치',
-    '식사 타입',
+    '식타입',
     '배송시간 아침',
-    '주문요일 아침',
     '지원금 아침',
+    '주문요일 아침',
+    '아침주문마감시간',
     '배송시간 점심',
-    '주문요일 점심',
     '지원금 점심',
+    '주문요일 점심',
+    '점심주문마감시간',
     '배송시간 저녁',
-    '주문요일 저녁',
     '지원금 저녁',
+    '주문요일저녁',
+    '저녁주문마감시간',
     '생성일',
     '수정일',
   ]);
+  console.log(spot);
   spot?.map(el => {
     const reqArray = [];
+    reqArray.push(el.status);
     reqArray.push(el.groupId);
     reqArray.push(el.groupName);
     reqArray.push(el.spotId);
@@ -334,15 +344,19 @@ export function spotExel(spot) {
     reqArray.push(el.address2);
     reqArray.push(el.location);
     reqArray.push(el.diningType);
+
     reqArray.push(el.breakfastDeliveryTime);
-    reqArray.push(el.breakfastUseDays);
     reqArray.push(el.breakfastSupportPrice);
+    reqArray.push(el.breakfastUseDays);
+    reqArray.push(el.breakfastLastOrderTime);
     reqArray.push(el.lunchDeliveryTime);
-    reqArray.push(el.lunchUseDays);
     reqArray.push(el.lunchSupportPrice);
+    reqArray.push(el.lunchUseDays);
+    reqArray.push(el.lunchLastOrderTime);
     reqArray.push(el.dinnerDeliveryTime);
-    reqArray.push(el.dinnerUseDays);
     reqArray.push(el.dinnerSupportPrice);
+    reqArray.push(el.dinnerUseDays);
+    reqArray.push(el.dinnerLastOrderTime);
     reqArray.push(el.createdDateTime);
     reqArray.push(el.updatedDateTime);
     reqArrays.push(reqArray);
@@ -352,8 +366,8 @@ export function spotExel(spot) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '고객 스팟 공지');
-  XLSX.writeFile(workbook, '고객 스팟 공지.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '고객 스팟 정보');
+  XLSX.writeFile(workbook, '고객 스팟 정보.xlsx');
 }
 
 export function productExelExport(product, sheetName, fileName) {
@@ -370,6 +384,7 @@ export function corporationInfoExel(corporation) {
   const reqArrays = [];
   reqArrays.push([
     'id',
+    'groupType',
     'code',
     'name',
     'zipCode',
@@ -389,9 +404,12 @@ export function corporationInfoExel(corporation) {
     'isSetting',
     'isGarbage',
     'isHotStorage',
+    'minimumSpend',
+    'maximumSpend',
   ]);
   reqArrays.push([
     '그룹ID',
+    '스팟타입',
     '기업코드',
     '이름',
     '우편번호',
@@ -411,6 +429,8 @@ export function corporationInfoExel(corporation) {
     '식사 세팅 지원 서비스',
     '쓰레기 수거 서비스',
     '온장고 대여 서비스',
+    '최소 구매 가능 금액',
+    '최대 구매 가능 금액',
   ]);
 
   corporation?.data?.items?.groupInfoList?.map(el => {
@@ -424,6 +444,7 @@ export function corporationInfoExel(corporation) {
     const hotStorage = el.isHotStorage ? '사용' : '미사용';
     const reqArray = [];
     reqArray.push(el.id);
+    reqArray.push(el.groupType);
     reqArray.push(el.code);
     reqArray.push(el.name);
     reqArray.push(el.zipCode);
@@ -443,6 +464,8 @@ export function corporationInfoExel(corporation) {
     reqArray.push(setting);
     reqArray.push(garbage);
     reqArray.push(hotStorage);
+    reqArray.push(el.minimumSpend);
+    reqArray.push(el.maximumSpend);
 
     reqArrays.push(reqArray);
 
@@ -477,6 +500,9 @@ export function makersInfoExel(makersInformation) {
     'managerName',
     'managerPhone',
     'diningTypes',
+    'morningCapa',
+    'lunchCapa',
+    'dinnerCapa',
     'dailyCapacity',
     'serviceType',
     'serviceForm',
@@ -506,6 +532,9 @@ export function makersInfoExel(makersInformation) {
     '담당자 이름',
     '담당자 전화번호',
     '가능 다이닝타입',
+    '아침가능 케파',
+    '점심가능 케파',
+    '저녁가능 케파',
     '일일최대수량',
     '서비스 업종',
     '서비스 형태',
@@ -527,7 +556,7 @@ export function makersInfoExel(makersInformation) {
   ]);
 
   makersInformation?.data?.map(el => {
-    console.log(el.openTime, '9999');
+    console.log(el, '9999');
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(el.code);
@@ -538,6 +567,9 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(el.diningTypes.join(','));
+    reqArray.push(el.morningCapacity);
+    reqArray.push(el.lunchCapacity);
+    reqArray.push(el.dinnerCapacity);
     reqArray.push(el.dailyCapacity);
     reqArray.push(el.serviceType);
     reqArray.push(el.serviceForm);

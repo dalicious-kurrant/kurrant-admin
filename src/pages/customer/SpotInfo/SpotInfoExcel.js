@@ -7,6 +7,6 @@ export function exportSpotInfoExcel(plan) {
     dateNF: 'dd.mm.yy hh:mm:ss',
   });
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '고객_스팟_공지');
-  XLSX.writeFile(workbook, '고객_스팟_공지.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '고객_스팟_정보');
+  XLSX.writeFile(workbook, '고객_스팟_정보.xlsx');
 }

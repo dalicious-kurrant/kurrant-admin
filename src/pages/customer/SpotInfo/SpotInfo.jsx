@@ -31,6 +31,7 @@ import {handleSpotInfoDelete, sendFinal} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
+import useSpotInfoMutate from './useSpotInfoMutate';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
@@ -44,13 +45,17 @@ const SpotInfo = () => {
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
   const [registerStatus, setRegisterStatus] = useState('register');
 
-  const {deleteMutate, submitMutate, editMutate} = useMutate(SpotInfoDataAtom);
+  const [, setImportExelSpot] = useAtom(spotAtom);
+
+  const {deleteMutate, submitMutate, editMutate} =
+    useSpotInfoMutate(SpotInfoDataAtom);
 
   const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
     useSpotInfoQuery(
       ['getSpotInfoJSON'],
       [SpotInfoDataAtom, spotAtom],
-      `clients/spot/all`,
+      // status의 활성 '1', 비활성'0'이있는데, 일단 활성만 받아오게 함
+      `clients/spot/all?status=1`,
       // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
       localStorage.getItem('token'),
     );
@@ -84,12 +89,13 @@ const SpotInfo = () => {
   }, [exelSpot]);
 
   useEffect(() => {
-    console.log(spotInfoData);
+    // setSpotInfoData()
+    setImportExelSpot(spotInfoData);
   }, [spotInfoData]);
 
-  // useEffect(() => {
-  //   console.log(exelSpot);
-  // }, [exelSpot]);
+  useEffect(() => {
+    console.log(exelSpot);
+  }, [exelSpot]);
 
   useEffect(() => {
     return () => {

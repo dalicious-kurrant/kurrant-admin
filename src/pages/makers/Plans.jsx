@@ -67,7 +67,13 @@ const Plans = () => {
     data: calendarData,
     isSuccess,
     refetch: calendarRefetch,
-  } = useGetCalendar(20, page, selectMakers, selectClient, selectDiningStatus);
+  } = useGetCalendar(
+    2000,
+    page,
+    selectMakers,
+    selectClient,
+    selectDiningStatus,
+  );
   const [recommandStartDate, setRecommandStartDate] = useState(new Date());
   const [recommandEndDate, setRecommandEndDate] = useState(new Date());
   const [options, setOption] = useState([]);

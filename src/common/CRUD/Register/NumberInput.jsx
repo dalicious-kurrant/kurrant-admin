@@ -1,22 +1,21 @@
-import React from 'react';
+import {useEffect} from 'react';
 import styled from 'styled-components';
 import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
-const SelectInput = ({
+const NumberInput = ({
   fieldsToOpen,
   fieldName,
   registerStatus,
   input,
+  inputType = 'text',
   name,
   setInput,
   placeholder,
-  options,
   width = '100%',
   flex = 1,
   headerWidth = undefined,
-  valueType = 'string',
   maxCharLength = 36,
-  defaultValue,
+  defaultValue = undefined,
 }) => {
   const handleChange = e => {
     e.preventDefault();
@@ -25,17 +24,35 @@ const SelectInput = ({
     if (registerStatus === 'register') {
       setInput({
         ...input,
-        [name]: valueType === 'string' ? value : parseInt(value),
+        [name]: parseInt(value) || 0,
         id: Date.now().toString(),
       });
     } else if (registerStatus === 'edit') {
-      setInput({...input, [name]: value});
+      setInput({...input, [name]: parseInt(value)});
     } else {
       console.log(registerStatus);
     }
 
-    console.log({...input, [name]: value, id: Date.now().toString()});
+    // console.log(value);
+    // console.log({...input, [name]: parseInt(value), id: Date.now().toString()});
+    // console.log(parseInt(value));
   };
+
+  // 일단 ""을 숫자로 시작해줘야 할 듯
+
+  //   useEffect(() => {
+  //     if (registerStatus === 'register') {
+  //       setInput({
+  //         ...input,
+  //         [name]: 0,
+  //         id: Date.now().toString(),
+  //       });
+  //     } else if (registerStatus === 'edit') {
+  //       setInput({...input, [name]: 0});
+  //     } else {
+  //       console.log(registerStatus);
+  //     }
+  //   }, []);
 
   return (
     <>
@@ -45,32 +62,25 @@ const SelectInput = ({
           <Title>{fieldName}</Title>
         </TitleWrap>
 
-        <Select
-          type="text"
+        <TextInputInput
+          //   type={inputType}
           maxLength={maxCharLength}
           name={name}
           onChange={handleChange}
           placeholder={placeholder}
           width={width}
           flex={flex}
-          // defaultValue={defaultValue.value}
-          value={input[name]}>
-          {/* <Option value={defaultValue.value} disabled>
-            필수 선택
-          </Option> */}
-          {options.map((val, index) => {
-            return (
-              <Option key={index} value={val.value}>
-                {val.name}
-              </Option>
-            );
-          })}
-        </Select>
+          //   defaultValue={defaultValue ? defaultValue : undefined}
+          value={typeof input[name] === 'number' ? input[name] : undefined}
+          //   value={input[name]}
+          //   value={handleFalsyValueToBlank(input[name])}
+        />
       </Container>
     </>
   );
 };
-export default SelectInput;
+
+export default NumberInput;
 
 const Container = styled.div`
   ${({flex}) => {
@@ -84,14 +94,16 @@ const Container = styled.div`
       return `width:${width};`;
     }
   }}
+
+  width: 12rem;
 `;
 
 const TitleWrap = styled.div`
   background-color: ${props => props.theme.colors.grey[8]};
   padding: 0 1rem;
-
   height: 3rem;
   font-size: 1.2rem;
+  /* width: 5rem; */
   /* text-align: center; */
   display: flex;
   align-items: center;
@@ -102,44 +114,25 @@ const Title = styled.span`
   display: inline-block;
 `;
 
-const Select = styled.select`
-  /* 화살표 디자인하기 */
-
+const TextInputInput = styled.input`
+  border: 1px solid ${props => props.theme.colors.Grey07};
   ${({width}) => {
     if (width) {
       return `width:${width};`;
     }
   }}
-  ${({flex}) => {
-    if (flex) {
-      return `flex:${flex};`;
-    }
-  }}
-    border: 1px solid ${props => props.theme.LightGray};
-  padding: 0 0.7rem;
 
-  font-size: 1.1rem;
+  height: 5.8rem;
 
-  ${({marginLeft}) => {
-    if (marginLeft) {
-      return `margin-left: ${marginLeft};`;
-    } else {
-      return ``;
-    }
-  }};
+  &::placeholder {
+    color: ${props => props.theme.colors.grey[5]};
+  }
+
+  padding: 0 1rem;
   height: 3rem;
+  font-size: 1.4rem;
+
   &:focus {
     outline: none;
   }
-`;
-
-const Option = styled.option`
-  border: none;
-  /* height: 100%; */
-  font-size: 1.2rem;
-  /* color: ${props => props.theme.Black}; */
-`;
-
-const PlaceholderOption = styled(Option)`
-  color: ${props => props.theme.Gray};
 `;

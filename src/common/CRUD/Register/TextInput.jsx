@@ -3,6 +3,7 @@ import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 const TextInput = ({
   fieldsToOpen,
+  fieldName,
   registerStatus,
   input,
   inputType = 'text',
@@ -13,6 +14,7 @@ const TextInput = ({
   flex = 1,
   headerWidth = undefined,
   maxCharLength = 36,
+  defaultValue = undefined,
 }) => {
   const handleChange = e => {
     e.preventDefault();
@@ -25,13 +27,16 @@ const TextInput = ({
     } else {
       console.log(registerStatus);
     }
+
+    // console.log({...input, [name]: value, id: Date.now().toString()});
   };
 
   return (
     <>
       <Container flex={flex} width={width}>
         <TitleWrap style={headerWidth ? {width: headerWidth} : undefined}>
-          <Title>{fieldsToOpen[name]}</Title>
+          {/* <Title>{fieldsToOpen[name]}</Title> */}
+          <Title>{fieldName}</Title>
         </TitleWrap>
 
         <TextInputInput
@@ -42,6 +47,7 @@ const TextInput = ({
           placeholder={placeholder}
           width={width}
           flex={flex}
+          defaultValue={defaultValue ? defaultValue : undefined}
           // value={input[name]}
           value={handleFalsyValueToBlank(input[name])}
         />

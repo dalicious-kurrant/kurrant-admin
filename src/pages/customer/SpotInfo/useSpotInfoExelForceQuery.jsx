@@ -14,7 +14,7 @@ const useSpotInfoExelForceQuery = () => {
     {
       onSuccess: () => {
         console.log('스팟정보 등록, 수정 success');
-
+        window.confirm(' 스팟정보가 저장되었습니다 ');
         queryClient.invalidateQueries(['getSpotInfoJSON']);
       },
       onError: () => {

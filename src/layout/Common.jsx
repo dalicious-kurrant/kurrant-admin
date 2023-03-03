@@ -64,6 +64,7 @@ import {saveSpotToDb} from 'pages/customer/SpotInfo/SpotInfoLogics';
 import useSpotInfoExelForceQuery from 'pages/customer/SpotInfo/useSpotInfoExelForceQuery';
 
 import {TableDeleteListAtom} from 'common/Table/store';
+import {SpotInfoTotalRequiredFields} from 'pages/customer/SpotInfo/SpotInfoData';
 
 const makeSection = pathname => {
   const tempArray = pathname.split('/');
@@ -322,12 +323,13 @@ const Common = () => {
           const result = {
             id: item.id,
             code: item.code,
+            groupType: item.groupType,
             name: item.name,
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
             location: item.location || null,
-            diningTypes: [item.diningTypes],
+            diningTypes: [...item.diningTypes.split(',')],
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
@@ -340,12 +342,15 @@ const Common = () => {
             isSetting: item.isSetting,
             isGarbage: item.isGarbage,
             isHotStorage: item.isHotStorage,
+            minimumSpend: item.minimumSpend,
+            maximumSpend: item.maximumSpend,
           };
 
           reqArray.push(result);
         }
       });
       //console.log(reqArray, '00');
+      console.log(reqArray);
       await corporationExel(reqArray);
       alert('저장 되었습니다.');
       return window.location.reload();
@@ -460,7 +465,7 @@ const Common = () => {
           setExelPlan(json);
           setExelStaticPlan(json);
         }
-        if (sheetName === '고객 스팟 공지') {
+        if (sheetName === '고객 스팟 정보') {
           setExelSpot(json);
         }
         if (sheetName === '유저 정보') {
@@ -567,7 +572,18 @@ const Common = () => {
       return userExel(user);
     }
     if (spot && spot.length > 0) {
-      return spotExel(spot);
+      const exportSpot = spot.map((v, i) => {
+        // if (i !== 0) {
+        //   return v;
+        // }
+        return v;
+      });
+      const req = exportSpot.filter(element => {
+        return element !== undefined && element !== null && element !== '';
+      });
+      console.log(req);
+      // 스팟 여기
+      return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {
       const req = completePlan.filter(element => {
@@ -637,13 +653,57 @@ const Common = () => {
                 callPostCalendar();
               }
               // 스팟
-              if (exelSpot) {
+              if (exelSpot && exelSpot.length) {
                 console.log('exelSpot 엑셀 스팟 저장');
-                saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
-              } else if (spotInfoData) {
+
+                // 디비 저장 여기임
+                // 여기서 값 정리를 다 해야됨
+
+                // 엑셀의 첫번재값을 지우기 (키값이니까)
+                let yo = [];
+
+                exelSpot.forEach((v, i) => {
+                  if (i === 0) {
+                  } else {
+                    yo.push(v);
+                  }
+                });
+
+                // 키가 안들어있으면 키 채우고 값을 null 넣어주기
+
+                const yo2 = yo.map(v => {
+                  Object.keys(SpotInfoTotalRequiredFields).forEach(k => {
+                    if (!Object.keys(v).includes(k)) {
+                      v[k] = null;
+                    }
+                  });
+
+                  return v;
+                });
+                // console.log(yo2);
+
+                // const yo3 = [...yo2].slice(8);
+                // console.log(yo3);
+                // saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
+                saveSpotToDb(yo2, sendExcelForceMutate, tableDeleteList);
+              } else if (spotInfoData && spotInfoData.length) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
+
+                // 상세스팟 아이디 자둥추가
+
+                const yo = [...spotInfoData];
+                const yo2 = yo.map(v => {
+                  if (!v['spotId']) {
+                    v['spotId'] = Date.now();
+                  }
+                  return v;
+                });
+
+                console.log(yo2);
+
                 saveSpotToDb(
-                  spotInfoData,
+                  // spotInfoData,
+                  yo2,
                   sendExcelForceMutate,
                   tableDeleteList,
                 );
@@ -666,7 +726,7 @@ const Common = () => {
                 console.log('statusButton');
                 statusButton();
               }
-              console.log('아무것도 없음');
+              // console.log('아무것도 없음');
             }}
           />
           {/* <Button icon="history" content="히스토리" /> */}

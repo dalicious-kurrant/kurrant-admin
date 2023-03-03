@@ -101,7 +101,7 @@ const useSpotInfoQuery = (
 
   useEffect(() => {
     setData(data);
-    setExcelData(data);
+    // setExcelData(data);
   }, [data]);
 
   return {

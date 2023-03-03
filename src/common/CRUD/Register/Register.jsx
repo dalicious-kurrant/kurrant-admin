@@ -11,6 +11,7 @@ import {
 import TextInput from './TextInput';
 import {Button} from 'semantic-ui-react';
 import SelectInput from './SelectInput';
+import NumberInput from './NumberInput';
 
 const Register = ({
   fieldsToOpen,
@@ -40,7 +41,7 @@ const Register = ({
 
     handleSubmitLogic(
       input,
-      fieldsData,
+      // fieldsData,
       registerStatus,
       setSubmitStatus,
       submitMutate,
@@ -60,6 +61,10 @@ const Register = ({
     return tellAlertLogic(statusName);
   };
 
+  useEffect(() => {
+    console.log(input);
+  }, [input]);
+
   return (
     <Container>
       <TitleButtonWrap>
@@ -77,7 +82,8 @@ const Register = ({
               return (
                 <SelectInput
                   key={index}
-                  fieldsToOpen={fieldsToOpen}
+                  // fieldsToOpen={fieldsToOpen}
+                  fieldName={value.fieldNameKor}
                   registerStatus={registerStatus}
                   input={input}
                   name={value.fieldName}
@@ -85,12 +91,16 @@ const Register = ({
                   placeholder={value.placeholder}
                   options={value.options}
                   headerWidth={value.headerWidth}
+                  defaultValue={value.defaultValue}
+                  valueType={value.valueType}
                 />
               );
             } else if (value.inputType === 'number') {
               return (
-                <TextInput
-                  fieldsToOpen={fieldsToOpen}
+                <NumberInput
+                  // fieldsToOpen={fieldsToOpen}
+                  // fieldName={value.fieldName}
+                  fieldName={value.fieldNameKor}
                   registerStatus={registerStatus}
                   key={index}
                   input={input}
@@ -102,12 +112,22 @@ const Register = ({
                   maxCharLength={value.maxCharLength}
                   flex={value.flex}
                   headerWidth={value.headerWidth}
+                  defaultValue={value.defaultValue}
                 />
               );
-            } else {
+            }
+            // else if (value.inputType === 'dependent'){
+            //   {
+
+            //   }
+
+            // }
+            else {
               return (
                 <TextInput
-                  fieldsToOpen={fieldsToOpen}
+                  // fieldsToOpen={fieldsToOpen}
+                  // fieldName={value.fieldNameKor}
+                  fieldName={value.fieldNameKor}
                   registerStatus={registerStatus}
                   key={index}
                   input={input}
@@ -118,6 +138,7 @@ const Register = ({
                   maxCharLength={value.maxCharLength}
                   headerWidth={value.headerWidth}
                   flex={value.flex}
+                  defaultValue={value.defaultValue}
                 />
               );
             }
