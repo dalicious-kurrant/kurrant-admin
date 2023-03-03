@@ -685,8 +685,21 @@ const Common = () => {
               } else if (spotInfoData && spotInfoData.length) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
 
+                // 상세스팟 아이디 자둥추가
+
+                const yo = [...spotInfoData];
+                const yo2 = yo.map(v => {
+                  if (!v['spotId']) {
+                    v['spotId'] = Date.now();
+                  }
+                  return v;
+                });
+
+                console.log(yo2);
+
                 saveSpotToDb(
-                  spotInfoData,
+                  // spotInfoData,
+                  yo2,
                   sendExcelForceMutate,
                   tableDeleteList,
                 );

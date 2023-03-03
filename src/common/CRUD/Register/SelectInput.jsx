@@ -55,7 +55,9 @@ const SelectInput = ({
           flex={flex}
           // defaultValue={defaultValue.value}
           value={input[name]}>
-          <Option value={defaultValue.value}>필수 선택</Option>
+          {/* <Option value={defaultValue.value} disabled>
+            필수 선택
+          </Option> */}
           {options.map((val, index) => {
             return (
               <Option key={index} value={val.value}>

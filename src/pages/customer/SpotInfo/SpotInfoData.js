@@ -94,7 +94,13 @@ const inputType = {
 };
 
 export const groupIdOptions = [
-  {name: '달리셔스', value: 1},
+  {name: '달리셔스1', value: 1},
+  {name: '위시티지이아파트', value: 2},
+  {name: '밀당PT 여의도', value: 3},
+];
+export const groupIdOptions2 = [
+  {name: '필수 선택', value: undefined},
+  {name: '달리셔스1', value: 1},
   {name: '위시티지이아파트', value: 2},
   {name: '밀당PT 여의도', value: 3},
 ];
@@ -110,8 +116,8 @@ export const SpotInfoFieldsData = [
     headerWidth: 140,
     inputType: inputType.select,
     valueType: 'number',
-    defaultValue: {name: '달리셔스', value: 1},
-    options: groupIdOptions,
+    defaultValue: {name: '달리셔스1', value: 1},
+    options: groupIdOptions2,
   },
 
   // {
@@ -123,16 +129,16 @@ export const SpotInfoFieldsData = [
   //   width: undefined,
 
   // },
-  {
-    fieldName: 'spotId',
-    fieldNameKor: '상세스팟 아이디',
-    placeholder: '필수 1 이상 숫자',
-    maxCharLength: 40,
-    flex: 1,
-    width: undefined,
-    headerWidth: 260,
-    inputType: inputType.number,
-  },
+  // {
+  //   fieldName: 'spotId',
+  //   fieldNameKor: '상세스팟 아이디',
+  //   placeholder: '필수 1 이상 숫자',
+  //   maxCharLength: 40,
+  //   flex: 1,
+  //   width: undefined,
+  //   headerWidth: 260,
+  //   inputType: inputType.number,
+  // },
   {
     fieldName: 'spotName',
     fieldNameKor: '상세스팟 이름',
