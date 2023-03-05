@@ -304,6 +304,7 @@ const Common = () => {
             defaultPrice: item.defaultPrice,
             makersDiscount: item.makersDiscount,
             eventDiscount: item.eventDiscount,
+            membershipDiscount: item.membershipDiscount,
             resultPrice: item.resultPrice,
             description: item.description,
             foodTags: item.foodTags.split(','),
