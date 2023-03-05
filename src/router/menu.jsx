@@ -26,11 +26,9 @@ export const MenuList = [
         component: <Order />,
       },
       {
-
         name: '식단 현황',
         url: '/completeplans',
         component: <CompletePlans />,
-
       },
     ],
   },
@@ -45,7 +43,7 @@ export const MenuList = [
         // component: <></>,
       },
       {
-        name: '기업 정보',
+        name: '스팟 정보',
         url: '/company',
         component: <Company />,
       },
@@ -55,7 +53,7 @@ export const MenuList = [
         component: <CompanyList />,
       },
       {
-        name: '스팟 정보',
+        name: '상세 스팟 정보',
         url: '/spot',
         component: <SpotInfo />,
         // component: <Spot />,
