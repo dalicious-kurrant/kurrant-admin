@@ -75,6 +75,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
             <Table.HeaderCell textAlign="center">매장가격</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">매장할인률</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">이벤트할인률</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">멤버십할인률</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">최종가격</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
               <div style={{width: 150}}>설명</div>
@@ -141,6 +142,9 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
                 </Table.Cell>
                 <Table.Cell textAlign="right">{el.makersDiscount}</Table.Cell>
                 <Table.Cell textAlign="right">{el.eventDiscount}</Table.Cell>
+                <Table.Cell textAlign="right">
+                  {el.membershipDiscount}
+                </Table.Cell>
                 <Table.Cell textAlign="right">
                   {withCommas(el.resultPrice)}
                 </Table.Cell>

@@ -151,6 +151,7 @@ export function productExel(product) {
     'defaultPrice',
     'makersDiscount',
     'eventDiscount',
+    'membershipDiscount',
     'resultPrice',
     'description',
     'foodTags',
@@ -164,6 +165,7 @@ export function productExel(product) {
     '매장가격',
     '매장할인률',
     '이벤트할인률',
+    '멤버십할인률',
     '최종가격',
     '설명',
     '식사 태그',
@@ -179,6 +181,7 @@ export function productExel(product) {
     reqArray.push(el.defaultPrice);
     reqArray.push(el.makersDiscount);
     reqArray.push(el.eventDiscount);
+    reqArray.push(el.membershipDiscount);
     reqArray.push(el.resultPrice);
     reqArray.push(el.description);
     reqArray.push(el.foodTags.join(','));

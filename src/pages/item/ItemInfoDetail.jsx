@@ -43,6 +43,7 @@ const ProductDetailPage = () => {
   // const discountPrice = watch('discountPrice');
   const periodDiscountRate = watch('periodDiscountRate');
   // const periodDiscountPrice = watch('periodDiscountPrice');
+  const membershipRate = watch('membershipRate');
   const customPrice = watch('customPrice');
   const morningCapacity = watch('morning');
   const lunchCapacity = watch('lunch');
@@ -64,6 +65,7 @@ const ProductDetailPage = () => {
       makersDiscountRate: Number(discountRate),
       periodDiscountRate: Number(periodDiscountRate),
       customPrice: Number(customPrice.replace(',', '')),
+      membershipDiscountRate: Number(membershipRate),
       foodTags: clicked,
       morningCapacity: morningCapacity,
       lunchCapacity: lunchCapacity,
@@ -124,6 +126,15 @@ const ProductDetailPage = () => {
       ),
     );
     setValue(
+      'membershipPrice',
+      withCommas(
+        listData?.membershipDiscountPrice === 0
+          ? '0'
+          : listData?.membershipDiscountPrice,
+      ),
+    );
+    setValue('membershipRate', listData?.membershipDiscountRate);
+    setValue(
       'customPrice',
       withCommas(listData?.customPrice === 0 ? '0' : listData?.customPrice),
     );
@@ -147,6 +158,8 @@ const ProductDetailPage = () => {
     listData?.morningCapacity,
     listData?.lunchCapacity,
     listData?.dinnerCapacity,
+    listData?.membershipDiscountPrice,
+    listData?.membershipDiscountRate,
   ]);
   return (
     <Wrap>
@@ -168,6 +181,8 @@ const ProductDetailPage = () => {
                   label="이벤트 할인가"
                   readOnly
                 />
+                <Input name="membershipRate" label="멤버십 할인율" />
+                <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="customPrice" label="커스텀가" />
               </PriceWrap>
               <CapaWrap>
