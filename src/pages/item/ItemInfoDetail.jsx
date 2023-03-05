@@ -133,15 +133,29 @@ const ProductDetailPage = () => {
           : listData?.membershipDiscountPrice,
       ),
     );
-    setValue('membershipRate', listData?.membershipDiscountRate);
+    setValue(
+      'membershipRate',
+      listData?.membershipDiscountRate === 0
+        ? '0'
+        : listData?.membershipDiscountRate,
+    );
     setValue(
       'customPrice',
       withCommas(listData?.customPrice === 0 ? '0' : listData?.customPrice),
     );
     setClicked(listData?.foodTags);
-    setValue('morning', listData?.morningCapacity);
-    setValue('lunch', listData?.lunchCapacity);
-    setValue('dinner', listData?.dinnerCapacity);
+    setValue(
+      'morning',
+      listData?.morningCapacity === 0 ? '0' : listData?.morningCapacity,
+    );
+    setValue(
+      'lunch',
+      listData?.lunchCapacity === 0 ? '0' : listData?.lunchCapacity,
+    );
+    setValue(
+      'dinner',
+      listData?.dinnerCapacity === 0 ? '0' : listData?.dinnerCapacity,
+    );
     setDataList(detailData?.data);
   }, [
     listData?.customPrice,
