@@ -15,7 +15,7 @@ import Schedule from '../pages/salesSchedule/Schedule';
 import CompletePlans from '../pages/makers/CompletePlans';
 import CustomerCustom from '../pages/customer/Customer/CustomerCustom';
 import Group from '../pages/recommendation/group/Group';
-import Personal from '../pages/recommendation/personal/Personal';
+import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
 
 export const MenuList = [
