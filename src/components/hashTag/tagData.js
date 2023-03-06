@@ -177,6 +177,10 @@ export const typeTag = [
     id: 2023,
     type: '샐러드류',
   },
+  {
+    id: 2024,
+    type: '밥류',
+  },
 ];
 
 export const ingredientTag = [

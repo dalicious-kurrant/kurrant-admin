@@ -9,17 +9,22 @@ import {
 import styled from 'styled-components';
 import ItemExelTable from './components/ItemExelTable';
 import {useAtom} from 'jotai';
-import {exelProductAtom, productAtom} from '../../utils/store';
+import {exelProductAtom, makersNameAtom, productAtom} from '../../utils/store';
 import ItemInfoTable from './components/ItemInfoTable';
 import {useQueryClient} from 'react-query';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
+  const [option, setOption] = useAtom(makersNameAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [page, setPage] = useState(1);
+
+  const makersId = option && `&makersId=${option}`;
+  console.log(makersId, '03030');
   const {data: productList, refetch: productRefetch} = useGetAllProductsList(
     2000,
     page,
+    makersId,
   );
   const [totalPage, setTotalPage] = useState(0);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
@@ -27,7 +32,7 @@ const ItemInfo = () => {
 
   const checkId = (e, id) => {
     e.stopPropagation();
-    console.log(id, '11');
+    // console.log(id, '11');
   };
 
   useEffect(() => {
@@ -39,7 +44,7 @@ const ItemInfo = () => {
   }, [productList, setProduct]);
   useEffect(() => {
     productRefetch();
-  }, [page, productRefetch]);
+  }, [page, makersId, productRefetch]);
   return (
     <PageWrapper>
       <TableWrapper>
