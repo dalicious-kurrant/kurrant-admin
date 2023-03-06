@@ -239,21 +239,9 @@ const SpotInfo = () => {
       ) : (
         <PageWrapper>
           <div>
-            {/* {isCRUDAvaliable(pathname) && (
-          
-        )} */}
             <CRUDBundle
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
-              // sendFinal={() => {
-              //   sendFinal(
-              //     spotInfoData,
-              //     sendFinalMutate,
-              //     checkboxStatus,
-              //     // tableDeleteList,
-              //     deleteFinalMutate,
-              //   );
-              // }}
               sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}
             />
@@ -272,21 +260,10 @@ const SpotInfo = () => {
           </div>
 
           <TableWrapper>
-            {/* {!!spotInfoData && spotInfoData.length !== 0 && (
-              <CustomTable
-                fieldsInput={SpotInfoFieldsToOpen}
-                dataInput={spotInfoData}
-                // isMemo={true}
-                // handleChange={}
-              />
-            )} */}
             {!!spotInfoData && spotInfoData.length !== 0 && (
               <TableCustom
                 fieldsInput={SpotInfoFieldsToOpen}
                 dataInput={spotInfoData}
-
-                // isMemo={true}
-                // handleChange={}
               />
             )}
           </TableWrapper>
