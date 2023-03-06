@@ -20,6 +20,9 @@ export function useEditProductDetail() {
       onSuccess: res => {
         console.log(res, '998');
       },
+      onError: () => {
+        alert('잘못된 데이터가 있습니다. 다시 시도해주세요');
+      },
     },
   );
 }
@@ -41,7 +44,9 @@ export function useEditProductStatus() {
 }
 
 export function useAddExelProductData() {
-  return useMutation(data => {
-    return productApis.exelProductData(data);
+  return useMutation(data => productApis.exelProductData(data), {
+    onError: () => {
+      alert('잘못된 데이터가 있습니다. 다시 시도해주세요');
+    },
   });
 }

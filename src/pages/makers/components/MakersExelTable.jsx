@@ -64,9 +64,7 @@ const MakersExelTable = ({data}) => {
                       if (k === 'ceoPhone') {
                         return (
                           <Table.Cell key={k + i}>
-                            <div style={{width: 120}}>
-                              {phoneNumberFormmatter(el[k])}
-                            </div>
+                            <div style={{width: 120}}>{el[k]}</div>
                           </Table.Cell>
                         );
                       }
@@ -76,9 +74,7 @@ const MakersExelTable = ({data}) => {
                       if (k === 'managerPhone') {
                         return (
                           <Table.Cell key={k + i}>
-                            <div style={{width: 120}}>
-                              {phoneNumberFormmatter(el[k])}
-                            </div>
+                            <div style={{width: 120}}>{el[k]}</div>
                           </Table.Cell>
                         );
                       }
@@ -131,9 +127,7 @@ const MakersExelTable = ({data}) => {
                       if (k === 'companyRegistrationNumber') {
                         return (
                           <Table.Cell key={k + i}>
-                            <div style={{width: 120}}>
-                              {bizNoFormatter(el[k]?.toString())}
-                            </div>
+                            <div style={{width: 120}}>{el[k]}</div>
                           </Table.Cell>
                         );
                       }
