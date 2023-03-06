@@ -124,6 +124,9 @@ const ItemExelTable = ({data, checked, checkItems, setCheckItems}) => {
                       if (k === 'foodStatus') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                       }
+                      if (k === 'membershipDiscount') {
+                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                      }
                       if (k === 'makersDiscount') {
                         return (
                           <Table.Cell key={k + i} textAlign="right">
