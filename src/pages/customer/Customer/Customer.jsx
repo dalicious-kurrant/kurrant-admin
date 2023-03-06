@@ -88,23 +88,6 @@ const Customer = () => {
     );
   };
 
-  // 페이지네이션
-
-  // 두 가지가 필요함
-
-  // 1. 페이지네이션 처리가 된 Get Api
-  // '현재 페이지'랑 '한 페이지당 보여줄 페이지의 갯수'
-  //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
-
-  // 2. 백엔드에 있는 데이터의 총 길이
-
-  // const [page, setPage] = useState(12);
-  // const [limit, setLimit] = useState(1);
-
-  // PaginationTest(page, limit);
-
-  // const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
-
   return (
     <>
       {exelUser ? (
@@ -207,18 +190,6 @@ const Customer = () => {
               )}
             </div>
           )}
-
-          {/* <div>
-            <Pagination
-              pageList={totalPageArray}
-              lastPage={totalPageByLimit}
-              selectOptionArray={[1, 2, 4, 10]}
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              setLimit={setLimit}
-            />
-          </div> */}
 
           <TableWrapper>
             {customerData && customerData.length > 0 && (

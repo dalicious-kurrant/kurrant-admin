@@ -18,7 +18,13 @@ import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
 
-import {exelUserAtom} from 'utils/store';
+import {
+  exelUserAtom,
+  groupIdAtom,
+  uerIdAtom,
+  userIdAtom,
+  userStateAtom,
+} from 'utils/store';
 import {Button, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
@@ -45,6 +51,21 @@ const CustomerCustom = () => {
   const [registerStatus, setRegisterStatus] = useState('register');
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
+
+  const [userOption] = useAtom(userStateAtom);
+  const [nameOption] = useAtom(userIdAtom);
+  const [spotOption] = useAtom(groupIdAtom);
+
+  const userStatus = `&userStatus=${userOption}`;
+  const groupId = spotOption && `&groupId=${spotOption}`;
+  const userId = nameOption && `&userId=${nameOption}`;
+  console.log(userStatus, userOption, '000888');
+  const params = {
+    userStatus: userStatus && userStatus,
+    groupId: groupId && groupId,
+    userId: userId && userId,
+  };
+
   const queryClient = useQueryClient();
 
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
@@ -98,7 +119,7 @@ const CustomerCustom = () => {
   const {} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
-    'users/all',
+    `users/all?${params.userStatus}${params.groupId}${params.userId}`,
     token,
   );
 

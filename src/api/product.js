@@ -1,8 +1,8 @@
 import instance from '../shared/axios';
 
 export const productApis = {
-  allProductsList: async (limit, page) =>
-    await instance.get(`/foods/all?limit=${limit}&page=${page}`),
+  allProductsList: async (limit, page, makersId) =>
+    await instance.get(`/foods/all?limit=${limit}&page=${page}${makersId}`),
   productDetailList: async (foodId, makersId) =>
     await instance.get(`foods?foodId=${foodId}&makersId=${makersId}`),
   modifyProductDetail: async (formData, config) =>
