@@ -21,12 +21,17 @@ const useCustomerQuery = (
 
   const [, setData] = useAtom(atom);
   const queryClient = useQueryClient();
-  const {data, status, isLoading} = useQuery(
+  const {
+    data,
+    status,
+    isLoading,
+    refetch: userListRefetch,
+  } = useQuery(
     uniqueQueryKey,
 
     token
       ? async ({queryKey}) => {
-          const response = await instance.get(`${url}?limit=50`);
+          const response = await instance.get(`${url}`);
 
           return response.data;
         }
@@ -89,6 +94,9 @@ const useCustomerQuery = (
     }
   }, [data, setData]);
 
+  useEffect(() => {
+    userListRefetch();
+  }, [url, userListRefetch]);
   return {
     status,
     isLoading,

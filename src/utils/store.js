@@ -41,3 +41,11 @@ export const corpNameOptionAtom = atomWithReset('');
 // 메이커스 정보
 export const makersInfoAtom = atomWithReset();
 export const makersExelInfoAtom = atomWithReset();
+
+// 상품정보
+export const makersNameAtom = atomWithReset('');
+
+// 유저 정보
+export const userStateAtom = atomWithReset('');
+export const groupIdAtom = atomWithReset('');
+export const userIdAtom = atomWithReset('');
