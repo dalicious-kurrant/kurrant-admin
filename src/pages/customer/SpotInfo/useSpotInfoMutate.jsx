@@ -57,19 +57,7 @@ const useSpotInfoMutate = atom => {
     setDataList(newDataList);
   };
 
-  const deleteMutate = id => {
-    const oldDataList = [...dataList];
-    let newDataList = [];
-    for (let i = 0; i < oldDataList.length; i++) {
-      if (oldDataList[i].id == id) {
-      } else {
-        newDataList.push(oldDataList[i]);
-      }
-    }
-    setDataList(newDataList);
-  };
-
-  return {submitMutate, editMutate, deleteMutate};
+  return {submitMutate, editMutate};
 };
 
 export default useSpotInfoMutate;

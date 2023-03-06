@@ -42,13 +42,12 @@ const SpotInfo = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
   const [dataToEdit, setDataToEdit] = useState({});
-  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
+  // const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
   const [registerStatus, setRegisterStatus] = useState('register');
 
   const [, setImportExelSpot] = useAtom(spotAtom);
 
-  const {deleteMutate, submitMutate, editMutate} =
-    useSpotInfoMutate(SpotInfoDataAtom);
+  const {submitMutate, editMutate} = useSpotInfoMutate(SpotInfoDataAtom);
 
   const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
     useSpotInfoQuery(
@@ -60,14 +59,6 @@ const SpotInfo = () => {
       localStorage.getItem('token'),
     );
 
-  // useSpotInfoQuery(
-  //   ['getSpot'],
-  //   spotAtom,
-  //   `clients/spot/all`,
-  //   // `${process.env.REACT_APP_JSON_SERVER}/spot-info`,
-  //   localStorage.getItem('token'),
-  // );
-
   const handleBundleClick = buttonStatus => {
     clickButtonBundle(
       buttonStatus,
@@ -77,7 +68,6 @@ const SpotInfo = () => {
       setDataToEdit,
       setRegisterStatus,
       setShowRegister,
-      deleteMutate,
     );
   };
 
@@ -90,6 +80,7 @@ const SpotInfo = () => {
 
   useEffect(() => {
     // setSpotInfoData()
+    console.log(spotInfoData);
     setImportExelSpot(spotInfoData);
   }, [spotInfoData]);
 
@@ -100,18 +91,34 @@ const SpotInfo = () => {
   useEffect(() => {
     return () => {
       setCheckboxStatus({});
-      setTableDeleteList([]);
     };
   }, []);
 
   const handleDelete = () => {
-    handleSpotInfoDelete(
-      checkboxStatus,
-      tableDeleteList,
-      spotInfoData,
-      setTableDeleteList,
-      setSpotInfoData,
-    );
+    console.log('delete');
+
+    // 삭제할 값들의 id골라내기
+
+    let deleteIdArray = [];
+    let spotInfoList = [...spotInfoData];
+
+    Object.entries(checkboxStatus).forEach(v => {
+      if (v[1] === true) {
+        // console.log(v[0]);
+
+        const deleteData = spotInfoList.find(val => val.id === parseInt(v[0]));
+        // console.log(deleteData);
+        deleteIdArray.push(deleteData.spotId);
+      }
+    });
+
+    console.log(deleteIdArray);
+
+    if (window.confirm(`${deleteIdArray.toString()}를 삭제하시겠습니까?`)) {
+      deleteFinalMutate(deleteIdArray);
+    } else {
+      return;
+    }
   };
 
   if (isLoading)
@@ -238,15 +245,15 @@ const SpotInfo = () => {
             <CRUDBundle
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
-              sendFinal={() => {
-                sendFinal(
-                  spotInfoData,
-                  sendFinalMutate,
-                  checkboxStatus,
-                  tableDeleteList,
-                  deleteFinalMutate,
-                );
-              }}
+              // sendFinal={() => {
+              //   sendFinal(
+              //     spotInfoData,
+              //     sendFinalMutate,
+              //     checkboxStatus,
+              //     // tableDeleteList,
+              //     deleteFinalMutate,
+              //   );
+              // }}
               sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}
             />

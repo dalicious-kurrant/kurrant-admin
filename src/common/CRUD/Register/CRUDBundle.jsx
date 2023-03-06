@@ -4,7 +4,7 @@ import {Button} from 'semantic-ui-react';
 const CRUDBundle = ({
   handleBundleClick,
   showRegister,
-  sendFinal,
+  // sendFinal,
   sendDelete,
   checkboxStatus,
 }) => {
@@ -20,7 +20,7 @@ const CRUDBundle = ({
   };
 
   const handleSend = () => {
-    sendFinal();
+    // sendFinal();
   };
 
   const handleDelete = () => {
