@@ -26,7 +26,6 @@ const Personal = () => {
 
   useEffect(() => {
     fetchModelInfo();
-
     async function fetchModelInfo() {
       const fetchedModelInfo = await recommendationApis.getModelInfo();
       setModelInfo(fetchedModelInfo);
