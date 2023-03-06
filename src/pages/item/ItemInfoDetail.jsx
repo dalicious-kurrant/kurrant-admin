@@ -187,6 +187,8 @@ const ProductDetailPage = () => {
               <PriceWrap>
                 <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="foodPrice" label="매장가" />
+                <Input name="membershipRate" label="멤버십 할인율" />
+                <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="discountRate" label="매장 할인율" />
                 <Input name="discountPrice" label="매장 할인가" readOnly />
                 <Input name="periodDiscountRate" label="이벤트 할인율" />
@@ -195,8 +197,6 @@ const ProductDetailPage = () => {
                   label="이벤트 할인가"
                   readOnly
                 />
-                <Input name="membershipRate" label="멤버십 할인율" />
-                <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="customPrice" label="커스텀가" />
               </PriceWrap>
               <CapaWrap>
