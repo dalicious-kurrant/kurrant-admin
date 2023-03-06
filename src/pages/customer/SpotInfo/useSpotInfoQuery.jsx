@@ -83,8 +83,8 @@ const useSpotInfoQuery = (
   );
 
   const {mutate: deleteFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.patch(`clients`, todo);
+    async array => {
+      const response = await instance.patch(`clients`, array);
 
       return response;
     },

@@ -10,10 +10,7 @@ function leftPad(value) {
 }
 
 function transDateType(val) {
-  if (!(val instanceof Date)) {
-    return new Date(val);
-  }
-  return val;
+  return new Date(val + 'Z');
 }
 
 export function formattedTimer(remainSeconds) {
