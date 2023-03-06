@@ -27,9 +27,8 @@ import {
   TableDeleteListAtom,
 } from 'common/Table/store';
 
-const Header = () => {
+const Header = ({openMenu, setOpenMenu}) => {
   const navi = useNavigate();
-  const [openMenu, setOpenMenu] = useState(false);
   const resetAtom = useResetAtom(planAtom);
   const resetAtom1 = useResetAtom(productAtom);
   const resetAtom2 = useResetAtom(recommandPlanAtom);
