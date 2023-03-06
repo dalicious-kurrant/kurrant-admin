@@ -94,17 +94,13 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.companyName}</Table.Cell>
                 <Table.Cell>{el.ceo}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  <div style={{width: 150}}>
-                    {phoneNumberFormmatter(el.ceoPhone)}
-                  </div>
+                  <div style={{width: 150}}>{el.ceoPhone}</div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.managerName ?? '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  <div style={{width: 150}}>
-                    {phoneNumberFormmatter(el.managerPhone)}
-                  </div>
+                  <div style={{width: 150}}>{el.managerPhone}</div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
@@ -124,9 +120,7 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.address2}</Table.Cell>
                 <Table.Cell textAlign="center">{el.location}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  <div style={{width: 150}}>
-                    {bizNoFormatter(el.companyRegistrationNumber)}
-                  </div>
+                  <div style={{width: 150}}>{el.companyRegistrationNumber}</div>
                 </Table.Cell>
                 <Table.Cell>{el.contractStartDate}</Table.Cell>
                 <Table.Cell>{el.contractEndDate}</Table.Cell>

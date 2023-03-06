@@ -15,6 +15,7 @@ export function useSaveMakersInformation() {
     },
     onError: err => {
       console.log(err, '메이커스에러');
+      alert('잘못된 데이터가 입력됐습니다. 다시 시도해주세요');
     },
   });
 }
