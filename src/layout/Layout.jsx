@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Outlet, useLocation} from 'react-router-dom';
 import Header from '../components/Header';
@@ -11,9 +11,15 @@ const Wrapper = styled.main`
 
 const Layout = () => {
   const {pathname} = useLocation();
+  const [openMenu, setOpenMenu] = useState();
   return (
-    <Wrapper>
-      {pathname !== '/' && <Header />}
+    <Wrapper
+      onClick={() => {
+        setOpenMenu(false);
+      }}>
+      {pathname !== '/' && (
+        <Header openMenu={openMenu} setOpenMenu={setOpenMenu} />
+      )}
       {pathname === '/main' ? <div style={{paddingTop: '90px'}} /> : <Common />}
       <Outlet />
     </Wrapper>
