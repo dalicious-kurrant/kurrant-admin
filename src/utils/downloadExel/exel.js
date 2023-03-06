@@ -179,9 +179,9 @@ export function productExel(product) {
     reqArray.push(el.foodName);
     reqArray.push(el.foodStatus);
     reqArray.push(el.defaultPrice);
+    reqArray.push(el.membershipDiscount);
     reqArray.push(el.makersDiscount);
     reqArray.push(el.eventDiscount);
-    reqArray.push(el.membershipDiscount);
     reqArray.push(el.resultPrice);
     reqArray.push(el.description);
     reqArray.push(el.foodTags.join(','));
