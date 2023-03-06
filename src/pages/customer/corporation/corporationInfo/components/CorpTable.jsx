@@ -6,6 +6,7 @@ import Select from 'react-select';
 import {useEffect, useState} from 'react';
 import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
+import {groupTypeFormatted} from 'utils/statusFormatter';
 
 const CorpTable = ({
   data,
@@ -76,6 +77,7 @@ const CorpTable = ({
                 그룹 <br />
                 ID
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">스팟타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기업코드</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 <div style={{width: 150}}>이름</div>
@@ -121,6 +123,12 @@ const CorpTable = ({
                 온장고 대여 <br />
                 서비스
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                최소 구매 가능 금액
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                최대 구매 가능 금액
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -139,6 +147,7 @@ const CorpTable = ({
                     <input type="checkbox" />
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.id}</Table.Cell>
+                  <Table.Cell>{groupTypeFormatted(el.groupType)}</Table.Cell>
                   <Table.Cell>{el.code}</Table.Cell>
                   <Table.Cell>{el.name}</Table.Cell>
                   <Table.Cell>{el.zipCode}</Table.Cell>
@@ -173,6 +182,12 @@ const CorpTable = ({
                   <Table.Cell textAlign="center">{setting}</Table.Cell>
                   <Table.Cell textAlign="center">{garbage}</Table.Cell>
                   <Table.Cell textAlign="center">{hotStorage}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {el.minimumSpend || 0}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {el.maximumSpend || 0}
+                  </Table.Cell>
                 </Table.Row>
               );
             })}

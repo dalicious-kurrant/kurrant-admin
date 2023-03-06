@@ -43,6 +43,7 @@ const ProductDetailPage = () => {
   // const discountPrice = watch('discountPrice');
   const periodDiscountRate = watch('periodDiscountRate');
   // const periodDiscountPrice = watch('periodDiscountPrice');
+  const membershipRate = watch('membershipRate');
   const customPrice = watch('customPrice');
   const morningCapacity = watch('morning');
   const lunchCapacity = watch('lunch');
@@ -64,6 +65,7 @@ const ProductDetailPage = () => {
       makersDiscountRate: Number(discountRate),
       periodDiscountRate: Number(periodDiscountRate),
       customPrice: Number(customPrice.replace(',', '')),
+      membershipDiscountRate: Number(membershipRate),
       foodTags: clicked,
       morningCapacity: morningCapacity,
       lunchCapacity: lunchCapacity,
@@ -124,13 +126,36 @@ const ProductDetailPage = () => {
       ),
     );
     setValue(
+      'membershipPrice',
+      withCommas(
+        listData?.membershipDiscountPrice === 0
+          ? '0'
+          : listData?.membershipDiscountPrice,
+      ),
+    );
+    setValue(
+      'membershipRate',
+      listData?.membershipDiscountRate === 0
+        ? '0'
+        : listData?.membershipDiscountRate,
+    );
+    setValue(
       'customPrice',
       withCommas(listData?.customPrice === 0 ? '0' : listData?.customPrice),
     );
     setClicked(listData?.foodTags);
-    setValue('morning', listData?.morningCapacity);
-    setValue('lunch', listData?.lunchCapacity);
-    setValue('dinner', listData?.dinnerCapacity);
+    setValue(
+      'morning',
+      listData?.morningCapacity === 0 ? '0' : listData?.morningCapacity,
+    );
+    setValue(
+      'lunch',
+      listData?.lunchCapacity === 0 ? '0' : listData?.lunchCapacity,
+    );
+    setValue(
+      'dinner',
+      listData?.dinnerCapacity === 0 ? '0' : listData?.dinnerCapacity,
+    );
     setDataList(detailData?.data);
   }, [
     listData?.customPrice,
@@ -147,6 +172,8 @@ const ProductDetailPage = () => {
     listData?.morningCapacity,
     listData?.lunchCapacity,
     listData?.dinnerCapacity,
+    listData?.membershipDiscountPrice,
+    listData?.membershipDiscountRate,
   ]);
   return (
     <Wrap>
@@ -160,6 +187,8 @@ const ProductDetailPage = () => {
               <PriceWrap>
                 <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="foodPrice" label="매장가" />
+                <Input name="membershipRate" label="멤버십 할인율" />
+                <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="discountRate" label="매장 할인율" />
                 <Input name="discountPrice" label="매장 할인가" readOnly />
                 <Input name="periodDiscountRate" label="이벤트 할인율" />

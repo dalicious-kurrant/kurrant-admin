@@ -94,17 +94,13 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.companyName}</Table.Cell>
                 <Table.Cell>{el.ceo}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  <div style={{width: 150}}>
-                    {phoneNumberFormmatter(el.ceoPhone)}
-                  </div>
+                  <div style={{width: 150}}>{el.ceoPhone}</div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.managerName ?? '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  <div style={{width: 150}}>
-                    {phoneNumberFormmatter(el.managerPhone)}
-                  </div>
+                  <div style={{width: 150}}>{el.managerPhone}</div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
@@ -113,7 +109,8 @@ const MakersTable = ({data}) => {
                 <Table.Cell textAlign="center">
                   {el.dinnerCapacity || '-'}
                 </Table.Cell>
-                <Table.Cell>{el.serviceForm}</Table.Cell>
+                <Table.Cell textAlign="center">{el.serviceForm}</Table.Cell>
+                <Table.Cell textAlign="center">{el.serviceType}</Table.Cell>
                 <Table.Cell textAlign="center">{parentCompany}</Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.parentCompanyId ?? '-'}
@@ -121,16 +118,14 @@ const MakersTable = ({data}) => {
                 <Table.Cell>{el.zipCode}</Table.Cell>
                 <Table.Cell>{el.address1}</Table.Cell>
                 <Table.Cell>{el.address2}</Table.Cell>
-                <Table.Cell textAlign="center">{el.location ?? '-'}</Table.Cell>
+                <Table.Cell textAlign="center">{el.location}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  <div style={{width: 150}}>
-                    {bizNoFormatter(el.companyRegistrationNumber)}
-                  </div>
+                  <div style={{width: 150}}>{el.companyRegistrationNumber}</div>
                 </Table.Cell>
                 <Table.Cell>{el.contractStartDate}</Table.Cell>
                 <Table.Cell>{el.contractEndDate}</Table.Cell>
                 <Table.Cell textAlign="center">
-                  {el.isNutritionInformation ? '여' : '부'}
+                  {el.isNutritionInformation ? '대상' : '비대상'}
                 </Table.Cell>
                 <Table.Cell>{el.openTime}</Table.Cell>
                 <Table.Cell>{el.closeTime}</Table.Cell>

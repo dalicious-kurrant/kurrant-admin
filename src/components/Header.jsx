@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MenuList} from '../router/menu';
 import {Segment, Menu, Dropdown} from 'semantic-ui-react';
 import {H} from '../style/header.style';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {useResetAtom} from 'jotai/utils';
 import {
   exelCorporationAtom,
@@ -27,7 +27,7 @@ import {
   TableDeleteListAtom,
 } from 'common/Table/store';
 
-const Header = () => {
+const Header = ({openMenu, setOpenMenu}) => {
   const navi = useNavigate();
   const resetAtom = useResetAtom(planAtom);
   const resetAtom1 = useResetAtom(productAtom);
@@ -70,28 +70,48 @@ const Header = () => {
   };
   return (
     <H.Wrapper>
-      <Segment inverted>
-        <Menu inverted secondary>
-          <Menu.Item active onClick={() => navi('/main')} icon="home" />
-          {MenuList.map((v, i) => (
-            <DropDownMenu key={`${v.name}`} item text={v.name} name={i}>
-              <Dropdown.Menu>
-                {v.children?.map(b => (
-                  <Dropdown.Item
-                    key={`${b.name}`}
-                    onClick={() => {
-                      resetJotai();
-                      navi(`${v.url}${b.url}`);
+      <Segment>
+        <MenuContainer openMenu={openMenu}>
+          <Menu secondary>
+            <MenuLogout>
+              <MenuBox>
+                <Menu.Item active onClick={() => navi('/main')} icon="home" />
+                {MenuList.map((v, i) => (
+                  <DropDownMenu
+                    key={`${v.name}`}
+                    item
+                    text={v.name}
+                    name={i}
+                    openOnFocus={false}
+                    onOpen={(e, data) => {
+                      console.log(data);
+                    }}
+                    open={openMenu}
+                    onClick={e => {
+                      e.preventDefault();
+                      setOpenMenu(!openMenu);
                     }}>
-                    {b.name}
-                  </Dropdown.Item>
+                    <Dropdown.Menu style={{border: 'none', boxShadow: 'none'}}>
+                      {v.children?.map(b => (
+                        <Dropdown.Item
+                          key={`${b.name}`}
+                          onClick={() => {
+                            resetJotai();
+                            setOpenMenu(!openMenu);
+                            navi(`${v.url}${b.url}`);
+                          }}>
+                          {b.name}
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.Menu>
+                  </DropDownMenu>
                 ))}
-              </Dropdown.Menu>
-            </DropDownMenu>
-          ))}
-        </Menu>
+              </MenuBox>
+              <Logout onClick={logOutButton}>로그아웃</Logout>
+            </MenuLogout>
+          </Menu>
+        </MenuContainer>
       </Segment>
-      <Logout onClick={logOutButton}>로그아웃</Logout>
     </H.Wrapper>
   );
 };
@@ -99,16 +119,43 @@ const Header = () => {
 export default Header;
 
 const Logout = styled.div`
-  position: absolute;
-  right: 24px;
-  top: 45%;
-  color: white;
+  display: flex;
+  align-self: center;
+  text-align: end;
+  color: black;
+  white-space: nowrap;
   cursor: pointer;
 `;
 
 const DropDownMenu = styled(Dropdown)`
   .text {
     color: ${({name}) =>
-      name === 4 || name === 5 || name === 6 ? 'red' : 'white'};
+      name === 4 || name === 5 || name === 6 ? 'red' : 'black'};
   }
+  width: 200px;
+  :hover {
+  }
+`;
+const MenuContainer = styled.div`
+  display: flex;
+  ${({openMenu}) => {
+    if (openMenu)
+      return css`
+        height: 340px;
+      `;
+  }}
+  align-items: flex-start;
+  text-align: start;
+  background-color: white;
+`;
+
+const MenuBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const MenuLogout = styled.div`
+  display: flex;
+  width: 97vw;
+
+  justify-content: space-between;
 `;

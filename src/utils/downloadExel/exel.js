@@ -151,6 +151,7 @@ export function productExel(product) {
     'defaultPrice',
     'makersDiscount',
     'eventDiscount',
+    'membershipDiscount',
     'resultPrice',
     'description',
     'foodTags',
@@ -164,6 +165,7 @@ export function productExel(product) {
     '매장가격',
     '매장할인률',
     '이벤트할인률',
+    '멤버십할인률',
     '최종가격',
     '설명',
     '식사 태그',
@@ -177,6 +179,7 @@ export function productExel(product) {
     reqArray.push(el.foodName);
     reqArray.push(el.foodStatus);
     reqArray.push(el.defaultPrice);
+    reqArray.push(el.membershipDiscount);
     reqArray.push(el.makersDiscount);
     reqArray.push(el.eventDiscount);
     reqArray.push(el.resultPrice);
@@ -384,6 +387,7 @@ export function corporationInfoExel(corporation) {
   const reqArrays = [];
   reqArrays.push([
     'id',
+    'groupType',
     'code',
     'name',
     'zipCode',
@@ -403,9 +407,12 @@ export function corporationInfoExel(corporation) {
     'isSetting',
     'isGarbage',
     'isHotStorage',
+    'minimumSpend',
+    'maximumSpend',
   ]);
   reqArrays.push([
     '그룹ID',
+    '스팟타입',
     '기업코드',
     '이름',
     '우편번호',
@@ -425,6 +432,8 @@ export function corporationInfoExel(corporation) {
     '식사 세팅 지원 서비스',
     '쓰레기 수거 서비스',
     '온장고 대여 서비스',
+    '최소 구매 가능 금액',
+    '최대 구매 가능 금액',
   ]);
 
   corporation?.data?.items?.groupInfoList?.map(el => {
@@ -438,6 +447,7 @@ export function corporationInfoExel(corporation) {
     const hotStorage = el.isHotStorage ? '사용' : '미사용';
     const reqArray = [];
     reqArray.push(el.id);
+    reqArray.push(el.groupType);
     reqArray.push(el.code);
     reqArray.push(el.name);
     reqArray.push(el.zipCode);
@@ -457,6 +467,8 @@ export function corporationInfoExel(corporation) {
     reqArray.push(setting);
     reqArray.push(garbage);
     reqArray.push(hotStorage);
+    reqArray.push(el.minimumSpend);
+    reqArray.push(el.maximumSpend);
 
     reqArrays.push(reqArray);
 
