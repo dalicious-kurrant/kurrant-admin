@@ -4,12 +4,18 @@ import {PageWrapper, TableWrapper} from '../../style/common.style';
 import {
   useDeleteProductList,
   useGetAllProductsList,
+  useGetExportProductsList,
 } from '../../hooks/useProductsList';
 
 import styled from 'styled-components';
 import ItemExelTable from './components/ItemExelTable';
 import {useAtom} from 'jotai';
-import {exelProductAtom, makersNameAtom, productAtom} from '../../utils/store';
+import {
+  exelProductAtom,
+  exportProductAtom,
+  productAtom,
+  makersNameAtom,
+} from '../../utils/store';
 import ItemInfoTable from './components/ItemInfoTable';
 import {useQueryClient} from 'react-query';
 
@@ -17,6 +23,7 @@ import {useQueryClient} from 'react-query';
 const ItemInfo = () => {
   const [option, setOption] = useAtom(makersNameAtom);
   const [product, setProduct] = useAtom(productAtom);
+  const [exportExel, setExportExel] = useAtom(exportProductAtom);
   const [page, setPage] = useState(1);
 
   const makersId = option && `&makersId=${option}`;
@@ -26,6 +33,7 @@ const ItemInfo = () => {
     page,
     makersId,
   );
+  const {data: exportProductList} = useGetExportProductsList();
   const [totalPage, setTotalPage] = useState(0);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
@@ -40,6 +48,7 @@ const ItemInfo = () => {
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
+      console.log(exportProductList?.data);
     }
   }, [productList, setProduct]);
   useEffect(() => {

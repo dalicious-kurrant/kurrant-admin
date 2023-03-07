@@ -24,11 +24,18 @@ const CompletePlans = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-
+  const curr = new Date();
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const [options, setOption] = useState([]);
   const [optionsClient, setOptionsClient] = useState([]);
-  const [accessStartDate, setAccessStartDate] = useState(new Date());
-  const [accessEndDate, setAccessEndDate] = useState(new Date());
+  const [accessStartDate, setAccessStartDate] = useState(
+    new Date(curr.getTime() + curr.getTimezoneOffset() * 60 * 1000) +
+      KR_TIME_DIFF,
+  );
+  const [accessEndDate, setAccessEndDate] = useState(
+    new Date(curr.getTime() + curr.getTimezoneOffset() * 60 * 1000) +
+      KR_TIME_DIFF,
+  );
   const {
     data: calendarData,
     isSuccess,
@@ -97,7 +104,7 @@ const CompletePlans = () => {
             <RecoDatePickerContainer>
               <RecoDatePickerBox>
                 <DatePicker
-                  selected={accessStartDate}
+                  selected={new Date(accessStartDate + 'Z')}
                   onChange={date => {
                     setAccessStartDate(date);
                   }}
@@ -108,7 +115,7 @@ const CompletePlans = () => {
               -
               <RecoDatePickerBox>
                 <DatePicker
-                  selected={accessEndDate}
+                  selected={new Date(accessEndDate + 'Z')}
                   onChange={date => {
                     setAccessEndDate(date);
                   }}

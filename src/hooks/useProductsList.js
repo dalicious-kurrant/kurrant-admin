@@ -6,6 +6,11 @@ export function useGetAllProductsList(limit, page, makersId) {
     return productApis.allProductsList(limit, page, makersId);
   });
 }
+export function useGetExportProductsList() {
+  return useQuery('exportList', () => {
+    return productApis.exportProductsList();
+  });
+}
 
 export function useGetDetailProductsList(foodId, makersId) {
   return useQuery('detailList', () => {
