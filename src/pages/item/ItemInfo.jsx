@@ -27,9 +27,8 @@ const ItemInfo = () => {
   const [page, setPage] = useState(1);
 
   const makersId = option && `&makersId=${option}`;
-  console.log(makersId, '03030');
   const {data: productList, refetch: productRefetch} = useGetAllProductsList(
-    2000,
+    200,
     page,
     makersId,
   );
@@ -48,7 +47,7 @@ const ItemInfo = () => {
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
-      console.log(exportProductList?.data);
+      setExportExel(exportProductList?.data);
     }
   }, [productList, setProduct]);
   useEffect(() => {

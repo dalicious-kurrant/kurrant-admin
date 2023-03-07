@@ -6,6 +6,11 @@ export function useGetCorporationInfo(limit, page, name) {
     return corporationApis.corporationInfo(limit, page, name);
   });
 }
+export function useGetExportCorporationInfo() {
+  return useQuery('corporationExportInfoList', () => {
+    return corporationApis.corporationExportInfo();
+  });
+}
 
 export function useSaveExelCorporation() {
   return useMutation(data => {

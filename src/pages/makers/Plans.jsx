@@ -6,6 +6,7 @@ import {
   exelPlanAtom,
   exelStaticAtom,
   planAtom,
+  planExportAtom,
   recommandPlanAtom,
 } from '../../utils/store';
 import {useAtom} from 'jotai';
@@ -26,6 +27,7 @@ import SelectDatePicker from './components/SelectDatePicker';
 import {
   useCompleteCalendar,
   useGetCalendar,
+  useGetExportCalendar,
   useGetRecommandCalendar,
   usePostCalendar,
   usePostPresetCalendar,
@@ -52,6 +54,7 @@ const Plans = () => {
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
   const [exelStatic, setStaticPlan] = useAtom(exelStaticAtom);
   const [plan, setPlan] = useAtom(planAtom);
+  const [planExport, setPlanExport] = useAtom(planExportAtom);
   const pageRef = useRef(null);
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
@@ -67,13 +70,8 @@ const Plans = () => {
     data: calendarData,
     isSuccess,
     refetch: calendarRefetch,
-  } = useGetCalendar(
-    2000,
-    page,
-    selectMakers,
-    selectClient,
-    selectDiningStatus,
-  );
+  } = useGetCalendar(200, page, selectMakers, selectClient, selectDiningStatus);
+  const {data: exportCalendarData} = useGetExportCalendar();
   const [recommandStartDate, setRecommandStartDate] = useState(new Date());
   const [recommandEndDate, setRecommandEndDate] = useState(new Date());
   const [options, setOption] = useState([]);
@@ -209,6 +207,8 @@ const Plans = () => {
         console.log(calendarData?.data);
         setTotalPage(calendarData?.data?.total);
         setPlan(calendarData?.data?.items?.presetScheduleList);
+        console.log(exportCalendarData?.data);
+        setPlanExport(exportCalendarData?.data);
         setOption(
           calendarData?.data?.items?.makersInfoList.map(v => {
             return {key: v.makersId, text: v.makersName, value: v.makersId};
