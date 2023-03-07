@@ -141,6 +141,7 @@ export function planExelExport(plan, sheetName, fileName) {
 // 상품 정보 엑셀
 
 export function productExel(product) {
+  console.log(product);
   const reqArrays = [];
   reqArrays.push([
     'foodId',
@@ -149,9 +150,9 @@ export function productExel(product) {
     'foodName',
     'foodStatus',
     'defaultPrice',
+    'membershipDiscount',
     'makersDiscount',
     'eventDiscount',
-    'membershipDiscount',
     'resultPrice',
     'description',
     'foodTags',
@@ -163,15 +164,15 @@ export function productExel(product) {
     '식품이름',
     '판매상태',
     '매장가격',
+    '멤버십할인률',
     '매장할인률',
     '이벤트할인률',
-    '멤버십할인률',
     '최종가격',
     '설명',
     '식사 태그',
   ]);
 
-  product?.foodList?.map(el => {
+  product?.map(el => {
     const reqArray = [];
     reqArray.push(el.foodId);
     reqArray.push(el.makersId);
@@ -436,7 +437,7 @@ export function corporationInfoExel(corporation) {
     '최대 구매 가능 금액',
   ]);
 
-  corporation?.data?.items?.groupInfoList?.map(el => {
+  corporation?.map(el => {
     const diningType = el.diningTypes.map(v =>
       v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
     );

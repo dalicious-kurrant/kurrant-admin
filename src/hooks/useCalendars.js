@@ -43,6 +43,11 @@ export function useGetCalendar(size, page, makersId, groupId, status) {
     return calendarApis.getDailyFood(size, page, makersId, groupId, status);
   });
 }
+export function useGetExportCalendar() {
+  return useQuery('calendarExportList', () => {
+    return calendarApis.getExportDailyFood();
+  });
+}
 export function useGetFilter() {
   return useQuery('filterList', () => {
     return calendarApis.getFilterList();

@@ -6,6 +6,7 @@ export const exelPlanAtom = atomWithReset();
 export const exelCompletePlanAtom = atomWithReset();
 export const exelStaticAtom = atomWithReset();
 export const planAtom = atomWithReset();
+export const planExportAtom = atomWithReset();
 export const recommandPlanAtom = atomWithReset();
 export const completePlanAtom = atomWithReset();
 export const deadlineAtom = atomWithReset(new Date());
@@ -21,6 +22,7 @@ export const shopInfoDetailIdAtom = atomWithReset('');
 export const productDataAtom = atomWithReset();
 
 export const corporationAtom = atomWithReset();
+export const corporationExportAtom = atomWithReset();
 export const exelCorporationAtom = atomWithReset();
 
 //order

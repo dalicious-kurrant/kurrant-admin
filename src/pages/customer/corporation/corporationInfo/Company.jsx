@@ -1,9 +1,13 @@
-import {useGetCorporationInfo} from 'hooks/useCorporation';
+import {
+  useGetCorporationInfo,
+  useGetExportCorporationInfo,
+} from 'hooks/useCorporation';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import {
   corpNameOptionAtom,
   corporationAtom,
+  corporationExportAtom,
   exelCorporationAtom,
 } from 'utils/store';
 
@@ -15,6 +19,9 @@ const Company = () => {
   const [page, setPage] = useState(1);
   const [nameOption, setNameOption] = useAtom(corpNameOptionAtom);
   const [corporation, setCorporation] = useAtom(corporationAtom);
+  const [corporationExport, setCorporationExport] = useAtom(
+    corporationExportAtom,
+  );
   const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
 
   const name = nameOption && `&groupId=${nameOption}`;
@@ -22,11 +29,13 @@ const Company = () => {
     data: corpList,
     isSuccess,
     refetch,
-  } = useGetCorporationInfo(2000, page, name && name);
+  } = useGetCorporationInfo(100, page, name && name);
+  const {data: corpExportList} = useGetExportCorporationInfo();
   console.log(corpList);
   useEffect(() => {
     setCorporation(corpList);
-  }, [corpList, setCorporation]);
+    setCorporationExport(corpExportList?.data);
+  }, [corpExportList?.data, corpList, setCorporation, setCorporationExport]);
 
   useEffect(() => {
     refetch();
