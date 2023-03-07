@@ -418,8 +418,8 @@ const Common = () => {
       });
       console.log(reqArray, '00');
       await saveMakersInfo({saveMakersRequestDto: reqArray});
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      return alert('저장 되었습니다.');
+      //return window.location.reload();
     }
 
     await postPresetCalendar({
