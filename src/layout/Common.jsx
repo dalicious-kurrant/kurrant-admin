@@ -24,6 +24,9 @@ import {
   exelCompletePlanAtom,
   makersInfoAtom,
   makersExelInfoAtom,
+  exportProductAtom,
+  planExportAtom,
+  corporationExportAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -116,6 +119,7 @@ const Common = () => {
   const {pathname} = useLocation();
   const inputRef = useRef();
   const [plan, setPlan] = useAtom(planAtom);
+  const [planExport, setPlanExport] = useAtom(planExportAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
 
   const [startDate, setStartDate] = useAtom(deadlineAtom);
@@ -131,6 +135,7 @@ const Common = () => {
   const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
   const [product, setProduct] = useAtom(productAtom);
+  const [exportProduct, setExportProduct] = useAtom(exportProductAtom);
   const [completePlan, setCompletePlan] = useAtom(completePlanAtom);
   const [exelCompletePlan, setExelCompletePlan] = useAtom(exelCompletePlanAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
@@ -139,6 +144,9 @@ const Common = () => {
   const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
   const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
   const [makersExelInfo, setMakersExelInfo] = useAtom(makersExelInfoAtom);
+  const [corporationExport, setCorporationExport] = useAtom(
+    corporationExportAtom,
+  );
   const {mutateAsync: productPost} = useAddExelProductData();
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [statusOption] = useAtom(statusOptionAtom);
@@ -451,6 +459,9 @@ const Common = () => {
       setExelCorporation();
       setMakersInformation();
       setMakersExelInfo();
+      setPlanExport();
+      setExportProduct();
+      setCorporationExport();
       const reader = new FileReader();
       reader.onload = e => {
         // console.log(e.target.result);
@@ -556,8 +567,8 @@ const Common = () => {
     return window.location.reload();
   };
   const onDownloadFile = async () => {
-    if (plan && plan.length > 0) {
-      return planExel(plan);
+    if (planExport && planExport.length > 0) {
+      return planExel(planExport);
     }
     if (exelPlan && exelPlan.length > 0) {
       return planExelExport(
@@ -572,14 +583,15 @@ const Common = () => {
     if (exelSpot && exelSpot.length > 0) {
       return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
     }
-    if (product?.foodList && product?.foodList?.length > 0) {
-      return productExel(product);
+    // if (product?.foodList && product?.foodList?.length > 0) {
+    //   return productExel(product);
+    // }
+    if (exportProduct && exportProduct?.length > 0) {
+      return productExel(exportProduct);
     }
-
     if (exelProduct && exelProduct.length > 0) {
       return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
     }
-    console.log(exelProduct, '977');
     if (exelUser && exelUser.length > 0) {
       return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
     }
@@ -587,16 +599,9 @@ const Common = () => {
       return userExel(user);
     }
     if (spot && spot.length > 0) {
-      const exportSpot = spot.map((v, i) => {
-        // if (i !== 0) {
-        //   return v;
-        // }
-        return v;
-      });
-      const req = exportSpot.filter(element => {
+      const req = spot.filter(element => {
         return element !== undefined && element !== null && element !== '';
       });
-      console.log(req);
       // 스팟 여기
       return spotExel(req);
     }
@@ -606,11 +611,9 @@ const Common = () => {
       });
       return completePlanExel(req);
     }
-    if (
-      corporation?.data &&
-      corporation?.data?.items?.groupInfoList?.length > 0
-    ) {
-      return corporationInfoExel(corporation);
+    if (corporationExport && corporationExport?.length > 0) {
+      // console.log(corporationExport);
+      return corporationInfoExel(corporationExport);
     }
     if (exelCorporation && exelCorporation.length > 0) {
       return corporationExelExport(

@@ -17,6 +17,7 @@ export const calendarApis = {
         status: status.join(','),
       },
     }),
+  getExportDailyFood: async () => await instance.get(`schedules/excels`),
   getCompleteDailyFood: async (
     startDate,
     endDate,
