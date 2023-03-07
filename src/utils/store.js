@@ -15,6 +15,7 @@ export const exelUserAtom = atomWithReset();
 export const exelSpotAtom = atomWithReset();
 export const spotAtom = atomWithReset();
 export const productAtom = atomWithReset();
+export const exportProductAtom = atomWithReset();
 export const exelProductAtom = atomWithReset();
 export const shopInfoDetailIdAtom = atomWithReset('');
 export const productDataAtom = atomWithReset();

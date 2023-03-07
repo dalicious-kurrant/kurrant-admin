@@ -50,6 +50,7 @@ import {
   formattedDate,
   formattedFullDate,
   formattedTime,
+  formattedWeekDate,
 } from 'utils/dateFormatter';
 import {
   usePostCompleteCalendar,
@@ -454,7 +455,11 @@ const Common = () => {
       reader.onload = e => {
         // console.log(e.target.result);
         const data = e.target.result;
-        const workbook = XLSX.read(data, {type: 'array', cellDates: true});
+        const workbook = XLSX.read(data, {
+          type: 'binary',
+          cellDates: true,
+          cellText: true,
+        });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
@@ -479,7 +484,14 @@ const Common = () => {
         }
         if (sheetName === '식단 현황') {
           console.log(json);
-          setExelCompletePlan(json);
+          setExelCompletePlan(
+            json.map(v => {
+              if (typeof v.serviceDate === 'object') {
+                return {...v, serviceDate: formattedWeekDate(v.serviceDate)};
+              }
+              return v;
+            }),
+          );
         }
 
         if (sheetName === '기업 정보') {

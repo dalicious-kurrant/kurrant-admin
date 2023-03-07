@@ -4,23 +4,30 @@ import {PageWrapper, TableWrapper} from '../../style/common.style';
 import {
   useDeleteProductList,
   useGetAllProductsList,
+  useGetExportProductsList,
 } from '../../hooks/useProductsList';
 
 import styled from 'styled-components';
 import ItemExelTable from './components/ItemExelTable';
 import {useAtom} from 'jotai';
-import {exelProductAtom, productAtom} from '../../utils/store';
+import {
+  exelProductAtom,
+  exportProductAtom,
+  productAtom,
+} from '../../utils/store';
 import ItemInfoTable from './components/ItemInfoTable';
 import {useQueryClient} from 'react-query';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
   const [product, setProduct] = useAtom(productAtom);
+  const [exportExel, setExportExel] = useAtom(exportProductAtom);
   const [page, setPage] = useState(1);
   const {data: productList, refetch: productRefetch} = useGetAllProductsList(
     2000,
     page,
   );
+  const {data: exportProductList} = useGetExportProductsList();
   const [totalPage, setTotalPage] = useState(0);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
@@ -35,6 +42,7 @@ const ItemInfo = () => {
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
+      console.log(exportProductList?.data);
     }
   }, [productList, setProduct]);
   useEffect(() => {
