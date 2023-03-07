@@ -482,7 +482,7 @@ const Common = () => {
           setExelPlan(json);
           setExelStaticPlan(json);
         }
-        if (sheetName === '고객 스팟 정보') {
+        if (sheetName === '상세 스팟 정보') {
           setExelSpot(json);
         }
         if (sheetName === '유저 정보') {
@@ -497,21 +497,51 @@ const Common = () => {
           console.log(json);
           setExelCompletePlan(
             json.map(v => {
-              if (typeof v.serviceDate === 'object') {
-                return {...v, serviceDate: formattedWeekDate(v.serviceDate)};
+              if (
+                typeof v.serviceDate === 'object' ||
+                typeof v.makersPickupTime === typeof new Date() ||
+                typeof v.deliveryTime === typeof new Date()
+              ) {
+                return {
+                  ...v,
+                  serviceDate: formattedWeekDate(v.serviceDate),
+                  makersPickupTime: formattedTime(v.makersPickupTime),
+                  deliveryTime: formattedTime(v.deliveryTime),
+                };
               }
+
               return v;
             }),
           );
         }
 
-        if (sheetName === '기업 정보') {
+        if (sheetName === '스팟 정보') {
           setExelCorporation(json);
           console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
-          setMakersExelInfo(json);
           console.log(json, 'json');
+          setMakersExelInfo(
+            json.map((v, i) => {
+              if (
+                (typeof v.contractStartDate === 'object' ||
+                  typeof v.contractEndDate === typeof new Date() ||
+                  typeof v.openTime === typeof new Date() ||
+                  typeof v.closeTime === typeof new Date()) &&
+                i !== 0
+              ) {
+                return {
+                  ...v,
+                  contractStartDate: formattedWeekDate(v.contractStartDate),
+                  contractEndDate: formattedWeekDate(v.contractEndDate),
+                  openTime: formattedTime(v.openTime),
+                  closeTime: formattedTime(v.closeTime),
+                };
+              }
+
+              return v;
+            }),
+          );
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -581,7 +611,7 @@ const Common = () => {
       return planExel(reCommandPlan);
     }
     if (exelSpot && exelSpot.length > 0) {
-      return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
+      return planExelExport(exelSpot, '상세 스팟 정보', '상세 스팟 정보.xlsx');
     }
     // if (product?.foodList && product?.foodList?.length > 0) {
     //   return productExel(product);
@@ -618,7 +648,7 @@ const Common = () => {
     if (exelCorporation && exelCorporation.length > 0) {
       return corporationExelExport(
         exelCorporation,
-        '기업 정보',
+        '스팟 정보',
         '기업_정보.xlsx',
       );
     }

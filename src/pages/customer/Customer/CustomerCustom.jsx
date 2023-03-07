@@ -236,7 +236,7 @@ const CustomerCustom = () => {
                                         ? p[k]
                                           ? formattedWeekDate(p[k])
                                           : p[k]
-                                        : '-'}
+                                        : formattedWeekDate(p[k]) || '-'}
                                     </FlexBox>
                                   </Table.Cell>
                                 );

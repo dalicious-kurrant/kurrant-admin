@@ -199,7 +199,10 @@ const SpotInfo = () => {
                               // console.log(p[k], 'test');
                               if (
                                 k === 'breakfastDeliveryTime' ||
+                                k === 'breakfastLastOrderTime' ||
+                                k === 'lunchLastOrderTime' ||
                                 k === 'dinnerDeliveryTime' ||
+                                k === 'dinnerLastOrderTime' ||
                                 k === 'lunchDeliveryTime'
                               ) {
                                 return (
@@ -213,7 +216,7 @@ const SpotInfo = () => {
                                 );
                               }
                               if (
-                                k === 'createDateTime' ||
+                                k === 'createdDateTime' ||
                                 k === 'updatedDateTime'
                               ) {
                                 return (
