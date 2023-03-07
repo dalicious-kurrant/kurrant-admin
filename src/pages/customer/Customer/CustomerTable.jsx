@@ -8,7 +8,7 @@ import {
   scheduleFormatted,
   userStatusFormatted,
 } from '../../../utils/statusFormatter';
-import CostomerEditModal from './CostomerEditModal';
+import CostomerEditModal from './CustomerEditModal';
 import Select from 'react-select';
 import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
