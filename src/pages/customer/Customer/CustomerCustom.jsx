@@ -38,7 +38,7 @@ import {
   CustomerFieldsDataForRegister,
   CustomerFieldsToOpen,
 } from './CustomerInfoData';
-import CostomerTable from './CostomerTable';
+import CostomerTable from './CustomerTable';
 import {userStatusFormatted} from 'utils/statusFormatter';
 
 const CustomerCustom = () => {
