@@ -572,12 +572,14 @@ const Common = () => {
     if (exelSpot && exelSpot.length > 0) {
       return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
     }
-    if (product && product?.length > 0) {
+    if (product?.foodList && product?.foodList?.length > 0) {
       return productExel(product);
     }
+
     if (exelProduct && exelProduct.length > 0) {
       return productExelExport(exelProduct, '상품 정보', '상품_정보.xlsx');
     }
+    console.log(exelProduct, '977');
     if (exelUser && exelUser.length > 0) {
       return planExelExport(exelUser, '유저 정보', '유저 정보.xlsx');
     }
