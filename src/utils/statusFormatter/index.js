@@ -14,6 +14,18 @@ export function scheduleFormatted(data) {
       return '승인';
   }
 }
+export function foodStatusFomatted(data) {
+  switch (data) {
+    case 0:
+      return '판매대기';
+    case 1:
+      return '판매중';
+    case 2:
+      return '판매중지';
+    default:
+      return '승인';
+  }
+}
 export function diningFormatted(data) {
   switch (data) {
     case 1:

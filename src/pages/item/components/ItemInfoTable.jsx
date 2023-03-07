@@ -11,8 +11,9 @@ import withCommas from '../../../utils/withCommas';
 import Select from 'react-select';
 import {useState} from 'react';
 import {PageWrapper} from 'style/common.style';
+import {foodStatusFomatted} from 'utils/statusFormatter';
 
-const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
+const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
   const [option, setOption] = useAtom(makersNameAtom);
@@ -112,6 +113,7 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
             const defaultValue = statusValue.filter(
               v => v.label === el.foodStatus,
             );
+            console.log(defaultValue);
             return (
               <TableRow
                 onClick={() => goToPage(el.foodId, el.makersId)}
@@ -135,11 +137,23 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
                 <Table.Cell onClick={e => e.stopPropagation()} width={2}>
                   <Select
                     options={statusValue}
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     onChange={e => {
+                      setData({
+                        ...data,
+                        foodList: data.foodList.map(v => {
+                          if (v.foodId === el.foodId)
+                            return {
+                              ...v,
+                              foodStatus: foodStatusFomatted(e.value),
+                            };
+                          return v;
+                        }),
+                      });
                       const find = statusOption.findIndex(
                         v => v.foodId === el.foodId,
                       );
+                      console.log(find);
                       // find에 같은 id가 있으면 새로운 value로 변경
                       if (find !== -1) {
                         statusOption[find] = {

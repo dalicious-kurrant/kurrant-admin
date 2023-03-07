@@ -47,6 +47,7 @@ const ItemInfo = () => {
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
+      console.log(productList?.data?.items);
       setExportExel(exportProductList?.data);
     }
   }, [productList, setProduct]);
@@ -80,6 +81,7 @@ const ItemInfo = () => {
         {product && (
           <ItemInfoTable
             data={product}
+            setData={setProduct}
             checked={checkId}
             checkItems={checkItems}
             setCheckItems={setCheckItems}
