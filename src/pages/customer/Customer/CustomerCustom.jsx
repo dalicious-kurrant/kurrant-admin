@@ -59,7 +59,7 @@ const CustomerCustom = () => {
   const userStatus = userOption && `&userStatus=${userOption}`;
   const groupId = spotOption && `&groupId=${spotOption}`;
   const userId = nameOption && `&userId=${nameOption}`;
-  console.log(typeof userStatus, userStatus, '데이터ddd');
+  // console.log(customerData, '9999');
   const params = {
     userStatus: userStatus && userStatus,
     groupId: groupId && groupId,
@@ -338,31 +338,8 @@ const CustomerCustom = () => {
             </div>
           )}
 
-          {/* <div>
-            <Pagination
-              pageList={totalPageArray}
-              lastPage={totalPageByLimit}
-              selectOptionArray={[1, 2, 4, 10]}
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              setLimit={setLimit}
-            />
-          </div> */}
-
           <TableWrapper>
-            {customerData && customerData.length > 0 && (
-              // <TableCustom
-              //   fieldsInput={CustomerFieldsToOpen}
-              //   dataInput={customerData}
-              //   // isMemo={true}
-              //   // handleChange={}
-
-              //   ellipsisList={[
-              //     {key: 'password', length: '5rem'},
-              //     {key: 'email', length: '22rem'},
-              //   ]}
-              // />
+            {
               <CostomerTable
                 testData={customerData}
                 setTestData={setCustomerData}
@@ -371,7 +348,7 @@ const CustomerCustom = () => {
                 allChk={allChk}
                 setAllChk={setAllChk}
               />
-            )}
+            }
           </TableWrapper>
         </PageWrapper>
       )}

@@ -44,7 +44,7 @@ const CostomerTable = ({
     {value: 2, label: '탈퇴'},
   ];
 
-  const userNameArr = testData.map(el => {
+  const userNameArr = testData?.map(el => {
     return {
       value: el.id,
       label: el.userName,
@@ -89,7 +89,7 @@ const CostomerTable = ({
           options={userArr}
           onChange={e => {
             //userFilter(e.value);
-            setUserOption(e.value);
+            setUserOption(e.value.toString());
           }}
         />
         <SelectBox
@@ -125,6 +125,7 @@ const CostomerTable = ({
             setTestData={setTestData}
           />
         )}
+
         <Table celled selectable>
           <Table.Header>
             <Table.Row>
@@ -173,7 +174,7 @@ const CostomerTable = ({
           </Table.Header>
 
           <Table.Body>
-            {testData.length > 0 &&
+            {testData?.length > 0 &&
               testData?.map((row, i) => {
                 return (
                   <Table.Row

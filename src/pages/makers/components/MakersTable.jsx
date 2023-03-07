@@ -4,7 +4,7 @@ import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
 import {bizNoFormatter} from 'utils/bizNumberFormatter';
 
 const MakersTable = ({data}) => {
-  console.log(data, '09');
+  // console.log(data, '09');
   return (
     <TableWrapper>
       <Table celled>
