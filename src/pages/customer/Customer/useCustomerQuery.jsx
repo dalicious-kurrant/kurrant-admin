@@ -88,9 +88,7 @@ const useCustomerQuery = (
       // const dataYo = sliceStringDataByKey(shiftUserType(data), 'password', 5);
       const dataYo = shiftUserType(data);
 
-      if (dataYo) {
-        setData(dataYo);
-      }
+      setData(dataYo);
     }
   }, [data, setData]);
 

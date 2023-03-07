@@ -56,10 +56,10 @@ const CustomerCustom = () => {
   const [nameOption] = useAtom(userIdAtom);
   const [spotOption] = useAtom(groupIdAtom);
 
-  const userStatus = `&userStatus=${userOption}`;
+  const userStatus = userOption && `&userStatus=${userOption}`;
   const groupId = spotOption && `&groupId=${spotOption}`;
   const userId = nameOption && `&userId=${nameOption}`;
-  console.log(userStatus, userOption, '000888');
+  console.log(typeof userStatus, userStatus, '데이터ddd');
   const params = {
     userStatus: userStatus && userStatus,
     groupId: groupId && groupId,
@@ -194,6 +194,8 @@ const CustomerCustom = () => {
   // PaginationTest(page, limit);
 
   // const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
+
+  useEffect(() => {}, [userOption, nameOption, spotOption]);
 
   return (
     <>
