@@ -60,6 +60,8 @@ const useSpotInfoQuery = (
         },
     {
       enabled: enable,
+      retry: 1,
+      retryDelay: 800,
     },
   );
 

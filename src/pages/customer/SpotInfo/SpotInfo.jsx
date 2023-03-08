@@ -27,7 +27,11 @@ import {Button, Checkbox, Table} from 'semantic-ui-react';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
 import useSpotInfoQuery from './useSpotInfoQuery';
-import {handleSpotInfoDelete, sendFinal} from './SpotInfoLogics';
+import {
+  clickSpotInfoButtonBundle,
+  handleSpotInfoDelete,
+  sendFinal,
+} from './SpotInfoLogics';
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
@@ -60,7 +64,16 @@ const SpotInfo = () => {
     );
 
   const handleBundleClick = buttonStatus => {
-    clickButtonBundle(
+    // clickButtonBundle(
+    //   buttonStatus,
+    //   SpotInfoFieldsToOpen,
+    //   spotInfoData,
+    //   checkboxStatus,
+    //   setDataToEdit,
+    //   setRegisterStatus,
+    //   setShowRegister,
+    // );
+    clickSpotInfoButtonBundle(
       buttonStatus,
       SpotInfoFieldsToOpen,
       spotInfoData,
