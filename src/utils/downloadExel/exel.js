@@ -280,7 +280,7 @@ export function userExel(user) {
   XLSX.utils.book_append_sheet(workbook, worksheet, '유저 정보');
   XLSX.writeFile(workbook, '유저 정보.xlsx');
 }
-export function spotExel(spot) {
+export function spotExel(spot, spotInfoRequiredFields) {
   const reqArrays = [];
   reqArrays.push([
     'status',

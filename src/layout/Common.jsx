@@ -584,6 +584,7 @@ const Common = () => {
       });
       console.log(req);
       // 스팟 여기
+      // return spotExel(req, SpotInfoTotalRequiredFields);
       return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {
