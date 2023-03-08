@@ -21,7 +21,7 @@ import {
   SpotInfoRegisterFieldsToOpen,
 } from './SpotInfoData';
 import {clickButtonBundle} from '../Logics/Logics';
-import {SpotInfoDataAtom} from './store';
+import {SpotInfoDataAtom, SpotInfoGroupIdNameAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
@@ -45,8 +45,12 @@ const SpotInfo = () => {
   const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
+
+  const [groupIdNameData] = useAtom(SpotInfoGroupIdNameAtom);
+  const [spotInfoAddedFieldsData, setSpotInfoAddedFieldsData] = useState([]);
+
   const [dataToEdit, setDataToEdit] = useState({});
-  // const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
+
   const [registerStatus, setRegisterStatus] = useState('register');
 
   const [, setImportExelSpot] = useAtom(spotAtom);
@@ -64,15 +68,6 @@ const SpotInfo = () => {
     );
 
   const handleBundleClick = buttonStatus => {
-    // clickButtonBundle(
-    //   buttonStatus,
-    //   SpotInfoFieldsToOpen,
-    //   spotInfoData,
-    //   checkboxStatus,
-    //   setDataToEdit,
-    //   setRegisterStatus,
-    //   setShowRegister,
-    // );
     clickSpotInfoButtonBundle(
       buttonStatus,
       SpotInfoFieldsToOpen,
@@ -114,12 +109,10 @@ const SpotInfo = () => {
         // console.log(v[0]);
 
         const deleteData = spotInfoList.find(val => val.id === parseInt(v[0]));
-        // console.log(deleteData);
+        // console.log(deleteData);s
         deleteIdArray.push(deleteData.spotId);
       }
     });
-
-    console.log(deleteIdArray);
 
     if (window.confirm(`${deleteIdArray.toString()}를 삭제하시겠습니까?`)) {
       deleteFinalMutate(deleteIdArray);
@@ -127,6 +120,23 @@ const SpotInfo = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    // spotInfo 는 서버에서 받은groupId, groupName을 넣어줘야한다
+
+    const yo = SpotInfoFieldsData.map(v => {
+      if (v.fieldName === 'groupId') {
+        v.options = [...groupIdNameData];
+      }
+      return v;
+    });
+
+    setSpotInfoAddedFieldsData(yo);
+  }, [groupIdNameData]);
+
+  useEffect(() => {
+    console.log(spotInfoData);
+  }, [spotInfoData]);
 
   // if (isLoading)
   //   return (
@@ -235,7 +245,7 @@ const SpotInfo = () => {
                 handleClose={handleClose}
                 data={dataToEdit}
                 fieldsToOpen={SpotInfoRegisterFieldsToOpen}
-                fieldsData={SpotInfoFieldsData}
+                fieldsData={spotInfoAddedFieldsData}
               />
             )}
           </div>

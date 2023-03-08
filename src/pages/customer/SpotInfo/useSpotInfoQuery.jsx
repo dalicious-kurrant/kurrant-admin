@@ -4,7 +4,9 @@ import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
-import {makeId} from './SpotInfoLogics';
+
+import {addGroupIdNameInSpotInfoFieldsData, makeId} from './SpotInfoLogics';
+import {SpotInfoGroupIdNameAtom} from './store';
 
 const useSpotInfoQuery = (
   uniqueQueryKey,
@@ -23,7 +25,8 @@ const useSpotInfoQuery = (
   const queryClient = useQueryClient();
 
   const [, setData] = useAtom(atom[0]);
-  const [, setExcelData] = useAtom(atom[1]);
+  const [, setGroupIdNameData] = useAtom(SpotInfoGroupIdNameAtom);
+  // const [, setExcelData] = useAtom(atom[1]);
   const [, setDataHasNoId] = useAtom(dataHasNoIdAtom);
 
   const {data, status, isLoading} = useQuery(
@@ -60,6 +63,21 @@ const useSpotInfoQuery = (
         },
     {
       enabled: enable,
+      retry: 1,
+      retryDelay: 800,
+    },
+  );
+
+  useQuery(
+    ['getSpotInfoGroupIdName'],
+    async () => {
+      const response = await instance.get('/clients/spots');
+
+      setGroupIdNameData(addGroupIdNameInSpotInfoFieldsData(response.data));
+      return response.data;
+    },
+    {
+      enabled: true,
       retry: 1,
       retryDelay: 800,
     },
@@ -103,7 +121,6 @@ const useSpotInfoQuery = (
 
   useEffect(() => {
     setData(data);
-    // setExcelData(data);
   }, [data]);
 
   return {

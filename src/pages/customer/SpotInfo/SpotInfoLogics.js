@@ -99,23 +99,7 @@ const makeSpotInfoInitialInput = (data, spotIdList) => {
     dinnerMembershipBenefitTime: '',
     createdDateTime: '',
     updatedDateTime: '',
-    // breakfastLastOrderTime: null,
-    // breakfastDeliveryTime: null,
-    // breakfastUseDays: null,
-    // breakfastSupportPrice: null,
-    // breakfastMembershipBenefitTime: null,
-    // lunchLastOrderTime: null,
-    // lunchDeliveryTime: null,
-    // lunchUseDays: null,
-    // lunchSupportPrice: null,
-    // lunchMembershipBenefitTime: null,
-    // dinnerLastOrderTime: null,
-    // dinnerDeliveryTime: null,
-    // dinnerUseDays: null,
-    // dinnerSupportPrice: null,
-    // dinnerMembershipBenefitTime: null,
-    // createdDateTime: null,
-    // updatedDateTime: null,
+
     status: 1,
   };
 
@@ -168,4 +152,19 @@ export const clickSpotInfoButtonBundle = (
       return;
     }
   }
+};
+
+export const addGroupIdNameInSpotInfoFieldsData = groupIdNameData => {
+  const yes1 = groupIdNameData.map(v => {
+    v['name'] = v.groupName;
+    v['value'] = v.groupId;
+
+    const {groupId, groupName, ...yo} = v;
+
+    return yo;
+  });
+
+  const yes = [{name: '필수 선택', value: undefined}, ...yes1];
+
+  return yes;
 };

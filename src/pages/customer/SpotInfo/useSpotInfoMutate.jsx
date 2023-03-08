@@ -1,20 +1,19 @@
 import {useAtom} from 'jotai';
+import {SpotInfoGroupIdNameAtom} from './store';
 
 const useSpotInfoMutate = atom => {
   const [dataList, setDataList] = useAtom(atom);
-
+  const [groupIdNameData] = useAtom(SpotInfoGroupIdNameAtom);
   const submitMutate = input => {
     // 스팟 이름을 입력하면 아이디, 이름 둘다 선택하게 하기
     // 이거 이대로 두면 안됨 나중에 바꿔야됨
     const yo = {...input};
 
-    if (yo.groupId === 1) {
-      yo.groupName = '달리셔스';
-    } else if (yo.groupId === 2) {
-      yo.groupName = '위시티자이아파트';
-    } else if (yo.groupId === 3) {
-      yo.groupName = '밀당PT 여의도';
-    }
+    groupIdNameData.forEach(v => {
+      if (v.value === yo.groupId) {
+        yo.groupName = v.name;
+      }
+    });
 
     // "" -> null로 고치기
 
