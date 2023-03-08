@@ -479,15 +479,86 @@ const Common = () => {
         // console.log(worksheet);
 
         if (sheetName === '메이커스 일정 관리') {
-          setExelPlan(json);
+          setExelPlan(
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
+              if (v.serviceDate) {
+                return {
+                  ...v,
+                  serviceDate: formattedWeekDate(v.serviceDate),
+                };
+              }
+
+              return v;
+            }),
+          );
           setExelStaticPlan(json);
         }
-        if (sheetName === '고객 스팟 정보') {
-          setExelSpot(json);
+        if (sheetName === '상세 스팟 정보') {
+          setExelSpot(
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
+              return {
+                ...v,
+                breakfastDeliveryTime:
+                  v.breakfastDeliveryTime &&
+                  formattedTime(v.breakfastDeliveryTime),
+                breakfastLastOrderTime:
+                  v.breakfastLastOrderTime &&
+                  formattedTime(v.breakfastLastOrderTime),
+                lunchLastOrderTime:
+                  v.lunchLastOrderTime && formattedTime(v.lunchLastOrderTime),
+                dinnerDeliveryTime:
+                  v.dinnerDeliveryTime && formattedTime(v.dinnerDeliveryTime),
+                dinnerLastOrderTime:
+                  v.dinnerLastOrderTime && formattedTime(v.dinnerLastOrderTime),
+                lunchDeliveryTime:
+                  v.lunchDeliveryTime && formattedTime(v.lunchDeliveryTime),
+                createdDateTime:
+                  v.createdDateTime && formattedWeekDate(v.createdDateTime),
+                updatedDateTime:
+                  v.updatedDateTime && formattedWeekDate(v.updatedDateTime),
+              };
+            }),
+          );
         }
         if (sheetName === '유저 정보') {
           console.log(json);
-          setExelUser(json);
+          setExelUser(
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
+              if (
+                v.marketingAgreedDateTime ||
+                v.userCreatedDateTime ||
+                v.recentLoginDateTime ||
+                v.userUpdatedDateTime
+              ) {
+                return {
+                  ...v,
+                  marketingAgreedDateTime:
+                    v.marketingAgreedDateTime &&
+                    formattedWeekDate(v.marketingAgreedDateTime),
+                  userCreatedDateTime:
+                    v.userCreatedDateTime &&
+                    formattedFullDate(v.userCreatedDateTime),
+                  recentLoginDateTime:
+                    v.recentLoginDateTime &&
+                    formattedFullDate(v.recentLoginDateTime),
+                  userUpdatedDateTime:
+                    v.userUpdatedDateTime &&
+                    formattedFullDate(v.userUpdatedDateTime),
+                };
+              }
+
+              return v;
+            }),
+          );
         }
         if (sheetName === '상품 정보') {
           console.log(json);
@@ -496,22 +567,58 @@ const Common = () => {
         if (sheetName === '식단 현황') {
           console.log(json);
           setExelCompletePlan(
-            json.map(v => {
-              if (typeof v.serviceDate === 'object') {
-                return {...v, serviceDate: formattedWeekDate(v.serviceDate)};
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
               }
+              if (
+                typeof v.serviceDate === 'object' ||
+                typeof v.makersPickupTime === typeof new Date() ||
+                typeof v.deliveryTime === typeof new Date()
+              ) {
+                return {
+                  ...v,
+                  serviceDate: formattedWeekDate(v.serviceDate),
+                  makersPickupTime: formattedTime(v.makersPickupTime),
+                  deliveryTime: formattedTime(v.deliveryTime),
+                };
+              }
+
               return v;
             }),
           );
         }
 
-        if (sheetName === '기업 정보') {
+        if (sheetName === '스팟 정보') {
           setExelCorporation(json);
           console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
-          setMakersExelInfo(json);
           console.log(json, 'json');
+          setMakersExelInfo(
+            json.map((v, i) => {
+              if (
+                (v.contractStartDate ||
+                  v.contractEndDate ||
+                  v.openTime ||
+                  v.closeTime) &&
+                i !== 0
+              ) {
+                return {
+                  ...v,
+                  contractStartDate:
+                    v.contractStartDate &&
+                    formattedWeekDate(v.contractStartDate),
+                  contractEndDate:
+                    v.contractEndDate && formattedWeekDate(v.contractEndDate),
+                  openTime: v.openTime && formattedTime(v.openTime),
+                  closeTime: v.closeTime && formattedTime(v.closeTime),
+                };
+              }
+
+              return v;
+            }),
+          );
         }
       };
       reader.readAsArrayBuffer(e.target.files[0]);
@@ -581,7 +688,7 @@ const Common = () => {
       return planExel(reCommandPlan);
     }
     if (exelSpot && exelSpot.length > 0) {
-      return planExelExport(exelSpot, '고객 스팟 공지', '고객 스팟 공지.xlsx');
+      return planExelExport(exelSpot, '상세 스팟 정보', '상세 스팟 정보.xlsx');
     }
     // if (product?.foodList && product?.foodList?.length > 0) {
     //   return productExel(product);
@@ -618,7 +725,7 @@ const Common = () => {
     if (exelCorporation && exelCorporation.length > 0) {
       return corporationExelExport(
         exelCorporation,
-        '기업 정보',
+        '스팟 정보',
         '기업_정보.xlsx',
       );
     }

@@ -370,8 +370,8 @@ export function spotExel(spot) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '고객 스팟 정보');
-  XLSX.writeFile(workbook, '고객 스팟 정보.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '상세 스팟 정보');
+  XLSX.writeFile(workbook, '상세 스팟 정보.xlsx');
 }
 
 export function productExelExport(product, sheetName, fileName) {
@@ -382,7 +382,7 @@ export function productExelExport(product, sheetName, fileName) {
   XLSX.writeFile(workbook, fileName);
 }
 
-// 기업 정보 엑셀
+// 스팟 정보 엑셀
 
 export function corporationInfoExel(corporation) {
   const reqArrays = [];
@@ -479,8 +479,8 @@ export function corporationInfoExel(corporation) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '기업 정보');
-  XLSX.writeFile(workbook, '기업_정보.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '스팟 정보');
+  XLSX.writeFile(workbook, '스팟 정보.xlsx');
 }
 
 export function corporationExelExport(corporation, sheetName, fileName) {
