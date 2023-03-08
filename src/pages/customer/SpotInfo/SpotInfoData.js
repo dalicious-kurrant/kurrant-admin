@@ -5,23 +5,24 @@ export const SpotInfoTotalRequiredFields = {
   groupName: '스팟 이름',
   zipCode: '우편번호',
   address1: '기본주소',
-
   address2: '상세주소',
   location: '위치',
   diningType: '식타입',
   breakfastLastOrderTime: '아침주문마감시간',
   breakfastDeliveryTime: '배송시간아침',
-
   breakfastUseDays: '주문요일아침',
-  breakfastSupportPrice: '아침주문마감시간',
+  breakfastSupportPrice: '아침 주문마감시간',
+  breakfastMembershipBenefitTime: '아침 멤버십할인마감',
   lunchLastOrderTime: '점심주문마감시간',
   lunchDeliveryTime: '배송시간점심',
   lunchUseDays: '주문요일점심',
   lunchSupportPrice: '지원금점심',
+  lunchMembershipBenefitTime: '점심 멤버십할인마감',
   dinnerLastOrderTime: '저녁주문마감시간',
   dinnerDeliveryTime: '배송시간저녁',
   dinnerUseDays: '주문요일저녁',
   dinnerSupportPrice: '지원금저녁',
+  dinnerMembershipBenefitTime: '저녁 멤버십할인마감',
   createdDateTime: '생성일',
   updatedDateTime: '수정일',
   status: '상태',
@@ -43,14 +44,17 @@ export const SpotInfoRegisterFieldsToOpen = {
   breakfastSupportPrice: '지원금아침', // null가능number, 0 가능
   breakfastUseDays: '주문요일아침', //null가능 빈칸 가능 월, 수 금
   breakfastLastOrderTime: '아침주문마감시간',
+  breakfastMembershipBenefitTime: '아침 멤버십할인마감',
   lunchDeliveryTime: '배송시간점심', // null가능"00:00:00"형식 준수
   lunchSupportPrice: '지원금점심', // null가능number 0가능
   lunchUseDays: '주문요일점심', //null가능 빈 칸 가능 "월, 화 수목금"
   lunchLastOrderTime: '점심주문마감시간',
+  lunchMembershipBenefitTime: '점심 멤버십할인마감',
   dinnerDeliveryTime: '배송시간저녁', // null 가능
   dinnerSupportPrice: '지원금저녁', // null 가능
   dinnerUseDays: '주문요일저녁', // null 가능
   dinnerLastOrderTime: '저녁주문마감시간',
+  dinnerMembershipBenefitTime: '저녁 멤버십할인마감',
 
   createdDateTime: '생성일',
   updatedDateTime: '수정일',
@@ -71,15 +75,19 @@ export const SpotInfoFieldsToOpen = {
   breakfastSupportPrice: '지원금아침', // null가능number, 0 가능
   breakfastUseDays: '주문요일아침', //null가능 빈칸 가능 월, 수 금
   breakfastLastOrderTime: '아침주문마감시간', //  "00:00"형식 준수
+  breakfastMembershipBenefitTime: '아침멤버십할인마감',
+
   lunchDeliveryTime: '배송시간점심', // null가능"00:00:00"형식 준수
   lunchSupportPrice: '지원금점심', // null가능number 0가능
   lunchUseDays: '주문요일점심', //null가능 빈 칸 가능 "월, 화 수목금"
   lunchLastOrderTime: '점심주문마감시간',
+  lunchMembershipBenefitTime: '아침멤버십할인마감',
 
   dinnerDeliveryTime: '배송시간저녁', // null 가능
   dinnerSupportPrice: '지원금저녁', // null 가능
   dinnerUseDays: '주문요일저녁', // null 가능
   dinnerLastOrderTime: '저녁주문마감시간',
+  dinnerMembershipBenefitTime: '아침멤버십할인마감',
 
   createdDateTime: '생성일', // '2023-03-01';
   updatedDateTime: '수정일', // '2023-03-02';
@@ -230,12 +238,21 @@ export const SpotInfoFieldsData = [
   },
   {
     fieldName: 'breakfastLastOrderTime',
-    fieldNameKor: '아침주문마감시간',
+    fieldNameKor: '아침 주문마감시간',
     placeholder: '예) 00:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
     headerWidth: 160,
+  },
+  {
+    fieldName: 'breakfastMembershipBenefitTime',
+    fieldNameKor: '아침 멤버십할인마감',
+    placeholder: '예) 1일전 17:00',
+    maxCharLength: 40,
+    flex: 1,
+    width: undefined,
+    headerWidth: 200,
   },
 
   {
@@ -268,8 +285,17 @@ export const SpotInfoFieldsData = [
   },
   {
     fieldName: 'lunchLastOrderTime',
-    fieldNameKor: '점심주문마감시간',
+    fieldNameKor: '점심 주문마감시간',
     placeholder: '예) 00:00',
+    maxCharLength: 40,
+    flex: 1,
+    width: undefined,
+    headerWidth: 200,
+  },
+  {
+    fieldName: 'lunchMembershipBenefitTime',
+    fieldNameKor: '점심 멤버십할인마감',
+    placeholder: '예) 1일전 17:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -304,11 +330,20 @@ export const SpotInfoFieldsData = [
   },
   {
     fieldName: 'dinnerLastOrderTime',
-    fieldNameKor: '저녁주문마감시간',
+    fieldNameKor: '저녁 주문마감시간',
     placeholder: '월, 화, 수',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+  },
+  {
+    fieldName: 'dinnerMembershipBenefitTime',
+    fieldNameKor: '저녁 멤버십할인마감',
+    placeholder: '예) 1일전 17:00',
+    maxCharLength: 40,
+    flex: 1,
+    width: undefined,
+    headerWidth: 200,
   },
 
   // {
