@@ -21,7 +21,7 @@ import {
   SpotInfoRegisterFieldsToOpen,
 } from './SpotInfoData';
 import {clickButtonBundle} from '../Logics/Logics';
-import {SpotInfoDataAtom} from './store';
+import {SpotInfoDataAtom, SpotInfoGroupIdNameAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
@@ -42,9 +42,14 @@ const SpotInfo = () => {
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
 
+  const [groupIdNameData, setGroupIdNameData] = useAtom(
+    SpotInfoGroupIdNameAtom,
+  );
+
   const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
+
   const [dataToEdit, setDataToEdit] = useState({});
   // const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
   const [registerStatus, setRegisterStatus] = useState('register');
@@ -64,15 +69,6 @@ const SpotInfo = () => {
     );
 
   const handleBundleClick = buttonStatus => {
-    // clickButtonBundle(
-    //   buttonStatus,
-    //   SpotInfoFieldsToOpen,
-    //   spotInfoData,
-    //   checkboxStatus,
-    //   setDataToEdit,
-    //   setRegisterStatus,
-    //   setShowRegister,
-    // );
     clickSpotInfoButtonBundle(
       buttonStatus,
       SpotInfoFieldsToOpen,
@@ -114,7 +110,7 @@ const SpotInfo = () => {
         // console.log(v[0]);
 
         const deleteData = spotInfoList.find(val => val.id === parseInt(v[0]));
-        // console.log(deleteData);
+        // console.log(deleteData);s
         deleteIdArray.push(deleteData.spotId);
       }
     });
@@ -127,6 +123,10 @@ const SpotInfo = () => {
       return;
     }
   };
+
+  useEffect(() => {
+    console.log(groupIdNameData);
+  }, [groupIdNameData]);
 
   // if (isLoading)
   //   return (
