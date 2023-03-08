@@ -21,7 +21,7 @@ const Success = () => {
       // alert(JSON.stringify(req));
       try {
         const res = await instanceOrder.post('/users/me/orders', req, {
-          headers: {Authorization: token},
+          headers: {Authorization: 'Bearer ' + token},
         });
         alert(JSON.stringify(res));
         // const res = await successApi.orderSuccess(req);
