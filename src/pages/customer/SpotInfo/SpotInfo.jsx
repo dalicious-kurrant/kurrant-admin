@@ -114,8 +114,6 @@ const SpotInfo = () => {
       }
     });
 
-    console.log(deleteIdArray);
-
     if (window.confirm(`${deleteIdArray.toString()}를 삭제하시겠습니까?`)) {
       deleteFinalMutate(deleteIdArray);
     } else {
@@ -135,6 +133,10 @@ const SpotInfo = () => {
 
     setSpotInfoAddedFieldsData(yo);
   }, [groupIdNameData]);
+
+  useEffect(() => {
+    console.log(spotInfoData);
+  }, [spotInfoData]);
 
   // if (isLoading)
   //   return (
