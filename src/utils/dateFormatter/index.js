@@ -10,10 +10,15 @@ function leftPad(value) {
 }
 
 function transDateType(val) {
-  if (!(val instanceof Date)) {
-    return new Date(val);
+  if (typeof val !== typeof new Date()) {
+    if (val?.includes('Z')) {
+      return new Date(val);
+    }
   }
-  return val;
+  return new Date(val + 'Z');
+}
+function transTimeType(val) {
+  return new Date(val);
 }
 
 export function formattedTimer(remainSeconds) {
@@ -30,13 +35,13 @@ export function formattedTime(data) {
     const hhmm = data.split(':');
     isDate.setHours(hhmm[0]);
     isDate.setMinutes(hhmm[1]);
-    const dateTime = transDateType(isDate);
+    const dateTime = transTimeType(isDate);
     const day = leftPad(dateTime.getDate());
     const hour = leftPad(dateTime.getHours());
     const minute = leftPad(dateTime.getMinutes());
     return `${hour}:${minute}`;
   }
-  const dateTime = transDateType(data);
+  const dateTime = transTimeType(data);
   const hour = leftPad(dateTime.getHours());
   const minute = leftPad(dateTime.getMinutes());
   return `${hour}:${minute}`;
@@ -78,7 +83,7 @@ export function formattedDateAndTime(data, delimiter = '.') {
 }
 
 export function formattedFullDate(data, delimiter = '-') {
-  const dateTime = transDateType(data);
+  const dateTime = transTimeType(data);
   const year = dateTime.getFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
@@ -192,3 +197,16 @@ export function formattedDateType(data) {
 //     return 0;
 //   }
 // }
+
+export function formattedDateForRecommendation(date) {
+  const year = date.getFullYear();
+  const month = leftPad(date.getMonth() + 1);
+  const day = leftPad(date.getDate());
+  return `${year}-${month}-${day}`;
+}
+
+export function addDays(date, days) {
+  let dateTime = transDateType(date);
+  dateTime = new Date(dateTime.setDate(dateTime.getDate() + days));
+  return dateTime;
+}

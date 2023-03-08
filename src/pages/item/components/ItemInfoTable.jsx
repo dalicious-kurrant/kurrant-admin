@@ -2,13 +2,21 @@ import {useAtom} from 'jotai';
 import {useNavigate} from 'react-router-dom';
 import {Button, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
-import {shopInfoDetailIdAtom, statusOptionAtom} from 'utils/store';
+import {
+  makersNameAtom,
+  shopInfoDetailIdAtom,
+  statusOptionAtom,
+} from 'utils/store';
 import withCommas from '../../../utils/withCommas';
 import Select from 'react-select';
+import {useState} from 'react';
+import {PageWrapper} from 'style/common.style';
+import {foodStatusFomatted} from 'utils/statusFormatter';
 
-const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
+const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
+  const [option, setOption] = useAtom(makersNameAtom);
   const [statusOption, setStatusOption] = useAtom(statusOptionAtom);
 
   const goToPage = (foodId, makersId) => {
@@ -21,12 +29,19 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
     });
   };
 
-  const checkboxList = data?.data?.map(el => el.foodId);
+  const makersArr = data?.makersInfoList?.map(el => {
+    return {
+      value: el.makersId,
+      label: el.makersName,
+    };
+  });
+
+  const checkboxList = data?.foodList?.map(el => el.foodId);
 
   const handleAllCheck = checked => {
     if (checked) {
       const idArray = [];
-      data?.data?.forEach(el => idArray.push(el.foodId));
+      data?.foodList?.forEach(el => idArray.push(el.foodId));
 
       setCheckItems(idArray);
     } else {
@@ -53,6 +68,13 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
       {/* <BtnWrapper>
         <Button color="blue" content="상태변경 저장" onClick={statusButton} />
       </BtnWrapper> */}
+      <div>
+        <SelectBox
+          placeholder="메이커스별 조회"
+          options={makersArr}
+          onChange={e => setOption(e.value)}
+        />
+      </div>
       <Table celled>
         <Table.Header>
           <Table.Row>
@@ -87,10 +109,11 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
         </Table.Header>
 
         <Table.Body>
-          {data?.map((el, idx) => {
+          {data?.foodList?.map((el, idx) => {
             const defaultValue = statusValue.filter(
               v => v.label === el.foodStatus,
             );
+
             return (
               <TableRow
                 onClick={() => goToPage(el.foodId, el.makersId)}
@@ -114,11 +137,23 @@ const ItemInfoTable = ({data, checked, checkItems, setCheckItems}) => {
                 <Table.Cell onClick={e => e.stopPropagation()} width={2}>
                   <Select
                     options={statusValue}
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     onChange={e => {
+                      setData({
+                        ...data,
+                        foodList: data.foodList.map(v => {
+                          if (v.foodId === el.foodId)
+                            return {
+                              ...v,
+                              foodStatus: foodStatusFomatted(e.value),
+                            };
+                          return v;
+                        }),
+                      });
                       const find = statusOption.findIndex(
                         v => v.foodId === el.foodId,
                       );
+                      console.log(find);
                       // find에 같은 id가 있으면 새로운 value로 변경
                       if (find !== -1) {
                         statusOption[find] = {
@@ -168,4 +203,8 @@ const TableRow = styled(Table.Row)`
     cursor: pointer;
     background-color: whitesmoke;
   }
+`;
+
+const SelectBox = styled(Select)`
+  width: 250px;
 `;

@@ -177,6 +177,10 @@ export const typeTag = [
     id: 2023,
     type: '샐러드류',
   },
+  {
+    id: 2024,
+    type: '밥류',
+  },
 ];
 
 export const ingredientTag = [
@@ -299,27 +303,27 @@ export const temperatureTag = [
 export const tasteTag = [
   {
     id: 6001,
-    temperature: '단맛',
+    taste: '단맛',
   },
   {
     id: 6002,
-    temperature: '매운맛',
+    taste: '매운맛',
   },
   {
     id: 6003,
-    temperature: '짠맛',
+    taste: '짠맛',
   },
   {
     id: 6004,
-    temperature: '쓴맛',
+    taste: '쓴맛',
   },
   {
     id: 6005,
-    temperature: '신맛',
+    taste: '신맛',
   },
   {
     id: 6006,
-    temperature: '감칠맛',
+    taste: '감칠맛',
   },
 ];
 
@@ -334,7 +338,7 @@ export const featureTag = [
   },
   {
     id: 7003,
-    featrue: '든든한',
+    featrue: '헤비한',
   },
   {
     id: 7004,

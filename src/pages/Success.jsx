@@ -10,24 +10,27 @@ const Success = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    const token = searchParams.get('token');
     const req = {
       paymentKey: searchParams.get('paymentKey'),
       orderId: searchParams.get('orderId'),
       amount: Number(searchParams.get('amount')),
       orderItems: JSON.parse(searchParams.get('orderItems')),
     };
-
     const callOrder = async () => {
-      alert(JSON.stringify(req));
-      const res = await instanceOrder.post(
-        '/users/me/orders',
-        JSON.stringify(req),
-      );
-      alert(JSON.stringify(res));
-      // const res = await successApi.orderSuccess(req);
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({...res, type: 'NOMAL'}),
-      );
+      // alert(JSON.stringify(req));
+      try {
+        const res = await instanceOrder.post('/users/me/orders', req, {
+          headers: {Authorization: 'Bearer ' + token},
+        });
+        alert(JSON.stringify(res));
+        // const res = await successApi.orderSuccess(req);
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({...res, type: 'NOMAL'}),
+        );
+      } catch (e) {
+        alert('error:' + e.toString());
+      }
     };
     try {
       callOrder();

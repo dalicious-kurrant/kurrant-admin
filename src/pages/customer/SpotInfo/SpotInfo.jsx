@@ -128,21 +128,21 @@ const SpotInfo = () => {
     }
   };
 
-  if (isLoading)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
+  // if (isLoading)
+  //   return (
+  //     <>
+  //       {' '}
+  //       <div>로딩중입니다..</div>{' '}
+  //     </>
+  //   );
 
-  if (status === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  // if (status === 'error')
+  //   return (
+  //     <div>
+  //       에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
+  //       있어요
+  //     </div>
+  //   );
 
   return (
     <>
@@ -203,32 +203,6 @@ const SpotInfo = () => {
                           </Table.Cell>
                           {key &&
                             key.map((k, l) => {
-                              // console.log(p[k], 'test');
-                              if (
-                                k === 'breakfastDeliveryTime' ||
-                                k === 'dinnerDeliveryTime' ||
-                                k === 'lunchDeliveryTime'
-                              ) {
-                                return (
-                                  <Table.Cell key={k + l}>
-                                    <FlexBox>
-                                      {typeof p[k] === 'object'
-                                        ? formattedTime(p[k])
-                                        : p[k]}
-                                    </FlexBox>
-                                  </Table.Cell>
-                                );
-                              }
-                              if (
-                                k === 'createDateTime' ||
-                                k === 'updatedDateTime'
-                              ) {
-                                return (
-                                  <Table.Cell key={k + l}>
-                                    <FlexBox>{formattedWeekDate(p[k])}</FlexBox>
-                                  </Table.Cell>
-                                );
-                              }
                               return (
                                 <Table.Cell key={`${i}` + l}>
                                   <FlexBox>{p[k]}</FlexBox>

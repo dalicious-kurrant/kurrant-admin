@@ -18,7 +18,13 @@ import {useMutation, useQueryClient} from 'react-query';
 
 import instance from 'shared/axios';
 
-import {exelUserAtom} from 'utils/store';
+import {
+  exelUserAtom,
+  groupIdAtom,
+  uerIdAtom,
+  userIdAtom,
+  userStateAtom,
+} from 'utils/store';
 import {Button, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
@@ -32,7 +38,7 @@ import {
   CustomerFieldsDataForRegister,
   CustomerFieldsToOpen,
 } from './CustomerInfoData';
-import CostomerTable from './CostomerTable';
+import CostomerTable from './CustomerTable';
 import {userStatusFormatted} from 'utils/statusFormatter';
 
 const CustomerCustom = () => {
@@ -45,6 +51,21 @@ const CustomerCustom = () => {
   const [registerStatus, setRegisterStatus] = useState('register');
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
+
+  const [userOption] = useAtom(userStateAtom);
+  const [nameOption] = useAtom(userIdAtom);
+  const [spotOption] = useAtom(groupIdAtom);
+
+  const userStatus = userOption && `&userStatus=${userOption}`;
+  const groupId = spotOption && `&group=${spotOption}`;
+  const userId = nameOption && `&userId=${nameOption}`;
+  // console.log(customerData, '9999');
+  const params = {
+    userStatus: userStatus && userStatus,
+    groupId: groupId && groupId,
+    userId: userId && userId,
+  };
+
   const queryClient = useQueryClient();
 
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
@@ -98,7 +119,7 @@ const CustomerCustom = () => {
   const {} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
-    'users/all',
+    `users/all?${params.userStatus}${params.groupId}${params.userId}`,
     token,
   );
 
@@ -174,6 +195,8 @@ const CustomerCustom = () => {
 
   // const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
 
+  useEffect(() => {}, [userOption, nameOption, spotOption]);
+
   return (
     <>
       {exelUser ? (
@@ -208,13 +231,7 @@ const CustomerCustom = () => {
                                 console.log(p[k]);
                                 return (
                                   <Table.Cell key={k + l}>
-                                    <FlexBox>
-                                      {typeof p[k] === 'object'
-                                        ? p[k]
-                                          ? formattedWeekDate(p[k])
-                                          : p[k]
-                                        : '-'}
-                                    </FlexBox>
+                                    <FlexBox>{p[k] || '-'}</FlexBox>
                                   </Table.Cell>
                                 );
                               }
@@ -225,9 +242,7 @@ const CustomerCustom = () => {
                               ) {
                                 return (
                                   <Table.Cell key={k + l}>
-                                    <FlexBox>
-                                      {p[k] ? formattedFullDate(p[k]) : '-'}
-                                    </FlexBox>
+                                    <FlexBox>{p[k] ? p[k] : '-'}</FlexBox>
                                   </Table.Cell>
                                 );
                               }
@@ -315,31 +330,8 @@ const CustomerCustom = () => {
             </div>
           )}
 
-          {/* <div>
-            <Pagination
-              pageList={totalPageArray}
-              lastPage={totalPageByLimit}
-              selectOptionArray={[1, 2, 4, 10]}
-              page={page}
-              setPage={setPage}
-              limit={limit}
-              setLimit={setLimit}
-            />
-          </div> */}
-
           <TableWrapper>
-            {customerData && customerData.length > 0 && (
-              // <TableCustom
-              //   fieldsInput={CustomerFieldsToOpen}
-              //   dataInput={customerData}
-              //   // isMemo={true}
-              //   // handleChange={}
-
-              //   ellipsisList={[
-              //     {key: 'password', length: '5rem'},
-              //     {key: 'email', length: '22rem'},
-              //   ]}
-              // />
+            {
               <CostomerTable
                 testData={customerData}
                 setTestData={setCustomerData}
@@ -348,7 +340,7 @@ const CustomerCustom = () => {
                 allChk={allChk}
                 setAllChk={setAllChk}
               />
-            )}
+            }
           </TableWrapper>
         </PageWrapper>
       )}

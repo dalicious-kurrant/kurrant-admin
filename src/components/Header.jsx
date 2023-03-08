@@ -70,28 +70,41 @@ const Header = ({openMenu, setOpenMenu}) => {
   };
   return (
     <H.Wrapper>
-      <Segment>
+      <Segment inverted>
         <MenuContainer openMenu={openMenu}>
-          <Menu secondary>
+          <Menu secondary inverted>
             <MenuLogout>
-              <MenuBox>
+              <MenuBox inverted>
                 <Menu.Item active onClick={() => navi('/main')} icon="home" />
                 {MenuList.map((v, i) => (
                   <DropDownMenu
+                    style={{
+                      backgroundColor: '#1b1c1d',
+                      color: '#fff',
+                      fontSize: 15,
+                      fontWeight: 700,
+                    }}
                     key={`${v.name}`}
                     item
                     text={v.name}
+                    icon={null}
                     name={i}
                     openOnFocus={false}
-                    onOpen={(e, data) => {
-                      console.log(data);
-                    }}
                     open={openMenu}
                     onClick={e => {
                       e.preventDefault();
                       setOpenMenu(!openMenu);
                     }}>
-                    <Dropdown.Menu style={{border: 'none', boxShadow: 'none'}}>
+                    <Dropdown.Menu
+                      style={{
+                        borderLeft: '1px solid white',
+                        boxShadow: 'none',
+                        fontSize: 12,
+                        maxWidth: 150,
+                        whiteSpace: 'pre-wrap',
+                        backgroundColor: '#1b1c1d',
+                        color: '#fff',
+                      }}>
                       {v.children?.map(b => (
                         <Dropdown.Item
                           key={`${b.name}`}
@@ -100,7 +113,7 @@ const Header = ({openMenu, setOpenMenu}) => {
                             setOpenMenu(!openMenu);
                             navi(`${v.url}${b.url}`);
                           }}>
-                          {b.name}
+                          <FontBox>{b.name}</FontBox>
                         </Dropdown.Item>
                       ))}
                     </Dropdown.Menu>
@@ -122,18 +135,25 @@ const Logout = styled.div`
   display: flex;
   align-self: center;
   text-align: end;
-  color: black;
   white-space: nowrap;
   cursor: pointer;
+  color: #ccc;
 `;
-
+const FontBox = styled.div`
+  color: #ccc;
+  white-space: nowrap;
+`;
 const DropDownMenu = styled(Dropdown)`
   .text {
     color: ${({name}) =>
-      name === 4 || name === 5 || name === 6 ? 'red' : 'black'};
+      name === 4 || name === 5 || name === 6 ? 'red' : 'white'};
   }
-  width: 200px;
+  min-width: 160px;
+  white-space: nowrap;
+
+  background-color: #1b1c1d;
   :hover {
+    background-color: #ccc;
   }
 `;
 const MenuContainer = styled.div`
@@ -141,21 +161,22 @@ const MenuContainer = styled.div`
   ${({openMenu}) => {
     if (openMenu)
       return css`
-        height: 340px;
+        min-height: 320px;
       `;
   }}
   align-items: flex-start;
   text-align: start;
-  background-color: white;
+  background-color: #1b1c1d;
 `;
 
 const MenuBox = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: #1b1c1d;
 `;
 const MenuLogout = styled.div`
   display: flex;
   width: 97vw;
-
+  background-color: #1b1c1d;
   justify-content: space-between;
 `;

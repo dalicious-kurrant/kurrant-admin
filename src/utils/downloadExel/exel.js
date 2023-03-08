@@ -141,6 +141,7 @@ export function planExelExport(plan, sheetName, fileName) {
 // 상품 정보 엑셀
 
 export function productExel(product) {
+  console.log(product);
   const reqArrays = [];
   reqArrays.push([
     'foodId',
@@ -149,9 +150,9 @@ export function productExel(product) {
     'foodName',
     'foodStatus',
     'defaultPrice',
+    'membershipDiscount',
     'makersDiscount',
     'eventDiscount',
-    'membershipDiscount',
     'resultPrice',
     'description',
     'foodTags',
@@ -163,9 +164,9 @@ export function productExel(product) {
     '식품이름',
     '판매상태',
     '매장가격',
+    '멤버십할인률',
     '매장할인률',
     '이벤트할인률',
-    '멤버십할인률',
     '최종가격',
     '설명',
     '식사 태그',
@@ -302,8 +303,8 @@ export function spotExel(spot, spotInfoRequiredFields) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '고객 스팟 정보');
-  XLSX.writeFile(workbook, '고객 스팟 정보.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '상세 스팟 정보');
+  XLSX.writeFile(workbook, '상세 스팟 정보.xlsx');
 }
 
 export function productExelExport(product, sheetName, fileName) {
@@ -314,7 +315,7 @@ export function productExelExport(product, sheetName, fileName) {
   XLSX.writeFile(workbook, fileName);
 }
 
-// 기업 정보 엑셀
+// 스팟 정보 엑셀
 
 export function corporationInfoExel(corporation) {
   const reqArrays = [];
@@ -369,7 +370,7 @@ export function corporationInfoExel(corporation) {
     '최대 구매 가능 금액',
   ]);
 
-  corporation?.data?.items?.groupInfoList?.map(el => {
+  corporation?.map(el => {
     const diningType = el.diningTypes.map(v =>
       v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
     );
@@ -411,8 +412,8 @@ export function corporationInfoExel(corporation) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  XLSX.utils.book_append_sheet(workbook, worksheet, '기업 정보');
-  XLSX.writeFile(workbook, '기업_정보.xlsx');
+  XLSX.utils.book_append_sheet(workbook, worksheet, '스팟 정보');
+  XLSX.writeFile(workbook, '스팟 정보.xlsx');
 }
 
 export function corporationExelExport(corporation, sheetName, fileName) {
