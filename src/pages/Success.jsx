@@ -17,14 +17,16 @@ const Success = () => {
       amount: Number(searchParams.get('amount')),
       orderItems: JSON.parse(searchParams.get('orderItems')),
     };
-    alert(JSON.stringify(req));
     const callOrder = async () => {
       // alert(JSON.stringify(req));
 
-      const res = await instanceOrder.post('/users/me/orders', {
-        headers: {Authorization: token},
-        data: JSON.stringify(req),
-      });
+      const res = await instanceOrder.post(
+        '/users/me/orders',
+        {
+          data: JSON.stringify(req),
+        },
+        {headers: {Authorization: token}},
+      );
       alert(JSON.stringify(res));
       // const res = await successApi.orderSuccess(req);
       window.ReactNativeWebView.postMessage(
