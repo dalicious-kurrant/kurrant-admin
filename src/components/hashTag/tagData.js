@@ -303,27 +303,27 @@ export const temperatureTag = [
 export const tasteTag = [
   {
     id: 6001,
-    temperature: '단맛',
+    taste: '단맛',
   },
   {
     id: 6002,
-    temperature: '매운맛',
+    taste: '매운맛',
   },
   {
     id: 6003,
-    temperature: '짠맛',
+    taste: '짠맛',
   },
   {
     id: 6004,
-    temperature: '쓴맛',
+    taste: '쓴맛',
   },
   {
     id: 6005,
-    temperature: '신맛',
+    taste: '신맛',
   },
   {
     id: 6006,
-    temperature: '감칠맛',
+    taste: '감칠맛',
   },
 ];
 
