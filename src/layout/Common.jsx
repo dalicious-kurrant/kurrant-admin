@@ -158,10 +158,6 @@ const Common = () => {
     inputRef.current.click();
   }, []);
 
-  useEffect(() => {
-    console.log(exelSpot);
-  }, [exelSpot]);
-
   const completePost = async () => {
     const reqArray = [];
     if (completePlan) {

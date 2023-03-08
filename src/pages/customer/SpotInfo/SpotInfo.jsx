@@ -79,14 +79,8 @@ const SpotInfo = () => {
   }, [exelSpot]);
 
   useEffect(() => {
-    // setSpotInfoData()
-    console.log(spotInfoData);
     setImportExelSpot(spotInfoData);
   }, [spotInfoData]);
-
-  useEffect(() => {
-    console.log(exelSpot);
-  }, [exelSpot]);
 
   useEffect(() => {
     return () => {
