@@ -30,21 +30,21 @@ const SpotInfoExcelPage = () => {
   //   setPlan(req);
   //   // console.log(SpotInfoObjectSample);
   // }, [setPlan]);
-  if (isLoading_getSpotInfoJSON)
-    return (
-      <>
-        {' '}
-        <div>로딩중입니다..</div>{' '}
-      </>
-    );
+  // if (isLoading_getSpotInfoJSON)
+  //   return (
+  //     <>
+  //       {' '}
+  //       <div>로딩중입니다..</div>{' '}
+  //     </>
+  //   );
 
-  if (status_getSpotInfoJSON === 'error')
-    return (
-      <div>
-        에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-        있어요
-      </div>
-    );
+  // if (status_getSpotInfoJSON === 'error')
+  //   return (
+  //     <div>
+  //       에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
+  //       있어요
+  //     </div>
+  //   );
 
   return <Container></Container>;
 };

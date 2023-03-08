@@ -14,7 +14,7 @@ import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
 import {groupIdAtom, uerIdAtom, userIdAtom, userStateAtom} from 'utils/store';
 
-const CostomerTable = ({
+const CustomerTable = ({
   testData,
   setTestData,
   userCheck,
@@ -296,7 +296,7 @@ const CostomerTable = ({
   );
 };
 
-export default CostomerTable;
+export default CustomerTable;
 
 const FlexBox = styled.div`
   display: flex;

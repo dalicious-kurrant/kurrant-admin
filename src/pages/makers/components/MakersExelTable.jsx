@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import {bizNoFormatter} from 'utils/bizNumberFormatter';
+import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
 
 const MakersExelTable = ({data}) => {
@@ -132,16 +133,25 @@ const MakersExelTable = ({data}) => {
                         );
                       }
                       if (k === 'contractStartDate') {
+                        console.log(el[k]);
                         return (
                           <Table.Cell key={k + i}>
-                            <div style={{width: 130}}>{el[k]}</div>
+                            <div style={{width: 130}}>
+                              {typeof el[k] === typeof new Date()
+                                ? formattedWeekDate(el[k])
+                                : el[k]}
+                            </div>
                           </Table.Cell>
                         );
                       }
                       if (k === 'contractEndDate') {
                         return (
                           <Table.Cell key={k + i}>
-                            <div style={{width: 130}}>{el[k]}</div>
+                            <div style={{width: 130}}>
+                              {typeof el[k] === typeof new Date()
+                                ? formattedWeekDate(el[k])
+                                : el[k]}
+                            </div>
                           </Table.Cell>
                         );
                       }
@@ -153,10 +163,22 @@ const MakersExelTable = ({data}) => {
                         );
                       }
                       if (k === 'openTime') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            {typeof el[k] === typeof new Date()
+                              ? formattedTime(el[k])
+                              : el[k]}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'closeTime') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return (
+                          <Table.Cell key={k + i}>
+                            {typeof el[k] === typeof new Date()
+                              ? formattedTime(el[k])
+                              : el[k]}
+                          </Table.Cell>
+                        );
                       }
                       if (k === 'bank') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;

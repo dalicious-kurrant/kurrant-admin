@@ -231,13 +231,7 @@ const CustomerCustom = () => {
                                 console.log(p[k]);
                                 return (
                                   <Table.Cell key={k + l}>
-                                    <FlexBox>
-                                      {typeof p[k] === 'object'
-                                        ? p[k]
-                                          ? formattedWeekDate(p[k])
-                                          : p[k]
-                                        : '-'}
-                                    </FlexBox>
+                                    <FlexBox>{p[k] || '-'}</FlexBox>
                                   </Table.Cell>
                                 );
                               }
@@ -248,9 +242,7 @@ const CustomerCustom = () => {
                               ) {
                                 return (
                                   <Table.Cell key={k + l}>
-                                    <FlexBox>
-                                      {p[k] ? formattedFullDate(p[k]) : '-'}
-                                    </FlexBox>
+                                    <FlexBox>{p[k] ? p[k] : '-'}</FlexBox>
                                   </Table.Cell>
                                 );
                               }
