@@ -282,86 +282,19 @@ export function userExel(user) {
 }
 export function spotExel(spot, spotInfoRequiredFields) {
   const reqArrays = [];
-  reqArrays.push([
-    'status',
-    'groupId',
-    'groupName',
-    'spotId',
-    'spotName',
-    'zipCode',
-    'address1',
-    'address2',
-    'location',
-    'diningType',
-    'breakfastDeliveryTime',
-    'breakfastSupportPrice',
-    'breakfastUseDays',
-    'breakfastLastOrderTime',
-    'lunchDeliveryTime',
-    'lunchSupportPrice',
-    'lunchUseDays',
-    'lunchLastOrderTime',
-    'dinnerDeliveryTime',
-    'dinnerSupportPrice',
-    'dinnerUseDays',
-    'dinnerLastOrderTime',
-    'createdDateTime',
-    'updatedDateTime',
-  ]);
-  reqArrays.push([
-    '상태',
-    '스팟 아이디',
-    '스팟 이름',
-    '상세스팟 아이디',
-    '상세스팟 이름',
-    '우편번호',
-    '기본주소',
-    '상세주소',
-    '위치',
-    '식타입',
-    '배송시간 아침',
-    '지원금 아침',
-    '주문요일 아침',
-    '아침주문마감시간',
-    '배송시간 점심',
-    '지원금 점심',
-    '주문요일 점심',
-    '점심주문마감시간',
-    '배송시간 저녁',
-    '지원금 저녁',
-    '주문요일저녁',
-    '저녁주문마감시간',
-    '생성일',
-    '수정일',
-  ]);
+  const spotInfoFieldsEng = Object.keys(spotInfoRequiredFields);
+  const spotInfoFieldsKor = Object.values(spotInfoRequiredFields);
+
+  reqArrays.push(spotInfoFieldsEng);
+  reqArrays.push(spotInfoFieldsKor);
+
   console.log(spot);
   spot?.map(el => {
     const reqArray = [];
-    reqArray.push(el.status);
-    reqArray.push(el.groupId);
-    reqArray.push(el.groupName);
-    reqArray.push(el.spotId);
-    reqArray.push(el.spotName);
-    reqArray.push(el.zipCode);
-    reqArray.push(el.address1);
-    reqArray.push(el.address2);
-    reqArray.push(el.location);
-    reqArray.push(el.diningType);
+    spotInfoFieldsEng.forEach(v => {
+      reqArray.push(el[v]);
+    });
 
-    reqArray.push(el.breakfastDeliveryTime);
-    reqArray.push(el.breakfastSupportPrice);
-    reqArray.push(el.breakfastUseDays);
-    reqArray.push(el.breakfastLastOrderTime);
-    reqArray.push(el.lunchDeliveryTime);
-    reqArray.push(el.lunchSupportPrice);
-    reqArray.push(el.lunchUseDays);
-    reqArray.push(el.lunchLastOrderTime);
-    reqArray.push(el.dinnerDeliveryTime);
-    reqArray.push(el.dinnerSupportPrice);
-    reqArray.push(el.dinnerUseDays);
-    reqArray.push(el.dinnerLastOrderTime);
-    reqArray.push(el.createdDateTime);
-    reqArray.push(el.updatedDateTime);
     reqArrays.push(reqArray);
     return reqArrays;
   });
