@@ -61,10 +61,6 @@ const Register = ({
     return tellAlertLogic(statusName);
   };
 
-  useEffect(() => {
-    console.log(input);
-  }, [input]);
-
   return (
     <Container>
       <TitleButtonWrap>

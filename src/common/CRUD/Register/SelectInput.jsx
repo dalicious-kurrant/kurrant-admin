@@ -33,8 +33,6 @@ const SelectInput = ({
     } else {
       console.log(registerStatus);
     }
-
-    console.log({...input, [name]: value, id: Date.now().toString()});
   };
 
   return (
