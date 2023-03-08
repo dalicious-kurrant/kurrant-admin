@@ -10,6 +10,7 @@ const Success = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    const token = searchParams.get('token');
     const req = {
       paymentKey: searchParams.get('paymentKey'),
       orderId: searchParams.get('orderId'),
@@ -18,11 +19,12 @@ const Success = () => {
     };
 
     const callOrder = async () => {
-      alert(JSON.stringify(req));
-      const res = await instanceOrder.post(
-        '/users/me/orders',
-        JSON.stringify(req),
-      );
+      // alert(JSON.stringify(req));
+
+      const res = await instanceOrder.post('/users/me/orders', {
+        headers: {Authorization: token},
+        data: JSON.stringify(req),
+      });
       alert(JSON.stringify(res));
       // const res = await successApi.orderSuccess(req);
       window.ReactNativeWebView.postMessage(
