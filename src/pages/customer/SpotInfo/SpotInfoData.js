@@ -121,7 +121,7 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
-    headerWidth: 140,
+    headerWidth: 220,
     inputType: inputType.select,
     valueType: 'number',
     defaultValue: {name: '달리셔스1', value: 1},

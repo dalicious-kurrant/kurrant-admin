@@ -42,16 +42,15 @@ const SpotInfo = () => {
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
 
-  const [groupIdNameData, setGroupIdNameData] = useAtom(
-    SpotInfoGroupIdNameAtom,
-  );
-
   const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
 
+  const [groupIdNameData] = useAtom(SpotInfoGroupIdNameAtom);
+  const [spotInfoAddedFieldsData, setSpotInfoAddedFieldsData] = useState([]);
+
   const [dataToEdit, setDataToEdit] = useState({});
-  // const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
+
   const [registerStatus, setRegisterStatus] = useState('register');
 
   const [, setImportExelSpot] = useAtom(spotAtom);
@@ -124,27 +123,12 @@ const SpotInfo = () => {
     }
   };
 
-  const [spotInfoAddedFieldsData, setSpotInfoAddedFieldsData] = useState([]);
-
-  // spotInfo 는 서버에서 받은groupId, groupName을 넣어줘야한다
-
   useEffect(() => {
-    // groupId -> value, groupName => name
-
-    const yes1 = groupIdNameData.map(v => {
-      v['name'] = v.groupName;
-      v['value'] = v.groupId;
-
-      const {groupId, groupName, ...yo} = v;
-
-      return yo;
-    });
-
-    const yes = [{name: '필수 선택', value: undefined}, ...yes1];
+    // spotInfo 는 서버에서 받은groupId, groupName을 넣어줘야한다
 
     const yo = SpotInfoFieldsData.map(v => {
       if (v.fieldName === 'groupId') {
-        v.options = [...yes];
+        v.options = [...groupIdNameData];
       }
       return v;
     });
@@ -259,7 +243,6 @@ const SpotInfo = () => {
                 handleClose={handleClose}
                 data={dataToEdit}
                 fieldsToOpen={SpotInfoRegisterFieldsToOpen}
-                // fieldsToOpen={SpotInfoRegisterFieldsToOpen}
                 fieldsData={spotInfoAddedFieldsData}
               />
             )}

@@ -4,7 +4,8 @@ import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
-import {makeId} from './SpotInfoLogics';
+
+import {addGroupIdNameInSpotInfoFieldsData, makeId} from './SpotInfoLogics';
 import {SpotInfoGroupIdNameAtom} from './store';
 
 const useSpotInfoQuery = (
@@ -72,7 +73,7 @@ const useSpotInfoQuery = (
     async () => {
       const response = await instance.get('/clients/spots');
 
-      setGroupIdNameData(response.data);
+      setGroupIdNameData(addGroupIdNameInSpotInfoFieldsData(response.data));
       return response.data;
     },
     {
@@ -125,7 +126,6 @@ const useSpotInfoQuery = (
   return {
     status,
     isLoading,
-
     sendFinalMutate,
     deleteFinalMutate,
   };

@@ -104,7 +104,6 @@ const useCustomerQuery = (
   return {
     status,
     isLoading,
-
     sendFinalMutate,
     deleteFinalMutate,
   };
