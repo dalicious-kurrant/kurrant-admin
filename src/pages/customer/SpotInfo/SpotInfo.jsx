@@ -124,8 +124,32 @@ const SpotInfo = () => {
     }
   };
 
+  const [spotInfoAddedFieldsData, setSpotInfoAddedFieldsData] = useState([]);
+
+  // spotInfo 는 서버에서 받은groupId, groupName을 넣어줘야한다
+
   useEffect(() => {
-    console.log(groupIdNameData);
+    // groupId -> value, groupName => name
+
+    const yes1 = groupIdNameData.map(v => {
+      v['name'] = v.groupName;
+      v['value'] = v.groupId;
+
+      const {groupId, groupName, ...yo} = v;
+
+      return yo;
+    });
+
+    const yes = [{name: '필수 선택', value: undefined}, ...yes1];
+
+    const yo = SpotInfoFieldsData.map(v => {
+      if (v.fieldName === 'groupId') {
+        v.options = [...yes];
+      }
+      return v;
+    });
+
+    setSpotInfoAddedFieldsData(yo);
   }, [groupIdNameData]);
 
   // if (isLoading)
@@ -235,7 +259,8 @@ const SpotInfo = () => {
                 handleClose={handleClose}
                 data={dataToEdit}
                 fieldsToOpen={SpotInfoRegisterFieldsToOpen}
-                fieldsData={SpotInfoFieldsData}
+                // fieldsToOpen={SpotInfoRegisterFieldsToOpen}
+                fieldsData={spotInfoAddedFieldsData}
               />
             )}
           </div>
