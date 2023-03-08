@@ -15,7 +15,7 @@ const Success = () => {
       paymentKey: searchParams.get('paymentKey'),
       orderId: searchParams.get('orderId'),
       amount: Number(searchParams.get('amount')),
-      orderItems: searchParams.get('orderItems'),
+      orderItems: JSON.parse(searchParams.get('orderItems')),
     };
     const callOrder = async () => {
       // alert(JSON.stringify(req));
@@ -23,6 +23,7 @@ const Success = () => {
         const res = await instanceOrder.post('/users/me/orders', req, {
           headers: {Authorization: 'Bearer ' + token},
         });
+        alert(JSON.stringify(res));
         // const res = await successApi.orderSuccess(req);
         window.ReactNativeWebView.postMessage(
           JSON.stringify({...res, type: 'NOMAL'}),
