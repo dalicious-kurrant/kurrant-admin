@@ -167,10 +167,6 @@ const Common = () => {
     inputRef.current.click();
   }, []);
 
-  useEffect(() => {
-    console.log(exelSpot);
-  }, [exelSpot]);
-
   const completePost = async () => {
     const reqArray = [];
     if (completePlan) {
@@ -710,7 +706,8 @@ const Common = () => {
         return element !== undefined && element !== null && element !== '';
       });
       // 스팟 여기
-      return spotExel(req);
+      return spotExel(req, SpotInfoTotalRequiredFields);
+      // return spotExel(req);
     }
     if (completePlan && completePlan.length > 0) {
       const req = completePlan.filter(element => {

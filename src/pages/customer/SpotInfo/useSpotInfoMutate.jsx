@@ -1,5 +1,4 @@
 import {useAtom} from 'jotai';
-import {groupIdOptions} from './SpotInfoData';
 
 const useSpotInfoMutate = atom => {
   const [dataList, setDataList] = useAtom(atom);
@@ -31,7 +30,7 @@ const useSpotInfoMutate = atom => {
       yo3[v[0]] = v[1];
     });
 
-    console.log(yo3);
+    // console.log(yo3);
 
     // status 추가
 
