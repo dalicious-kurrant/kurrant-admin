@@ -6,6 +6,7 @@ import {
   featureTag,
   ingredientTag,
   spicyTag,
+  tasteTag,
   styleTag,
   temperatureTag,
   typeTag,
@@ -19,7 +20,7 @@ const HashTag = ({clicked, setClicked}) => {
     }
     setClicked([...clicked, id]);
   };
-
+  console.log(clicked);
   return (
     <Wrap>
       <Title>요리스타일</Title>
@@ -85,6 +86,17 @@ const HashTag = ({clicked, setClicked}) => {
             onClick={() => onSelect(el.id)}
             touch={clicked?.includes(el.id)}>
             <Text touch={clicked?.includes(el.id)}>{el.temperature}</Text>
+          </Box>
+        ))}
+      </BoxWrap>
+      <Title>맛</Title>
+      <BoxWrap>
+        {tasteTag.map((el, idx) => (
+          <Box
+            key={el.id}
+            onClick={() => onSelect(el.id)}
+            touch={clicked?.includes(el.id)}>
+            <Text touch={clicked?.includes(el.id)}>{el.taste}</Text>
           </Box>
         ))}
       </BoxWrap>

@@ -113,7 +113,7 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
             const defaultValue = statusValue.filter(
               v => v.label === el.foodStatus,
             );
-            console.log(defaultValue);
+
             return (
               <TableRow
                 onClick={() => goToPage(el.foodId, el.makersId)}
