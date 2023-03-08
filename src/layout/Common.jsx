@@ -479,15 +479,86 @@ const Common = () => {
         // console.log(worksheet);
 
         if (sheetName === '메이커스 일정 관리') {
-          setExelPlan(json);
+          setExelPlan(
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
+              if (v.serviceDate) {
+                return {
+                  ...v,
+                  serviceDate: formattedWeekDate(v.serviceDate),
+                };
+              }
+
+              return v;
+            }),
+          );
           setExelStaticPlan(json);
         }
         if (sheetName === '상세 스팟 정보') {
-          setExelSpot(json);
+          setExelSpot(
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
+              return {
+                ...v,
+                breakfastDeliveryTime:
+                  v.breakfastDeliveryTime &&
+                  formattedTime(v.breakfastDeliveryTime),
+                breakfastLastOrderTime:
+                  v.breakfastLastOrderTime &&
+                  formattedTime(v.breakfastLastOrderTime),
+                lunchLastOrderTime:
+                  v.lunchLastOrderTime && formattedTime(v.lunchLastOrderTime),
+                dinnerDeliveryTime:
+                  v.dinnerDeliveryTime && formattedTime(v.dinnerDeliveryTime),
+                dinnerLastOrderTime:
+                  v.dinnerLastOrderTime && formattedTime(v.dinnerLastOrderTime),
+                lunchDeliveryTime:
+                  v.lunchDeliveryTime && formattedTime(v.lunchDeliveryTime),
+                createdDateTime:
+                  v.createdDateTime && formattedWeekDate(v.createdDateTime),
+                updatedDateTime:
+                  v.updatedDateTime && formattedWeekDate(v.updatedDateTime),
+              };
+            }),
+          );
         }
         if (sheetName === '유저 정보') {
           console.log(json);
-          setExelUser(json);
+          setExelUser(
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
+              if (
+                v.marketingAgreedDateTime ||
+                v.userCreatedDateTime ||
+                v.recentLoginDateTime ||
+                v.userUpdatedDateTime
+              ) {
+                return {
+                  ...v,
+                  marketingAgreedDateTime:
+                    v.marketingAgreedDateTime &&
+                    formattedWeekDate(v.marketingAgreedDateTime),
+                  userCreatedDateTime:
+                    v.userCreatedDateTime &&
+                    formattedFullDate(v.userCreatedDateTime),
+                  recentLoginDateTime:
+                    v.recentLoginDateTime &&
+                    formattedFullDate(v.recentLoginDateTime),
+                  userUpdatedDateTime:
+                    v.userUpdatedDateTime &&
+                    formattedFullDate(v.userUpdatedDateTime),
+                };
+              }
+
+              return v;
+            }),
+          );
         }
         if (sheetName === '상품 정보') {
           console.log(json);
@@ -496,7 +567,10 @@ const Common = () => {
         if (sheetName === '식단 현황') {
           console.log(json);
           setExelCompletePlan(
-            json.map(v => {
+            json.map((v, i) => {
+              if (i === 0) {
+                return v;
+              }
               if (
                 typeof v.serviceDate === 'object' ||
                 typeof v.makersPickupTime === typeof new Date() ||
@@ -524,18 +598,21 @@ const Common = () => {
           setMakersExelInfo(
             json.map((v, i) => {
               if (
-                (typeof v.contractStartDate === 'object' ||
-                  typeof v.contractEndDate === typeof new Date() ||
-                  typeof v.openTime === typeof new Date() ||
-                  typeof v.closeTime === typeof new Date()) &&
+                (v.contractStartDate ||
+                  v.contractEndDate ||
+                  v.openTime ||
+                  v.closeTime) &&
                 i !== 0
               ) {
                 return {
                   ...v,
-                  contractStartDate: formattedWeekDate(v.contractStartDate),
-                  contractEndDate: formattedWeekDate(v.contractEndDate),
-                  openTime: formattedTime(v.openTime),
-                  closeTime: formattedTime(v.closeTime),
+                  contractStartDate:
+                    v.contractStartDate &&
+                    formattedWeekDate(v.contractStartDate),
+                  contractEndDate:
+                    v.contractEndDate && formattedWeekDate(v.contractEndDate),
+                  openTime: v.openTime && formattedTime(v.openTime),
+                  closeTime: v.closeTime && formattedTime(v.closeTime),
                 };
               }
 
