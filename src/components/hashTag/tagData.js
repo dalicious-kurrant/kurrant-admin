@@ -338,7 +338,7 @@ export const featureTag = [
   },
   {
     id: 7003,
-    featrue: '든든한',
+    featrue: '헤비한',
   },
   {
     id: 7004,
