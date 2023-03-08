@@ -57,7 +57,7 @@ const CustomerCustom = () => {
   const [spotOption] = useAtom(groupIdAtom);
 
   const userStatus = userOption && `&userStatus=${userOption}`;
-  const groupId = spotOption && `&groupId=${spotOption}`;
+  const groupId = spotOption && `&group=${spotOption}`;
   const userId = nameOption && `&userId=${nameOption}`;
   // console.log(customerData, '9999');
   const params = {
