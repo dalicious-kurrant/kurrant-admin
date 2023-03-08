@@ -15,7 +15,7 @@ const Success = () => {
       paymentKey: searchParams.get('paymentKey'),
       orderId: searchParams.get('orderId'),
       amount: Number(searchParams.get('amount')),
-      orderItems: JSON.parse(searchParams.get('orderItems')),
+      orderItems: searchParams.get('orderItems'),
     };
     const callOrder = async () => {
       // alert(JSON.stringify(req));
