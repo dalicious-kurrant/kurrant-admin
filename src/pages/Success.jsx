@@ -17,7 +17,7 @@ const Success = () => {
       amount: Number(searchParams.get('amount')),
       orderItems: JSON.parse(searchParams.get('orderItems')),
     };
-
+    alert(JSON.stringify(req));
     const callOrder = async () => {
       // alert(JSON.stringify(req));
 
