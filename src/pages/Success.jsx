@@ -23,7 +23,7 @@ const Success = () => {
       const res = await instanceOrder.post(
         '/users/me/orders',
         {
-          data: JSON.stringify(req),
+          ...req,
         },
         {headers: {Authorization: token}},
       );
