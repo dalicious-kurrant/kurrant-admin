@@ -52,3 +52,6 @@ export const makersNameAtom = atomWithReset('');
 export const userStateAtom = atomWithReset('');
 export const groupIdAtom = atomWithReset('');
 export const userIdAtom = atomWithReset('');
+
+// 오더번호
+export const orderNumberAtom = atomWithReset();

@@ -27,6 +27,7 @@ import {
   endDateAtom,
   groupOptionAtom,
   makersOptionAtom,
+  orderNumberAtom,
   startDateAtom,
   userOptionAtom,
 } from 'utils/store';
@@ -60,6 +61,7 @@ const Order = () => {
   const [defaultMakers, setDefaultMakers] = useAtom(makersOptionAtom);
   const [defaultSpot, setDefaultSpot] = useAtom(makersOptionAtom);
   const [defaultDining, setDefaultDining] = useAtom(diningTypeOptionAtom);
+  const [, setOrderNumber] = useAtom(orderNumberAtom);
 
   const {data: groupList} = useGetGroupList();
   const {data: makersList} = useGetMakersList();
@@ -186,6 +188,7 @@ const Order = () => {
         orderCode: code,
       },
     });
+    setOrderNumber(code);
   };
 
   const checked = (e, id) => {
@@ -230,7 +233,9 @@ const Order = () => {
       idList: checkItems,
     };
     // console.log(data, '86');
-    await statusChange(data);
+    if (checkItems.length !== 0) {
+      await statusChange(data);
+    }
   };
 
   useEffect(() => {

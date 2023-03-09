@@ -239,7 +239,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'breakfastLastOrderTime',
     fieldNameKor: '아침 주문마감시간',
-    placeholder: '예) 00:00',
+    placeholder: '예) 1일전 12:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -286,7 +286,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'lunchLastOrderTime',
     fieldNameKor: '점심 주문마감시간',
-    placeholder: '예) 00:00',
+    placeholder: '예) 1일전 12:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -331,7 +331,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'dinnerLastOrderTime',
     fieldNameKor: '저녁 주문마감시간',
-    placeholder: '월, 화, 수',
+    placeholder: '1일전 12:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
