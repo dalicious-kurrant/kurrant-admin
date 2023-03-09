@@ -503,15 +503,16 @@ const Common = () => {
                 breakfastDeliveryTime:
                   v.breakfastDeliveryTime &&
                   formattedTime(v.breakfastDeliveryTime),
-                breakfastLastOrderTime:
-                  v.breakfastLastOrderTime &&
-                  formattedTime(v.breakfastLastOrderTime),
-                lunchLastOrderTime:
-                  v.lunchLastOrderTime && formattedTime(v.lunchLastOrderTime),
+                // 주문마감시간 데이터 입력 형식이 바뀜
+                // breakfastLastOrderTime:
+                //   v.breakfastLastOrderTime &&
+                //   formattedTime(v.breakfastLastOrderTime),
+                // lunchLastOrderTime:
+                //   v.lunchLastOrderTime && formattedTime(v.lunchLastOrderTime),
                 dinnerDeliveryTime:
                   v.dinnerDeliveryTime && formattedTime(v.dinnerDeliveryTime),
-                dinnerLastOrderTime:
-                  v.dinnerLastOrderTime && formattedTime(v.dinnerLastOrderTime),
+                // dinnerLastOrderTime:
+                //   v.dinnerLastOrderTime && formattedTime(v.dinnerLastOrderTime),
                 lunchDeliveryTime:
                   v.lunchDeliveryTime && formattedTime(v.lunchDeliveryTime),
                 createdDateTime:

@@ -11,23 +11,24 @@ export const SpotInfoTotalRequiredFields = {
   breakfastLastOrderTime: '아침주문마감시간',
   breakfastDeliveryTime: '배송시간아침',
   breakfastUseDays: '주문요일아침',
-  breakfastSupportPrice: '아침 주문마감시간',
+  breakfastSupportPrice: '지원금 아침',
   breakfastMembershipBenefitTime: '아침 멤버십할인마감',
   lunchLastOrderTime: '점심주문마감시간',
   lunchDeliveryTime: '배송시간점심',
   lunchUseDays: '주문요일점심',
-  lunchSupportPrice: '지원금점심',
+  lunchSupportPrice: '지원금 점심',
   lunchMembershipBenefitTime: '점심 멤버십할인마감',
   dinnerLastOrderTime: '저녁주문마감시간',
   dinnerDeliveryTime: '배송시간저녁',
   dinnerUseDays: '주문요일저녁',
-  dinnerSupportPrice: '지원금저녁',
+  dinnerSupportPrice: '지원금 저녁',
   dinnerMembershipBenefitTime: '저녁 멤버십할인마감',
   createdDateTime: '생성일',
   updatedDateTime: '수정일',
   status: '상태',
 };
 
+// 입력할 것들을 정함
 export const SpotInfoRegisterFieldsToOpen = {
   // id: '아이디',
 
@@ -40,7 +41,7 @@ export const SpotInfoRegisterFieldsToOpen = {
   address2: '상세주소', // 빈칸 가능
   location: '위치', // 빈칸 가능
   diningType: '식타입', //  1,2,3, 복수선택 가능 스트링임
-  breakfastDeliveryTime: '배송시아침', //  "00:00:00"형식 준수
+  breakfastDeliveryTime: '배송시간아침', //  "00:00:00"형식 준수
   breakfastSupportPrice: '지원금아침', // null가능number, 0 가능
   breakfastUseDays: '주문요일아침', //null가능 빈칸 가능 월, 수 금
   breakfastLastOrderTime: '아침주문마감시간',
@@ -60,6 +61,7 @@ export const SpotInfoRegisterFieldsToOpen = {
   updatedDateTime: '수정일',
 };
 
+// 표에 보이게 할 것들을 정함
 export const SpotInfoFieldsToOpen = {
   // id: '아이디',
   // groupId: '스팟 아이디', // 1, 2, 3
@@ -81,13 +83,13 @@ export const SpotInfoFieldsToOpen = {
   lunchSupportPrice: '지원금점심', // null가능number 0가능
   lunchUseDays: '주문요일점심', //null가능 빈 칸 가능 "월, 화 수목금"
   lunchLastOrderTime: '점심주문마감시간',
-  lunchMembershipBenefitTime: '아침멤버십할인마감',
+  lunchMembershipBenefitTime: '점심멤버십할인마감',
 
   dinnerDeliveryTime: '배송시간저녁', // null 가능
   dinnerSupportPrice: '지원금저녁', // null 가능
   dinnerUseDays: '주문요일저녁', // null 가능
   dinnerLastOrderTime: '저녁주문마감시간',
-  dinnerMembershipBenefitTime: '아침멤버십할인마감',
+  dinnerMembershipBenefitTime: '저녁멤버십할인마감',
 
   createdDateTime: '생성일', // '2023-03-01';
   updatedDateTime: '수정일', // '2023-03-02';
