@@ -27,6 +27,7 @@ import {
   exportProductAtom,
   planExportAtom,
   corporationExportAtom,
+  orderNumberAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -140,6 +141,7 @@ const Common = () => {
   const [exelCompletePlan, setExelCompletePlan] = useAtom(exelCompletePlanAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
+  const [orderNumber] = useAtom(orderNumberAtom);
   const [corporation, setCorporation] = useAtom(corporationAtom);
   const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
   const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
@@ -154,7 +156,6 @@ const Common = () => {
   const {mutateAsync: corporationExel} = useSaveExelCorporation();
   const {mutateAsync: completePostCalendar} = usePostCompleteCalendar();
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
-  // console.log(user, '9779');
 
   const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
   const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
@@ -750,7 +751,8 @@ const Common = () => {
   const noNeedButton =
     pathname !== '/sales/schedule' &&
     pathname !== '/order/info' &&
-    pathname !== `/shop/info/detail/${id}`;
+    pathname !== `/shop/info/detail/${id}` &&
+    pathname !== `/order/info/detail/${orderNumber}`;
 
   return (
     <C.Wrapper>
