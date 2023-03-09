@@ -230,7 +230,9 @@ const Order = () => {
       idList: checkItems,
     };
     // console.log(data, '86');
-    await statusChange(data);
+    if (checkItems.length !== 0) {
+      await statusChange(data);
+    }
   };
 
   useEffect(() => {
