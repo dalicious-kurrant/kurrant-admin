@@ -60,9 +60,9 @@ const OrderDetail = () => {
           </Table.Header>
           <Table.Body>
             {orderDetail?.data.orderItemDailyFoodGroups.map((el, index) => {
-              console.log(el);
+              // console.log(el);
               return el.orderItemDailyFoods.map((v, idx) => {
-                console.log(v);
+                // console.log(v);
                 return (
                   <TableRow key={idx}>
                     {idx === 0 && (
