@@ -785,18 +785,18 @@ const Common = () => {
                 // 여기서 값 정리를 다 해야됨
 
                 // 엑셀의 첫번재값을 지우기 (키값이니까)
-                let yo = [];
+                let exelSpotFirstRowRemoved = [];
 
                 exelSpot.forEach((v, i) => {
                   if (i === 0) {
                   } else {
-                    yo.push(v);
+                    exelSpotFirstRowRemoved.push(v);
                   }
                 });
 
                 // 키가 안들어있으면 키 채우고 값을 null 넣어주기
 
-                const yo2 = yo.map(v => {
+                const injectNull = exelSpotFirstRowRemoved.map(v => {
                   Object.keys(SpotInfoTotalRequiredFields).forEach(k => {
                     if (!Object.keys(v).includes(k)) {
                       v[k] = null;
@@ -805,30 +805,22 @@ const Common = () => {
 
                   return v;
                 });
-                // console.log(yo2);
 
-                // const yo3 = [...yo2].slice(8);
-                // console.log(yo3);
-                // saveSpotToDb(exelSpot, sendExcelForceMutate, tableDeleteList);
-                saveSpotToDb(yo2, sendExcelForceMutate, tableDeleteList);
+                saveSpotToDb(injectNull, sendExcelForceMutate, tableDeleteList);
               } else if (spotInfoData && spotInfoData.length) {
                 console.log('spotInfoData 스팟정보 데이터 저장');
 
                 // 상세스팟 아이디 자둥추가
 
-                const yo = [...spotInfoData];
-                const yo2 = yo.map(v => {
+                const injectSpotId = [...spotInfoData].map(v => {
                   if (!v['spotId']) {
                     v['spotId'] = Date.now();
                   }
                   return v;
                 });
 
-                console.log(yo2);
-
                 saveSpotToDb(
-                  // spotInfoData,
-                  yo2,
+                  injectSpotId,
                   sendExcelForceMutate,
                   tableDeleteList,
                 );

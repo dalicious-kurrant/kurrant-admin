@@ -7,17 +7,17 @@ const useSpotInfoMutate = atom => {
   const submitMutate = input => {
     // 스팟 이름을 입력하면 아이디, 이름 둘다 선택하게 하기
     // 이거 이대로 두면 안됨 나중에 바꿔야됨
-    const yo = {...input};
+    const getGroupName = {...input};
 
     groupIdNameData.forEach(v => {
-      if (v.value === yo.groupId) {
-        yo.groupName = v.name;
+      if (v.value === getGroupName.groupId) {
+        getGroupName.groupName = v.name;
       }
     });
 
     // "" -> null로 고치기
 
-    const yo2 = Object.entries(yo).map(v => {
+    const yo2 = Object.entries(getGroupName).map(v => {
       if (v[1] === '') {
         return [v[0], null];
       } else {

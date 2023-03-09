@@ -17,10 +17,10 @@ const TextAreaInput = ({
     e.preventDefault();
     const {name, value} = e.target;
 
-    const yo = {...input};
-    yo[name] = value;
+    const inputValue = {...input};
+    inputValue[name] = value;
 
-    setData(yo);
+    setData(inputValue);
   };
 
   useEffect(() => {

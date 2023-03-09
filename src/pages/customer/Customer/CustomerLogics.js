@@ -23,20 +23,20 @@ export const handleCustomerDelete = (
 
   deleteList = [...new Set(deleteList)];
 
-  let yo = [];
+  let injectDeleted = [];
   const customerDataToDelete = [...customerData];
 
   customerDataToDelete.forEach(v => {
     if (deleteList.includes(v.id.toString())) {
       v['isOnDeleteList'] = true;
-      yo.push(v);
+      injectDeleted.push(v);
     } else {
-      yo.push(v);
+      injectDeleted.push(v);
     }
   });
 
   setTableDeleteList(deleteList);
-  setCustomerData(yo);
+  setCustomerData(injectDeleted);
 };
 
 export const sendFinal = (
@@ -78,11 +78,9 @@ export const sendFinal = (
     });
 
     const newData = finalLaunch.map(value => {
-      let yo = {};
+      let val = {};
 
       // 우선 아래의 항목만 수정가능하게 만듬
-
-      // yo['userId'] = handleFalsyValueToBlank(value.email);
 
       // '유저타입' 값 치환하기
 
@@ -97,47 +95,29 @@ export const sendFinal = (
         roleValue = '';
       }
 
-      // yo['userId'] = parseInt(value.id);
-      // yo['password'] = handleFalsyValueToBlank(value.password);
-      // yo['name'] = handleFalsyValueToBlank(value.userName);
-      // yo['email'] = handleFalsyValueToBlank(value.email);
-      // yo['phone'] = handleFalsyValueToBlank(value.phone);
-      // yo['role'] = roleValue;
-      // yo['status'] = 1;
-      // yo['groupName'] = value.groupName;
-      // yo['point'] = value.point;
-      // yo['gourmetType'] = value.gourmetType;
-      // yo['isMembership'] = value.isMembership;
-      // yo['marketingAgree'] = true;
-      // yo['marketingAgreedDateTime'] = '2023-02-28 10:28:30';
-      // yo['marketingAlarm'] = true;
-      // yo['userOrderAlarm'] = true;
-      // yo['recentLoginDateTime'] = value.recentLoginDateTime;
-      // yo['userCreatedDateTime'] = value.userCreatedDateTime;
-
       /////
 
-      yo['userId'] = parseInt(value.id);
-      yo['password'] = handleFalsyValueToBlank(value.password);
-      yo['name'] = handleFalsyValueToBlank(value.userName);
-      yo['email'] = handleFalsyValueToBlank(value.email);
-      yo['phone'] = handleFalsyValueToBlank(value.phone)
+      val['userId'] = parseInt(value.id);
+      val['password'] = handleFalsyValueToBlank(value.password);
+      val['name'] = handleFalsyValueToBlank(value.userName);
+      val['email'] = handleFalsyValueToBlank(value.email);
+      val['phone'] = handleFalsyValueToBlank(value.phone)
         ? handleFalsyValueToBlank(value.phone)
         : '010-0000-0000';
-      yo['role'] = roleValue ? roleValue : '일반';
-      yo['status'] = value.status ? value.status : 1;
-      yo['groupName'] = value.groupName ? value.groupName : '달리셔스';
-      yo['point'] = 1;
-      yo['gourmetType'] = 0;
-      yo['isMembership'] = true;
-      yo['marketingAgree'] = true;
-      yo['marketingAgreedDateTime'] = '2000-01-01 00:00:00';
-      yo['marketingAlarm'] = true;
-      yo['userOrderAlarm'] = true;
-      yo['recentLoginDateTime'] = '2000-01-01 00:00:00';
-      yo['userCreatedDateTime'] = '2000-01-01 00:00:00';
+      val['role'] = roleValue ? roleValue : '일반';
+      val['status'] = value.status ? value.status : 1;
+      val['groupName'] = value.groupName ? value.groupName : '달리셔스';
+      val['point'] = 1;
+      val['gourmetType'] = 0;
+      val['isMembership'] = true;
+      val['marketingAgree'] = true;
+      val['marketingAgreedDateTime'] = '2000-01-01 00:00:00';
+      val['marketingAlarm'] = true;
+      val['userOrderAlarm'] = true;
+      val['recentLoginDateTime'] = '2000-01-01 00:00:00';
+      val['userCreatedDateTime'] = '2000-01-01 00:00:00';
 
-      return yo;
+      return val;
     });
 
     newData2 = {

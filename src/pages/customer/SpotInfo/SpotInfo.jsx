@@ -124,35 +124,15 @@ const SpotInfo = () => {
   useEffect(() => {
     // spotInfo 는 서버에서 받은groupId, groupName을 넣어줘야한다
 
-    const yo = SpotInfoFieldsData.map(v => {
+    const injectGroupIDNameDataOnGroupId = SpotInfoFieldsData.map(v => {
       if (v.fieldName === 'groupId') {
         v.options = [...groupIdNameData];
       }
       return v;
     });
 
-    setSpotInfoAddedFieldsData(yo);
+    setSpotInfoAddedFieldsData(injectGroupIDNameDataOnGroupId);
   }, [groupIdNameData]);
-
-  useEffect(() => {
-    console.log(spotInfoData);
-  }, [spotInfoData]);
-
-  // if (isLoading)
-  //   return (
-  //     <>
-  //       {' '}
-  //       <div>로딩중입니다..</div>{' '}
-  //     </>
-  //   );
-
-  // if (status === 'error')
-  //   return (
-  //     <div>
-  //       에러가 났습니다 ㅠㅠ 근데 다시 새로고침해보면 데이터 다시 나올수도
-  //       있어요
-  //     </div>
-  //   );
 
   return (
     <>
@@ -168,17 +148,14 @@ const SpotInfo = () => {
           </BtnWrapper>
           <TableWrapper>
             <Table celled>
-              {/* {console.log(plan)} */}
               {exelSpot &&
                 exelSpot.map((p, i) => {
                   const HeaderData = Object.values(p);
 
                   if (i === 0) {
-                    // console.log(HeaderData, '123');
                     return (
                       <Table.Header key={'0' + i}>
                         <Table.Row>
-                          {/* <Table.HeaderCell>체크박스</Table.HeaderCell> */}
                           <Table.HeaderCell width={1} textAlign="center">
                             <Checkbox />
                           </Table.HeaderCell>
@@ -193,7 +170,6 @@ const SpotInfo = () => {
                       </Table.Header>
                     );
                   } else {
-                    // console.log(p);
                     return (
                       <Table.Body key={i}>
                         <Table.Row>
