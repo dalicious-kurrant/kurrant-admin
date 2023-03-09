@@ -17,25 +17,23 @@ const useSpotInfoMutate = atom => {
 
     // "" -> null로 고치기
 
-    const yo2 = Object.entries(getGroupName).map(v => {
+    const emptyStringToNull = Object.entries(getGroupName).map(v => {
       if (v[1] === '') {
         return [v[0], null];
       } else {
         return v;
       }
     });
-    let yo3 = {};
-    yo2.forEach(v => {
-      yo3[v[0]] = v[1];
+    let newDataAdd = {};
+    emptyStringToNull.forEach(v => {
+      newDataAdd[v[0]] = v[1];
     });
-
-    // console.log(yo3);
 
     // status 추가
 
-    yo3['status'] = 1;
+    newDataAdd['status'] = 1;
 
-    const newDataList = [...dataList, yo3];
+    const newDataList = [...dataList, newDataAdd];
     setDataList(newDataList);
   };
 
