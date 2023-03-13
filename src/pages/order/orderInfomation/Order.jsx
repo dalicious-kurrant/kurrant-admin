@@ -28,6 +28,7 @@ import {
   groupOptionAtom,
   makersOptionAtom,
   orderNumberAtom,
+  spotOptionAtom,
   startDateAtom,
   userOptionAtom,
 } from 'utils/store';
@@ -59,7 +60,7 @@ const Order = () => {
   const [defaultGroup, setDefaultGroup] = useAtom(groupOptionAtom);
   const [defaultUser, setDefaultUser] = useAtom(userOptionAtom);
   const [defaultMakers, setDefaultMakers] = useAtom(makersOptionAtom);
-  const [defaultSpot, setDefaultSpot] = useAtom(makersOptionAtom);
+  const [defaultSpot, setDefaultSpot] = useAtom(spotOptionAtom);
   const [defaultDining, setDefaultDining] = useAtom(diningTypeOptionAtom);
   const [, setOrderNumber] = useAtom(orderNumberAtom);
 

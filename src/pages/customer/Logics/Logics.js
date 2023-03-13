@@ -7,12 +7,11 @@ import {makeInitialInput} from 'common/CRUD/Register/logics/RegisterLogics';
 // };
 
 export const numberOfTrues = checkboxStatus => {
-  // console.log(checkboxStatus);
   let total = 0;
-  const yo = {...checkboxStatus};
-  delete yo.parent;
 
-  Object.values(yo).forEach(value => {
+  const {parent, ...removedParent} = {...checkboxStatus};
+
+  Object.values(removedParent).forEach(value => {
     if (value === true) {
       total = total + 1;
     }

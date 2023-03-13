@@ -15,19 +15,31 @@ const OrderDetail = () => {
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>주문번호</Table.HeaderCell>
-              <Table.HeaderCell>구매자</Table.HeaderCell>
-              <Table.HeaderCell>서비스일</Table.HeaderCell>
-              <Table.HeaderCell>해당 스팟 정보</Table.HeaderCell>
-              <Table.HeaderCell>추가 총 결제 금액</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">구매자</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">서비스일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                해당 스팟 정보
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                추가 총 결제 금액
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             <TableRow>
-              <Table.Cell>{orderDetail?.data?.orderCode}</Table.Cell>
-              <Table.Cell>{orderDetail?.data?.userName}</Table.Cell>
-              <Table.Cell>{orderDetail?.data?.servicePeriod}</Table.Cell>
-              <Table.Cell>{orderDetail?.data?.spotName}</Table.Cell>
+              <Table.Cell textAlign="center">
+                {orderDetail?.data?.orderCode}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {orderDetail?.data?.userName}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {orderDetail?.data?.servicePeriod}
+              </Table.Cell>
+              <Table.Cell textAlign="center">
+                {orderDetail?.data?.spotName}
+              </Table.Cell>
               <Table.Cell textAlign="right">
                 {withCommas(orderDetail?.data?.totalPrice) || 0}원
               </Table.Cell>
@@ -68,7 +80,8 @@ const OrderDetail = () => {
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
-                        verticalAlign="middle">
+                        verticalAlign="middle"
+                        textAlign="center">
                         {el.serviceDate}
                       </Table.Cell>
                     )}
