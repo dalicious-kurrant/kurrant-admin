@@ -204,10 +204,10 @@ const Schedule = () => {
                               <Table.Header>
                                 <Table.Row>
                                   <Table.HeaderCell textAlign="center">
-                                    상품명
+                                    <div style={{width: 150}}>상품명</div>
                                   </Table.HeaderCell>
                                   <Table.HeaderCell textAlign="center">
-                                    수량
+                                    <div style={{width: 50}}>수량</div>
                                   </Table.HeaderCell>
                                 </Table.Row>
                               </Table.Header>
@@ -281,6 +281,9 @@ const DetailTable = styled.div`
 const MealDetailWrap = styled.div`
   display: flex;
   margin-right: 24px;
+  padding-bottom: 10px;
+
+  overflow-x: auto;
 `;
 
 const DiningTypeWrap = styled.div`
