@@ -16,10 +16,10 @@ const MakersTable = ({data}) => {
             </Table.HeaderCell>
 
             <Table.HeaderCell textAlign="center">
-              <div style={{width: 100}}>메이커스 이름</div>
+              <div style={{width: 150}}>메이커스 이름</div>
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
-              <div style={{width: 100}}>법인명</div>
+              <div style={{width: 150}}>법인명</div>
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">사업자대표</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
