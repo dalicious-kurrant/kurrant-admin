@@ -32,7 +32,7 @@ const ItemInfo = () => {
     page,
     makersId,
   );
-  const {data: exportProductList} = useGetExportProductsList();
+  const {data: exportProductList, isLoading} = useGetExportProductsList();
   const [totalPage, setTotalPage] = useState(0);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
@@ -47,10 +47,21 @@ const ItemInfo = () => {
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
-      console.log(productList?.data?.items);
-      setExportExel(exportProductList?.data);
+      // console.log(productList?.data?.items);
     }
-  }, [productList, setProduct]);
+    if (!isLoading) {
+      setExportExel(exportProductList?.data);
+      console.log('가져오는중');
+    }
+  }, [
+    exportProductList,
+    exportProductList?.data,
+    isLoading,
+    productList,
+    setExportExel,
+    setProduct,
+  ]);
+
   useEffect(() => {
     productRefetch();
   }, [page, makersId, productRefetch]);

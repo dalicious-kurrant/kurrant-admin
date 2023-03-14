@@ -73,7 +73,7 @@ const ProductDetailPage = () => {
       images: dataList?.foodImages,
       description: text,
     };
-
+    console.log(data, '0888');
     const json = JSON.stringify(data);
     const blob = new Blob([json], {type: 'application/json'});
     formData.append('contents', blob);
