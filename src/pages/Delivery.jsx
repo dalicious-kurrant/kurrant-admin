@@ -8,7 +8,7 @@ import PublicSelectDatePicker from 'components/PublicSelectDatePicker';
 import {Dropdown, Label} from 'semantic-ui-react';
 import {useQuery} from 'react-query';
 import axios from 'axios';
-import {formattedWeekDate} from 'utils/dateFormatter';
+import {formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
 
 const optionsClient = [
   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
@@ -246,8 +246,18 @@ const baseURL =
     ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
     : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 const Delivery = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const curr = new Date();
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  const [startDate, setStartDate] = useState(
+    new Date(
+      curr.getTime() + curr.getTimezoneOffset() * 60 * 1000 + KR_TIME_DIFF,
+    ),
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(
+      curr.getTime() + curr.getTimezoneOffset() * 60 * 1000 + KR_TIME_DIFF,
+    ),
+  );
   const [selectClient, setSelectClient] = useState([]);
   const {
     data: deliveryInfo,
@@ -259,9 +269,9 @@ const Delivery = () => {
       groupIds = `&groupIds=${selectClient.join(',')}`;
     }
     return await axios.get(
-      `${baseURL}/delivery?startDate=${formattedWeekDate(
+      `${baseURL}/delivery?startDate=${formattedWeekDateZ(
         startDate,
-      )}&endDate=${formattedWeekDate(endDate)}${groupIds}`,
+      )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}`,
     );
   });
   const [deliveryInfoList, setDeliveryInfoList] = useState([]);

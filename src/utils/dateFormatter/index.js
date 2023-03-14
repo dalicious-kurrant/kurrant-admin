@@ -122,6 +122,13 @@ export function formattedDateWeekBtn(data, delimiter = '.') {
   const dayOfWeek = week[dateTime.getDay()];
   return `${[month, day].join(delimiter)}(${dayOfWeek})`;
 }
+export function formattedWeekDateZ(data, delimiter = '-') {
+  const dateTime = transTimeType(data);
+  const year = dateTime.getFullYear();
+  const month = leftPad(dateTime.getMonth() + 1);
+  const day = leftPad(dateTime.getDate());
+  return `${[year, month, day].join(delimiter)}`;
+}
 export function formattedWeekDate(data, delimiter = '-') {
   const dateTime = transDateType(data);
   const year = dateTime.getFullYear();
