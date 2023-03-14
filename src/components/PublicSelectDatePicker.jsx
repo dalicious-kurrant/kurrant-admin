@@ -1,11 +1,13 @@
 import React, {forwardRef} from 'react';
 import styled from 'styled-components';
+import {formattedWeekDate} from 'utils/dateFormatter';
 
 const PublicSelectDatePicker = forwardRef(
   ({value, onClick, inputType}, ref) => {
+    console.log(value);
     return (
       <PannelButton onClick={onClick} ref={ref}>
-        <SelectedDate>{value}</SelectedDate>
+        <SelectedDate>{formattedWeekDate(new Date(value))}</SelectedDate>
       </PannelButton>
     );
   },
