@@ -1,7 +1,7 @@
 import {useAtom} from 'jotai';
 import {useNavigate} from 'react-router-dom';
 import {Button, Table} from 'semantic-ui-react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {
   makersNameAtom,
   shopInfoDetailIdAtom,
@@ -13,7 +13,14 @@ import {useState} from 'react';
 import {PageWrapper} from 'style/common.style';
 import {foodStatusFomatted} from 'utils/statusFormatter';
 
-const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
+const ItemInfoTable = ({
+  isShow,
+  data,
+  setData,
+  checked,
+  checkItems,
+  setCheckItems,
+}) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
   const [option, setOption] = useAtom(makersNameAtom);
@@ -21,7 +28,7 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
 
   const goToPage = (foodId, makersId) => {
     setId(foodId);
-    navigate('/shop/info/detail/' + foodId, {
+    navigate('/shop/info/' + foodId, {
       state: {
         foodId: foodId,
         makersId: makersId,
@@ -64,7 +71,7 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
   ];
 
   return (
-    <div>
+    <Container isShow={isShow}>
       {/* <BtnWrapper>
         <Button color="blue" content="상태변경 저장" onClick={statusButton} />
       </BtnWrapper> */}
@@ -195,11 +202,21 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
           })}
         </Table.Body>
       </Table>
-    </div>
+    </Container>
   );
 };
 
 export default ItemInfoTable;
+
+const Container = styled.div`
+  ${({isShow}) => {
+    if (!isShow) {
+      return css`
+        display: none;
+      `;
+    }
+  }}
+`;
 
 const TableRow = styled(Table.Row)`
   :hover {

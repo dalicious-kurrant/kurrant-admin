@@ -8,6 +8,7 @@ import Company from '../pages/customer/corporation/corporationInfo/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
 import ItemInfo from '../pages/item/ItemInfo';
+import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import Plans from '../pages/makers/Plans';
 import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
 import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
@@ -104,6 +105,11 @@ export const MenuList = [
         name: '상품 정보',
         url: '/info',
         component: <ItemInfo />,
+      },
+      {
+        name: '상품 상세 정보',
+        url: '/info/:id',
+        component: <ItemInfoDetail />,
       },
       {
         name: '상품 등록요청 (진행중)',

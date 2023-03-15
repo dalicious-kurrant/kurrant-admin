@@ -18,6 +18,7 @@ import {
   recommandPlanAtom,
   shopInfoDetailIdAtom,
   spotAtom,
+  productPageAtom,
 } from 'utils/store';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
@@ -37,6 +38,7 @@ const Header = ({openMenu, setOpenMenu}) => {
   const resetAtom5 = useResetAtom(productDataAtom);
   const resetAtom6 = useResetAtom(CustomerDataAtom);
   const resetAtom7 = useResetAtom(SpotInfoDataAtom);
+  const resetAtom16 = useResetAtom(productPageAtom);
 
   const resetAtom8 = useResetAtom(TableCheckboxStatusAtom);
   const resetAtom9 = useResetAtom(TableDeleteListAtom);
@@ -67,6 +69,7 @@ const Header = ({openMenu, setOpenMenu}) => {
     resetAtom13();
     resetAtom14();
     resetAtom15();
+    resetAtom16();
   };
   return (
     <H.Wrapper>

@@ -19,7 +19,7 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const foodId = location.state.foodId;
   const makersId = location.state.makersId;
-
+  console.log(location.state);
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
   const listData = detailData?.data;
