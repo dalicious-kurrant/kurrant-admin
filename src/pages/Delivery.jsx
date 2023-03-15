@@ -356,13 +356,15 @@ const Delivery = () => {
                       <GroupHeader>
                         <Group>
                           <GroupName>{group.groupName}</GroupName>
-                          <SpotName>{group.spotId || 0}</SpotName>
-                          <SpotName>{group.spotName || '상세 스팟'}</SpotName>
+                          <Spot>
+                            <SpotName>{group.spotId || 0}</SpotName>
+                            <SpotName>{group.spotName || '상세 스팟'}</SpotName>
+                          </Spot>
                         </Group>
                         <DeliveryTime>{group.deliveryTime}</DeliveryTime>
                       </GroupHeader>
                       <GroupAddress>
-                        <Address>{group.address || '배송지'}</Address>
+                        <Address>배송지 : {group.address || '배송지'}</Address>
                       </GroupAddress>
                       {group.makers.map(makers => {
                         return (
@@ -481,11 +483,18 @@ const GroupHeader = styled.div`
 const Group = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+const Spot = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-left: 5px;
+  padding-bottom: 5px;
   gap: 10px;
 `;
 const SpotName = styled.div`
-  font-size: 13px;
+  font-size: 14px;
 `;
 const GroupAddress = styled.div`
   display: flex;
@@ -522,7 +531,8 @@ const FoodsContainer = styled.div`
 `;
 const GroupName = styled.div`
   font-size: 15px;
-  padding: 5px;
+  padding: 2px;
+  padding-left: 5px;
   font-weight: 600;
 `;
 const Address = styled.div`
