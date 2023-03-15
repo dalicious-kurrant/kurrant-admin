@@ -197,12 +197,17 @@ const Schedule = () => {
                         return (
                           <div key={i} style={{marginRight: 10}}>
                             <LabelWrap>
-                              <Label content={v.groupName} color="green" />
+                              <div style={{marginBottom: 4}}>
+                                <Label content={v.groupName} color="green" />
+                                <Label
+                                  content={spot.pickupTime}
+                                  color="black"
+                                />
+                              </div>
                               <Label
                                 content={`스팟: ${spot.spotId} \u00A0 ${spot.spotName}`}
                                 color="green"
                               />
-                              <Label content={spot.pickupTime} color="black" />
                             </LabelWrap>
                             <Table celled>
                               <Table.Header>
