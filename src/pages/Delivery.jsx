@@ -9,6 +9,7 @@ import {Dropdown, Label} from 'semantic-ui-react';
 import {useQuery} from 'react-query';
 import axios from 'axios';
 import {formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
+import useTitle from 'hooks/useTitle';
 
 const optionsClient = [
   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
@@ -251,6 +252,7 @@ const baseURL =
     ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
     : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 const Delivery = () => {
+  useTitle('배송정보 페이지');
   const curr = new Date();
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const [startDate, setStartDate] = useState(
@@ -264,23 +266,29 @@ const Delivery = () => {
     ),
   );
   const [selectClient, setSelectClient] = useState([]);
+  const [selectSpot, setSelectSpot] = useState([]);
   const {
     data: deliveryInfo,
     refetch: deliveryRefetch,
     isFetching: deliveryLoading,
   } = useQuery(['deliveryInfo'], async () => {
     let groupIds = '';
+    let spotIds = '';
     if (selectClient.length > 0) {
       groupIds = `&groupIds=${selectClient.join(',')}`;
+    }
+    if (selectSpot.length > 0) {
+      spotIds = `&spotIds=${selectSpot.join(',')}`;
     }
     return await axios.get(
       `${baseURL}/delivery?startDate=${formattedWeekDateZ(
         startDate,
-      )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}`,
+      )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}${spotIds}`,
     );
   });
   const [deliveryInfoList, setDeliveryInfoList] = useState([]);
   const [groupInfoList, setGroupInfoList] = useState([]);
+  const [spotInfoList, setSpotInfoList] = useState([]);
   useEffect(() => {
     if (deliveryInfo) {
       setDeliveryInfoList(deliveryInfo?.data?.data?.deliveryInfoList);
@@ -289,9 +297,15 @@ const Delivery = () => {
           return {key: v.groupId, text: v.groupName, value: v.groupId};
         }),
       );
+      setSpotInfoList(
+        deliveryInfo?.data?.data?.spotInfoList?.map(v => {
+          return {key: v.spotId, text: v.spotName, value: v.spotId};
+        }),
+      );
     }
   }, [deliveryInfo]);
   useEffect(() => {
+    setDeliveryInfoList([]);
     deliveryRefetch();
   }, [startDate, endDate, selectClient, deliveryRefetch]);
 
@@ -319,9 +333,9 @@ const Delivery = () => {
       </DateSelectBox>
       <FilterBox>
         <DropBox>
-          <Label>고객사</Label>
+          <Label>스팟</Label>
           <Dropdown
-            placeholder="고객사"
+            placeholder="스팟"
             fluid
             multiple
             selection
@@ -333,13 +347,27 @@ const Delivery = () => {
             }}
           />
         </DropBox>
+        {/* <DropBox>
+          <Label>상세 스팟</Label>
+          <Dropdown
+            placeholder="상세 스팟"
+            fluid
+            multiple
+            selection
+            search
+            options={spotInfoList}
+            value={selectSpot}
+            onChange={(e, data) => {
+              setSelectClient(data.value);
+            }}
+          />
+        </DropBox> */}
       </FilterBox>
       {deliveryLoading ? (
         <LoadingPage>로딩중...</LoadingPage>
       ) : (
         <DeliveryInfoBox>
           {deliveryInfoList.map(date => {
-            console.log(date);
             return (
               <DateContainer key={date.serviceDate}>
                 <DateBox>{date.serviceDate}</DateBox>
@@ -391,7 +419,8 @@ const Delivery = () => {
                                     date.serviceDate +
                                     group.groupId +
                                     makers.makersId +
-                                    food.foodName
+                                    food.foodName +
+                                    group.diningType
                                   }>
                                   <FoodHeader>
                                     <FoodName>{food.foodName}</FoodName>
@@ -444,9 +473,14 @@ const DateSelectBox = styled.div`
     width: 50%;
   }
 `;
-const FilterBox = styled.div``;
+const FilterBox = styled.div`
+  width: 1000px;
+  gap: 10px;
+  display: flex;
+`;
 const DropBox = styled.div`
-  max-width: 250px;
+  min-width: 250px;
+  max-width: 350px;
   padding-top: 10px;
   padding-bottom: 10px;
 `;
