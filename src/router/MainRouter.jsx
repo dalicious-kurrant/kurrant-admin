@@ -18,7 +18,7 @@ const MainRouter = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/success" element={<Success />} />
-        <Route path="/delivery" element={<Delivery />} />
+        <Route path="/dash" element={<Delivery />} />
         {token !== null && (
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />

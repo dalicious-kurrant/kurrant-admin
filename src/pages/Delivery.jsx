@@ -356,6 +356,7 @@ const Delivery = () => {
                       <GroupHeader>
                         <Group>
                           <GroupName>{group.groupName}</GroupName>
+                          <SpotName>{group.spotId || 0}</SpotName>
                           <SpotName>{group.spotName || '상세 스팟'}</SpotName>
                         </Group>
                         <DeliveryTime>{group.deliveryTime}</DeliveryTime>
