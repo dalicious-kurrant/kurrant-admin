@@ -18,7 +18,7 @@ const Schedule = () => {
   const [makersOption, setMakersOption] = useState('');
 
   const {data: makersList} = useGetMakersList();
-  console.log(makersOption, '2424');
+
   const types =
     diningSelect &&
     diningSelect.map(el => {
@@ -39,7 +39,7 @@ const Schedule = () => {
     types,
     makersOption,
   );
-  console.log(salesList);
+
   const getStartDate = e => {
     setStartDate(e.target.value);
   };
@@ -106,6 +106,9 @@ const Schedule = () => {
                 <Table.Row>
                   <Table.HeaderCell textAlign="center">상품명</Table.HeaderCell>
                   <Table.HeaderCell textAlign="center">
+                    상품상세정보
+                  </Table.HeaderCell>
+                  <Table.HeaderCell textAlign="center">
                     합계(개)
                   </Table.HeaderCell>
                 </Table.Row>
@@ -114,7 +117,14 @@ const Schedule = () => {
                 {salesList?.data?.totalFoods?.map((el, i) => {
                   return (
                     <Table.Row key={el.foodName + i}>
-                      <Table.Cell>{el.foodName}</Table.Cell>
+                      <Table.Cell>
+                        {' '}
+                        <FoodName>{el.foodName}</FoodName>
+                      </Table.Cell>
+                      <Table.Cell>
+                        {' '}
+                        <Description>{el.description}</Description>
+                      </Table.Cell>
                       <Table.Cell textAlign="center">
                         {el.totalFoodCount}
                       </Table.Cell>
@@ -126,6 +136,7 @@ const Schedule = () => {
                   <Table.Cell style={{borderTop: 'double black'}}>
                     <BoldText>Total</BoldText>
                   </Table.Cell>
+                  <Table.Cell style={{borderTop: 'double black'}}></Table.Cell>
                   <Table.Cell
                     textAlign="center"
                     style={{borderTop: 'double black'}}>
@@ -193,7 +204,6 @@ const Schedule = () => {
                   return (
                     <TableWrap key={index}>
                       {v.spotByDateDiningTypes.map((spot, i) => {
-                        console.log(spot);
                         return (
                           <div key={i} style={{marginRight: 10}}>
                             <LabelWrap>
@@ -283,10 +293,7 @@ const MakersTable = styled.div`
   margin-top: 50px;
 `;
 
-const TotalTable = styled.div`
-  /* margin-right: 10px; */
-  width: 30%;
-`;
+const TotalTable = styled.div``;
 
 const DetailTable = styled.div`
   overflow-x: auto;
@@ -331,4 +338,17 @@ const DateLine = styled.div`
 const LabelWrap = styled.div`
   min-width: 250px;
   flex-wrap: wrap;
+`;
+
+const FoodName = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 180px;
+`;
+const Description = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 300px;
 `;
