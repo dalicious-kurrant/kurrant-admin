@@ -196,7 +196,10 @@ const Schedule = () => {
       <TableWrapper>
         {salesList?.data?.groupFoodByDateDiningTypes.map((el, idx) => (
           <MakersTable key={idx}>
-            <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
+            <BoldText>
+              {el.serviceDate + `\u00A0` + el.diningType} ({' '}
+              {el.foodByGroups.length}개 상세 스팟)
+            </BoldText>
             <DateLine />
             <DiningTypeWrap>
               <MealDetailWrap>
@@ -205,7 +208,7 @@ const Schedule = () => {
                     <TableWrap key={index}>
                       {v.spotByDateDiningTypes.map((spot, i) => {
                         return (
-                          <div key={i} style={{marginRight: 10}}>
+                          <div key={i} style={{marginRight: 10, marginTop: 24}}>
                             <LabelWrap>
                               <div style={{marginBottom: 4}}>
                                 <Label content={v.groupName} color="green" />
@@ -304,8 +307,7 @@ const MealDetailWrap = styled.div`
   display: flex;
   margin-right: 24px;
   padding-bottom: 10px;
-
-  overflow-x: auto;
+  flex-wrap: wrap;
 `;
 
 const DiningTypeWrap = styled.div`
