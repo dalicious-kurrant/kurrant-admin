@@ -555,7 +555,7 @@ const PickupTime = styled.div`
   font-size: 15px;
 `;
 const DateBox = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   width: 100%;
   background-color: aliceblue;
   padding: 2px;
