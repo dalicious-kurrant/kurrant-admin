@@ -24,6 +24,9 @@ const deliveryInfo = [
       {
         groupId: 1,
         groupName: '달리셔스',
+        spotName: '3층',
+        address: '여기',
+        spotId: 1,
         deliveryTime: '12:00',
         makers: [
           {
@@ -75,8 +78,10 @@ const deliveryInfo = [
         ],
       },
       {
-        groupId: 2,
-        groupName: '뷰티컬렉션',
+        groupId: 1,
+        groupName: '달리셔스',
+        spotName: '4층',
+        spotId: 1,
         deliveryTime: '12:00',
         makers: [
           {
@@ -349,9 +354,15 @@ const Delivery = () => {
                         group.diningType
                       }>
                       <GroupHeader>
-                        <GroupName>{group.groupName}</GroupName>
+                        <Group>
+                          <GroupName>{group.groupName}</GroupName>
+                          <SpotName>{group.spotName || '상세 스팟'}</SpotName>
+                        </Group>
                         <DeliveryTime>{group.deliveryTime}</DeliveryTime>
                       </GroupHeader>
+                      <GroupAddress>
+                        <Address>{group.address || '배송지'}</Address>
+                      </GroupAddress>
                       {group.makers.map(makers => {
                         return (
                           <MakersContainer
@@ -466,6 +477,24 @@ const GroupHeader = styled.div`
   padding-bottom: 5px;
   padding-right: 5px;
 `;
+const Group = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+const SpotName = styled.div`
+  font-size: 13px;
+`;
+const GroupAddress = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #141414;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+`;
 const FoodHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -491,6 +520,11 @@ const FoodsContainer = styled.div`
   flex-direction: column;
 `;
 const GroupName = styled.div`
+  font-size: 15px;
+  padding: 5px;
+  font-weight: 600;
+`;
+const Address = styled.div`
   font-size: 15px;
   padding: 5px;
   font-weight: 600;
