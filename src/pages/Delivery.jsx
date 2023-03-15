@@ -355,10 +355,14 @@ const Delivery = () => {
                       }>
                       <GroupHeader>
                         <Group>
-                          <GroupName>{group.groupName}</GroupName>
+                          <GroupName>스팟 이름 : {group.groupName}</GroupName>
                           <Spot>
-                            <SpotName>{group.spotId || 0}</SpotName>
-                            <SpotName>{group.spotName || '상세 스팟'}</SpotName>
+                            <SpotId>상세 스팟 ID : {group.spotId || 0}</SpotId>
+                          </Spot>
+                          <Spot>
+                            <SpotName>
+                              상세 스팟 이름 :{group.spotName || '상세 스팟'}
+                            </SpotName>
                           </Spot>
                         </Group>
                         <DeliveryTime>{group.deliveryTime}</DeliveryTime>
@@ -474,8 +478,7 @@ const GroupHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: gray;
-  color: white;
+  background-color: #cdcdcd;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 5px;
@@ -489,12 +492,20 @@ const Group = styled.div`
 const Spot = styled.div`
   display: flex;
   justify-content: center;
+  padding-top: 5px;
   padding-left: 5px;
-  padding-bottom: 5px;
-  gap: 10px;
+  padding-bottom: 1px;
+  gap: 15px;
 `;
 const SpotName = styled.div`
   font-size: 14px;
+  color: #141414;
+  font-weight: 600;
+`;
+const SpotId = styled.div`
+  font-size: 14px;
+  color: blue;
+  font-weight: 600;
 `;
 const GroupAddress = styled.div`
   display: flex;
@@ -533,6 +544,7 @@ const GroupName = styled.div`
   font-size: 15px;
   padding: 2px;
   padding-left: 5px;
+  color: #141414;
   font-weight: 600;
 `;
 const Address = styled.div`
