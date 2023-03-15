@@ -7,7 +7,7 @@ import {
   useGetExportProductsList,
 } from '../../hooks/useProductsList';
 
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import ItemExelTable from './components/ItemExelTable';
 import {useAtom} from 'jotai';
 import {
@@ -15,6 +15,7 @@ import {
   exportProductAtom,
   productAtom,
   makersNameAtom,
+  productPageAtom,
 } from '../../utils/store';
 import ItemInfoTable from './components/ItemInfoTable';
 import {useQueryClient} from 'react-query';
@@ -24,7 +25,7 @@ const ItemInfo = () => {
   const [option, setOption] = useAtom(makersNameAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [exportExel, setExportExel] = useAtom(exportProductAtom);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useAtom(productPageAtom);
 
   const makersId = option && `&makersId=${option}`;
   const {data: productList, refetch: productRefetch} = useGetAllProductsList(
@@ -43,7 +44,6 @@ const ItemInfo = () => {
   };
 
   useEffect(() => {
-    // console.log(productList?.data);
     if (productList) {
       setTotalPage(productList?.data?.total);
       setProduct(productList?.data?.items);
@@ -53,14 +53,7 @@ const ItemInfo = () => {
       setExportExel(exportProductList?.data);
       console.log('가져오는중');
     }
-  }, [
-    exportProductList,
-    exportProductList?.data,
-    isLoading,
-    productList,
-    setExportExel,
-    setProduct,
-  ]);
+  }, [exportProductList, exportProductList?.data, isLoading, productList]);
 
   useEffect(() => {
     productRefetch();
@@ -68,36 +61,32 @@ const ItemInfo = () => {
   return (
     <PageWrapper>
       <TableWrapper>
-        {totalPage > 0 && (
-          <PagenationBox>
-            <Pagination
-              defaultActivePage={page}
-              totalPages={totalPage}
-              boundaryRange={1}
-              onPageChange={(e, data) => {
-                setPage(data.activePage);
-              }}
-            />
-          </PagenationBox>
-        )}
+        <PagenationBox totalPage={totalPage}>
+          <Pagination
+            defaultActivePage={page}
+            totalPages={totalPage}
+            boundaryRange={1}
+            onPageChange={(e, data) => {
+              setPage(data.activePage);
+            }}
+          />
+        </PagenationBox>
 
-        {exelProduct && (
-          <ItemExelTable
-            data={exelProduct}
-            checked={checkId}
-            checkItems={checkItems}
-            setCheckItems={setCheckItems}
-          />
-        )}
-        {product && (
-          <ItemInfoTable
-            data={product}
-            setData={setProduct}
-            checked={checkId}
-            checkItems={checkItems}
-            setCheckItems={setCheckItems}
-          />
-        )}
+        <ItemExelTable
+          isShow={exelProduct}
+          data={exelProduct}
+          checked={checkId}
+          checkItems={checkItems}
+          setCheckItems={setCheckItems}
+        />
+        <ItemInfoTable
+          isShow={product}
+          data={productList?.data?.items}
+          setData={setProduct}
+          checked={checkId}
+          checkItems={checkItems}
+          setCheckItems={setCheckItems}
+        />
       </TableWrapper>
     </PageWrapper>
   );
@@ -113,7 +102,18 @@ const TableRow = styled(Table.Row)`
 `;
 
 const PagenationBox = styled.div`
-  display: flex;
+  ${({totalPage}) => {
+    if (totalPage) {
+      return css`
+        display: flex;
+      `;
+    } else {
+      return css`
+        display: none;
+      `;
+    }
+  }}
+
   justify-content: center;
   align-items: center;
   padding-left: 50px;

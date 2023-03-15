@@ -23,7 +23,6 @@ const MainRouter = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />
             <Route path="/test" element={<Test />} />
-            <Route path="/shop/info/detail/:id" element={<ItemInfoDetail />} />
             <Route path="/order/info/detail/:code" element={<OrderDetail />} />
             {MenuList.map(v => (
               <Route key={v.url} path={v.url}>
