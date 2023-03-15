@@ -500,9 +500,13 @@ const DateSelectBox = styled.div`
   }
 `;
 const FilterBox = styled.div`
-  width: 1000px;
+  width: 100%;
   gap: 10px;
   display: flex;
+  flex-direction: row;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 const DropBox = styled.div`
   min-width: 250px;
