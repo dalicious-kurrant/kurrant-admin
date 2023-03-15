@@ -299,7 +299,11 @@ const Delivery = () => {
       );
       setSpotInfoList(
         deliveryInfo?.data?.data?.spotInfoList?.map(v => {
-          return {key: v.spotId, text: v.spotName, value: v.spotId};
+          return {
+            key: v.spotId,
+            text: v.spotId + '-' + v.spotName,
+            value: v.spotId,
+          };
         }),
       );
     }
@@ -307,7 +311,7 @@ const Delivery = () => {
   useEffect(() => {
     setDeliveryInfoList([]);
     deliveryRefetch();
-  }, [startDate, endDate, selectClient, deliveryRefetch]);
+  }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
 
   return (
     <Container>
@@ -347,7 +351,7 @@ const Delivery = () => {
             }}
           />
         </DropBox>
-        {/* <DropBox>
+        <DropBox>
           <Label>상세 스팟</Label>
           <Dropdown
             placeholder="상세 스팟"
@@ -358,10 +362,10 @@ const Delivery = () => {
             options={spotInfoList}
             value={selectSpot}
             onChange={(e, data) => {
-              setSelectClient(data.value);
+              setSelectSpot(data.value);
             }}
           />
-        </DropBox> */}
+        </DropBox>
       </FilterBox>
       {deliveryLoading ? (
         <LoadingPage>로딩중...</LoadingPage>
@@ -375,11 +379,14 @@ const Delivery = () => {
                   return (
                     <GroupContainer
                       key={
+                        '스팟' +
                         date.serviceDate +
                         group.groupName +
                         group.groupId +
                         group.deliveryTime +
-                        group.diningType
+                        group.diningType +
+                        group.spotName +
+                        group.spotId
                       }>
                       <GroupHeader>
                         <Group>
@@ -399,9 +406,22 @@ const Delivery = () => {
                         <Address>배송지 : {group.address || '배송지'}</Address>
                       </GroupAddress>
                       {group.makers.map(makers => {
+                        const newArray = makers?.foods?.reduce(function (
+                          acc,
+                          current,
+                        ) {
+                          if (
+                            acc.findIndex(({id}) => id === current.id) === -1
+                          ) {
+                            acc.push(current);
+                          }
+                          return acc;
+                        },
+                        []);
                         return (
                           <MakersContainer
                             key={
+                              '메이커스' +
                               date.serviceDate +
                               group.groupId +
                               makers.makersId +
@@ -412,15 +432,21 @@ const Delivery = () => {
                               <MakersName>{makers.makersName}</MakersName>
                               <PickupTime>{makers.pickupTime}</PickupTime>
                             </MakersHeader>
-                            {makers.foods.map(food => {
+                            {newArray.map(food => {
                               return (
                                 <FoodsContainer
                                   key={
+                                    '푸드' +
                                     date.serviceDate +
                                     group.groupId +
                                     makers.makersId +
+                                    makers.pickupTime +
                                     food.foodName +
-                                    group.diningType
+                                    food.foodCount +
+                                    food.foodId +
+                                    group.diningType +
+                                    group.spotName +
+                                    group.spotId
                                   }>
                                   <FoodHeader>
                                     <FoodName>{food.foodName}</FoodName>
