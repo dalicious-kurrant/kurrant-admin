@@ -193,21 +193,25 @@ const Schedule = () => {
                   return (
                     <TableWrap key={index}>
                       {v.spotByDateDiningTypes.map((spot, i) => {
+                        console.log(spot);
                         return (
                           <div key={i} style={{marginRight: 10}}>
-                            <Label
-                              content={v.groupName + `\u00A0` + spot.spotName}
-                              color="green"
-                            />
-                            <Label content={spot.deliveryTime} color="black" />
+                            <LabelWrap>
+                              <Label content={v.groupName} color="green" />
+                              <Label
+                                content={`스팟: ${spot.spotId} \u00A0 ${spot.spotName}`}
+                                color="green"
+                              />
+                              <Label content={spot.pickupTime} color="black" />
+                            </LabelWrap>
                             <Table celled>
                               <Table.Header>
                                 <Table.Row>
                                   <Table.HeaderCell textAlign="center">
-                                    <div style={{width: 150}}>상품명</div>
+                                    상품명
                                   </Table.HeaderCell>
                                   <Table.HeaderCell textAlign="center">
-                                    <div style={{width: 50}}>수량</div>
+                                    수량
                                   </Table.HeaderCell>
                                 </Table.Row>
                               </Table.Header>
@@ -215,9 +219,15 @@ const Schedule = () => {
                                 return (
                                   <Table.Body key={index}>
                                     <Table.Row>
-                                      <Table.Cell>{food.foodName}</Table.Cell>
+                                      <Table.Cell>
+                                        <div style={{width: 150}}>
+                                          {food.foodName}
+                                        </div>
+                                      </Table.Cell>
                                       <Table.Cell textAlign="center">
-                                        {food.foodCount}
+                                        <div style={{width: 50}}>
+                                          {food.foodCount}
+                                        </div>
                                       </Table.Cell>
                                     </Table.Row>
                                   </Table.Body>
@@ -311,4 +321,9 @@ const BoldText = styled.span`
 const DateLine = styled.div`
   padding-top: 10px;
   border-bottom: 1px solid ${({theme}) => theme.colors.grey[5]};
+`;
+
+const LabelWrap = styled.div`
+  min-width: 250px;
+  flex-wrap: wrap;
 `;
