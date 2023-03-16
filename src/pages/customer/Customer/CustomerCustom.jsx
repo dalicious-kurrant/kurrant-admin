@@ -162,20 +162,20 @@ const CustomerCustom = () => {
 
     deleteList = [...new Set(deleteList)];
 
-    let yo = [];
+    let injectIsOnDeleted = [];
     const customerDataToDelete = [...customerData];
 
     customerDataToDelete.forEach(v => {
       if (deleteList.includes(v.id.toString())) {
         v['isOnDeleteList'] = true;
-        yo.push(v);
+        injectIsOnDeleted.push(v);
       } else {
-        yo.push(v);
+        injectIsOnDeleted.push(v);
       }
     });
 
     setTableDeleteList(deleteList);
-    setCustomerData(yo);
+    setCustomerData(injectIsOnDeleted);
   };
 
   // 페이지네이션

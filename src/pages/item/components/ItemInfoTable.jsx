@@ -1,7 +1,7 @@
 import {useAtom} from 'jotai';
 import {useNavigate} from 'react-router-dom';
 import {Button, Table} from 'semantic-ui-react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {
   makersNameAtom,
   shopInfoDetailIdAtom,
@@ -13,7 +13,14 @@ import {useState} from 'react';
 import {PageWrapper} from 'style/common.style';
 import {foodStatusFomatted} from 'utils/statusFormatter';
 
-const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
+const ItemInfoTable = ({
+  isShow,
+  data,
+  setData,
+  checked,
+  checkItems,
+  setCheckItems,
+}) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
   const [option, setOption] = useAtom(makersNameAtom);
@@ -21,7 +28,7 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
 
   const goToPage = (foodId, makersId) => {
     setId(foodId);
-    navigate('/shop/info/detail/' + foodId, {
+    navigate('/shop/info/' + foodId, {
       state: {
         foodId: foodId,
         makersId: makersId,
@@ -64,7 +71,7 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
   ];
 
   return (
-    <div>
+    <Container isShow={isShow}>
       {/* <BtnWrapper>
         <Button color="blue" content="상태변경 저장" onClick={statusButton} />
       </BtnWrapper> */}
@@ -99,12 +106,8 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
             <Table.HeaderCell textAlign="center">매장할인률</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">이벤트할인률</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">최종가격</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">
-              <div style={{width: 150}}>설명</div>
-            </Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">
-              <div style={{width: 150}}>식사태그</div>
-            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">설명</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">식사태그</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -133,7 +136,9 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
                 <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
                 <Table.Cell textAlign="center">{el.makersId}</Table.Cell>
                 <Table.Cell>{el.makersName}</Table.Cell>
-                <Table.Cell>{el.foodName}</Table.Cell>
+                <Table.Cell>
+                  <div style={{width: 200}}>{el.foodName}</div>
+                </Table.Cell>
                 <Table.Cell onClick={e => e.stopPropagation()} width={2}>
                   <Select
                     options={statusValue}
@@ -183,20 +188,35 @@ const ItemInfoTable = ({data, setData, checked, checkItems, setCheckItems}) => {
                 <Table.Cell textAlign="right">
                   {withCommas(el.resultPrice)}
                 </Table.Cell>
-                <Table.Cell>{el.description}</Table.Cell>
                 <Table.Cell>
-                  {el.foodTags + (idx !== 0 ? `\u00A0` : '')}
+                  <div style={{width: 180}}>{el.description}</div>
+                </Table.Cell>
+                <Table.Cell>
+                  <div style={{width: 150}}>
+                    {' '}
+                    {el.foodTags + (idx !== 0 ? `\u00A0` : '')}
+                  </div>
                 </Table.Cell>
               </TableRow>
             );
           })}
         </Table.Body>
       </Table>
-    </div>
+    </Container>
   );
 };
 
 export default ItemInfoTable;
+
+const Container = styled.div`
+  ${({isShow}) => {
+    if (!isShow) {
+      return css`
+        display: none;
+      `;
+    }
+  }}
+`;
 
 const TableRow = styled(Table.Row)`
   :hover {

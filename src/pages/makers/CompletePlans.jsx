@@ -5,7 +5,7 @@ import {PageWrapper} from '../../style/common.style';
 import {completePlanAtom, exelCompletePlanAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 import styled from 'styled-components';
-import {formattedWeekDate} from '../../utils/dateFormatter';
+import {formattedWeekDate, formattedWeekDateZ} from '../../utils/dateFormatter';
 import CustomPlanExelTable from './components/CustomPlanExelTable';
 import DatePicker from 'react-datepicker';
 
@@ -104,7 +104,7 @@ const CompletePlans = () => {
             <RecoDatePickerContainer>
               <RecoDatePickerBox>
                 <DatePicker
-                  selected={new Date(accessStartDate + 'Z')}
+                  selected={new Date(formattedWeekDateZ(accessStartDate))}
                   onChange={date => {
                     setAccessStartDate(date);
                   }}
@@ -115,7 +115,7 @@ const CompletePlans = () => {
               -
               <RecoDatePickerBox>
                 <DatePicker
-                  selected={new Date(accessEndDate + 'Z')}
+                  selected={new Date(formattedWeekDateZ(accessEndDate))}
                   onChange={date => {
                     setAccessEndDate(date);
                   }}

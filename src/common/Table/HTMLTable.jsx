@@ -96,11 +96,11 @@ const HTMLTable = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
           {dataInput &&
             dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
-              let yo = [];
+              let filtered = [];
 
               keyOfTableFieldsInput.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
-                  yo.push(value1[value2]);
+                  filtered.push(value1[value2]);
                 }
               });
 
@@ -117,7 +117,7 @@ const HTMLTable = ({fieldsInput, dataInput, isMemo = false, handleChange}) => {
                     />
                   </CheckBoxTd>
 
-                  {yo.map((value3, index3) => {
+                  {filtered.map((value3, index3) => {
                     return (
                       <td align="left" key={index3}>
                         {handleFalsyValueToHyphen(value3)}

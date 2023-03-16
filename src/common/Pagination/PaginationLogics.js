@@ -26,19 +26,19 @@ export const calculatePageButtons = (pageNow, totalPages) => {
   const units = pageNow % 10;
 
   // startNum + units
-  let yo = [];
+  let pageButtons = [];
 
   for (let a = 1; a <= 10; a++) {
     let k = tens * 10 + a;
     if (k > totalPages) break;
 
-    yo.push(k);
+    pageButtons.push(k);
   }
 
   // console.log(`pageNow: ` + pageNow);
   // console.log(`totalPages: ` + totalPages);
 
-  return yo;
+  return pageButtons;
 };
 
 export const calculatePageMove = (direction, page, lastPage) => {

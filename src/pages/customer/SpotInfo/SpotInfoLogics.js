@@ -47,7 +47,7 @@ export const saveSpotToDb = (data, mutate, deleteList) => {
   });
 
   // 값이 하나도 없을 때
-  console.log(removeDelete);
+
   if (removeDelete.length < 1) {
     if (
       window.confirm(
@@ -59,16 +59,9 @@ export const saveSpotToDb = (data, mutate, deleteList) => {
     }
   }
 
-  // const test = [...removeDelete].slice(7);
-  const test = [...removeDelete];
-  const yo = {
-    saveSpotList: [...test],
-  };
-
-  console.log(yo);
-
-  // localStorage.setItem('hi', JSON.stringify(removeDelete));
-  mutate(yo);
+  mutate({
+    saveSpotList: [...removeDelete],
+  });
 };
 
 const makeSpotInfoInitialInput = (data, spotIdList) => {
@@ -159,9 +152,9 @@ export const addGroupIdNameInSpotInfoFieldsData = groupIdNameData => {
     v['name'] = v.groupName;
     v['value'] = v.groupId;
 
-    const {groupId, groupName, ...yo} = v;
+    const {groupId, groupName, ...removedGroupIdGroupName} = v;
 
-    return yo;
+    return removedGroupIdGroupName;
   });
 
   const yes = [{name: '필수 선택', value: undefined}, ...yes1];

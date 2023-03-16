@@ -9,6 +9,7 @@ import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import OrderDetail from '../pages/order/orderInfomation/OrderDetail';
 import ScrollToTop from 'shared/ScrollToTop';
 import Test from 'common/test/InputTest';
+import Delivery from 'pages/Delivery';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
@@ -17,11 +18,11 @@ const MainRouter = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/dash" element={<Delivery />} />
         {token !== null && (
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />
             <Route path="/test" element={<Test />} />
-            <Route path="/shop/info/detail/:id" element={<ItemInfoDetail />} />
             <Route path="/order/info/detail/:code" element={<OrderDetail />} />
             {MenuList.map(v => (
               <Route key={v.url} path={v.url}>
