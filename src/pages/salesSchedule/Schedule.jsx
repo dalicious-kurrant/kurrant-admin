@@ -66,7 +66,7 @@ const Schedule = () => {
   });
 
   return (
-    <PageWrapper>
+    <Wrapper>
       <Header as="h2">기간별 판매 내역</Header>
       <div>
         <SelectBox
@@ -194,81 +194,126 @@ const Schedule = () => {
         </TopTable>
       </TableWrapper>
       <TableWrapper>
-        {salesList?.data?.groupFoodByDateDiningTypes.map((el, idx) => (
-          <MakersTable key={idx}>
-            <BoldText>
-              {el.serviceDate + `\u00A0` + el.diningType} ({' '}
-              {el.foodByGroups.length}개 상세 스팟)
-            </BoldText>
-            <DateLine />
-            <DiningTypeWrap>
-              <MealDetailWrap>
-                {el.foodByGroups.map((v, index) => {
-                  return (
-                    <TableWrap key={index}>
-                      {v.spotByDateDiningTypes.map((spot, i) => {
-                        return (
-                          <div key={i} style={{marginRight: 10, marginTop: 24}}>
-                            <LabelWrap>
-                              <div style={{marginBottom: 4}}>
-                                <Label content={v.groupName} color="green" />
-                                <Label
-                                  content={spot.pickupTime}
-                                  color="black"
-                                />
-                              </div>
-                              <Label
-                                content={`스팟: ${spot.spotId} \u00A0 ${spot.spotName}`}
-                                color="green"
-                              />
-                            </LabelWrap>
-                            <Table celled>
-                              <Table.Header>
-                                <Table.Row>
-                                  <Table.HeaderCell textAlign="center">
-                                    상품명
-                                  </Table.HeaderCell>
-                                  <Table.HeaderCell textAlign="center">
-                                    수량
-                                  </Table.HeaderCell>
-                                </Table.Row>
-                              </Table.Header>
-                              {spot.foods.map((food, index) => {
-                                return (
-                                  <Table.Body key={index}>
-                                    <Table.Row>
-                                      <Table.Cell>
-                                        <div style={{width: 150}}>
-                                          {food.foodName}
-                                        </div>
-                                      </Table.Cell>
-                                      <Table.Cell textAlign="center">
-                                        <div style={{width: 50}}>
-                                          {food.foodCount}
-                                        </div>
-                                      </Table.Cell>
-                                    </Table.Row>
-                                  </Table.Body>
-                                );
-                              })}
-                            </Table>
-                          </div>
-                        );
-                      })}
-                    </TableWrap>
-                  );
-                })}
-              </MealDetailWrap>
-            </DiningTypeWrap>
-          </MakersTable>
-        ))}
+        {salesList?.data?.groupFoodByDateDiningTypes.map((el, idx) => {
+          const spotCount = el.foodByGroups.map(v => {
+            return v.spotByDateDiningTypes.length;
+          });
+          const spotTotal = spotCount.reduce((arr, cur) => {
+            return arr + cur;
+          });
+
+          return (
+            <MakersTable key={idx}>
+              <BoldText>
+                {el.serviceDate + `\u00A0` + el.diningType} ( {spotTotal}개 상세
+                스팟)
+              </BoldText>
+              <DateLine />
+              <DiningTypeWrap>
+                <MealDetailWrap>
+                  {el.foodByGroups.map((v, index) => {
+                    return (
+                      <TableWrap key={index}>
+                        {v.spotByDateDiningTypes.map((spot, i) => {
+                          let foodTotalCount = 0;
+                          return (
+                            <TableBox key={i}>
+                              <LabelWrap>
+                                <div>
+                                  <Label
+                                    content={`상세 스팟 ID: ${spot.spotId} `}
+                                    color="blue"
+                                  />
+                                </div>
+                                <div style={{marginTop: 4}}>
+                                  <Label
+                                    content={`상세 스팟 이름: ${spot.spotName} `}
+                                    color="blue"
+                                  />
+                                </div>
+                                <div style={{marginTop: 4}}>
+                                  <Label content={v.groupName} color="green" />
+                                  <Label
+                                    content={spot.pickupTime}
+                                    color="black"
+                                  />
+                                </div>
+                              </LabelWrap>
+                              <Table celled>
+                                <Table.Header>
+                                  <Table.Row>
+                                    <Table.HeaderCell textAlign="center">
+                                      상품명
+                                    </Table.HeaderCell>
+                                    <Table.HeaderCell textAlign="center">
+                                      수량
+                                    </Table.HeaderCell>
+                                  </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                  {spot.foods.map((food, index) => {
+                                    foodTotalCount =
+                                      foodTotalCount + food.foodCount;
+                                    return (
+                                      <Table.Row
+                                        key={
+                                          spot.spotId +
+                                          spot.spotName +
+                                          food.foodName +
+                                          index +
+                                          i +
+                                          idx
+                                        }>
+                                        <Table.Cell>
+                                          <div style={{width: 150}}>
+                                            {food.foodName}
+                                          </div>
+                                        </Table.Cell>
+                                        <Table.Cell textAlign="center">
+                                          <div style={{width: 50}}>
+                                            {food.foodCount}
+                                          </div>
+                                        </Table.Cell>
+                                      </Table.Row>
+                                    );
+                                  })}
+                                  <Table.Row
+                                    style={{
+                                      backgroundColor: '#efefef',
+                                      fontWeight: 600,
+                                    }}>
+                                    <Table.Cell>합계</Table.Cell>
+                                    <Table.Cell textAlign="center">
+                                      <div style={{width: 50}}>
+                                        {foodTotalCount}
+                                      </div>
+                                    </Table.Cell>
+                                  </Table.Row>
+                                </Table.Body>
+                              </Table>
+                            </TableBox>
+                          );
+                        })}
+                      </TableWrap>
+                    );
+                  })}
+                </MealDetailWrap>
+              </DiningTypeWrap>
+            </MakersTable>
+          );
+        })}
       </TableWrapper>
-    </PageWrapper>
+    </Wrapper>
   );
 };
 
 export default Schedule;
 
+const Wrapper = styled.div`
+  width: 100%;
+  padding: 40px;
+  min-width: 1024px;
+`;
 const SelectBox = styled(Select)`
   width: 250px;
 `;
@@ -305,9 +350,8 @@ const DetailTable = styled.div`
 
 const MealDetailWrap = styled.div`
   display: flex;
-  margin-right: 24px;
-  padding-bottom: 10px;
   flex-wrap: wrap;
+  padding-bottom: 10px;
 `;
 
 const DiningTypeWrap = styled.div`
@@ -325,7 +369,7 @@ const ButtonWrap = styled.div`
 
 const TableWrap = styled.div`
   display: flex;
-  margin-right: 5px;
+  //margin-right: 5px;
 `;
 
 const BoldText = styled.span`
@@ -339,7 +383,6 @@ const DateLine = styled.div`
 
 const LabelWrap = styled.div`
   min-width: 250px;
-  flex-wrap: wrap;
 `;
 
 const FoodName = styled.div`
@@ -353,4 +396,9 @@ const Description = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 300px;
+`;
+
+const TableBox = styled.div`
+  margin-right: 10px;
+  margin-top: 12px;
 `;
