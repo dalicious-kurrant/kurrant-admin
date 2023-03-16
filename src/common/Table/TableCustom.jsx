@@ -15,11 +15,6 @@ import {handleFalsyValueToHyphen} from 'utils/valueHandlingLogics';
 
 // import putId from './'
 
-const options = [
-  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
-  {key: '커런트', text: '커런트', value: '커런트'},
-];
-
 const TableCustom = ({
   fieldsInput,
   dataInput,
@@ -33,8 +28,6 @@ const TableCustom = ({
   const [keyOfTableFieldsInput, setKeyOfTableFieldsInput] = useState([]);
 
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
-
-  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
 
   useEffect(() => {
     setKeyOfTableFieldsInput(Object.keys(fieldsInput));
@@ -128,11 +121,11 @@ const TableCustom = ({
             dataInput.map((value1, index1) => {
               // 필드에 없는 값들은 걸러내기
 
-              let yo = [];
+              let filtered = [];
 
               keyOfTableFieldsInput?.forEach((value2, index2) => {
                 if (Object.keys(value1).includes(value2)) {
-                  yo.push({[value2]: value1[value2]});
+                  filtered.push({[value2]: value1[value2]});
                 }
               });
 
@@ -153,7 +146,7 @@ const TableCustom = ({
                       />
                     </CheckBoxTd>
 
-                    {yo?.map((value3, index3) => {
+                    {filtered?.map((value3, index3) => {
                       let ellipsisOn = undefined;
 
                       ellipsisList &&
@@ -205,7 +198,7 @@ const TableCustom = ({
                       />
                     </CheckBoxTd>
 
-                    {yo?.map((value3, index3) => {
+                    {filtered?.map((value3, index3) => {
                       let ellipsisOn = undefined;
 
                       ellipsisList &&
