@@ -291,7 +291,7 @@ const Delivery = () => {
   const [spotInfoList, setSpotInfoList] = useState([]);
   useEffect(() => {
     if (deliveryInfo) {
-      setSelectSpot([]);
+      // setSelectSpot([]);
       setDeliveryInfoList(deliveryInfo?.data?.data?.deliveryInfoList);
       setGroupInfoList(
         deliveryInfo?.data?.data?.groupInfoList?.map(v => {
