@@ -402,7 +402,7 @@ const Delivery = () => {
                             </SpotName>
                           </Spot>
                         </Group>
-                        <DeliveryTime>{group.deliveryTime}</DeliveryTime>
+                        <DeliveryTime>도착:{group.deliveryTime}</DeliveryTime>
                       </GroupHeader>
                       <GroupAddress>
                         <Address>배송지 : {group.address || '배송지'}</Address>
@@ -420,7 +420,7 @@ const Delivery = () => {
                             }>
                             <MakersHeader>
                               <MakersName>{makers.makersName}</MakersName>
-                              <PickupTime>{makers.pickupTime}</PickupTime>
+                              <PickupTime>픽업:{makers.pickupTime}</PickupTime>
                             </MakersHeader>
                             {makers?.foods?.map(food => {
                               return (
