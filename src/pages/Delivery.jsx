@@ -407,6 +407,18 @@ const Delivery = () => {
                         <Address>배송지 : {group.address || '배송지'}</Address>
                       </GroupAddress>
                       {group.makers.map(makers => {
+                        const newArray = makers?.foods?.reduce(function (
+                          acc,
+                          current,
+                        ) {
+                          if (
+                            acc.findIndex(({id}) => id === current.id) === -1
+                          ) {
+                            acc.push(current);
+                          }
+                          return acc;
+                        },
+                        []);
                         return (
                           <MakersContainer
                             key={
@@ -421,7 +433,7 @@ const Delivery = () => {
                               <MakersName>{makers.makersName}</MakersName>
                               <PickupTime>{makers.pickupTime}</PickupTime>
                             </MakersHeader>
-                            {makers?.foods?.map(food => {
+                            {newArray.map(food => {
                               return (
                                 <FoodsContainer
                                   key={
