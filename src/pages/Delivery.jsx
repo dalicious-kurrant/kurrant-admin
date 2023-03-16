@@ -348,6 +348,7 @@ const Delivery = () => {
             options={groupInfoList}
             value={selectClient}
             onChange={(e, data) => {
+              setSelectSpot([]);
               setSelectClient(data.value);
             }}
           />
@@ -407,18 +408,6 @@ const Delivery = () => {
                         <Address>배송지 : {group.address || '배송지'}</Address>
                       </GroupAddress>
                       {group.makers.map(makers => {
-                        const newArray = makers?.foods?.reduce(function (
-                          acc,
-                          current,
-                        ) {
-                          if (
-                            acc.findIndex(({id}) => id === current.id) === -1
-                          ) {
-                            acc.push(current);
-                          }
-                          return acc;
-                        },
-                        []);
                         return (
                           <MakersContainer
                             key={
@@ -433,7 +422,7 @@ const Delivery = () => {
                               <MakersName>{makers.makersName}</MakersName>
                               <PickupTime>{makers.pickupTime}</PickupTime>
                             </MakersHeader>
-                            {newArray.map(food => {
+                            {makers?.foods?.map(food => {
                               return (
                                 <FoodsContainer
                                   key={
