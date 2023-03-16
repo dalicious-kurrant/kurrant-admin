@@ -291,6 +291,7 @@ const Delivery = () => {
   const [spotInfoList, setSpotInfoList] = useState([]);
   useEffect(() => {
     if (deliveryInfo) {
+      setSelectSpot([]);
       setDeliveryInfoList(deliveryInfo?.data?.data?.deliveryInfoList);
       setGroupInfoList(
         deliveryInfo?.data?.data?.groupInfoList?.map(v => {
@@ -310,7 +311,6 @@ const Delivery = () => {
   }, [deliveryInfo]);
   useEffect(() => {
     setDeliveryInfoList([]);
-    setSelectSpot([]);
     deliveryRefetch();
   }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
 
@@ -407,6 +407,18 @@ const Delivery = () => {
                         <Address>배송지 : {group.address || '배송지'}</Address>
                       </GroupAddress>
                       {group.makers.map(makers => {
+                        const newArray = makers?.foods?.reduce(function (
+                          acc,
+                          current,
+                        ) {
+                          if (
+                            acc.findIndex(({id}) => id === current.id) === -1
+                          ) {
+                            acc.push(current);
+                          }
+                          return acc;
+                        },
+                        []);
                         return (
                           <MakersContainer
                             key={
@@ -421,7 +433,7 @@ const Delivery = () => {
                               <MakersName>{makers.makersName}</MakersName>
                               <PickupTime>{makers.pickupTime}</PickupTime>
                             </MakersHeader>
-                            {makers?.foods?.map(food => {
+                            {newArray.map(food => {
                               return (
                                 <FoodsContainer
                                   key={
