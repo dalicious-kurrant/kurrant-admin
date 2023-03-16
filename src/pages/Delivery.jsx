@@ -310,6 +310,7 @@ const Delivery = () => {
   }, [deliveryInfo]);
   useEffect(() => {
     setDeliveryInfoList([]);
+    setSpotInfoList([]);
     deliveryRefetch();
   }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
 
