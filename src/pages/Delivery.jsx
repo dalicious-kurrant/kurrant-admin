@@ -348,6 +348,7 @@ const Delivery = () => {
             options={groupInfoList}
             value={selectClient}
             onChange={(e, data) => {
+              setSelectSpot([]);
               setSelectClient(data.value);
             }}
           />
