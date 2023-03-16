@@ -291,7 +291,6 @@ const Delivery = () => {
   const [spotInfoList, setSpotInfoList] = useState([]);
   useEffect(() => {
     if (deliveryInfo) {
-      setSelectSpot([]);
       setDeliveryInfoList(deliveryInfo?.data?.data?.deliveryInfoList);
       setGroupInfoList(
         deliveryInfo?.data?.data?.groupInfoList?.map(v => {
@@ -311,6 +310,7 @@ const Delivery = () => {
   }, [deliveryInfo]);
   useEffect(() => {
     setDeliveryInfoList([]);
+
     deliveryRefetch();
   }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
 
