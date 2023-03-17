@@ -103,6 +103,16 @@ export const foodStatusData = [
     text: '판매중지',
     value: '판매중지',
   },
+  {
+    key: '등록대기',
+    text: '등록대기',
+    value: '등록대기',
+  },
+  {
+    key: '주문마감',
+    text: '주문마감',
+    value: '주문마감',
+  },
 ];
 export const foodCompleteStatusData = [
   {
@@ -129,5 +139,15 @@ export const foodCompleteStatusData = [
     key: '판매중지',
     text: '판매중지',
     value: 4,
+  },
+  {
+    key: '등록대기',
+    text: '등록대기',
+    value: 5,
+  },
+  {
+    key: '주문마감',
+    text: '주문마감',
+    value: 6,
   },
 ];
