@@ -170,6 +170,8 @@ const MenuContainer = styled.div`
   align-items: flex-start;
   text-align: start;
   background-color: #1b1c1d;
+
+  overflow-x: auto;
 `;
 
 const MenuBox = styled.div`
