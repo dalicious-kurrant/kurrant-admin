@@ -3,7 +3,7 @@ import instance from '../shared/axios';
 export const orderApis = {
   groupList: async () => await instance.get('orders/group'),
   groupInfoList: async groupId =>
-    await instance.get(`orders/groupInfo?groupId=${groupId}`),
+    await instance.get(`orders/groupInfo${groupId}`),
   makersList: async () => await instance.get('orders/makers'),
   orderList: async (startDate, endDate, params) =>
     await instance.get(

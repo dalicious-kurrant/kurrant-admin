@@ -38,6 +38,11 @@ export const makersOptionAtom = atomWithReset('');
 export const spotOptionAtom = atomWithReset('');
 export const diningTypeOptionAtom = atomWithReset('');
 export const statusOptionAtom = atomWithReset([]);
+export const groupInfoAtom = atomWithReset('');
+export const spotListAtom = atomWithReset([]);
+export const userListAtom = atomWithReset([]);
+export const diningListAtom = atomWithReset([]);
+export const groupFilterAtom = atomWithReset('');
 
 // 기업정보
 export const corpNameOptionAtom = atomWithReset('');
