@@ -419,7 +419,10 @@ const Delivery = () => {
                               group.diningType
                             }>
                             <MakersHeader>
-                              <MakersName>{makers.makersName}</MakersName>
+                              <MakersFront>
+                                <MakersName>{makers.makersName}</MakersName>
+                                <MakersAddress>{makers.address}</MakersAddress>
+                              </MakersFront>
                               <PickupTime>픽업:{makers.pickupTime}</PickupTime>
                             </MakersHeader>
                             {makers?.foods?.map(food => {
@@ -521,6 +524,10 @@ const DateContainer = styled.div`
   flex-direction: column;
   margin-bottom: 50px;
 `;
+const MakersFront = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const MakersContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -608,6 +615,11 @@ const Address = styled.div`
 `;
 const MakersName = styled.div`
   font-size: 15px;
+  padding: 5px;
+`;
+const MakersAddress = styled.div`
+  font-size: 13px;
+  font-weight: 400;
   padding: 5px;
 `;
 const FoodName = styled.div`
