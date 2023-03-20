@@ -41,11 +41,11 @@ export function diningFormatted(data) {
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
-      return '탈퇴 요청';
+      return '탈퇴';
     case 1:
       return '활성';
     case 2:
-      return '탈퇴';
+      return '탈퇴 요청';
     default:
       return '비인가';
   }

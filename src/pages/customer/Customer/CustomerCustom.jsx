@@ -286,7 +286,7 @@ const CustomerCustom = () => {
                   onClick={() => {
                     const deleteData = customerData.map(v => {
                       if (userCheck.includes(v.id)) {
-                        return {...v, status: 2};
+                        return {...v, status: 0};
                       }
                       return v;
                     });
