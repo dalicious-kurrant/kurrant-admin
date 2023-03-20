@@ -53,7 +53,7 @@ function CostomerEditModal({
                 <FlexBox>
                   <Label>유저 상태</Label>
                   <Input
-                    placeholder="ex) 1.활성, 2.탈퇴"
+                    placeholder="ex) 0.탈퇴, 1.활성"
                     defaultValue={nowData.status}
                     onChange={(e, data) => {
                       setNowData({
