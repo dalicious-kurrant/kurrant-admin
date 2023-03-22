@@ -152,7 +152,7 @@ const Order = () => {
     endDate,
     params,
   );
-
+  console.log(orderList);
   const getStartDate = e => {
     setStartDate(e.target.value);
   };
@@ -402,6 +402,9 @@ const Order = () => {
               <Table.HeaderCell textAlign="center">그룹 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">유저 이름</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                유저 이메일
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">배송 시간</Table.HeaderCell>
@@ -444,10 +447,13 @@ const Order = () => {
                         }
                       />
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{v.serviceDate}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{width: 100}}>{v.serviceDate}</div>
+                    </Table.Cell>
                     <Table.Cell textAlign="center">{v.groupName}</Table.Cell>
                     <Table.Cell textAlign="center">{v.spotName}</Table.Cell>
                     <Table.Cell textAlign="center">{v.userName}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.userEmail}</Table.Cell>
                     <Table.Cell textAlign="center">{v.phone}</Table.Cell>
                     <Table.Cell textAlign="center">{v.diningType}</Table.Cell>
                     <Table.Cell textAlign="center">{v.deliveryTime}</Table.Cell>
@@ -459,7 +465,9 @@ const Order = () => {
                       )}
                     </Table.Cell>
                     <Table.Cell>{v.makers}</Table.Cell>
-                    <Table.Cell>{v.foodName}</Table.Cell>
+                    <Table.Cell>
+                      <div style={{width: 150}}>{v.foodName}</div>
+                    </Table.Cell>
                     <Table.Cell textAlign="center">{v.count}</Table.Cell>
                     <Table.Cell textAlign="right">
                       {withCommas(v.price)}원
