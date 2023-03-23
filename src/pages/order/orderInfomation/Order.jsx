@@ -12,6 +12,7 @@ import {
   useAllUserList,
   useCancelOrder,
   useEditOrderStatus,
+  useGetGroupInfoList,
   useGetGroupList,
   useGetMakersList,
   useGetOrderList,
@@ -19,17 +20,22 @@ import {
 import {orderApis} from '../../../api/order';
 import withCommas from '../../../utils/withCommas';
 import {useNavigate} from 'react-router-dom';
-import {useQueryClient} from 'react-query';
+import {useQuery, useQueryClient} from 'react-query';
 import Modal from '../../../components/alertModal/AlertModal';
 import {useAtom} from 'jotai';
 import {
+  diningListAtom,
   diningTypeOptionAtom,
   endDateAtom,
+  groupFilterAtom,
+  groupInfoAtom,
   groupOptionAtom,
   makersOptionAtom,
   orderNumberAtom,
+  spotListAtom,
   spotOptionAtom,
   startDateAtom,
+  userListAtom,
   userOptionAtom,
 } from 'utils/store';
 
@@ -46,18 +52,19 @@ const Order = () => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useAtom(startDateAtom);
   const [endDate, setEndDate] = useAtom(endDateAtom);
-  const [groupOption, setGroupOption] = useState('');
-  const [userOption, setUserOption] = useState('');
-  const [makersOption, setMakersOption] = useState('');
-  const [spotOption, setSpotOption] = useState('');
-  const [diningTypeOption, setDiningTypeOption] = useState('');
-  const [orderStatus, setOrderStatus] = useState('');
-  const [spotList, setSpotList] = useState([]);
-  const [userList, setUserList] = useState([]);
-  const [diningType, setDiningType] = useState([]);
+  const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
+  const [userOption, setUserOption] = useAtom(userOptionAtom);
+  const [makersOption, setMakersOption] = useAtom(makersOptionAtom);
+  const [spotOption, setSpotOption] = useAtom(spotOptionAtom);
+  const [diningTypeOption, setDiningTypeOption] = useAtom(diningTypeOptionAtom);
+  const [grouptInfoId, setGroupInfoId] = useAtom(groupInfoAtom);
+  const [spotList, setSpotList] = useAtom(spotListAtom);
+  const [userList, setUserList] = useAtom(userListAtom);
+  const [diningType, setDiningType] = useAtom(diningListAtom);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [defaultGroup, setDefaultGroup] = useAtom(groupOptionAtom);
+
+  const [defaultGroup, setDefaultGroup] = useAtom(groupFilterAtom);
   const [defaultUser, setDefaultUser] = useAtom(userOptionAtom);
   const [defaultMakers, setDefaultMakers] = useAtom(makersOptionAtom);
   const [defaultSpot, setDefaultSpot] = useAtom(spotOptionAtom);
@@ -69,12 +76,6 @@ const Order = () => {
   const {data: allUserList} = useAllUserList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
   const {mutateAsync: statusChange} = useEditOrderStatus();
-  const groupInfoList = async id => {
-    const res = await orderApis.groupInfoList(id);
-    setUserList(res.data.users);
-    setSpotList(res.data.spots);
-    setDiningType(res.data.diningTypes);
-  };
 
   const groupArr = groupList?.data?.map(el => {
     return {
@@ -129,13 +130,13 @@ const Order = () => {
     {value: 10, label: '배송완료'},
     {value: 11, label: '수령완료'},
   ];
-
+  const groupInfoParam = grouptInfoId && `?groupId=${grouptInfoId}`;
   const group = groupOption && `&group=${groupOption}`;
-  const user = userOption && `&userId=${userOption}`;
-  const spots = spotOption && `&spots=${spotOption}`;
-  const makers = makersOption && `&makersId=${makersOption}`;
+  const user = userOption && `&userId=${userOption.value}`;
+  const spots = spotOption && `&spots=${spotOption.value}`;
+  const makers = makersOption && `&makersId=${makersOption.value}`;
   const diningTypecode =
-    diningTypeOption && `&diningTypeCode=${diningTypeOption}`;
+    diningTypeOption && `&diningTypeCode=${diningTypeOption.value}`;
   const params = {
     group: group && group,
     user: user && user,
@@ -143,13 +144,15 @@ const Order = () => {
     makers: makers && makers,
     type: diningTypecode && diningTypecode,
   };
+  const sendGroupInfoParam = groupInfoParam && groupInfoParam;
 
+  const {refetch: groupInfoRefetch} = useGetGroupInfoList(sendGroupInfoParam);
   const {data: orderList, refetch} = useGetOrderList(
     startDate,
     endDate,
     params,
   );
-
+  console.log(orderList);
   const getStartDate = e => {
     setStartDate(e.target.value);
   };
@@ -181,7 +184,7 @@ const Order = () => {
     if (diningRef.current) {
       diningRef.current.clearValue();
     }
-    window.location.reload();
+    // window.location.reload();
   };
   const goToPage = code => {
     navigate('/order/info/detail/' + code, {
@@ -243,6 +246,9 @@ const Order = () => {
     refetch();
   }, [group, spots, makers, diningTypecode, startDate, endDate, user, refetch]);
 
+  useEffect(() => {
+    groupInfoRefetch();
+  }, [groupInfoParam, groupInfoRefetch]);
   return (
     <PageWrapper>
       <label>서비스일 날짜</label>
@@ -280,7 +286,7 @@ const Order = () => {
               if (e) {
                 setDefaultGroup(e);
                 setGroupOption(e.value);
-                groupInfoList(e.value);
+                setGroupInfoId(e.value);
               } else {
                 setGroupOption('');
               }
@@ -396,6 +402,9 @@ const Order = () => {
               <Table.HeaderCell textAlign="center">그룹 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">유저 이름</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                유저 이메일
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">배송 시간</Table.HeaderCell>
@@ -438,10 +447,13 @@ const Order = () => {
                         }
                       />
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{v.serviceDate}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{width: 100}}>{v.serviceDate}</div>
+                    </Table.Cell>
                     <Table.Cell textAlign="center">{v.groupName}</Table.Cell>
                     <Table.Cell textAlign="center">{v.spotName}</Table.Cell>
                     <Table.Cell textAlign="center">{v.userName}</Table.Cell>
+                    <Table.Cell textAlign="center">{v.userEmail}</Table.Cell>
                     <Table.Cell textAlign="center">{v.phone}</Table.Cell>
                     <Table.Cell textAlign="center">{v.diningType}</Table.Cell>
                     <Table.Cell textAlign="center">{v.deliveryTime}</Table.Cell>
@@ -453,7 +465,9 @@ const Order = () => {
                       )}
                     </Table.Cell>
                     <Table.Cell>{v.makers}</Table.Cell>
-                    <Table.Cell>{v.foodName}</Table.Cell>
+                    <Table.Cell>
+                      <div style={{width: 150}}>{v.foodName}</div>
+                    </Table.Cell>
                     <Table.Cell textAlign="center">{v.count}</Table.Cell>
                     <Table.Cell textAlign="right">
                       {withCommas(v.price)}원

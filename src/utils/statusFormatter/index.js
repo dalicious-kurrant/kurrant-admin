@@ -41,11 +41,11 @@ export function diningFormatted(data) {
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
-      return '탈퇴 요청';
+      return '탈퇴';
     case 1:
       return '활성';
     case 2:
-      return '탈퇴';
+      return '탈퇴 요청';
     default:
       return '비인가';
   }
@@ -103,6 +103,16 @@ export const foodStatusData = [
     text: '판매중지',
     value: '판매중지',
   },
+  {
+    key: '등록대기',
+    text: '등록대기',
+    value: '등록대기',
+  },
+  {
+    key: '주문마감',
+    text: '주문마감',
+    value: '주문마감',
+  },
 ];
 export const foodCompleteStatusData = [
   {
@@ -129,5 +139,15 @@ export const foodCompleteStatusData = [
     key: '판매중지',
     text: '판매중지',
     value: 4,
+  },
+  {
+    key: '등록대기',
+    text: '등록대기',
+    value: 5,
+  },
+  {
+    key: '주문마감',
+    text: '주문마감',
+    value: 6,
   },
 ];

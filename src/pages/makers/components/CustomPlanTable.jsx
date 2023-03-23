@@ -68,6 +68,7 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
               console.log(v);
               return v?.makersSchedules.map((s, si) => {
                 return s?.foodSchedules.map((d, di) => {
+                  console.log(d.dailyFoodStatus);
                   return (
                     <Table.Row key={`${d.foodName + di}`}>
                       <Table.Cell padding="0px" textAlign="center"></Table.Cell>

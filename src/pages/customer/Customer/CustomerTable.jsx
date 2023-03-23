@@ -39,9 +39,9 @@ const CustomerTable = ({
   };
 
   const userArr = [
-    {value: 0, label: '탈퇴 요청'},
+    {value: 0, label: '탈퇴'},
     {value: 1, label: '활성'},
-    {value: 2, label: '탈퇴'},
+    {value: 2, label: '탈퇴 요청'},
   ];
 
   const userNameArr = testData?.map(el => {
