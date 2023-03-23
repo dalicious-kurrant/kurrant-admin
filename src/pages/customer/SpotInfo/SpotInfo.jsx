@@ -134,6 +134,17 @@ const SpotInfo = () => {
     setSpotInfoAddedFieldsData(injectGroupIDNameDataOnGroupId);
   }, [groupIdNameData]);
 
+  useEffect(() => {
+    console.log('스팟데이터임');
+    console.log(spotInfoData);
+  }, [spotInfoData]);
+
+  useEffect(() => {
+    console.log('엑셀 불러오기 데이터ㄴ');
+
+    console.log(exelSpot);
+  }, [exelSpot]);
+
   return (
     <>
       {exelSpot ? (
