@@ -310,7 +310,7 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
-    headerWidth: 200,
+    headerWidth: 160,
   },
   {
     fieldName: 'dinnerSupportPrice',
@@ -329,6 +329,7 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    headerWidth: 160,
   },
   {
     fieldName: 'dinnerLastOrderTime',
