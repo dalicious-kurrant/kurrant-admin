@@ -62,25 +62,6 @@ const CustomerTable = ({
     };
   });
 
-  const userFilter = e => {
-    const data = testData.filter(el => el.status === e);
-
-    setOption(data);
-  };
-
-  const userNameFilter = e => {
-    const data = testData.filter(el => el.id === e);
-
-    setOption(data);
-  };
-
-  const spotFilter = e => {
-    const data = testData.filter(
-      el => el.groupName && el.groupName.split(', ')?.includes(e),
-    );
-    setOption(data);
-  };
-
   return (
     <>
       <SelectWrap>
@@ -148,11 +129,15 @@ const CustomerTable = ({
                 />
               </Table.HeaderCell>
               <Table.HeaderCell>유저 상태</Table.HeaderCell>
-              <Table.HeaderCell>이메일(필수)</Table.HeaderCell>
-              <Table.HeaderCell>비밀번호</Table.HeaderCell>
-              <Table.HeaderCell>사용자 명(필수)</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                이메일(필수)
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">비밀번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                사용자 명(필수)
+              </Table.HeaderCell>
               <Table.HeaderCell>유저 타입</Table.HeaderCell>
-              <Table.HeaderCell>폰 번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">폰 번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟이름</Table.HeaderCell>
               <Table.HeaderCell>보유 포인트</Table.HeaderCell>
               <Table.HeaderCell>미식가 타입</Table.HeaderCell>
@@ -161,14 +146,26 @@ const CustomerTable = ({
               <Table.HeaderCell>이메일 동의/철회 날짜</Table.HeaderCell>
               <Table.HeaderCell>혜택 및 소식 알림</Table.HeaderCell>
               <Table.HeaderCell>주문 알림</Table.HeaderCell>
-              <Table.HeaderCell>마지막 로그인 날짜</Table.HeaderCell>
-              <Table.HeaderCell>생성일</Table.HeaderCell>
-              <Table.HeaderCell>수정일</Table.HeaderCell>
-              <Table.HeaderCell>일반기업_이메일</Table.HeaderCell>
-              <Table.HeaderCell>카카오_이메일</Table.HeaderCell>
-              <Table.HeaderCell>네이버_이메일</Table.HeaderCell>
-              <Table.HeaderCell>페이스북_이메일</Table.HeaderCell>
-              <Table.HeaderCell>애플_이메일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                마지막 로그인 날짜
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">생성일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">수정일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                일반기업_이메일
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                카카오_이메일
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                네이버_이메일
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                페이스북_이메일
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                애플_이메일
+              </Table.HeaderCell>
               {/* <Table.HeaderCell>음식 상태</Table.HeaderCell> */}
             </Table.Row>
           </Table.Header>
@@ -223,7 +220,9 @@ const CustomerTable = ({
                       <FlexBox>{row.phone}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
-                      <FlexBox>{row.groupName}</FlexBox>
+                      <FlexBox style={{justifyContent: 'flex-start'}}>
+                        {row.groupName}
+                      </FlexBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.point}</FlexBox>
