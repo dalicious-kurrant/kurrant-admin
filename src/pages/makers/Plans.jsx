@@ -91,6 +91,11 @@ const Plans = () => {
     isClick,
     setIsClick,
   );
+
+  useEffect(() => {
+    console.log(selectMakers);
+  }, [selectMakers]);
+
   const [startDate, setStartDate] = useState(
     new Date().setDate(new Date().getDate() + 1),
   );
@@ -287,6 +292,13 @@ const Plans = () => {
       setPlan();
     };
   }, [setExelPlan, setPlan]);
+
+  useEffect(() => {
+    console.log('카운트랑 플랜이여');
+    console.log(count);
+    console.log(plan);
+  }, [count, plan]);
+
   return (
     <PageWrapper>
       <Wrapper>
@@ -465,10 +477,12 @@ const PagenationBox = styled.div`
   justify-content: center;
   align-items: center;
   padding-left: 50px;
+  /* border: 5px solid black; */
 `;
 const FilterBox = styled.div`
   display: flex;
   gap: 20px;
+  /* border: 1px solid black; */
 `;
 const AccessDate = styled.div`
   justify-content: center;

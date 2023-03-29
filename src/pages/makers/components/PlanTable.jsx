@@ -8,6 +8,7 @@ import {
 
 const PlanTable = ({count, testData, setTestData}) => {
   console.log(testData);
+
   const changeStatus = (d, b) => {
     setTestData(
       testData.map(makers => {

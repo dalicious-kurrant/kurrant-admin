@@ -18,6 +18,7 @@ import CustomerCustom from '../pages/customer/Customer/CustomerCustom';
 import Group from '../pages/recommendation/group/Group';
 import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
+import ReviewPage from 'pages/boardAndReview/review/ReviewPage';
 
 export const MenuList = [
   {
@@ -152,8 +153,9 @@ export const MenuList = [
     url: '/board',
     children: [
       {
-        name: '리뷰 및 신고 (진행중)',
+        name: '리뷰관리(진행중)',
         url: '/review',
+        component: <ReviewPage />,
       },
       {
         name: '컨텐츠 관리 (진행중)',
