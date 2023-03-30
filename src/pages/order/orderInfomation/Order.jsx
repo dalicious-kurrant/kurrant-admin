@@ -12,7 +12,6 @@ import * as XLSX from 'xlsx';
 import {
   formattedFullDate,
   formattedWeekDate,
-  formattedDateAndTime,
 } from '../../../utils/dateFormatter';
 
 import {

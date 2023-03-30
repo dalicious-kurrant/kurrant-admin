@@ -1,8 +1,6 @@
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
-import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
-import {bizNoFormatter} from 'utils/bizNumberFormatter';
-import {formattedPercent} from 'utils/numberFormatter';
+import {formattedPercent} from '../../../utils/numberFormatter';
 
 const MakersTable = ({data}) => {
   // console.log(data, '09');
