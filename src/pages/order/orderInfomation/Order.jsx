@@ -243,7 +243,8 @@ const Order = () => {
     const reqArrays = [];
     reqArrays.push([
       'serviceDate',
-      'orderDateTime',
+      'orderDate',
+      'orderTime',
       'groupName',
       'spotName',
       'userName',
@@ -260,6 +261,7 @@ const Order = () => {
     ]);
     reqArrays.push([
       '날짜',
+      '주문일',
       '주문 시간',
       '그룹 이름',
       '스팟 이름',
