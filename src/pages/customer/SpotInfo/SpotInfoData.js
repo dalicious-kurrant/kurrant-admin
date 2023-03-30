@@ -200,14 +200,14 @@ export const SpotInfoFieldsData = [
     flex: 1,
     width: undefined,
 
-    inputType: inputType.text,
+    // inputType: inputType.text,
     // inputType: inputType.select,
     // options: [
     //   {name: '아침', value: '아침'},
     //   {name: '점심', value: '점심'},
     //   {name: '저녁', value: '저녁'},
     // ],
-    headerWidth: 800,
+    headerWidth: 500,
   },
   {
     fieldName: 'breakfastDeliveryTime',
@@ -221,7 +221,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'breakfastSupportPrice',
     fieldNameKor: '지원금아침',
-    placeholder: '가격 입력',
+    placeholder: '숫자 입력',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -245,7 +245,7 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
-    headerWidth: 160,
+    headerWidth: 200,
   },
   {
     fieldName: 'breakfastMembershipBenefitTime',
@@ -279,7 +279,7 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'lunchUseDays',
     fieldNameKor: '주문요일점심',
-    placeholder: '예) 00:00',
+    placeholder: '예) 월, 화, 수',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
@@ -310,7 +310,7 @@ export const SpotInfoFieldsData = [
     maxCharLength: 40,
     flex: 1,
     width: undefined,
-    headerWidth: 200,
+    headerWidth: 160,
   },
   {
     fieldName: 'dinnerSupportPrice',
@@ -325,15 +325,16 @@ export const SpotInfoFieldsData = [
   {
     fieldName: 'dinnerUseDays',
     fieldNameKor: '주문요일저녁',
-    placeholder: '월, 화, 수',
+    placeholder: '예) 월, 화, 수',
     maxCharLength: 40,
     flex: 1,
     width: undefined,
+    headerWidth: 160,
   },
   {
     fieldName: 'dinnerLastOrderTime',
     fieldNameKor: '저녁 주문마감시간',
-    placeholder: '1일전 12:00',
+    placeholder: '예) 1일전 12:00',
     maxCharLength: 40,
     flex: 1,
     width: undefined,

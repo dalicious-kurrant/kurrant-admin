@@ -7,11 +7,14 @@ import {
 } from '../../../style/common.style';
 import Select from 'react-select';
 import styled from 'styled-components';
+
 import * as XLSX from 'xlsx';
 import {
   formattedFullDate,
   formattedWeekDate,
+  formattedDateAndTime,
 } from '../../../utils/dateFormatter';
+
 import {
   useAllUserList,
   useCancelOrder,
@@ -471,6 +474,7 @@ const Order = () => {
                 />
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">날짜</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">주문 시간</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">그룹 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟 이름</Table.HeaderCell>
@@ -525,12 +529,23 @@ const Order = () => {
                     </Table.Cell>
                     <Table.Cell textAlign="center">
                       <div style={{width: 100}}>
-                        {formattedFullDate(v.orderDateTime)}
+                        {v.orderDateTime.split('T')[0]}
                       </div>
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{v.groupName}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.spotName}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.userName}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{width: 100}}>
+                        {v.orderDateTime.split('T')[1].split('.')[0]}
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{whiteSpace: 'nowrap'}}>{v.groupName}</div>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{whiteSpace: 'nowrap'}}>{v.spotName}</div>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{whiteSpace: 'nowrap'}}>{v.userName}</div>
+                    </Table.Cell>
                     <Table.Cell textAlign="center">{v.userEmail}</Table.Cell>
                     <Table.Cell textAlign="center">{v.phone}</Table.Cell>
                     <Table.Cell textAlign="center">{v.diningType}</Table.Cell>
@@ -542,13 +557,17 @@ const Order = () => {
                         v.orderStatus
                       )}
                     </Table.Cell>
-                    <Table.Cell>{v.makers}</Table.Cell>
                     <Table.Cell>
-                      <div style={{width: 150}}>{v.foodName}</div>
+                      <div style={{whiteSpace: 'nowrap'}}>{v.makers}</div>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <div style={{whiteSpace: 'nowrap'}}>{v.foodName}</div>
                     </Table.Cell>
                     <Table.Cell textAlign="center">{v.count}</Table.Cell>
                     <Table.Cell textAlign="right">
-                      {withCommas(v.price)}원
+                      <div style={{whiteSpace: 'nowrap'}}>
+                        {withCommas(v.price)}원
+                      </div>
                     </Table.Cell>
                     <Table.Cell>{v.orderCode}</Table.Cell>
                   </TableRow>
