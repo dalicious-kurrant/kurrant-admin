@@ -8,11 +8,13 @@ import FileIcon from '../../asset/icons/fileIcon.svg';
 import {Link} from 'react-router-dom';
 import AddSpotAdjust from './components/AddSpotAdjust';
 import {
+  useDeleteSpotsAdjust,
   useSpotsAdjustList,
   useUpdateSpotsAdjustStatus,
 } from 'hooks/useAdjustment';
 import EditSpotModal from './components/EditSpotModal';
 import {adjustReverseStatusFomatted} from 'utils/statusFormatter';
+import {useConfirm} from 'hooks/useConfirm';
 const statusData = [
   {key: 0, text: '정산 신청 완료', value: 0},
   {key: 1, text: '거래명세서 확정 대기', value: 1},
@@ -24,7 +26,12 @@ const SpotAdjustment = () => {
   const [checkItems, setCheckItems] = useState([]);
   const {data: spotsAdjustList} = useSpotsAdjustList();
   const {mutateAsync: updateStatus} = useUpdateSpotsAdjustStatus();
-
+  const confirmDelete = useConfirm(
+    '삭제하시겠습니까?',
+    async () => await deleteAdjustSpot({data: checkItems}),
+    () => {},
+  );
+  const {mutateAsync: deleteAdjustSpot} = useDeleteSpotsAdjust();
   const [selectStatus, setSelectStatus] = useState();
   const [showOpenModal, setShowOpenModal] = useState(false);
   const [editId, setEditId] = useState();
@@ -64,7 +71,7 @@ const SpotAdjustment = () => {
         <AddSpotAdjust />
       </FormProvider>
       <ButtonContainer>
-        <DeleteButton onClick={() => {}}>삭제</DeleteButton>
+        <DeleteButton onClick={confirmDelete}>삭제</DeleteButton>
       </ButtonContainer>
       <Table celled>
         <Table.Header>

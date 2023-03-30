@@ -44,6 +44,28 @@ export function useUpdateMakersAdjust() {
     },
   );
 }
+export function useDeleteMakersAdjust() {
+  const queryClient = useQueryClient();
+  return useMutation(value => adjustApis.deleteAdjustMakers(value), {
+    onSuccess: res => {
+      queryClient.invalidateQueries('makersAdjustList');
+    },
+    onError: e => {
+      alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());
+    },
+  });
+}
+export function useDeleteSpotsAdjust() {
+  const queryClient = useQueryClient();
+  return useMutation(value => adjustApis.deleteAdjustSpots(value), {
+    onSuccess: res => {
+      queryClient.invalidateQueries('spotsAdjustList');
+    },
+    onError: e => {
+      alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());
+    },
+  });
+}
 export function useUpdateMakersAdjustStatus() {
   const queryClient = useQueryClient();
   return useMutation(value => adjustApis.updateAdjustStatusMakers(value), {
