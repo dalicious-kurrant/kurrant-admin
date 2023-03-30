@@ -59,7 +59,7 @@ const EventPoint = () => {
       setCheckItems(checkItems.filter(el => el !== id));
     }
   };
-  console.log(days);
+
   const addEventCondition = async () => {
     const data = {
       pointCondition: conditionOption.value,

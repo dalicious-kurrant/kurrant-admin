@@ -159,7 +159,7 @@ const Order = () => {
     endDate,
     params,
   );
-  console.log(orderList);
+
   const getStartDate = e => {
     setStartDate(e.target.value);
   };
