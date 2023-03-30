@@ -203,7 +203,7 @@ export const MenuList = [
         url: '/issue',
       },
       {
-        name: '포인트 관리 (진행중)',
+        name: '포인트 관리',
         url: '/point',
         component: <Point />,
       },
