@@ -13,11 +13,13 @@ import {
   adjustTextStatusFomatted,
 } from 'utils/statusFormatter';
 import {
+  useDeleteMakersAdjust,
   useMakersAdjustList,
   useMakersList,
   useUpdateMakersAdjustStatus,
 } from 'hooks/useAdjustment';
 import EditMakersModal from './components/EditMakersModal';
+import {useConfirm} from 'hooks/useConfirm';
 const test = [
   {
     id: 0,
@@ -48,8 +50,14 @@ const statusData = [
 const MakersAdjustment = () => {
   const form = useForm();
   const [checkItems, setCheckItems] = useState([]);
+  const confirmDelete = useConfirm(
+    '삭제하시겠습니까?',
+    async () => await deleteAdjustMakers({data: checkItems}),
+    () => {},
+  );
   const {data: makersAdjustList} = useMakersAdjustList();
   const {mutateAsync: updateStatus} = useUpdateMakersAdjustStatus();
+  const {mutateAsync: deleteAdjustMakers} = useDeleteMakersAdjust();
 
   const [selectStatus, setSelectStatus] = useState();
   const [showOpenModal, setShowOpenModal] = useState(false);
@@ -90,7 +98,7 @@ const MakersAdjustment = () => {
         <AddMakersAdjust />
       </FormProvider>
       <ButtonContainer>
-        <DeleteButton onClick={() => {}}>삭제</DeleteButton>
+        <DeleteButton onClick={confirmDelete}>삭제</DeleteButton>
       </ButtonContainer>
       <Table celled>
         <Table.Header>
