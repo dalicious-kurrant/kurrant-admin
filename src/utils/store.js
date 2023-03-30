@@ -1,5 +1,5 @@
 import {atomWithReset} from 'jotai/utils';
-import {formattedWeekDate} from './dateFormatter';
+import {formattedWeekDate, formattedWeekDateZ} from './dateFormatter';
 
 //일정관리 아톰
 export const exelPlanAtom = atomWithReset();
@@ -29,7 +29,7 @@ export const exelCorporationAtom = atomWithReset();
 //order
 
 const day = new Date();
-const days = formattedWeekDate(day);
+const days = formattedWeekDateZ(day);
 export const startDateAtom = atomWithReset(days);
 export const endDateAtom = atomWithReset(days);
 export const groupOptionAtom = atomWithReset('');
