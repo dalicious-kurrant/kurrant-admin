@@ -14,6 +14,11 @@ button {
   cursor: pointer;
   border: 0;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 *, *::before, *::after {
     box-sizing: border-box;
   };
@@ -100,6 +105,7 @@ time,
 mark,
 audio,
 video {
+  
   margin: 0;
   padding: 0;
   border: 0;
