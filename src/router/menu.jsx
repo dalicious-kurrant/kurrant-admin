@@ -18,6 +18,7 @@ import CustomerCustom from '../pages/customer/Customer/CustomerCustom';
 import Group from '../pages/recommendation/group/Group';
 import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
+import Point from 'pages/calculation/point/Point';
 import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
 import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
 
@@ -200,6 +201,11 @@ export const MenuList = [
       {
         name: '정산 이슈 (진행중)',
         url: '/issue',
+      },
+      {
+        name: '포인트 관리 (진행중)',
+        url: '/point',
+        component: <Point />,
       },
     ],
   },
