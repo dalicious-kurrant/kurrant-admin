@@ -3,6 +3,7 @@ import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import {bizNoFormatter} from 'utils/bizNumberFormatter';
 import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
+import {formattedPercent} from 'utils/numberFormatter';
 import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
 
 const MakersExelTable = ({data}) => {
@@ -177,6 +178,13 @@ const MakersExelTable = ({data}) => {
                             {typeof el[k] === typeof new Date()
                               ? formattedTime(el[k])
                               : el[k]}
+                          </Table.Cell>
+                        );
+                      }
+                      if (k === 'fee') {
+                        return (
+                          <Table.Cell key={k + i}>
+                            {formattedPercent(el[k])}
                           </Table.Cell>
                         );
                       }

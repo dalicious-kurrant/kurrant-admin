@@ -20,7 +20,13 @@ const Layout = () => {
       {pathname !== '/' && (
         <Header openMenu={openMenu} setOpenMenu={setOpenMenu} />
       )}
-      {pathname === '/main' ? <div style={{paddingTop: '90px'}} /> : <Common />}
+      {pathname === '/main' ||
+      pathname === '/calc/makers' ||
+      pathname === '/calc/group' ? (
+        <div style={{paddingTop: '90px'}} />
+      ) : (
+        <Common />
+      )}
       <Outlet />
     </Wrapper>
   );

@@ -7,7 +7,11 @@ import {
 } from '../../../style/common.style';
 import Select from 'react-select';
 import styled from 'styled-components';
-import {formattedWeekDate} from '../../../utils/dateFormatter';
+import * as XLSX from 'xlsx';
+import {
+  formattedFullDate,
+  formattedWeekDate,
+} from '../../../utils/dateFormatter';
 import {
   useAllUserList,
   useCancelOrder,
@@ -38,6 +42,7 @@ import {
   userListAtom,
   userOptionAtom,
 } from 'utils/store';
+import {scheduleFormatted} from 'utils/statusFormatter';
 
 // 상품 정보 페이지
 const Order = () => {
@@ -231,6 +236,71 @@ const Order = () => {
     queryClient.invalidateQueries('orderList');
   };
 
+  const excelButton = async () => {
+    const reqArrays = [];
+    reqArrays.push([
+      'serviceDate',
+      'orderDateTime',
+      'groupName',
+      'spotName',
+      'userName',
+      'userEmail',
+      'phone',
+      'diningType',
+      'deliveryTime',
+      'orderStatus',
+      'makers',
+      'foodName',
+      'count',
+      'price',
+      'orderCode',
+    ]);
+    reqArrays.push([
+      '날짜',
+      '주문 시간',
+      '그룹 이름',
+      '스팟 이름',
+      '유저 이름',
+      '유저 이메일',
+      '번호',
+      '식사 타입',
+      '배송 시간',
+      '주문 상태',
+      '메이커스 이름',
+      '상품 이름',
+      '수량',
+      '최종 가격',
+      '오더번호',
+    ]);
+    orderList?.data.map(makers => {
+      return makers.orderItemDailyFoods.map(v => {
+        const reqArray = [];
+        reqArray.push(v.serviceDate);
+        reqArray.push(formattedFullDate(v.orderDateTime));
+        reqArray.push(v.groupName);
+        reqArray.push(v.spotName);
+        reqArray.push(v.userName);
+        reqArray.push(v.userEmail);
+        reqArray.push(v.phone);
+        reqArray.push(v.diningType);
+        reqArray.push(v.deliveryTime);
+        reqArray.push(v.orderStatus);
+        reqArray.push(v.makers);
+        reqArray.push(v.foodName);
+        reqArray.push(v.count);
+        reqArray.push(v.price);
+        reqArray.push(v.orderCode);
+        reqArrays.push(reqArray);
+        return reqArrays;
+      });
+    });
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, '주문 정보');
+    XLSX.writeFile(workbook, '주문 정보.xlsx');
+  };
+
   const orderStatusChange = async e => {
     const data = {
       status: e.value,
@@ -265,6 +335,7 @@ const Order = () => {
           onChange={e => getEndDate(e)}
         />
       </div>
+
       <ResetButton>
         <Button
           color="black"
@@ -272,6 +343,7 @@ const Order = () => {
           icon="redo"
           onClick={onClearSelect}
         />
+        <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
       </ResetButton>
 
       <SelectBoxWrapper>
@@ -399,6 +471,7 @@ const Order = () => {
                 />
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">날짜</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문 시간</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">그룹 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">유저 이름</Table.HeaderCell>
@@ -449,6 +522,11 @@ const Order = () => {
                     </Table.Cell>
                     <Table.Cell textAlign="center">
                       <div style={{width: 100}}>{v.serviceDate}</div>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      <div style={{width: 100}}>
+                        {formattedFullDate(v.orderDateTime)}
+                      </div>
                     </Table.Cell>
                     <Table.Cell textAlign="center">{v.groupName}</Table.Cell>
                     <Table.Cell textAlign="center">{v.spotName}</Table.Cell>
@@ -528,6 +606,9 @@ const TableRow = styled(Table.Row)`
 
 const ResetButton = styled.div`
   margin-top: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const DateSpan = styled.span`
