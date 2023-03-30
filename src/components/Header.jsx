@@ -148,8 +148,7 @@ const FontBox = styled.div`
 `;
 const DropDownMenu = styled(Dropdown)`
   .text {
-    color: ${({name}) =>
-      name === 4 || name === 5 || name === 6 ? 'red' : 'white'};
+    color: ${({name}) => (name === 4 || name === 5 ? 'red' : 'white')};
   }
   min-width: 160px;
   white-space: nowrap;
