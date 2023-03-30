@@ -26,6 +26,42 @@ export function foodStatusFomatted(data) {
       return '승인';
   }
 }
+export function adjustStatusFomatted(data) {
+  switch (data) {
+    case 0:
+      return '정산 신청 완료';
+    case 1:
+      return '거래명세서 확정 대기';
+    case 2:
+      return '정산금 입금 완료';
+    default:
+      return '정산 신청 완료';
+  }
+}
+export function adjustReverseStatusFomatted(data) {
+  switch (data) {
+    case '정산 신청 완료':
+      return 0;
+    case '거래명세서 확정 대기':
+      return 1;
+    case '정산금 입금 완료':
+      return 2;
+    default:
+      return 0;
+  }
+}
+export function adjustTextStatusFomatted(data) {
+  switch (data) {
+    case '정산 신청 완료':
+      return '정산 신청 완료';
+    case '거래명세서 확정 대기':
+      return '거래명세서 확정 대기';
+    case '정산금 입금 완료':
+      return '정산금 입금 완료';
+    default:
+      return '정산 신청 완료';
+  }
+}
 export function diningFormatted(data) {
   switch (data) {
     case 1:

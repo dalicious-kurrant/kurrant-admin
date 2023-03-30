@@ -455,6 +455,7 @@ export function makersInfoExel(makersInformation) {
     'isNutritionInformation',
     'openTime',
     'closeTime',
+    'fee',
     'bank',
     'depositHolder',
     'accountNumber',
@@ -487,6 +488,7 @@ export function makersInfoExel(makersInformation) {
     '외식영양정보 표시 대상 여부',
     '영업 시작시간',
     '영업 종료시간',
+    '사용료',
     '은행',
     '예금주 명',
     '계좌번호',
@@ -522,6 +524,7 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.isNutritionInformation);
     reqArray.push(el.openTime);
     reqArray.push(el.closeTime);
+    reqArray.push(el.fee);
     reqArray.push(el.bank);
     reqArray.push(el.depositHolder);
     reqArray.push(el.accountNumber);

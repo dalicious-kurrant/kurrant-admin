@@ -19,6 +19,8 @@ import Group from '../pages/recommendation/group/Group';
 import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
 import Point from 'pages/calculation/point/Point';
+import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
+import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
 
 export const MenuList = [
   {
@@ -175,16 +177,18 @@ export const MenuList = [
     ],
   },
   {
-    name: '정산 (진행중)',
+    name: '정산',
     url: '/calc',
     children: [
       {
-        name: '정산 조회 (진행중)',
-        url: '/info',
+        name: '고객사 정산',
+        url: '/group',
+        component: <SpotAdjustment />,
       },
       {
-        name: '메이커스 정산 (진행중)',
+        name: '메이커스 정산',
         url: '/makers',
+        component: <MakersAdjustment />,
       },
       {
         name: '수수료 관리 (진행중)',
