@@ -21,6 +21,7 @@ import Learning from '../pages/recommendation/learning/Learning';
 import Point from 'pages/calculation/point/Point';
 import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
 import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
+import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
 
 export const MenuList = [
   {
@@ -36,6 +37,11 @@ export const MenuList = [
         name: '식단 현황',
         url: '/completeplans',
         component: <CompletePlans />,
+      },
+      {
+        name: '추가 주문',
+        url: '/additionalOrder',
+        component: <AdditionalOrder />,
       },
     ],
   },
