@@ -72,7 +72,6 @@ const OrderDetail = () => {
           </Table.Header>
           <Table.Body>
             {orderDetail?.data.orderItemDailyFoodGroups.map((el, index) => {
-              // console.log(el);
               return el.orderItemDailyFoods.map((v, idx) => {
                 // console.log(v);
                 return (
@@ -82,7 +81,9 @@ const OrderDetail = () => {
                         rowSpan={el.orderItemDailyFoods.length}
                         verticalAlign="middle"
                         textAlign="center">
-                        {el.serviceDate}
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {el.serviceDate}
+                        </div>
                       </Table.Cell>
                     )}
                     {idx === 0 && (
@@ -90,29 +91,42 @@ const OrderDetail = () => {
                         rowSpan={el.orderItemDailyFoods.length}
                         textAlign="center"
                         verticalAlign="middle">
-                        {el.diningType}
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {el.diningType}
+                        </div>
                       </Table.Cell>
                     )}
                     <Table.Cell textAlign="center">{idx + 1}</Table.Cell>
-                    <Table.Cell>{v.makers}</Table.Cell>
-                    <Table.Cell>{v.foodName}</Table.Cell>
+                    <Table.Cell>
+                      <div style={{whiteSpace: 'nowrap'}}>{v.makers}</div>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <div style={{whiteSpace: 'nowrap'}}>{v.foodName}</div>
+                    </Table.Cell>
                     <Table.Cell textAlign="right">
-                      {withCommas(v.discountedPrice) || 0}원
+                      <div style={{whiteSpace: 'nowrap'}}>
+                        {' '}
+                        {withCommas(v.discountedPrice) || 0}원{' '}
+                      </div>
                     </Table.Cell>
                     <Table.Cell textAlign="center">{v.count}</Table.Cell>
                     <Table.Cell textAlign="center">
-                      {v.orderStatus === '취소' ? (
-                        <OrderCancel>{v.orderStatus}</OrderCancel>
-                      ) : (
-                        v.orderStatus
-                      )}
+                      <div style={{whiteSpace: 'nowrap'}}>
+                        {v.orderStatus === '취소' ? (
+                          <OrderCancel>{v.orderStatus}</OrderCancel>
+                        ) : (
+                          v.orderStatus
+                        )}{' '}
+                      </div>
                     </Table.Cell>
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}
                         verticalAlign="middle"
                         textAlign="right">
-                        {withCommas(el.totalPrice) || 0}원
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(el.totalPrice) || 0}원
+                        </div>
                       </Table.Cell>
                     )}
                     {idx === 0 && (
@@ -120,7 +134,9 @@ const OrderDetail = () => {
                         rowSpan={el.orderItemDailyFoods.length}
                         verticalAlign="middle"
                         textAlign="right">
-                        {withCommas(el.supportPrice) || 0}원
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(el.supportPrice) || 0}원
+                        </div>
                       </Table.Cell>
                     )}
                     {idx === 0 && (
@@ -128,7 +144,9 @@ const OrderDetail = () => {
                         rowSpan={el.orderItemDailyFoods.length}
                         verticalAlign="middle"
                         textAlign="right">
-                        {withCommas(el.payPrice) || 0}원
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(el.payPrice) || 0}원
+                        </div>
                       </Table.Cell>
                     )}
                     {idx === 0 && (
@@ -136,7 +154,9 @@ const OrderDetail = () => {
                         rowSpan={el.orderItemDailyFoods.length}
                         verticalAlign="middle"
                         textAlign="right">
-                        {withCommas(el.deliveryPrice) || 0}원
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(el.deliveryPrice) || 0}원
+                        </div>
                       </Table.Cell>
                     )}
                   </TableRow>
