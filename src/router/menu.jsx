@@ -39,7 +39,7 @@ export const MenuList = [
         component: <CompletePlans />,
       },
       {
-        name: '추가 주문',
+        name: '주문 추가(진행중)',
         url: '/additionalOrder',
         component: <AdditionalOrder />,
       },
