@@ -178,7 +178,7 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 const TableWrap = styled.div`
-  width: 80%;
+  width: 90%;
   overflow: auto;
 `;
 const TableRow = styled(Table.Row)`
