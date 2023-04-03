@@ -233,7 +233,7 @@ const Order = () => {
       setCheckItems([]);
     }
   };
-  console.log(checkItems);
+
   const cancelButton = async () => {
     await cancelOrder({idList: checkItems});
     closeModal();
@@ -482,11 +482,6 @@ const Order = () => {
             <Table.Row>
               <Table.HeaderCell width={1} textAlign="center">
                 <input
-                  checked={
-                    checkItems.length === (checkboxList && checkboxList.length)
-                      ? true
-                      : false
-                  }
                   type="checkbox"
                   onChange={e => handleAllCheck(e.target.checked)}
                 />
