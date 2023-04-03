@@ -214,15 +214,17 @@ const Order = () => {
     }
   };
   const checkboxList = orderList?.data
-    ?.map(el => el.orderItemDailyFoods)
+    ?.map(el => el.orderItemDailyFoodGroupList)
     .flat();
-  // console.log(checkboxList);
+
   const handleAllCheck = checked => {
     if (checked) {
       const idArray = [];
       orderList?.data?.map(el =>
-        el.orderItemDailyFoods.forEach(el =>
-          idArray.push(el.orderItemDailyFoodId),
+        el.orderItemDailyFoodGroupList.map(v =>
+          v.orderItemDailyFoods.forEach(el =>
+            idArray.push(el.orderItemDailyFoodId),
+          ),
         ),
       );
 
@@ -231,7 +233,7 @@ const Order = () => {
       setCheckItems([]);
     }
   };
-
+  console.log(checkItems);
   const cancelButton = async () => {
     await cancelOrder({idList: checkItems});
     closeModal();
@@ -533,18 +535,18 @@ const Order = () => {
                         onClick={e => e.stopPropagation()}>
                         <input
                           checked={
-                            checkItems.includes(v.orderItemDailyFoodId)
+                            checkItems.includes(item.orderItemDailyFoodId)
                               ? true
                               : false
                           }
                           type="checkbox"
                           onClick={e => {
-                            checked(e, v.orderItemDailyFoodId);
+                            checked(e, item.orderItemDailyFoodId);
                           }}
                           onChange={e =>
                             handleSingleCheck(
                               e.target.checked,
-                              v.orderItemDailyFoodId,
+                              item.orderItemDailyFoodId,
                             )
                           }
                         />
