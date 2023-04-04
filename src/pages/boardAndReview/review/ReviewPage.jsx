@@ -1,7 +1,7 @@
 import SelectDatePicker from 'pages/makers/components/SelectDatePicker';
-import {Button, Label, Dropdown} from 'semantic-ui-react';
-import {PageWrapper} from 'style/common.style';
 
+import {PageWrapper, TableWrapper} from 'style/common.style';
+import {Button, Checkbox, Dropdown, Table} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
@@ -136,22 +136,6 @@ const ReviewPage = () => {
               onChange={handleSpotFilter}
             />
 
-            {/* <SelectBox
-              placeholder="상품명, 상품번호 검색"
-              options={userNameArr}
-              onChange={e => {
-                //userNameFilter(e.value);
-                setNameFilter(e.value);
-              }}
-            />
-            <SelectBox
-              placeholder="작성자 검색"
-              options={spotArr}
-              onChange={e => {
-                //spotFilter(e.label);
-                setSpotFilter(e.value);
-              }}
-            /> */}
             <Button
               content="필터 초기화"
               color="blue"
@@ -208,6 +192,8 @@ const ReviewPage = () => {
           </CheckboxWrap>
         </Wrap3>
       </Wrap1>
+
+      <ReviewTable testData={[]} />
     </PageWrapper>
   );
 };
@@ -220,6 +206,7 @@ const DateWrapper = styled.div`
 
 const Wrap1 = styled.div`
   display: flex;
+  /* border: 1px solid black; */
 `;
 const Wrap2 = styled.div`
   display: flex;
