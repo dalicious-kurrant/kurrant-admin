@@ -113,6 +113,7 @@ const MakersAdjustment = () => {
             <Table.HeaderCell textAlign="center">월</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">메이커스</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">예금주</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">은행명</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">계좌번호</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">엑셀</Table.HeaderCell>
@@ -122,6 +123,7 @@ const MakersAdjustment = () => {
 
         <Table.Body>
           {makersAdjustList?.data?.map(v => {
+            console.log(v);
             return (
               <Table.Row key={v.id}>
                 <Table.Cell width={1} textAlign="center">
@@ -166,6 +168,15 @@ const MakersAdjustment = () => {
                     showEditOpen(v.id);
                   }}>
                   {v.accountHolder}
+                </Table.Cell>
+                <Table.Cell
+                  textAlign="center"
+                  style={{cursor: 'pointer'}}
+                  onClick={e => {
+                    e.stopPropagation();
+                    showEditOpen(v.id);
+                  }}>
+                  {v.nameOfBank}
                 </Table.Cell>
                 <Table.Cell
                   textAlign="center"
