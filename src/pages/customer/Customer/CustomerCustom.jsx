@@ -51,7 +51,6 @@ const CustomerCustom = () => {
   const [registerStatus, setRegisterStatus] = useState('register');
   const [key, setKey] = useState([]);
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
-
   const [userOption] = useAtom(userStateAtom);
   const [nameOption] = useAtom(userIdAtom);
   const [spotOption] = useAtom(groupIdAtom);
@@ -66,75 +65,15 @@ const CustomerCustom = () => {
     userId: userId && userId,
   };
 
-  const queryClient = useQueryClient();
-
-  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
-
-  const {mutate: sendFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.post(`users`, todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-        queryClient.invalidateQueries(['getCustomerJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
-  const {mutate: deleteFinalMutate} = useMutation(
-    async todo => {
-      const response = await instance.patch(`client/members`, todo);
-
-      console.log(todo);
-
-      return response;
-    },
-    {
-      onSuccess: () => {
-        console.log('success');
-        queryClient.invalidateQueries(['getCustomerJSON']);
-      },
-      onError: () => {
-        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
-      },
-    },
-  );
-
   const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
   const token = localStorage.getItem('token');
-
-  // const {status, isLoading} = useCustomerData(
-  //   ['getCustomerJSON'],
-  //   CustomerDataAtom,
-  //   'users/all',
-  //   token,
-  // );
-
   const {} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
     `users/all?${params.userStatus}${params.groupId}${params.userId}`,
     token,
   );
-
-  const handleBundleClick = buttonStatus => {
-    clickButtonBundle(
-      buttonStatus,
-      CustomerFieldsToOpen,
-      customerData,
-      checkboxStatus,
-      setDataToEdit,
-      setRegisterStatus,
-      setShowRegister,
-      deleteMutate,
-    );
-  };
 
   const handleClose = () => {
     setShowRegister(false);
@@ -148,52 +87,6 @@ const CustomerCustom = () => {
       setCheckboxStatus({});
     };
   }, []);
-
-  const handleDelete = () => {
-    const status = {...checkboxStatus};
-
-    let deleteList = [...tableDeleteList];
-
-    Object.entries(status).forEach(v => {
-      if (v[1] === true) {
-        deleteList.push(v[0]);
-      }
-    });
-
-    deleteList = [...new Set(deleteList)];
-
-    let injectIsOnDeleted = [];
-    const customerDataToDelete = [...customerData];
-
-    customerDataToDelete.forEach(v => {
-      if (deleteList.includes(v.id.toString())) {
-        v['isOnDeleteList'] = true;
-        injectIsOnDeleted.push(v);
-      } else {
-        injectIsOnDeleted.push(v);
-      }
-    });
-
-    setTableDeleteList(deleteList);
-    setCustomerData(injectIsOnDeleted);
-  };
-
-  // 페이지네이션
-
-  // 두 가지가 필요함
-
-  // 1. 페이지네이션 처리가 된 Get Api
-  // '현재 페이지'랑 '한 페이지당 보여줄 페이지의 갯수'
-  //  `http://localhost:3010/customer?_page=${queryKey[1]}&_limit=${queryKey[2]}`,
-
-  // 2. 백엔드에 있는 데이터의 총 길이
-
-  // const [page, setPage] = useState(12);
-  // const [limit, setLimit] = useState(1);
-
-  // PaginationTest(page, limit);
-
-  // const {totalPageArray, totalPageByLimit} = usePagination(12, limit, page);
 
   useEffect(() => {}, [userOption, nameOption, spotOption]);
 

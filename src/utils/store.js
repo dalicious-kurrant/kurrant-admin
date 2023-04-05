@@ -61,3 +61,11 @@ export const userIdAtom = atomWithReset('');
 
 // 오더번호
 export const orderNumberAtom = atomWithReset();
+
+// 추가 주문
+
+export const extraOrderStartDateAtom = atomWithReset(days);
+export const extraOrderEndDateAtom = atomWithReset(days);
+export const extraHistoryStartDateAtom = atomWithReset(days);
+export const extraHistoryEndDateAtom = atomWithReset(days);
+export const extraListDataAtom = atomWithReset();

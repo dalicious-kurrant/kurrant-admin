@@ -756,7 +756,7 @@ const Common = () => {
     pathname !== `/order/info/detail/${orderNumber}` &&
     pathname !== `/calc/point` &&
     pathname !== `/order/additionalOrder`;
-  console.log(noNeedButton);
+
   return (
     <C.Wrapper>
       <C.Bread>
