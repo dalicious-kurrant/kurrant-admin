@@ -601,9 +601,7 @@ const Order = () => {
                       <Table.Cell textAlign="center">{item.count}</Table.Cell>
                       <Table.Cell textAlign="center">
                         {withCommas(
-                          item.supplyPrice === (0 || null)
-                            ? '0'
-                            : item.supplyPrice,
+                          item.supplyPrice === 0 ? '0' : item.supplyPrice,
                         )}
                         원
                       </Table.Cell>
