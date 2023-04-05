@@ -15,12 +15,6 @@ const ReviewPagination = ({
   totalPage, // lastPage 제일 마지막 페이지
   selectOptionArray,
 }) => {
-  useEffect(() => {
-    console.log('page' + page);
-    console.log('limit' + limit);
-    console.log('totalPage' + totalPage);
-  }, [page, limit, totalPage]);
-
   const handleNumberButtonClick = e => {
     e.preventDefault();
     const id = e.target.id;

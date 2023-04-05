@@ -42,19 +42,9 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
 
   // 타이핑을 했는데 가끔 검색이 안될때가 있다 그럴때 다시 보내게 하기
 
-  const timer = callback => {
-    setTimeout(() => {
-      callback();
-    }, 700);
-  };
+  // 1번만
 
-  useEffect(() => {
-    if (!reviewList || reviewList.length < 1) {
-      timer(() => {
-        reviewQueryRefetch();
-      });
-    }
-  }, [reviewList, reviewQueryRefetch]);
+  const [] = useState(false);
 
   return {
     reviewQueryRefetch,

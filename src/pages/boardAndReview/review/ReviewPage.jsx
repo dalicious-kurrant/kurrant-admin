@@ -91,11 +91,23 @@ const ReviewPage = () => {
     reviewQueryRefetch();
   }, [url]);
 
+  // const timer = callback => {
+  //   setTimeout(() => {
+  //     callback();
+  //   }, 1500);
+  // };
+
+  // useEffect(() => {
+  //   if (!reviewList || reviewList.length < 1) {
+  //     timer(() => {
+  //       reviewQueryRefetch();
+  //     });
+  //   }
+  // }, [reviewList, reviewQueryRefetch]);
+
   // 메이커스 드랍박스 채우기
 
   // 3. 필터링 하기
-
-  const filteredReviewList = filterReviewList(reviewList);
 
   const handleNameFilter = e => {
     setOrderItemNameAndCode(e.target.value);
@@ -126,9 +138,6 @@ const ReviewPage = () => {
                     onChange={date => {
                       setStartDate(date);
                     }}
-                    placeholderText={
-                      <DefaultDateText>{'랄랄라'}</DefaultDateText>
-                    }
                     dateFormat="yyyy-MM-dd"
                     customInput={<ReviewSelectDatePicker />}
                   />
@@ -140,7 +149,6 @@ const ReviewPage = () => {
                     onChange={date => {
                       setEndDate(date);
                     }}
-                    placeholderText="안녕2"
                     dateFormat="yyyy-MM-dd"
                     customInput={<ReviewSelectDatePicker />}
                   />
@@ -149,7 +157,7 @@ const ReviewPage = () => {
 
               <Button
                 color="blue"
-                content="리뷰 가져오기"
+                content="검색하기"
                 onClick={() => {
                   reviewQueryRefetch();
                 }}
@@ -234,16 +242,19 @@ const ReviewPage = () => {
         </Wrap3>
       </Wrap1>
 
-      <ReviewPagination
-        page={page}
-        setPage={setPage}
-        limit={limit}
-        setLimit={setLimit}
-        totalPage={totalPage}
-        selectOptionArray={[1, 2, 4, 10]}
-      />
-
-      {status == 'success' && <ReviewTable testData={filteredReviewList} />}
+      {status == 'success' && reviewList && reviewList.length > 0 ? (
+        <ReviewPagination
+          page={page}
+          setPage={setPage}
+          limit={limit}
+          setLimit={setLimit}
+          totalPage={totalPage}
+          selectOptionArray={[1, 2, 4, 10]}
+        />
+      ) : (
+        <Div></Div>
+      )}
+      <ReviewTable testData={reviewList} />
     </PageWrapper>
   );
 };
@@ -332,4 +343,10 @@ const DateDatePicker = styled(DatePicker)``;
 
 const DefaultDateText = styled.span`
   color: #6b6b6b; /* Customize the color of the default text */
+`;
+
+const Div = styled.div`
+  flex: 1;
+
+  height: 4rem;
 `;
