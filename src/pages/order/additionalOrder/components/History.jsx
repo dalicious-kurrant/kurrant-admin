@@ -1,14 +1,21 @@
-import {useState} from 'react';
+import {useGetExtraHistory, useRefundExtraOrder} from 'hooks/useExtraOrder';
+import {useAtom} from 'jotai';
+import {useEffect, useState} from 'react';
 import {Button, Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import {formattedWeekDateZ} from 'utils/dateFormatter';
+import {extraHistoryEndDateAtom, extraHistoryStartDateAtom} from 'utils/store';
+import withCommas from 'utils/withCommas';
 
 const History = () => {
-  const day = new Date();
-  const days = formattedWeekDateZ(day);
-  const [startDate, setStartDate] = useState(days);
-  const [endDate, setEndDate] = useState(days);
+  const [startDate, setStartDate] = useAtom(extraHistoryStartDateAtom);
+  const [endDate, setEndDate] = useAtom(extraHistoryEndDateAtom);
+  const {data: extraHistoryList, refetch} = useGetExtraHistory(
+    startDate,
+    endDate,
+  );
+  const {mutateAsync: refundExtraOrder} = useRefundExtraOrder();
 
   const getStartDate = e => {
     setStartDate(e.target.value);
@@ -16,6 +23,14 @@ const History = () => {
   const getEndDate = e => {
     setEndDate(e.target.value);
   };
+
+  const refundOrderPress = async id => {
+    await refundExtraOrder({id: id});
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [startDate, endDate, refetch]);
 
   return (
     <Wrapper>
@@ -54,20 +69,38 @@ const History = () => {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              <Table.Row>
-                <Table.Cell textAlign="center">2023-03-20</Table.Cell>
-                <Table.Cell textAlign="center">2023-03-18 23:00:00</Table.Cell>
-                <Table.Cell textAlign="center">롯데월드</Table.Cell>
-                <Table.Cell textAlign="center">롯데타워 23층</Table.Cell>
-                <Table.Cell textAlign="center">손님</Table.Cell>
-                <Table.Cell textAlign="center">육개장</Table.Cell>
-                <Table.Cell textAlign="center">8000</Table.Cell>
-                <Table.Cell textAlign="center">3</Table.Cell>
-                <Table.Cell textAlign="center">24000</Table.Cell>
-                <Table.Cell textAlign="center">
-                  <Button content="취소" color="red" size="tiny" />
-                </Table.Cell>
-              </Table.Row>
+              {extraHistoryList?.data?.map((el, idx) => {
+                return (
+                  <Table.Row key={idx}>
+                    <Table.Cell textAlign="center">{el.serviceDate}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {el.createdDateTime}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{el.groupName}</Table.Cell>
+                    <Table.Cell textAlign="center">{el.spotName}</Table.Cell>
+                    <Table.Cell textAlign="center">{el.usage}</Table.Cell>
+                    <Table.Cell textAlign="center">{el.foodName}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {withCommas(el.price)}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{el.count}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {withCommas(el.totalPrice)}
+                    </Table.Cell>
+
+                    <Table.Cell textAlign="center">
+                      <Button
+                        content="취소"
+                        color="red"
+                        size="tiny"
+                        onClick={() =>
+                          refundOrderPress(el.orderItemDailyFoodId)
+                        }
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
             </Table.Body>
           </Table>
         </div>
@@ -91,4 +124,9 @@ const DateInput = styled.input`
 
 const DateSpan = styled.span`
   margin: 0px 4px;
+`;
+
+const CancelText = styled.div`
+  font-weight: 600;
+  color: #dd5257;
 `;

@@ -37,7 +37,7 @@ const CustomerTable = ({
     setClickData(...data);
     setShowOpenModal(true);
   };
-
+  console.log(userCheck);
   const userArr = [
     {value: 0, label: '탈퇴'},
     {value: 1, label: '활성'},
