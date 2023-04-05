@@ -7,11 +7,23 @@ import Select from 'react-select';
 import {TableWrapper} from 'style/common.style';
 import {userStatusFormatted} from 'utils/statusFormatter';
 import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
+import {useState} from 'react';
+import ReviewTableModal from './ReviewTableModal';
 
 const ReviewTable = ({testData}) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleRowClick = () => {
+    setShowModal(true);
+  };
+
   return (
     <>
       <TableWrapper>
+        {/* 모달 */}
+
+        <ReviewTableModal open={showModal} setOpen={setShowModal} />
+
         <Table celled selectable>
           <Table.Header>
             <Table.Row>
@@ -43,6 +55,8 @@ const ReviewTable = ({testData}) => {
                     onClick={e => {
                       console.log('클릭됨 나중에 여기에 상세패이지 만들어야됨');
                       e.stopPropagation();
+                      handleRowClick();
+
                       //   showEditOpen(row.id);
                     }}>
                     {/* <Table.Cell
