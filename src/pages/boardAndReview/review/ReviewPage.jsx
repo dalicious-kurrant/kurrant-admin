@@ -10,6 +10,7 @@ import Select from 'react-select';
 import ReviewCheckbox from './components/ReviewCheckbox';
 import useReviewQuery from './useReviewQuery';
 import {formattedDateForRecommendation} from 'utils/dateFormatter';
+import {fillMakersDropboxObject} from './ReviewPageLogics';
 
 // const options = [
 //   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
@@ -39,27 +40,29 @@ const ReviewPage = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  useEffect(() => {
-    console.log(startDate);
-
-    console.log(formattedDateForRecommendation(startDate));
-
-    console.log(endDate);
-  }, [startDate, endDate]);
-
   // 리뷰 서버에서 받기
 
   const limit = 10;
   const page = 1;
-  // const startDate = '2023-02-01';
-  // const endDate = '2023-04-01';
 
+  const sampleStartDate = '2023-02-01';
+  const sampleEndDate = '2023-03-30';
+
+  // const {reviewList, makersList, reviewQueryRefetch} = useReviewQuery(
+  //   ['getReviewList'],
+  //   `reviews/all?limit=${limit}&page=${page}&startDate=${formattedDateForRecommendation(
+  //     startDate,
+  //   )}&endDate=${formattedDateForRecommendation(endDate)}`,
+  // );
   const {reviewList, makersList, reviewQueryRefetch} = useReviewQuery(
     ['getReviewList'],
-    `reviews/all?limit=${limit}&page=${page}&startDate=${formattedDateForRecommendation(
-      startDate,
-    )}&endDate=${formattedDateForRecommendation(endDate)}`,
+    `reviews/all?limit=${limit}&page=${page}&startDate=${sampleStartDate}&endDate=${sampleEndDate}`,
   );
+
+  useEffect(() => {
+    // console.log(reviewList);
+    // console.log(makersList);
+  }, [reviewList, makersList]);
 
   // 2. 필터 값들
 
@@ -67,17 +70,19 @@ const ReviewPage = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [spotFilter, setSpotFilter] = useState('');
 
-  // useEffect(() => {
-  //   console.log(makersFilter);
-  // }, [makersFilter]);
-  // useEffect(() => {
-  //   console.log(nameFilter);
-  // }, [nameFilter]);
-  // useEffect(() => {
-  //   console.log(spotFilter);
-  // }, [spotFilter]);
+  useEffect(() => {
+    console.log(makersFilter);
+  }, [makersFilter]);
+  useEffect(() => {
+    console.log(nameFilter);
+  }, [nameFilter]);
+  useEffect(() => {
+    console.log(spotFilter);
+  }, [spotFilter]);
 
   // 3. 체크박스 3개
+
+  // 메이커스 드랍박스 채우기
 
   const [isMakersReview, setIsMakersReview] = useState(false);
   const [isAdminReview, setIsAdminReview] = useState(false);
@@ -90,13 +95,6 @@ const ReviewPage = () => {
   const handleSpotFilter = e => {
     setSpotFilter(e.target.value);
   };
-
-  useEffect(() => {
-    console.log(nameFilter);
-  }, [nameFilter]);
-  useEffect(() => {
-    console.log(spotFilter);
-  }, [spotFilter]);
 
   return (
     <PageWrapper>
@@ -141,7 +139,7 @@ const ReviewPage = () => {
           <SelectWrap>
             <SelectBox
               placeholder="메이커스 리스트"
-              options={userArr}
+              options={makersList ? fillMakersDropboxObject(makersList) : []}
               onChange={e => {
                 //userFilter(e.value);
                 console.log('리뷰테이블');
