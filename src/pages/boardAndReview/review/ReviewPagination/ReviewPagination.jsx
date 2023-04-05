@@ -1,17 +1,26 @@
 import {useEffect} from 'react';
 import styled from 'styled-components';
-import {calculatePageMove} from './PaginationLogics';
+
 import DataLimitSelect from './DataLimitSelect';
+import {
+  calculatePageMove,
+  makePaginationPagesArray,
+} from './reviewPaginationLogics';
 
 const ReviewPagination = ({
-  pageList, // pageList [1,2,3,4,5,6,7,8,9,10] 이런거
   page,
   setPage,
   limit,
   setLimit,
-  lastPage, // lastPage 제일 마지막 페이지
+  totalPage, // lastPage 제일 마지막 페이지
   selectOptionArray,
 }) => {
+  useEffect(() => {
+    console.log('page' + page);
+    console.log('limit' + limit);
+    console.log('totalPage' + totalPage);
+  }, [page, limit, totalPage]);
+
   const handleNumberButtonClick = e => {
     e.preventDefault();
     const id = e.target.id;
@@ -23,22 +32,30 @@ const ReviewPagination = ({
     e.preventDefault();
     const direction = e.target.id;
 
-    if (page + 10 > lastPage) {
-      setPage(lastPage);
+    if (page + 10 > totalPage) {
+      setPage(totalPage);
     }
 
     if (page < 1) {
       return;
     }
 
-    setPage(calculatePageMove(direction, page, lastPage));
+    setPage(calculatePageMove(direction, page, totalPage));
 
     if (direction === 'first') {
       setPage(1);
     } else if (direction === 'last') {
-      setPage(lastPage);
+      setPage(totalPage);
     }
   };
+
+  // pageListArr 만들기
+
+  // 말그대로 리스트만 만들어주면 됨
+
+  // 현재 page가 1이면 1~10 까지 보여주기, 11이면 11~20
+
+  const pageListArr = makePaginationPagesArray(page, totalPage);
 
   return (
     <Container>
@@ -58,9 +75,9 @@ const ReviewPagination = ({
           {'<'}
         </Button>
 
-        {Array.isArray(pageList) &&
-          !!pageList.length &&
-          pageList.map((value, index) => {
+        {Array.isArray(pageListArr) &&
+          !!pageListArr.length &&
+          pageListArr.map((value, index) => {
             const selected = page === value ? true : false;
 
             return (

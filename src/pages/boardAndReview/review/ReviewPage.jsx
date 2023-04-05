@@ -16,6 +16,7 @@ import {
 import Pagination from 'common/Pagination/Pagination';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReviewSelectDatePicker from './components/ReviewSelectDatePicker';
+import ReviewPagination from './ReviewPagination/ReviewPagination';
 
 // 이련 형태로 만들어야함
 const userArr = [
@@ -62,8 +63,8 @@ const ReviewPage = () => {
   useEffect(() => {
     setUrl(
       buildCustomUrl(
-        10,
-        1,
+        limit,
+        page,
         orderItemNameAndCode,
         writer,
         isMakersComment,
@@ -75,6 +76,8 @@ const ReviewPage = () => {
       ),
     );
   }, [
+    page,
+    limit,
     orderItemNameAndCode,
     writer,
     isMakersComment,
@@ -87,12 +90,17 @@ const ReviewPage = () => {
     setUrl,
   ]);
 
-  const {reviewList, makersList, unansweredCount, reviewQueryRefetch} =
-    useReviewQuery(
-      ['getReviewList'],
+  const {
+    reviewList,
+    totalPage,
+    makersList,
+    unansweredCount,
+    reviewQueryRefetch,
+  } = useReviewQuery(
+    ['getReviewList'],
 
-      url,
-    );
+    url,
+  );
 
   useEffect(() => {
     console.log(url);
@@ -114,6 +122,12 @@ const ReviewPage = () => {
   };
 
   // 4. 페이지네이션 하기
+
+  // page, limit, totalPage(비동기)를 준다
+
+  // useReviewPagination으로 만든다
+
+  // ReviewPagination에는
 
   return (
     <PageWrapper>
@@ -235,15 +249,15 @@ const ReviewPage = () => {
           </CheckboxWrap>
         </Wrap3>
       </Wrap1>
-      {/* <Pagination
-        pageList={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+
+      <ReviewPagination
         page={page}
         setPage={setPage}
         limit={limit}
         setLimit={setLimit}
-        lastPage={2}
+        totalPage={totalPage}
         selectOptionArray={[1, 2, 4, 10]}
-      /> */}
+      />
 
       <ReviewTable testData={filteredReviewList} />
     </PageWrapper>

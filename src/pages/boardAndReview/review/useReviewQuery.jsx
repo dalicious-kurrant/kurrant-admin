@@ -2,11 +2,13 @@ import {useQuery, useQueryClient} from 'react-query';
 import {MakersListAtom, ReviewListAtom, UnansweredCountAtom} from './store';
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
+import {useState} from 'react';
 
 const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
   const [reviewList, setReviewList] = useAtom(ReviewListAtom);
   const [makersList, setMakersList] = useAtom(MakersListAtom);
   const [unansweredCount, setUnansweredCount] = useAtom(UnansweredCountAtom);
+  const [totalPage, setTotalPage] = useState(0);
 
   const queryClient = useQueryClient();
   const {
@@ -28,7 +30,7 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
       setReviewList(response.data.items.reviewList);
       // 미답변 갯수
       setUnansweredCount(response.data.items.unansweredCount);
-
+      setTotalPage(response.data.total);
       return response.data;
     },
     {
@@ -45,6 +47,7 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
     isLoading,
     makersList,
     reviewList,
+    totalPage,
   };
 };
 export default useReviewQuery;
