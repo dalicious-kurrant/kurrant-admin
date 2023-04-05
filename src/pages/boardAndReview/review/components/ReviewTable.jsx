@@ -56,7 +56,7 @@ const ReviewTable = ({testData}) => {
                       <FlexBox>{row.serviceDate}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
-                      <FlexBox>{row.orderItemId}</FlexBox>
+                      <FlexBox>{row.orderCode}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.itemName}</FlexBox>

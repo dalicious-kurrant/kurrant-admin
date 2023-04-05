@@ -26,7 +26,6 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
       setMakersList(response.data.items.makersInfoList);
       // 리뷰 리스트 목록
       setReviewList(response.data.items.reviewList);
-
       // 미답변 갯수
       setUnansweredCount(response.data.items.unansweredCount);
 

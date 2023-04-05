@@ -1,5 +1,3 @@
-import SelectDatePicker from 'pages/makers/components/SelectDatePicker';
-
 import {PageWrapper, TableWrapper} from 'style/common.style';
 import {Button, Checkbox, Dropdown, Table} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
@@ -15,11 +13,10 @@ import {
   fillMakersDropboxObject,
   filterReviewList,
 } from './ReviewPageLogics';
+import Pagination from 'common/Pagination/Pagination';
+import 'react-datepicker/dist/react-datepicker.css';
+import ReviewSelectDatePicker from './components/ReviewSelectDatePicker';
 
-// const options = [
-//   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
-//   {key: '커런트', text: '커런트', value: '커런트'},
-// ];
 // 이련 형태로 만들어야함
 const userArr = [
   {value: 0, label: '탈퇴'},
@@ -38,26 +35,18 @@ const spotArr = [
 ];
 
 const ReviewPage = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
   // 필터 값들 모으기
 
   // 1. 날짜
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
+  // const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
-  // 리뷰 서버에서 받기
-
-  const limit = 10;
-  const page = 1;
-
-  const sampleStartDate = '2023-02-01';
-  const sampleEndDate = '2023-03-30';
-
-  // const {reviewList, makersList, reviewQueryRefetch} = useReviewQuery(
-  //   ['getReviewList'],
-  //   `reviews/all?limit=${limit}&page=${page}&startDate=${formattedDateForRecommendation(
-  //     startDate,
-  //   )}&endDate=${formattedDateForRecommendation(endDate)}`,
-  // );
+  // 날짜를 클릭 하고부터 적용하게 하기
 
   // 2. 필터 값들
 
@@ -71,16 +60,6 @@ const ReviewPage = () => {
   const [url, setUrl] = useState('reviews/all?limit=10&page=1');
 
   useEffect(() => {
-    // console.log('orderItemNameAndCode ' + orderItemNameAndCode);
-    // console.log('writer ' + writer);
-    // console.log('isMakersComment ' + isMakersComment);
-    // console.log('isAdminComment ' + isAdminComment);
-    // console.log('isReport ' + isReport);
-    // console.log('makersId ' + makersId);
-
-    // console.log('startDate ' + formattedDateForRecommendation(startDate));
-    // console.log('endDate ' + formattedDateForRecommendation(endDate));
-
     setUrl(
       buildCustomUrl(
         10,
@@ -111,14 +90,12 @@ const ReviewPage = () => {
   const {reviewList, makersList, unansweredCount, reviewQueryRefetch} =
     useReviewQuery(
       ['getReviewList'],
-      // `reviews/all?limit=${limit}&page=${page}&startDate=${sampleStartDate}&endDate=${sampleEndDate}`,
+
       url,
     );
 
   useEffect(() => {
-    console.log('야야야');
     console.log(url);
-
     reviewQueryRefetch();
   }, [url]);
 
@@ -136,6 +113,8 @@ const ReviewPage = () => {
     setWriter(e.target.value);
   };
 
+  // 4. 페이지네이션 하기
+
   return (
     <PageWrapper>
       <Wrap1>
@@ -149,8 +128,11 @@ const ReviewPage = () => {
                     onChange={date => {
                       setStartDate(date);
                     }}
+                    placeholderText={
+                      <DefaultDateText>{'랄랄라'}</DefaultDateText>
+                    }
                     dateFormat="yyyy-MM-dd"
-                    customInput={<SelectDatePicker />}
+                    customInput={<ReviewSelectDatePicker />}
                   />
                 </RecoDatePickerBox>
                 -
@@ -160,8 +142,9 @@ const ReviewPage = () => {
                     onChange={date => {
                       setEndDate(date);
                     }}
+                    placeholderText="안녕2"
                     dateFormat="yyyy-MM-dd"
-                    customInput={<SelectDatePicker />}
+                    customInput={<ReviewSelectDatePicker />}
                   />
                 </RecoDatePickerBox>
               </RecoDatePickerContainer>
@@ -252,6 +235,15 @@ const ReviewPage = () => {
           </CheckboxWrap>
         </Wrap3>
       </Wrap1>
+      {/* <Pagination
+        pageList={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+        page={page}
+        setPage={setPage}
+        limit={limit}
+        setLimit={setLimit}
+        lastPage={2}
+        selectOptionArray={[1, 2, 4, 10]}
+      /> */}
 
       <ReviewTable testData={filteredReviewList} />
     </PageWrapper>
@@ -336,4 +328,10 @@ const NoRespondCountWrap = styled.div`
 
 const NoRespondText = styled.span`
   font-size: 20px;
+`;
+
+const DateDatePicker = styled(DatePicker)``;
+
+const DefaultDateText = styled.span`
+  color: #6b6b6b; /* Customize the color of the default text */
 `;

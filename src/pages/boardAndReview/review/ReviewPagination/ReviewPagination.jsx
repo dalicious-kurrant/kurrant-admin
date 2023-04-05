@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import {calculatePageMove} from './PaginationLogics';
 import DataLimitSelect from './DataLimitSelect';
 
-const Pagination = ({
-  pageList,
+const ReviewPagination = ({
+  pageList, // pageList [1,2,3,4,5,6,7,8,9,10] 이런거
   page,
   setPage,
   limit,
   setLimit,
-  lastPage,
+  lastPage, // lastPage 제일 마지막 페이지
   selectOptionArray,
 }) => {
   const handleNumberButtonClick = e => {
@@ -21,7 +21,7 @@ const Pagination = ({
 
   const handleButtonClick = e => {
     e.preventDefault();
-    const id = e.target.id;
+    const direction = e.target.id;
 
     if (page + 10 > lastPage) {
       setPage(lastPage);
@@ -31,11 +31,11 @@ const Pagination = ({
       return;
     }
 
-    setPage(calculatePageMove(id, page, lastPage));
+    setPage(calculatePageMove(direction, page, lastPage));
 
-    if (id === 'first') {
+    if (direction === 'first') {
       setPage(1);
-    } else if (id === 'last') {
+    } else if (direction === 'last') {
       setPage(lastPage);
     }
   };
@@ -102,7 +102,7 @@ const Pagination = ({
   );
 };
 
-export default Pagination;
+export default ReviewPagination;
 
 const Container = styled.div`
   flex: 1;
