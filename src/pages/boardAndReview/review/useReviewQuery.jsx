@@ -23,7 +23,6 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
       const response = await instance.get(url);
 
       // 메이커스 목록
-      console.log(response);
 
       setMakersList(response.data.items.makersInfoList);
       // 리뷰 리스트 목록
@@ -43,8 +42,6 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
   // 타이핑을 했는데 가끔 검색이 안될때가 있다 그럴때 다시 보내게 하기
 
   // 1번만
-
-  const [] = useState(false);
 
   return {
     reviewQueryRefetch,
