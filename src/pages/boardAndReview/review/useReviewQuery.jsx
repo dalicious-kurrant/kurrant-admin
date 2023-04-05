@@ -2,7 +2,7 @@ import {useQuery, useQueryClient} from 'react-query';
 import {MakersListAtom, ReviewListAtom, UnansweredCountAtom} from './store';
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
   const [reviewList, setReviewList] = useAtom(ReviewListAtom);
@@ -39,6 +39,22 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
       retryDelay: 800,
     },
   );
+
+  // 타이핑을 했는데 가끔 검색이 안될때가 있다 그럴때 다시 보내게 하기
+
+  const timer = callback => {
+    setTimeout(() => {
+      callback();
+    }, 700);
+  };
+
+  useEffect(() => {
+    if (!reviewList || reviewList.length < 1) {
+      timer(() => {
+        reviewQueryRefetch();
+      });
+    }
+  }, [reviewList, reviewQueryRefetch]);
 
   return {
     reviewQueryRefetch,

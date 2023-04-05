@@ -18,23 +18,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ReviewSelectDatePicker from './components/ReviewSelectDatePicker';
 import ReviewPagination from './ReviewPagination/ReviewPagination';
 
-// 이련 형태로 만들어야함
-const userArr = [
-  {value: 0, label: '탈퇴'},
-  {value: 1, label: '활성'},
-  {value: 2, label: '탈퇴 요청'},
-];
-const userNameArr = [
-  {value: 0, label: '탈퇴'},
-  {value: 1, label: '활성'},
-  {value: 2, label: '탈퇴 요청'},
-];
-const spotArr = [
-  {value: 0, label: '탈퇴'},
-  {value: 1, label: '활성'},
-  {value: 2, label: '탈퇴 요청'},
-];
-
 const ReviewPage = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -96,6 +79,7 @@ const ReviewPage = () => {
     makersList,
     unansweredCount,
     reviewQueryRefetch,
+    status,
   } = useReviewQuery(
     ['getReviewList'],
 
@@ -259,7 +243,7 @@ const ReviewPage = () => {
         selectOptionArray={[1, 2, 4, 10]}
       />
 
-      <ReviewTable testData={filteredReviewList} />
+      {status == 'success' && <ReviewTable testData={filteredReviewList} />}
     </PageWrapper>
   );
 };
