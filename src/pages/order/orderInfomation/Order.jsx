@@ -257,6 +257,7 @@ const Order = () => {
       'makers',
       'foodName',
       'count',
+      '',
       'price',
       'totalPrice',
       'supportPrice',
@@ -279,6 +280,7 @@ const Order = () => {
       '메이커스 이름',
       '상품 이름',
       '수량',
+      '공급가',
       '최종 가격',
       '결제 총금액',
       '지원금',
@@ -304,6 +306,7 @@ const Order = () => {
           reqArray.push(item.makers);
           reqArray.push(item.foodName);
           reqArray.push(item.count);
+          reqArray.push(item.supplyPrice ?? 0);
           reqArray.push(item.price);
           reqArray.push(v.totalPrice);
           reqArray.push(v.supportPrice);
@@ -504,6 +507,7 @@ const Order = () => {
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">상품 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">수량</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">공급가</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">최종 가격</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 결제 총금액
@@ -595,6 +599,14 @@ const Order = () => {
                         </div>
                       </Table.Cell>
                       <Table.Cell textAlign="center">{item.count}</Table.Cell>
+                      <Table.Cell textAlign="center">
+                        {withCommas(
+                          item.supplyPrice === (0 || null)
+                            ? '0'
+                            : item.supplyPrice,
+                        )}
+                        원
+                      </Table.Cell>
                       <Table.Cell textAlign="right">
                         <div style={{whiteSpace: 'nowrap'}}>
                           {withCommas(item.price)}원
