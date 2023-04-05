@@ -8,6 +8,8 @@ import {useEffect, useRef, useState} from 'react';
 import ReviewTable from './components/ReviewTable';
 import Select from 'react-select';
 import ReviewCheckbox from './components/ReviewCheckbox';
+import useReviewQuery from './useReviewQuery';
+import {formattedDateForRecommendation} from 'utils/dateFormatter';
 
 // const options = [
 //   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
@@ -34,8 +36,30 @@ const ReviewPage = () => {
   // 필터 값들 모으기
 
   // 1. 날짜
-  const [recommandStartDate, setRecommandStartDate] = useState(new Date());
-  const [recommandEndDate, setRecommandEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  useEffect(() => {
+    console.log(startDate);
+
+    console.log(formattedDateForRecommendation(startDate));
+
+    console.log(endDate);
+  }, [startDate, endDate]);
+
+  // 리뷰 서버에서 받기
+
+  const limit = 10;
+  const page = 1;
+  // const startDate = '2023-02-01';
+  // const endDate = '2023-04-01';
+
+  const {reviewList, makersList, reviewQueryRefetch} = useReviewQuery(
+    ['getReviewList'],
+    `reviews/all?limit=${limit}&page=${page}&startDate=${formattedDateForRecommendation(
+      startDate,
+    )}&endDate=${formattedDateForRecommendation(endDate)}`,
+  );
 
   // 2. 필터 값들
 
@@ -43,15 +67,15 @@ const ReviewPage = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [spotFilter, setSpotFilter] = useState('');
 
-  useEffect(() => {
-    console.log(makersFilter);
-  }, [makersFilter]);
-  useEffect(() => {
-    console.log(nameFilter);
-  }, [nameFilter]);
-  useEffect(() => {
-    console.log(spotFilter);
-  }, [spotFilter]);
+  // useEffect(() => {
+  //   console.log(makersFilter);
+  // }, [makersFilter]);
+  // useEffect(() => {
+  //   console.log(nameFilter);
+  // }, [nameFilter]);
+  // useEffect(() => {
+  //   console.log(spotFilter);
+  // }, [spotFilter]);
 
   // 3. 체크박스 3개
 
@@ -80,17 +104,12 @@ const ReviewPage = () => {
         <Wrap2>
           <DateWrapper>
             <DeadLineWrapper>
-              <Button
-                color="blue"
-                content="추천 가져오기"
-                // onClick={recommandData}
-              />
               <RecoDatePickerContainer>
                 <RecoDatePickerBox>
                   <DatePicker
-                    selected={recommandStartDate}
+                    selected={startDate}
                     onChange={date => {
-                      setRecommandStartDate(date);
+                      setStartDate(date);
                     }}
                     dateFormat="yyyy-MM-dd"
                     customInput={<SelectDatePicker />}
@@ -99,15 +118,23 @@ const ReviewPage = () => {
                 -
                 <RecoDatePickerBox>
                   <DatePicker
-                    selected={recommandEndDate}
+                    selected={endDate}
                     onChange={date => {
-                      setRecommandEndDate(date);
+                      setEndDate(date);
                     }}
                     dateFormat="yyyy-MM-dd"
                     customInput={<SelectDatePicker />}
                   />
                 </RecoDatePickerBox>
               </RecoDatePickerContainer>
+
+              <Button
+                color="blue"
+                content="리뷰 가져오기"
+                onClick={() => {
+                  reviewQueryRefetch();
+                }}
+              />
             </DeadLineWrapper>
           </DateWrapper>
 
@@ -219,14 +246,15 @@ const Wrap3 = styled.div`
 const DeadLineWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
 `;
 const RecoDatePickerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
+  margin-right: 20px;
 `;
 const RecoDatePickerBox = styled.div`
   display: flex;

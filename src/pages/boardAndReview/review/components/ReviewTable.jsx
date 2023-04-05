@@ -22,47 +22,18 @@ const ReviewTable = ({
         <Table celled selectable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell width={1} textAlign="center">
-                {/* <Checkbox
-                  checked={allChk}
-                  onChange={(e, data) => {
-                    setAllChk(data.checked);
-
-                    if (data.checked) {
-                      let check = [];
-                      testData.map(v => {
-                        check.push(v.id);
-                      });
-                      setUserCheck(check);
-                    } else {
-                      setUserCheck([]);
-                    }
-                  }}
-                /> */}
+              <Table.HeaderCell>서비스 날짜</Table.HeaderCell>
+              <Table.HeaderCell>상품번호</Table.HeaderCell>
+              <Table.HeaderCell>상품명</Table.HeaderCell>
+              <Table.HeaderCell>점수</Table.HeaderCell>
+              <Table.HeaderCell>작성자</Table.HeaderCell>
+              <Table.HeaderCell>작성날짜</Table.HeaderCell>
+              <Table.HeaderCell width={10} textAlign="center">
+                내용
               </Table.HeaderCell>
-              <Table.HeaderCell>유저 상태</Table.HeaderCell>
-              <Table.HeaderCell>이메일(필수)</Table.HeaderCell>
-              <Table.HeaderCell>비밀번호</Table.HeaderCell>
-              <Table.HeaderCell>사용자 명(필수)</Table.HeaderCell>
-              <Table.HeaderCell>유저 타입</Table.HeaderCell>
-              <Table.HeaderCell>폰 번호</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">스팟이름</Table.HeaderCell>
-              <Table.HeaderCell>보유 포인트</Table.HeaderCell>
-              <Table.HeaderCell>미식가 타입</Table.HeaderCell>
-              <Table.HeaderCell>맴버십 여부</Table.HeaderCell>
-              <Table.HeaderCell>이메일 동의 여부</Table.HeaderCell>
-              <Table.HeaderCell>이메일 동의/철회 날짜</Table.HeaderCell>
-              <Table.HeaderCell>혜택 및 소식 알림</Table.HeaderCell>
-              <Table.HeaderCell>주문 알림</Table.HeaderCell>
-              <Table.HeaderCell>마지막 로그인 날짜</Table.HeaderCell>
-              <Table.HeaderCell>생성일</Table.HeaderCell>
-              <Table.HeaderCell>수정일</Table.HeaderCell>
-              <Table.HeaderCell>일반기업_이메일</Table.HeaderCell>
-              <Table.HeaderCell>카카오_이메일</Table.HeaderCell>
-              <Table.HeaderCell>네이버_이메일</Table.HeaderCell>
-              <Table.HeaderCell>페이스북_이메일</Table.HeaderCell>
-              <Table.HeaderCell>애플_이메일</Table.HeaderCell>
-              {/* <Table.HeaderCell>음식 상태</Table.HeaderCell> */}
+              <Table.HeaderCell>사장님 답글 여부</Table.HeaderCell>
+              <Table.HeaderCell>관리자 답글 여부</Table.HeaderCell>
+              <Table.HeaderCell>신고</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
