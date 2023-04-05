@@ -600,10 +600,12 @@ const Order = () => {
                       </Table.Cell>
                       <Table.Cell textAlign="center">{item.count}</Table.Cell>
                       <Table.Cell textAlign="center">
-                        {withCommas(
-                          item.supplyPrice === 0 ? '0' : item.supplyPrice,
-                        )}
-                        원
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(
+                            item.supplyPrice === 0 ? '0' : item.supplyPrice,
+                          )}
+                          원
+                        </div>
                       </Table.Cell>
                       <Table.Cell textAlign="right">
                         <div style={{whiteSpace: 'nowrap'}}>
