@@ -54,10 +54,11 @@ const ReviewPage = () => {
   //     startDate,
   //   )}&endDate=${formattedDateForRecommendation(endDate)}`,
   // );
-  const {reviewList, makersList, reviewQueryRefetch} = useReviewQuery(
-    ['getReviewList'],
-    `reviews/all?limit=${limit}&page=${page}&startDate=${sampleStartDate}&endDate=${sampleEndDate}`,
-  );
+  const {reviewList, makersList, unansweredCount, reviewQueryRefetch} =
+    useReviewQuery(
+      ['getReviewList'],
+      `reviews/all?limit=${limit}&page=${page}&startDate=${sampleStartDate}&endDate=${sampleEndDate}`,
+    );
 
   useEffect(() => {
     // console.log(reviewList);
@@ -164,14 +165,16 @@ const ReviewPage = () => {
             <Button
               content="필터 초기화"
               color="blue"
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                window.location.reload();
+              }}
             />
           </SelectWrap>
         </Wrap2>
 
         <Wrap3>
           <NoRespondCountWrap>
-            <NoRespondText>미답변 수량 : {3}개</NoRespondText>
+            <NoRespondText>미답변 수량 : {unansweredCount}개</NoRespondText>
           </NoRespondCountWrap>
 
           <CheckboxWrap>
@@ -180,8 +183,6 @@ const ReviewPage = () => {
               <ReviewCheckbox
                 width="20px"
                 height="20px"
-                // height="2rem"
-                // css="margin:auto;"
                 checked={isMakersReview}
                 onChecked={() => {
                   setIsMakersReview(!isMakersReview);
@@ -193,8 +194,6 @@ const ReviewPage = () => {
               <ReviewCheckbox
                 width="20px"
                 height="20px"
-                // height="2rem"
-                // css="margin:auto;"
                 checked={isAdminReview}
                 onChecked={() => {
                   setIsAdminReview(!isAdminReview);
@@ -206,8 +205,6 @@ const ReviewPage = () => {
               <ReviewCheckbox
                 width="20px"
                 height="20px"
-                // height="2rem"
-                // css="margin:auto;"
                 checked={isReport}
                 onChecked={() => {
                   setIsReport(!isReport);
@@ -236,6 +233,8 @@ const Wrap1 = styled.div`
 const Wrap2 = styled.div`
   display: flex;
   flex-direction: column;
+
+  margin-right: 12px;
 `;
 const Wrap3 = styled.div`
   display: flex;
@@ -287,11 +286,16 @@ const CheckboxWrap = styled.div``;
 const CheckboxSmallWrap = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 3px;
 `;
 const CheckboxText = styled.span`
   margin-right: 5px;
 `;
 
-const NoRespondCountWrap = styled.div``;
+const NoRespondCountWrap = styled.div`
+  margin: 10px 0;
+`;
 
-const NoRespondText = styled.span``;
+const NoRespondText = styled.span`
+  font-size: 20px;
+`;
