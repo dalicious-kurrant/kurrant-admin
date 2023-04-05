@@ -19,6 +19,7 @@ const AddOrder = () => {
   const {watch, setValue} = form;
 
   const purpose = watch('purpose');
+  const count = watch('count');
   console.log(purpose);
   const getStartDate = e => {
     setStartDate(e.target.value);
@@ -93,7 +94,7 @@ const AddOrder = () => {
                   <InnerCell>24000</InnerCell>
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  <Button content="삭제" color="red" size="tiny" />
+                  <Button content="취소" color="red" size="tiny" />
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
@@ -182,7 +183,9 @@ const AddOrder = () => {
                     </InnerCell>
                   </Table.Cell>
                   <Table.Cell textAlign="center">
-                    <InnerCell>1</InnerCell>
+                    <InnerCell>
+                      <Input name="count" />
+                    </InnerCell>
                   </Table.Cell>
                   <Table.Cell textAlign="center">
                     <InnerCell>8,000원</InnerCell>
