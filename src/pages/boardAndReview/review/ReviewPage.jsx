@@ -10,7 +10,11 @@ import Select from 'react-select';
 import ReviewCheckbox from './components/ReviewCheckbox';
 import useReviewQuery from './useReviewQuery';
 import {formattedDateForRecommendation} from 'utils/dateFormatter';
-import {fillMakersDropboxObject} from './ReviewPageLogics';
+import {
+  buildCustomUrl,
+  fillMakersDropboxObject,
+  filterReviewList,
+} from './ReviewPageLogics';
 
 // const options = [
 //   {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
@@ -54,47 +58,82 @@ const ReviewPage = () => {
   //     startDate,
   //   )}&endDate=${formattedDateForRecommendation(endDate)}`,
   // );
-  const {reviewList, makersList, unansweredCount, reviewQueryRefetch} =
-    useReviewQuery(
-      ['getReviewList'],
-      `reviews/all?limit=${limit}&page=${page}&startDate=${sampleStartDate}&endDate=${sampleEndDate}`,
-    );
-
-  useEffect(() => {
-    // console.log(reviewList);
-    // console.log(makersList);
-  }, [reviewList, makersList]);
 
   // 2. 필터 값들
 
-  const [makersFilter, setMakersFilter] = useState('');
-  const [nameFilter, setNameFilter] = useState('');
-  const [spotFilter, setSpotFilter] = useState('');
+  const [makersId, setMakersId] = useState('');
+  const [orderItemNameAndCode, setOrderItemNameAndCode] = useState('');
+  const [writer, setWriter] = useState('');
+  const [isMakersComment, setIsMakersComment] = useState(false);
+  const [isAdminComment, setIsAdminComment] = useState(false);
+  const [isReport, setIsReport] = useState(false);
+
+  const [url, setUrl] = useState('reviews/all?limit=10&page=1');
 
   useEffect(() => {
-    console.log(makersFilter);
-  }, [makersFilter]);
-  useEffect(() => {
-    console.log(nameFilter);
-  }, [nameFilter]);
-  useEffect(() => {
-    console.log(spotFilter);
-  }, [spotFilter]);
+    // console.log('orderItemNameAndCode ' + orderItemNameAndCode);
+    // console.log('writer ' + writer);
+    // console.log('isMakersComment ' + isMakersComment);
+    // console.log('isAdminComment ' + isAdminComment);
+    // console.log('isReport ' + isReport);
+    // console.log('makersId ' + makersId);
 
-  // 3. 체크박스 3개
+    // console.log('startDate ' + formattedDateForRecommendation(startDate));
+    // console.log('endDate ' + formattedDateForRecommendation(endDate));
+
+    setUrl(
+      buildCustomUrl(
+        10,
+        1,
+        orderItemNameAndCode,
+        writer,
+        isMakersComment,
+        isAdminComment,
+        isReport,
+        makersId,
+        startDate,
+        endDate,
+      ),
+    );
+  }, [
+    orderItemNameAndCode,
+    writer,
+    isMakersComment,
+    isAdminComment,
+    isReport,
+    makersId,
+    startDate,
+    endDate,
+    url,
+    setUrl,
+  ]);
+
+  const {reviewList, makersList, unansweredCount, reviewQueryRefetch} =
+    useReviewQuery(
+      ['getReviewList'],
+      // `reviews/all?limit=${limit}&page=${page}&startDate=${sampleStartDate}&endDate=${sampleEndDate}`,
+      url,
+    );
+
+  useEffect(() => {
+    console.log('야야야');
+    console.log(url);
+
+    reviewQueryRefetch();
+  }, [url]);
 
   // 메이커스 드랍박스 채우기
 
-  const [isMakersReview, setIsMakersReview] = useState(false);
-  const [isAdminReview, setIsAdminReview] = useState(false);
-  const [isReport, setIsReport] = useState(false);
+  // 3. 필터링 하기
+
+  const filteredReviewList = filterReviewList(reviewList);
 
   const handleNameFilter = e => {
-    setNameFilter(e.target.value);
+    setOrderItemNameAndCode(e.target.value);
   };
 
   const handleSpotFilter = e => {
-    setSpotFilter(e.target.value);
+    setWriter(e.target.value);
   };
 
   return (
@@ -143,9 +182,8 @@ const ReviewPage = () => {
               options={makersList ? fillMakersDropboxObject(makersList) : []}
               onChange={e => {
                 //userFilter(e.value);
-                console.log('리뷰테이블');
-                console.log(e);
-                setMakersFilter(e.value.toString());
+
+                setMakersId(e.value.toString());
               }}
             />
 
@@ -183,9 +221,9 @@ const ReviewPage = () => {
               <ReviewCheckbox
                 width="20px"
                 height="20px"
-                checked={isMakersReview}
+                checked={isMakersComment}
                 onChecked={() => {
-                  setIsMakersReview(!isMakersReview);
+                  setIsMakersComment(!isMakersComment);
                 }}
               />
             </CheckboxSmallWrap>
@@ -194,9 +232,9 @@ const ReviewPage = () => {
               <ReviewCheckbox
                 width="20px"
                 height="20px"
-                checked={isAdminReview}
+                checked={isAdminComment}
                 onChecked={() => {
-                  setIsAdminReview(!isAdminReview);
+                  setIsAdminComment(!isAdminComment);
                 }}
               />
             </CheckboxSmallWrap>
@@ -215,7 +253,7 @@ const ReviewPage = () => {
         </Wrap3>
       </Wrap1>
 
-      <ReviewTable testData={[]} />
+      <ReviewTable testData={filteredReviewList} />
     </PageWrapper>
   );
 };
