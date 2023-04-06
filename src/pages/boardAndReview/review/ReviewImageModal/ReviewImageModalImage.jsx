@@ -1,8 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 
-const ReviewImage = ({url, setShowImageModal}) => {
-  const [onHover, setOnHover] = useState(false);
+const ReviewImageModalImage = ({url}) => {
   const divRef = useRef(null);
 
   const [isHorizontal, setIsHorizontal] = useState(false);
@@ -22,31 +21,32 @@ const ReviewImage = ({url, setShowImageModal}) => {
 
   return (
     <>
-      <Div
-        ref={divRef}
-        // divRef={divRef}
-        onClick={() => {
-          setShowImageModal(true);
-        }}
-        onMouseEnter={() => setOnHover(true)}
-        onMouseLeave={() => setOnHover(false)}>
+      <ImageWrapper isHorizontal={isHorizontal} ref={divRef}>
         <Img src={url} alt="" isHorizontal={isHorizontal} />
-      </Div>
+      </ImageWrapper>
     </>
   );
 };
-export default ReviewImage;
+export default ReviewImageModalImage;
 
-export const Div = styled.div`
+export const ImageWrapper = styled.div`
   display: flex;
 
-  height: 110px;
-  width: 110px;
+  /* ${({isHorizontal}) => {
+    if (isHorizontal) {
+      return `height: 90%;`;
+    } else {
+      return `width: 90%;`;
+    }
+  }} */
+
+  height: 90%;
+  /* width: 110px; */
   position: relative;
   margin: 10px;
 
   /* border: 1px solid black; */
-  overflow: hidden;
+  /* overflow: hidden; */
   border-radius: 6px;
 `;
 
@@ -58,6 +58,8 @@ export const Img = styled.img`
       return `width: 100%;`;
     }
   }}
+
+  height: 100%;
 
   margin: auto;
 `;

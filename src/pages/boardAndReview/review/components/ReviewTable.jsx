@@ -5,8 +5,7 @@ import styled from 'styled-components';
 
 import Select from 'react-select';
 import {TableWrapper} from 'style/common.style';
-import {userStatusFormatted} from 'utils/statusFormatter';
-import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
+
 import {useState} from 'react';
 import ReviewTableModal from '../ReviewModal/ReviewTableModal';
 
