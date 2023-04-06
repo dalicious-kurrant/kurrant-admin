@@ -77,10 +77,34 @@ const useReviewModalMutation = () => {
     },
   );
 
+  // 운영팀 댓글 삭제
+  const {mutate: deleteAdminCommentMutate} = useMutation(
+    async data => {
+      console.log(data);
+      const response = await instance.patch(`reviews/comment/delete`, data);
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        console.log('운영자 리뷰 삭제 success');
+        queryClient.invalidateQueries(['getReviewDetail']);
+        queryClient.invalidateQueries(['getReviewList']);
+        window.confirm('운영자 리뷰 삭제가 정상적으로 이루워졌습니다');
+      },
+      onError: err => {
+        console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
+        console.log(err);
+        window.confirm('운영자 리뷰 삭제 실패');
+      },
+    },
+  );
+
   return {
     reportReviewMutate,
     submitReviewMutate,
     deleteReviewMutate,
+    deleteAdminCommentMutate,
   };
 };
 export default useReviewModalMutation;

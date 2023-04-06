@@ -13,10 +13,6 @@ const ShowCommentsReview = ({
   // 내용 없을때
 
   useEffect(() => {
-    console.log(content);
-  }, [content]);
-
-  useEffect(() => {
     if (content && content.length > 0) {
       // 작성일자 추가해주기
 

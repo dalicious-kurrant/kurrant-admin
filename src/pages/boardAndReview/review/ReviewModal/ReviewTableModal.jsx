@@ -18,12 +18,15 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     'getReviewDetail',
     reviewId,
   ]);
-  console.log(reviewId);
 
   // mutation code 따로 모으기
 
-  const {reportReviewMutate, submitReviewMutate, deleteReviewMutate} =
-    useReviewModalMutation();
+  const {
+    reportReviewMutate,
+    submitReviewMutate,
+    deleteReviewMutate,
+    deleteAdminCommentMutate,
+  } = useReviewModalMutation();
 
   // 변수 나누기
 
@@ -66,6 +69,20 @@ function ReviewTableModal({open, setOpen, reviewId}) {
         window.confirm('이미 삭제된 리뷰입니다');
       } else {
         submitReviewMutate({content: value, id: reviewId});
+      }
+    } else {
+      return;
+    }
+  };
+
+  const handleAdminCommentDelete = () => {
+    if (window.confirm('운영자 댓글을 삭제하시겠습니까?')) {
+      //이미 삭제된 댓글이면 안보이게 하기
+      if (reviewDetail && reviewDetail?.isDelete) {
+        window.confirm('이미 삭제된 리뷰입니다');
+      } else {
+        console.log(reviewId);
+        deleteAdminCommentMutate({id: reviewId});
       }
     } else {
       return;
@@ -155,12 +172,18 @@ function ReviewTableModal({open, setOpen, reviewId}) {
                     reviewDetail?.adminComment.length - 1
                   ].comment
                 }
-                buttonName={'작성 및 수정'}
+                buttonName={'댓글 작성'}
+                buttonName2={'댓글 삭제'}
                 disabled={false}
                 title={'운영자 댓글(작성 / 수정가능)'}
                 onClickCallback={value => {
                   handleSubmit(value);
                 }}
+                onClickCallback2={() => {
+                  // 삭제
+                  handleAdminCommentDelete();
+                }}
+                confirmButton2Color={'#ca2f2f'}
               />
             </Wrap4>
           </Wrap3>
@@ -173,16 +196,9 @@ function ReviewTableModal({open, setOpen, reviewId}) {
 export default ReviewTableModal;
 
 const ModalModal = styled(Modal)`
-  /* width: 90vw !important;
-  height: 90vh; */
   width: 1400px !important;
   height: 700px;
 `;
-
-// const ModalContent = styled(Modal.Content)`
-//   width: 100%;
-//   height: 100%;
-// `;
 
 const ModalDescription = styled(Modal.Description)`
   display: flex;

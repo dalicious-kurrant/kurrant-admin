@@ -4,17 +4,15 @@ import styled from 'styled-components';
 const ReadReview = ({
   content,
   onClickCallback,
+  onClickCallback2 = () => {},
   disabled = true,
   title,
   buttonName,
-  isMakersOrAdminComment,
+  buttonName2 = undefined,
+  confirmButton2Color,
 }) => {
   const [value, setValue] = useState('');
   // 내용 없을때
-
-  useEffect(() => {
-    console.log(content);
-  }, [content]);
 
   useEffect(() => {
     if (content) {
@@ -28,6 +26,9 @@ const ReadReview = ({
   const handleCallback = () => {
     onClickCallback(value);
   };
+  const handleCallback2 = () => {
+    onClickCallback2(value);
+  };
 
   return (
     <Container>
@@ -40,7 +41,17 @@ const ReadReview = ({
         value={value}
       />
 
-      <ConfirmButton onClick={handleCallback}>{buttonName}</ConfirmButton>
+      <ButtonWrap>
+        <ConfirmButton onClick={handleCallback}>{buttonName}</ConfirmButton>
+
+        {buttonName2 && (
+          <ConfirmButton
+            confirmButton2Color={confirmButton2Color}
+            onClick={handleCallback2}>
+            {buttonName2}
+          </ConfirmButton>
+        )}
+      </ButtonWrap>
     </Container>
   );
 };
@@ -84,12 +95,21 @@ const Input = styled.textarea`
     border: 1px solid #000;
   }
 `;
+const ButtonWrap = styled.div`
+  width: 90%;
+  display: flex;
+`;
 
 const ConfirmButton = styled.button`
-  width: 90%;
+  /* width: 90%; */
+  flex: 1;
   font-size: 26px;
   padding: 4px 0;
-  background-color: #4472c4;
+  background-color: ${({confirmButton2Color}) =>
+    confirmButton2Color ? confirmButton2Color : '#4472c4'};
+
   border-radius: 6px;
   color: white;
+
+  margin: 0px 5px;
 `;

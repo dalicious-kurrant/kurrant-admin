@@ -63,7 +63,6 @@ const ReviewTable = ({testData}) => {
                     }}
                     key={row.reviewId}
                     onClick={e => {
-                      console.log('클릭됨 나중에 여기에 상세패이지 만들어야됨');
                       e.stopPropagation();
                       handleRowClick(row);
 
