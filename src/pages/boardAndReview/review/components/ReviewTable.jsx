@@ -107,7 +107,9 @@ const ReviewTable = ({testData}) => {
                       <FlexBox>{row.isReport ? 'o' : 'x'}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
-                      <FlexBox>{row.isDelete ? 'o' : 'x'}</FlexBox>
+                      <IsDeleteFlexBox>
+                        {row.isDelete ? '삭제' : ''}
+                      </IsDeleteFlexBox>
                     </Table.Cell>
                   </Table.Row>
                 );
@@ -127,6 +129,11 @@ const FlexBox = styled.div`
   align-items: center;
   white-space: nowrap;
 `;
+
+const IsDeleteFlexBox = styled(FlexBox)`
+  color: red;
+`;
+
 const FlexPwdBox = styled.div`
   width: 100px;
   overflow: hidden;

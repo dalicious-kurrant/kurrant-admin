@@ -18,6 +18,7 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     'getReviewDetail',
     reviewId,
   ]);
+  console.log(reviewId);
 
   // mutation code 따로 모으기
 
@@ -219,7 +220,7 @@ const Wrap3 = styled.div`
   flex: 4;
   height: 100%;
 
-  background-color: skyblue;
+  /* background-color: skyblue; */
   display: flex;
   flex-direction: column;
 `;

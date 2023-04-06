@@ -5,22 +5,21 @@ import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
 import ReviewTable from './components/ReviewTable';
 import Select from 'react-select';
-import ReviewCheckbox from './components/ReviewCheckbox';
+
 import useReviewQuery from './useReviewQuery';
-import {formattedDateForRecommendation} from 'utils/dateFormatter';
-import {
-  buildCustomUrl,
-  fillMakersDropboxObject,
-  filterReviewList,
-} from './ReviewPageLogics';
-import Pagination from 'common/Pagination/Pagination';
+
+import {buildCustomUrl, fillMakersDropboxObject} from './ReviewPageLogics';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import ReviewSelectDatePicker from './components/ReviewSelectDatePicker';
 import ReviewPagination from './ReviewPagination/ReviewPagination';
+import RadioInput from './components/Radio/RadioInput';
+import RadioGroup from './components/Radio/RadioGroup';
+import Radio from './components/Radio/Radio';
 
 const ReviewPage = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
 
   // 필터 값들 모으기
 
@@ -37,9 +36,21 @@ const ReviewPage = () => {
   const [makersId, setMakersId] = useState('');
   const [orderItemNameAndCode, setOrderItemNameAndCode] = useState('');
   const [writer, setWriter] = useState('');
-  const [isMakersComment, setIsMakersComment] = useState(false);
-  const [isAdminComment, setIsAdminComment] = useState(false);
-  const [isReport, setIsReport] = useState(false);
+
+  const [isMakersComment, setIsMakersComment] = useState(null);
+  const [isAdminComment, setIsAdminComment] = useState(null);
+  const [isReport, setIsReport] = useState(null);
+
+  const handleIsMakersChange = e => {
+    setIsMakersComment(e.target.value);
+  };
+
+  const handleIsAdminChange = event => {
+    setIsAdminComment(event.target.value);
+  };
+  const handleIsReportChange = event => {
+    setIsReport(event.target.value);
+  };
 
   const [url, setUrl] = useState('reviews/all?limit=10&page=1');
 
@@ -207,35 +218,76 @@ const ReviewPage = () => {
           <CheckboxWrap>
             <CheckboxSmallWrap>
               <CheckboxText>사장님 댓글 여부</CheckboxText>
-              <ReviewCheckbox
-                width="20px"
-                height="20px"
-                checked={isMakersComment}
-                onChecked={() => {
-                  setIsMakersComment(!isMakersComment);
-                }}
+
+              <Radio
+                setChange={handleIsMakersChange}
+                name={'isMakersComment'}
+                inputList={[
+                  {
+                    value: '',
+                    defaultChecked: true,
+                    title: '전체',
+                  },
+                  {
+                    value: true,
+                    defaultChecked: false,
+                    title: '있음',
+                  },
+                  {
+                    value: false,
+                    defaultChecked: false,
+                    title: '없음',
+                  },
+                ]}
               />
             </CheckboxSmallWrap>
+
             <CheckboxSmallWrap>
               <CheckboxText>관리자 댓글 여부</CheckboxText>
-              <ReviewCheckbox
-                width="20px"
-                height="20px"
-                checked={isAdminComment}
-                onChecked={() => {
-                  setIsAdminComment(!isAdminComment);
-                }}
+              <Radio
+                setChange={handleIsAdminChange}
+                name={'isAdminComment'}
+                inputList={[
+                  {
+                    value: '',
+                    defaultChecked: true,
+                    title: '전체',
+                  },
+                  {
+                    value: true,
+                    defaultChecked: false,
+                    title: '있음',
+                  },
+                  {
+                    value: false,
+                    defaultChecked: false,
+                    title: '없음',
+                  },
+                ]}
               />
             </CheckboxSmallWrap>
             <CheckboxSmallWrap>
               <CheckboxText>신고 여부</CheckboxText>
-              <ReviewCheckbox
-                width="20px"
-                height="20px"
-                checked={isReport}
-                onChecked={() => {
-                  setIsReport(!isReport);
-                }}
+              <Radio
+                setChange={handleIsReportChange}
+                name={'isReport'}
+                inputList={[
+                  {
+                    value: '',
+                    defaultChecked: true,
+                    title: '전체',
+                  },
+                  {
+                    value: true,
+                    defaultChecked: false,
+                    title: '있음',
+                  },
+                  {
+                    value: false,
+                    defaultChecked: false,
+                    title: '없음',
+                  },
+                ]}
               />
             </CheckboxSmallWrap>
           </CheckboxWrap>
@@ -249,7 +301,7 @@ const ReviewPage = () => {
           limit={limit}
           setLimit={setLimit}
           totalPage={totalPage}
-          selectOptionArray={[1, 2, 4, 10]}
+          selectOptionArray={[50, 100, 200, 500]}
         />
       ) : (
         <Div></Div>
