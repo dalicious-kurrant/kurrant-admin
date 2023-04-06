@@ -49,7 +49,7 @@ function ReviewTableModal({open, setOpen, reviewId}) {
                 reviewDetail.imageLocations &&
                 reviewDetail.imageLocations.length > 0 &&
                 reviewDetail.imageLocations.map((v, i) => {
-                  return <ReviewImage key={i} url={v} />;
+                  return <ReviewImage url={v} />;
                 })}
             </PhotosWrap>
             <Wrap4>
@@ -106,8 +106,9 @@ const Wrap4 = styled.div`
 
 const PhotosWrap = styled.div`
   /* flex: 1; */
-  border: 1px solid black;
-  height: 300px;
+
+  /* height: 300px; */
   display: flex;
   align-items: center;
+  padding-left: 10px;
 `;

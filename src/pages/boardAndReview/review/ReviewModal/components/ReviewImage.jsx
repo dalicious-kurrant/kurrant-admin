@@ -38,13 +38,14 @@ export default ReviewImage;
 export const Div = styled.div`
   display: flex;
 
-  height: 150px;
-  width: 150px;
+  height: 110px;
+  width: 110px;
   position: relative;
-  margin: 1rem 0;
+  margin: 10px;
 
-  border: 1px solid black;
+  /* border: 1px solid black; */
   overflow: hidden;
+  border-radius: 6px;
 `;
 
 export const Img = styled.img`
