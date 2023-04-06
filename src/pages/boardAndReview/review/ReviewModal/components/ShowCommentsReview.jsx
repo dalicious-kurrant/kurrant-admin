@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
-const ReadReview = ({
+const ShowCommentsReview = ({
   content,
   onClickCallback,
   disabled = true,
@@ -17,8 +17,10 @@ const ReadReview = ({
   }, [content]);
 
   useEffect(() => {
-    if (content) {
-      setValue(content);
+    if (content && content.length > 0) {
+      // 작성일자 추가해주기
+
+      setValue(content[content.length - 1].comment);
     }
   }, [content]);
 
@@ -45,7 +47,7 @@ const ReadReview = ({
   );
 };
 
-export default ReadReview;
+export default ShowCommentsReview;
 
 const Container = styled.section`
   flex: 1;

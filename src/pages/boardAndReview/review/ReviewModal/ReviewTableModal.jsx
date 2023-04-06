@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import useReviewTableModal from './useReviewTableModal';
 import ReadReview from './components/ReadReview';
 import ReviewImage from './components/ReviewImage';
+import useReviewModalMutation from './useReviewModalMutation';
+import ShowCommentsReview from './components/ShowCommentsReview';
 
 const textSample =
   '리뷰 앱 피드백 정리 31. 작성한 리뷰 사진을 누르면 사진이 확대되게하기, 슬라이드로 다른 그림도 볼수 있게 하기 (체크)2. 작성한 리뷰 > 리뷰 관리 페이지 들어갈때도 포인트 적용되어야됨  (체크)3. 리뷰작성 > 클릭하면 상세화면으로 이동하기 구현하기 (체크)4. 500자 일떄 안됬음 -> 500일때 되어야함 501부터 되어야 됨 (체크)5. 그림이 없을때 글이 안 보이고 있음 (체크)6. Default Picture아예 없애기 (체크)7. 리뷰 작성 뒤로가기 누르면 아예 앱이 꺼져버림(또 잘 됨, 보니까 어느정도 시간이 지나야 이 버그가 생기는 것 같음, 구체적인 해결은 지금 못함)8. 먼저 쓴 게 제일 상단으로 위치하게끔 운영자, 메이커스 댓글 달리게 만들기 (지성님이랑 같이 봐야될듯, 서버에서 받아오는 날짜 데이터가 ‘2023-05-01’ 이런 형식으로 되어있다 이 형식에는 몇 시 몇 분 몇 초 까지는 나누지 않고 있기때문에 현재 이 데이터로 시간별 sorting하는 것은 안된다 ';
@@ -15,16 +17,50 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     reviewId,
   ]);
 
+  // mutation code 따로 모으기
+
+  const {reportReviewMutate, submitReviewMutate, deleteReviewMutate} =
+    useReviewModalMutation();
+
   // 변수 나누기
 
   // const {} = reviewDetail;
 
-  useEffect(() => {
-    console.log(reviewDetail);
-  }, [reviewDetail]);
+  // useEffect(() => {
+  //   console.log(reviewDetail);
+  // }, [reviewDetail]);
 
   const onSubmit = () => {
     setOpen(false);
+  };
+
+  const handleReport = () => {
+    if (window.confirm('이 리뷰를 신고하시겠습니까?')) {
+      reportReviewMutate({id: reviewId});
+      // window.location.reload();
+    } else {
+      return;
+    }
+  };
+  const handleDelete = () => {
+    if (window.confirm('이 리뷰를 삭제하시겠습니까?')) {
+      //이미 삭제된 댓글이면 안보이게 하기
+      // if(){
+
+      // }else{
+
+      // }
+      deleteReviewMutate({id: reviewId});
+    } else {
+      return;
+    }
+  };
+  const handleSubmit = value => {
+    if (window.confirm('운영자 댓글을 작성하시겠습니까?')) {
+      submitReviewMutate({content: value, id: reviewId});
+    } else {
+      return;
+    }
   };
 
   return (
@@ -33,25 +69,19 @@ function ReviewTableModal({open, setOpen, reviewId}) {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}>
-        {/* <ModalContent>
-          <ModalDescription>
-            <Wrap2></Wrap2>
-
-            <Wrap3></Wrap3>
-          </ModalDescription>
-        </ModalContent> */}
-
         <ModalDescription>
           <Wrap2>
             <ReadReview
               content={reviewDetail && reviewDetail?.contentOrigin}
-              buttonName={'신고'}
+              buttonName={'리뷰 신고'}
               title={'리뷰 본문(읽기만)'}
+              onClickCallback={handleReport}
             />
             <ReadReview
               content={reviewDetail && reviewDetail?.content}
-              buttonName={'삭제'}
+              buttonName={'리뷰 삭제'}
               title={'리뷰 수정(읽기만)'}
+              onClickCallback={handleDelete}
             />
           </Wrap2>
 
@@ -61,7 +91,7 @@ function ReviewTableModal({open, setOpen, reviewId}) {
               reviewDetail.imageLocations &&
               reviewDetail.imageLocations.length > 0 ? (
                 reviewDetail.imageLocations.map((v, i) => {
-                  return <ReviewImage url={v} />;
+                  return <ReviewImage key={i} url={v} />;
                 })
               ) : (
                 <NoPhotosWrap>
@@ -70,22 +100,33 @@ function ReviewTableModal({open, setOpen, reviewId}) {
               )}
             </PhotosWrap>
             <Wrap4>
-              <ReadReview
+              <ShowCommentsReview
                 content={reviewDetail && reviewDetail?.makersComment}
-                buttonName={'취소'}
-                title={'사장님 댓글(읽기만)'}
-                isMakersOrAdminComment={
-                  reviewDetail && reviewDetail?.makersComment
-                }
+                buttonName={'작성 취소'}
+                title={'사장님 댓글(마지막 댓글)'}
+                onClickCallback={() => {
+                  if (window.confirm('운영자 댓글작성을 취소하겠습니까?')) {
+                    window.location.reload();
+                  } else {
+                    return;
+                  }
+                }}
               />
               <ReadReview
-                content={reviewDetail && !!reviewDetail?.adminComment}
-                buttonName={'저장'}
-                disabled={false}
-                title={'관리자 댓글(작성 / 수정가능)'}
-                isMakersOrAdminComment={
-                  reviewDetail && !!reviewDetail?.adminComment
+                content={
+                  reviewDetail &&
+                  reviewDetail?.adminComment &&
+                  reviewDetail?.adminComment.length > 0 &&
+                  reviewDetail?.adminComment[
+                    reviewDetail?.adminComment.length - 1
+                  ].comment
                 }
+                buttonName={'작성 및 수정'}
+                disabled={false}
+                title={'운영자 댓글(작성 / 수정가능)'}
+                onClickCallback={value => {
+                  handleSubmit(value);
+                }}
               />
             </Wrap4>
           </Wrap3>
