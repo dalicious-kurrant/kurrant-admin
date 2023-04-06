@@ -1,7 +1,6 @@
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
-import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
-import {bizNoFormatter} from 'utils/bizNumberFormatter';
+import {formattedPercent} from '../../../utils/numberFormatter';
 
 const MakersTable = ({data}) => {
   // console.log(data, '09');
@@ -75,6 +74,7 @@ const MakersTable = ({data}) => {
             <Table.HeaderCell textAlign="center">
               영업 종료시간
             </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">사용료</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">은행</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">예금주 명</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
@@ -85,6 +85,7 @@ const MakersTable = ({data}) => {
 
         <Table.Body>
           {data?.data?.map((el, i) => {
+            console.log(el);
             const parentCompany = el.isParentCompany ? '있음' : '없음';
             return (
               <Table.Row key={el.id + i}>
@@ -129,6 +130,7 @@ const MakersTable = ({data}) => {
                 </Table.Cell>
                 <Table.Cell>{el.openTime}</Table.Cell>
                 <Table.Cell>{el.closeTime}</Table.Cell>
+                <Table.Cell>{formattedPercent(el.fee)}</Table.Cell>
                 <Table.Cell>{el.bank}</Table.Cell>
                 <Table.Cell>{el.depositHolder}</Table.Cell>
                 <Table.Cell>{el.accountNumber}</Table.Cell>

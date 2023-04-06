@@ -19,6 +19,10 @@ import Group from '../pages/recommendation/group/Group';
 import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
 import ReviewPage from 'pages/boardAndReview/review/ReviewPage';
+import Point from 'pages/calculation/point/Point';
+import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
+import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
+import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
 
 export const MenuList = [
   {
@@ -34,6 +38,11 @@ export const MenuList = [
         name: '식단 현황',
         url: '/completeplans',
         component: <CompletePlans />,
+      },
+      {
+        name: '주문 추가(진행중)',
+        url: '/additionalOrder',
+        component: <AdditionalOrder />,
       },
     ],
   },
@@ -176,16 +185,18 @@ export const MenuList = [
     ],
   },
   {
-    name: '정산 (진행중)',
+    name: '정산',
     url: '/calc',
     children: [
       {
-        name: '정산 조회 (진행중)',
-        url: '/info',
+        name: '고객사 정산',
+        url: '/group',
+        component: <SpotAdjustment />,
       },
       {
-        name: '메이커스 정산 (진행중)',
+        name: '메이커스 정산',
         url: '/makers',
+        component: <MakersAdjustment />,
       },
       {
         name: '수수료 관리 (진행중)',
@@ -198,6 +209,11 @@ export const MenuList = [
       {
         name: '정산 이슈 (진행중)',
         url: '/issue',
+      },
+      {
+        name: '포인트 관리',
+        url: '/point',
+        component: <Point />,
       },
     ],
   },

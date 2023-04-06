@@ -307,6 +307,7 @@ const Common = () => {
             makersName: item.makersName,
             foodName: item.foodName,
             foodStatus: item.foodStatus,
+            supplyPrice: item.supplyPrice,
             defaultPrice: item.defaultPrice,
             membershipDiscount: item.membershipDiscount,
             makersDiscount: item.makersDiscount,
@@ -751,8 +752,10 @@ const Common = () => {
   const noNeedButton =
     pathname !== '/sales/schedule' &&
     pathname !== '/order/info' &&
-    pathname !== `/shop/info/detail/${id}` &&
-    pathname !== `/order/info/detail/${orderNumber}`;
+    pathname !== `/shop/info/${id}` &&
+    pathname !== `/order/info/detail/${orderNumber}` &&
+    pathname !== `/calc/point` &&
+    pathname !== `/order/additionalOrder`;
 
   return (
     <C.Wrapper>

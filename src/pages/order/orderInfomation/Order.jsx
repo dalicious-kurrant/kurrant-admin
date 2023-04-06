@@ -7,7 +7,13 @@ import {
 } from '../../../style/common.style';
 import Select from 'react-select';
 import styled from 'styled-components';
-import {formattedWeekDate} from '../../../utils/dateFormatter';
+
+import * as XLSX from 'xlsx';
+import {
+  formattedFullDate,
+  formattedWeekDate,
+} from '../../../utils/dateFormatter';
+
 import {
   useAllUserList,
   useCancelOrder,
@@ -38,6 +44,7 @@ import {
   userListAtom,
   userOptionAtom,
 } from 'utils/store';
+import {scheduleFormatted} from 'utils/statusFormatter';
 
 // 상품 정보 페이지
 const Order = () => {
@@ -152,7 +159,7 @@ const Order = () => {
     endDate,
     params,
   );
-  console.log(orderList);
+
   const getStartDate = e => {
     setStartDate(e.target.value);
   };
@@ -207,15 +214,17 @@ const Order = () => {
     }
   };
   const checkboxList = orderList?.data
-    ?.map(el => el.orderItemDailyFoods)
+    ?.map(el => el.orderItemDailyFoodGroupList)
     .flat();
-  // console.log(checkboxList);
+
   const handleAllCheck = checked => {
     if (checked) {
       const idArray = [];
       orderList?.data?.map(el =>
-        el.orderItemDailyFoods.forEach(el =>
-          idArray.push(el.orderItemDailyFoodId),
+        el.orderItemDailyFoodGroupList?.map(v =>
+          v.orderItemDailyFoods?.forEach(el =>
+            idArray.push(el.orderItemDailyFoodId),
+          ),
         ),
       );
 
@@ -229,6 +238,91 @@ const Order = () => {
     await cancelOrder({idList: checkItems});
     closeModal();
     queryClient.invalidateQueries('orderList');
+  };
+
+  const excelButton = async () => {
+    const reqArrays = [];
+    reqArrays.push([
+      'serviceDate',
+      'orderDate',
+      'orderTime',
+      'groupName',
+      'spotName',
+      'userName',
+      'userEmail',
+      'phone',
+      'diningType',
+      'deliveryTime',
+      'orderStatus',
+      'makers',
+      'foodName',
+      'count',
+      '',
+      'price',
+      'totalPrice',
+      'supportPrice',
+      'payPrice',
+      'deliveryPrice',
+      'orderCode',
+    ]);
+    reqArrays.push([
+      '날짜',
+      '주문일',
+      '주문 시간',
+      '그룹 이름',
+      '스팟 이름',
+      '유저 이름',
+      '유저 이메일',
+      '번호',
+      '식사 타입',
+      '배송 시간',
+      '주문 상태',
+      '메이커스 이름',
+      '상품 이름',
+      '수량',
+      '공급가',
+      '최종 가격',
+      '결제 총금액',
+      '지원금',
+      '추가 결제금액',
+      '배송비',
+      '오더번호',
+    ]);
+    orderList?.data.map(el => {
+      return el.orderItemDailyFoodGroupList.map(v => {
+        return v.orderItemDailyFoods.map(item => {
+          const reqArray = [];
+          reqArray.push(v.serviceDate);
+          reqArray.push(v.orderDateTime.split('T')[0]);
+          reqArray.push(v.orderDateTime.split('T')[1].split('.')[0]);
+          reqArray.push(v.groupName);
+          reqArray.push(v.spotName);
+          reqArray.push(v.userName);
+          reqArray.push(v.userEmail);
+          reqArray.push(v.phone);
+          reqArray.push(v.diningType);
+          reqArray.push(item.deliveryTime);
+          reqArray.push(item.orderStatus);
+          reqArray.push(item.makers);
+          reqArray.push(item.foodName);
+          reqArray.push(item.count);
+          reqArray.push(item.supplyPrice ?? 0);
+          reqArray.push(item.price);
+          reqArray.push(v.totalPrice);
+          reqArray.push(v.supportPrice);
+          reqArray.push(v.payPrice);
+          reqArray.push(v.deliveryPrice);
+          reqArray.push(v.orderCode);
+          reqArrays.push(reqArray);
+          return reqArrays;
+        });
+      });
+    });
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, '주문 정보');
+    XLSX.writeFile(workbook, '주문 정보.xlsx');
   };
 
   const orderStatusChange = async e => {
@@ -265,6 +359,7 @@ const Order = () => {
           onChange={e => getEndDate(e)}
         />
       </div>
+
       <ResetButton>
         <Button
           color="black"
@@ -272,6 +367,7 @@ const Order = () => {
           icon="redo"
           onClick={onClearSelect}
         />
+        <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
       </ResetButton>
 
       <SelectBoxWrapper>
@@ -389,16 +485,13 @@ const Order = () => {
             <Table.Row>
               <Table.HeaderCell width={1} textAlign="center">
                 <input
-                  checked={
-                    checkItems.length === (checkboxList && checkboxList.length)
-                      ? true
-                      : false
-                  }
                   type="checkbox"
                   onChange={e => handleAllCheck(e.target.checked)}
                 />
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">날짜</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문 시간</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">그룹 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">유저 이름</Table.HeaderCell>
@@ -414,69 +507,176 @@ const Order = () => {
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">상품 이름</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">수량</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">공급가</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">최종 가격</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                결제 총금액
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">지원금</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                추가 결제금액
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">배송비</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">오더번호</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
-            {orderList?.data?.map(el =>
-              el.orderItemDailyFoods.map((v, idx) => {
-                return (
-                  <TableRow
-                    onClick={() => goToPage(v.orderCode)}
-                    key={v.orderCode + idx}>
-                    <Table.Cell
-                      textAlign="center"
-                      onClick={e => e.stopPropagation()}>
-                      <input
-                        checked={
-                          checkItems.includes(v.orderItemDailyFoodId)
-                            ? true
-                            : false
-                        }
-                        type="checkbox"
-                        onClick={e => {
-                          checked(e, v.orderItemDailyFoodId);
-                        }}
-                        onChange={e =>
-                          handleSingleCheck(
-                            e.target.checked,
-                            v.orderItemDailyFoodId,
-                          )
-                        }
-                      />
-                    </Table.Cell>
-                    <Table.Cell textAlign="center">
-                      <div style={{width: 100}}>{v.serviceDate}</div>
-                    </Table.Cell>
-                    <Table.Cell textAlign="center">{v.groupName}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.spotName}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.userName}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.userEmail}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.phone}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.diningType}</Table.Cell>
-                    <Table.Cell textAlign="center">{v.deliveryTime}</Table.Cell>
-                    <Table.Cell textAlign="center">
-                      {v.orderStatus === '취소' ? (
-                        <OrderCancel>{v.orderStatus}</OrderCancel>
-                      ) : (
-                        v.orderStatus
+            {orderList?.data?.map(el => {
+              return el.orderItemDailyFoodGroupList.map((v, i) => {
+                return v.orderItemDailyFoods.map((item, idx) => {
+                  return (
+                    <TableRow
+                      onClick={() => goToPage(v.orderCode)}
+                      key={v.orderCode + idx}>
+                      <Table.Cell
+                        textAlign="center"
+                        onClick={e => e.stopPropagation()}>
+                        <input
+                          checked={
+                            checkItems.includes(item.orderItemDailyFoodId)
+                              ? true
+                              : false
+                          }
+                          type="checkbox"
+                          onClick={e => {
+                            checked(e, item.orderItemDailyFoodId);
+                          }}
+                          onChange={e =>
+                            handleSingleCheck(
+                              e.target.checked,
+                              item.orderItemDailyFoodId,
+                            )
+                          }
+                        />
+                      </Table.Cell>
+
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {v.serviceDate}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {v.orderDateTime.split('T')[0]}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {v.orderDateTime.split('T')[1].split('.')[0]}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>{v.groupName}</div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>{v.spotName}</div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>{v.userName}</div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>{v.userEmail}</div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">{v.phone}</Table.Cell>
+                      <Table.Cell textAlign="center">{v.diningType}</Table.Cell>
+                      <Table.Cell textAlign="center">
+                        {item.deliveryTime}
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">
+                        {item.orderStatus === '취소' ? (
+                          <OrderCancel>{item.orderStatus}</OrderCancel>
+                        ) : (
+                          item.orderStatus
+                        )}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div style={{whiteSpace: 'nowrap'}}>{item.makers}</div>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {item.foodName}
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="center">{item.count}</Table.Cell>
+                      <Table.Cell textAlign="center">
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(
+                            item.supplyPrice === 0 ? '0' : item.supplyPrice,
+                          )}
+                          원
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell textAlign="right">
+                        <div style={{whiteSpace: 'nowrap'}}>
+                          {withCommas(item.price)}원
+                        </div>
+                      </Table.Cell>
+
+                      {idx === 0 && (
+                        <Table.Cell
+                          rowSpan={v.orderItemDailyFoods.length}
+                          textAlign="center"
+                          verticalAlign="middle">
+                          <div style={{whiteSpace: 'nowrap'}}>
+                            {withCommas(
+                              v.totalPrice === 0 ? '0' : v.totalPrice,
+                            )}
+                            원
+                          </div>
+                        </Table.Cell>
                       )}
-                    </Table.Cell>
-                    <Table.Cell>{v.makers}</Table.Cell>
-                    <Table.Cell>
-                      <div style={{width: 150}}>{v.foodName}</div>
-                    </Table.Cell>
-                    <Table.Cell textAlign="center">{v.count}</Table.Cell>
-                    <Table.Cell textAlign="right">
-                      {withCommas(v.price)}원
-                    </Table.Cell>
-                    <Table.Cell>{v.orderCode}</Table.Cell>
-                  </TableRow>
-                );
-              }),
-            )}
+                      {idx === 0 && (
+                        <Table.Cell
+                          rowSpan={v.orderItemDailyFoods.length}
+                          textAlign="center"
+                          verticalAlign="middle">
+                          <div style={{whiteSpace: 'nowrap'}}>
+                            {withCommas(
+                              v.supportPrice === 0 ? '0' : v.supportPrice,
+                            )}
+                            원
+                          </div>
+                        </Table.Cell>
+                      )}
+                      {idx === 0 && (
+                        <Table.Cell
+                          rowSpan={v.orderItemDailyFoods.length}
+                          textAlign="center"
+                          verticalAlign="middle">
+                          <div style={{whiteSpace: 'nowrap'}}>
+                            {withCommas(v.payPrice === 0 ? '0' : v.payPrice)}원
+                          </div>
+                        </Table.Cell>
+                      )}
+                      {idx === 0 && (
+                        <Table.Cell
+                          rowSpan={v.orderItemDailyFoods.length}
+                          textAlign="center"
+                          verticalAlign="middle">
+                          <div style={{whiteSpace: 'nowrap'}}>
+                            {withCommas(
+                              v.deliveryPrice === 0 ? '0' : v.deliveryPrice,
+                            )}
+                            원
+                          </div>
+                        </Table.Cell>
+                      )}
+                      {idx === 0 && (
+                        <Table.Cell
+                          rowSpan={v.orderItemDailyFoods.length}
+                          textAlign="center"
+                          verticalAlign="middle">
+                          <div style={{whiteSpace: 'nowrap'}}>
+                            {v.orderCode}
+                          </div>
+                        </Table.Cell>
+                      )}
+                    </TableRow>
+                  );
+                });
+              });
+            })}
           </Table.Body>
         </Table>
       </TableWrapper>
@@ -528,6 +728,9 @@ const TableRow = styled(Table.Row)`
 
 const ResetButton = styled.div`
   margin-top: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const DateSpan = styled.span`

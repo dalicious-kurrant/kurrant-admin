@@ -101,6 +101,7 @@ const ItemInfoTable = ({
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">식품 이름</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">공급가</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">매장가격</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">멤버십할인률</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">매장할인률</Table.HeaderCell>
@@ -139,43 +140,48 @@ const ItemInfoTable = ({
                 <Table.Cell>
                   <div style={{width: 200}}>{el.foodName}</div>
                 </Table.Cell>
-                <Table.Cell onClick={e => e.stopPropagation()} width={2}>
-                  <Select
-                    options={statusValue}
-                    value={defaultValue}
-                    onChange={e => {
-                      setData({
-                        ...data,
-                        foodList: data.foodList.map(v => {
-                          if (v.foodId === el.foodId)
-                            return {
-                              ...v,
-                              foodStatus: foodStatusFomatted(e.value),
-                            };
-                          return v;
-                        }),
-                      });
-                      const find = statusOption.findIndex(
-                        v => v.foodId === el.foodId,
-                      );
-                      console.log(find);
-                      // find에 같은 id가 있으면 새로운 value로 변경
-                      if (find !== -1) {
-                        statusOption[find] = {
-                          ...statusOption[find],
-                          foodStatus: e.value,
-                        };
-                        setStatusOption([...statusOption]);
-                      } else {
-                        // 없으면 새로 추가
-                        setStatusOption([
-                          ...statusOption,
-                          {foodId: el.foodId, foodStatus: e.value},
-                        ]);
-                      }
-                    }}
-                  />
+                <Table.Cell onClick={e => e.stopPropagation()}>
+                  <div style={{whiteSpace: 'nowrap'}}>
+                    <Select
+                      options={statusValue}
+                      value={defaultValue}
+                      onChange={e => {
+                        setData({
+                          ...data,
+                          foodList: data.foodList.map(v => {
+                            if (v.foodId === el.foodId)
+                              return {
+                                ...v,
+                                foodStatus: foodStatusFomatted(e.value),
+                              };
+                            return v;
+                          }),
+                        });
+                        const find = statusOption.findIndex(
+                          v => v.foodId === el.foodId,
+                        );
+                        console.log(find);
+                        // find에 같은 id가 있으면 새로운 value로 변경
+                        if (find !== -1) {
+                          statusOption[find] = {
+                            ...statusOption[find],
+                            foodStatus: e.value,
+                          };
+                          setStatusOption([...statusOption]);
+                        } else {
+                          // 없으면 새로 추가
+                          setStatusOption([
+                            ...statusOption,
+                            {foodId: el.foodId, foodStatus: e.value},
+                          ]);
+                        }
+                      }}
+                    />
+                  </div>
                   {/* {el.foodStatus} */}
+                </Table.Cell>
+                <Table.Cell>
+                  {withCommas(el.supplyPrice === 0 ? '0' : el.supplyPrice)}
                 </Table.Cell>
                 <Table.Cell textAlign="right">
                   {withCommas(el.defaultPrice)}

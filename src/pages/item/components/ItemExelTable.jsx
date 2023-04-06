@@ -15,15 +15,6 @@ const ItemExelTable = ({isShow, data, checked, checkItems, setCheckItems}) => {
     if (data) setKey(Object.keys(data[0]));
   }, [data]);
 
-  const goToPage = (foodId, makersId) => {
-    navigate('/shop/info/detail/' + foodId, {
-      state: {
-        foodId: foodId,
-        makersId: makersId,
-      },
-    });
-  };
-
   const checkboxList = data?.map(el => el.foodId);
 
   const handleAllCheck = checked => {

@@ -2,8 +2,8 @@ import {useEffect, useState} from 'react';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import {bizNoFormatter} from 'utils/bizNumberFormatter';
-import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
-import {phoneNumberFormmatter} from 'utils/phoneNumberFormatter';
+import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
+import {formattedPercent} from '../../../utils/numberFormatter';
 
 const MakersExelTable = ({data}) => {
   const [key, setKey] = useState();
@@ -177,6 +177,13 @@ const MakersExelTable = ({data}) => {
                             {typeof el[k] === typeof new Date()
                               ? formattedTime(el[k])
                               : el[k]}
+                          </Table.Cell>
+                        );
+                      }
+                      if (k === 'fee') {
+                        return (
+                          <Table.Cell key={k + i}>
+                            {formattedPercent(el[k])}
                           </Table.Cell>
                         );
                       }
