@@ -15,6 +15,10 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     reviewId,
   ]);
 
+  // 변수 나누기
+
+  // const {} = reviewDetail;
+
   useEffect(() => {
     console.log(reviewDetail);
   }, [reviewDetail]);
@@ -39,22 +43,50 @@ function ReviewTableModal({open, setOpen, reviewId}) {
 
         <ModalDescription>
           <Wrap2>
-            <ReadReview content={textSample} buttonName={'신고'} />
-            <ReadReview content={textSample} buttonName={'삭제'} />
+            <ReadReview
+              content={reviewDetail && reviewDetail?.contentOrigin}
+              buttonName={'신고'}
+              title={'리뷰 본문(읽기만)'}
+            />
+            <ReadReview
+              content={reviewDetail && reviewDetail?.content}
+              buttonName={'삭제'}
+              title={'리뷰 수정(읽기만)'}
+            />
           </Wrap2>
 
           <Wrap3>
             <PhotosWrap>
               {reviewDetail &&
-                reviewDetail.imageLocations &&
-                reviewDetail.imageLocations.length > 0 &&
+              reviewDetail.imageLocations &&
+              reviewDetail.imageLocations.length > 0 ? (
                 reviewDetail.imageLocations.map((v, i) => {
                   return <ReviewImage url={v} />;
-                })}
+                })
+              ) : (
+                <NoPhotosWrap>
+                  <NoPhotosSpan>등록된 사진은 없어요</NoPhotosSpan>
+                </NoPhotosWrap>
+              )}
             </PhotosWrap>
             <Wrap4>
-              <ReadReview content={textSample} buttonName={'취소'} />
-              <ReadReview content={textSample} buttonName={'저장'} />
+              <ReadReview
+                content={reviewDetail && reviewDetail?.makersComment}
+                buttonName={'취소'}
+                title={'사장님 댓글(읽기만)'}
+                isMakersOrAdminComment={
+                  reviewDetail && reviewDetail?.makersComment
+                }
+              />
+              <ReadReview
+                content={reviewDetail && !!reviewDetail?.adminComment}
+                buttonName={'저장'}
+                disabled={false}
+                title={'관리자 댓글(작성 / 수정가능)'}
+                isMakersOrAdminComment={
+                  reviewDetail && !!reviewDetail?.adminComment
+                }
+              />
             </Wrap4>
           </Wrap3>
         </ModalDescription>
@@ -111,4 +143,13 @@ const PhotosWrap = styled.div`
   display: flex;
   align-items: center;
   padding-left: 10px;
+`;
+
+const NoPhotosWrap = styled.div`
+  height: 110px;
+  padding: 24px 12px;
+`;
+
+const NoPhotosSpan = styled.span`
+  font-size: 30px;
 `;

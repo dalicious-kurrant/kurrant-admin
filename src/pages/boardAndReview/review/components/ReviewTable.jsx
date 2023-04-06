@@ -25,12 +25,13 @@ const ReviewTable = ({testData}) => {
     <>
       <TableWrapper>
         {/* 모달 */}
-
-        <ReviewTableModal
-          open={showModal}
-          setOpen={setShowModal}
-          reviewId={selectedId}
-        />
+        {showModal && (
+          <ReviewTableModal
+            open={showModal}
+            setOpen={setShowModal}
+            reviewId={selectedId}
+          />
+        )}
 
         <Table celled selectable>
           <Table.Header>
