@@ -76,17 +76,18 @@ function ReviewTableModal({open, setOpen, reviewId}) {
   };
 
   const handleAdminCommentDelete = () => {
-    if (window.confirm('운영자 댓글을 삭제하시겠습니까?')) {
-      //이미 삭제된 댓글이면 안보이게 하기
-      if (reviewDetail && reviewDetail?.isDelete) {
-        window.confirm('이미 삭제된 리뷰입니다');
-      } else {
-        console.log(reviewId);
-        deleteAdminCommentMutate({id: reviewId});
-      }
-    } else {
-      return;
-    }
+    //지성님이 운영자 댓글을 하나씩 보내줄떄부터 작업해야됨
+    // if (window.confirm('운영자 댓글을 삭제하시겠습니까?')) {
+    //   //이미 삭제된 댓글이면 안보이게 하기
+    //   if (reviewDetail && reviewDetail?.isDelete) {
+    //     window.confirm('이미 삭제된 리뷰입니다');
+    //   } else {
+    //     console.log(reviewId);
+    //     deleteAdminCommentMutate({id: reviewId});
+    //   }
+    // } else {
+    //   return;
+    // }
   };
 
   return (

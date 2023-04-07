@@ -755,8 +755,8 @@ const Common = () => {
     pathname !== `/shop/info/${id}` &&
     pathname !== `/order/info/detail/${orderNumber}` &&
     pathname !== `/calc/point` &&
-    pathname !== `/order/additionalOrder`;
-
+    pathname !== `/order/additionalOrder` &&
+    pathname !== '/board/review';
   return (
     <C.Wrapper>
       <C.Bread>
