@@ -1,3 +1,29 @@
+export const foodTypeTag = [
+  {
+    id: 11001,
+    style: '간편식',
+  },
+  {
+    id: 11002,
+    style: '샐러드',
+  },
+  {
+    id: 11003,
+    style: '정찬도시락',
+  },
+  {
+    id: 11004,
+    style: '산후조리식',
+  },
+  {
+    id: 11005,
+    style: '다이어트식',
+  },
+  {
+    id: 11006,
+    style: '프로틴식',
+  },
+];
 export const styleTag = [
   {
     id: 1,
