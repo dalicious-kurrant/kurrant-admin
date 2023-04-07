@@ -10,6 +10,6 @@ export const extraOrderApis = {
       `orders/extra?startDate=${startDate}&endDate=${endDate}`,
     ),
   extraOrder: async data => await instance.post(`orders/extra`, data),
-  extraOrderRefund: async id => await instance.post('orders/extra', id),
+  extraOrderRefund: async id => await instance.post('orders/extra/refund', id),
   detailSpotList: async id => await instance.get(`groups/${id}/spots`),
 };

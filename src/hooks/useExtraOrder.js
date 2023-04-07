@@ -19,6 +19,7 @@ export function useRefundExtraOrder() {
   return useMutation(id => extraOrderApis.extraOrderRefund(id), {
     onSuccess: () => {
       queryClient.invalidateQueries('extraOrderHistory');
+      queryClient.invalidateQueries('extraFoodList');
     },
   });
 }
@@ -28,6 +29,7 @@ export function useExtraOrder() {
   return useMutation(data => extraOrderApis.extraOrder(data), {
     onSuccess: () => {
       queryClient.invalidateQueries('extraOrderHistory');
+      queryClient.invalidateQueries('extraFoodList');
     },
   });
 }
