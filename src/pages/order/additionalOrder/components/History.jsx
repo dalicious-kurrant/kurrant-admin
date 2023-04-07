@@ -89,14 +89,18 @@ const History = () => {
                     </Table.Cell>
 
                     <Table.Cell textAlign="center">
-                      <Button
-                        content="취소"
-                        color="red"
-                        size="tiny"
-                        onClick={() =>
-                          refundOrderPress(el.orderItemDailyFoodId)
-                        }
-                      />
+                      {el.orderStatus === '취소' ? (
+                        <CancelText>취소</CancelText>
+                      ) : (
+                        <Button
+                          content="취소"
+                          color="red"
+                          size="tiny"
+                          onClick={() =>
+                            refundOrderPress(el.orderItemDailyFoodId)
+                          }
+                        />
+                      )}
                     </Table.Cell>
                   </Table.Row>
                 );

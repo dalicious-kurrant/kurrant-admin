@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Button, Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
@@ -24,7 +24,6 @@ import withCommas from 'utils/withCommas';
 const AddOrder = () => {
   const [startDate, setStartDate] = useAtom(extraOrderStartDateAtom);
   const [endDate, setEndDate] = useAtom(extraOrderEndDateAtom);
-
   const [extraListData, setExtraListData] = useAtom(extraListDataAtom);
   const [spotOption, setSpotOption] = useState();
   const [detailSpotOption, setDetailSpotOption] = useState();
@@ -65,6 +64,7 @@ const AddOrder = () => {
     console.log(reqData, '1');
     if (reqData.length !== 0) {
       await extraOrder(reqData);
+      window.location.reload();
     }
   };
 
@@ -173,14 +173,18 @@ const AddOrder = () => {
                     </Table.Cell>
 
                     <Table.Cell textAlign="center">
-                      <Button
-                        content="취소"
-                        color="red"
-                        size="mini"
-                        onClick={() =>
-                          refundOrderPress(el.orderItemDailyFoodId)
-                        }
-                      />
+                      {el.orderStatus === '취소' ? (
+                        <CancelText>취소</CancelText>
+                      ) : (
+                        <Button
+                          content="취소"
+                          color="red"
+                          size="mini"
+                          onClick={() =>
+                            refundOrderPress(el.orderItemDailyFoodId)
+                          }
+                        />
+                      )}
                     </Table.Cell>
                   </Table.Row>
                 );
@@ -256,13 +260,7 @@ const AddOrder = () => {
                           <InnerCell>{withCommas(v.price)}원</InnerCell>
                         </Table.Cell>
                         <Table.Cell textAlign="center">
-                          <InnerCell>
-                            {v.dailyFoodStatus === '주문마감' ? (
-                              <CancelText>주문마감</CancelText>
-                            ) : (
-                              v.foodCapacity + '개'
-                            )}
-                          </InnerCell>
+                          <InnerCell>{v.foodCapacity + '개'}</InnerCell>
                         </Table.Cell>
                         <Table.Cell textAlign="center">
                           <Controller
@@ -273,11 +271,8 @@ const AddOrder = () => {
                                 <SelectBox
                                   // {...field}
                                   // value={field.value || ''}
-                                  // ref={groupRef}
-
                                   options={groupArr}
                                   placeholder="스팟"
-                                  // defaultValue={defaultGroup}
                                   onChange={e => {
                                     setExtraListData(
                                       extraListData.map(extra => {
@@ -312,7 +307,6 @@ const AddOrder = () => {
                                 <SelectBox
                                   // {...field}
                                   // value={field.value || ''}
-                                  // ref={groupRef}
                                   options={detailSpotArr}
                                   placeholder="상세스팟"
                                   // defaultValue={defaultGroup}

@@ -20,8 +20,8 @@ function CostomerEditModal({
   testData,
   setTestData,
 }) {
-  console.log(nowData);
-  console.log(nowData.userOrderAlarm);
+  // console.log(nowData);
+  // console.log(nowData.userOrderAlarm);
   const onSubmit = () => {
     setTestData(
       testData.map(v => {
