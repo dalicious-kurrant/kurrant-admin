@@ -80,7 +80,13 @@ function ReviewTableModal({open, setOpen, reviewId}) {
         if (reviewDetail && reviewDetail?.isDelete) {
           window.confirm('이미 삭제된 리뷰입니다');
         } else {
-          editReviewMutate({content: value, id: reviewId});
+          editReviewMutate({
+            content: {
+              content: value,
+            },
+
+            id: reviewDetail?.adminComment?.commentId,
+          });
           setShowImageModal(false);
         }
       } else {

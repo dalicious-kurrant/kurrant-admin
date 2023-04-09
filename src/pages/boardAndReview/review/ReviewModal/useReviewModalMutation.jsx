@@ -37,7 +37,8 @@ const useReviewModalMutation = () => {
     {
       onSuccess: () => {
         console.log('리뷰 삭제 success');
-        queryClient.invalidateQueries(['getReviewDetail']);
+        // queryClient.invalidateQueries(['getReviewDetail']);
+        queryClient.invalidateQueries('getReviewDetail');
         queryClient.invalidateQueries(['getReviewList']);
         window.confirm('리뷰 삭제가 정상적으로 이루워졌습니다');
       },
@@ -84,7 +85,7 @@ const useReviewModalMutation = () => {
 
       const response = await instance.post(
         `reviews/comment?commentId=${data.id}`,
-        data,
+        data.content,
       );
       return response;
     },
@@ -115,9 +116,12 @@ const useReviewModalMutation = () => {
     {
       onSuccess: () => {
         console.log('운영자 리뷰 삭제 success');
+        // queryClient.invalidateQueries('getReviewDetail');
+
+        window.confirm('운영자 리뷰 삭제가 정상적으로 이루워졌습니다');
+
         queryClient.invalidateQueries('getReviewDetail');
         queryClient.invalidateQueries(['getReviewList']);
-        window.confirm('운영자 리뷰 삭제가 정상적으로 이루워졌습니다');
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');

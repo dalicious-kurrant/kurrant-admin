@@ -20,6 +20,8 @@ const ReadReview = ({
   useEffect(() => {
     if (content) {
       setValue(content);
+    } else {
+      setValue('');
     }
   }, [content]);
 
