@@ -19,11 +19,16 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     reviewId,
   ]);
 
+  useEffect(() => {
+    console.log(reviewDetail);
+  }, [reviewDetail]);
+
   // mutation code 따로 모으기
 
   const {
     reportReviewMutate,
     submitReviewMutate,
+    editReviewMutate,
     deleteReviewMutate,
     deleteAdminCommentMutate,
   } = useReviewModalMutation();
@@ -64,30 +69,65 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     }
   };
   const handleSubmit = value => {
-    if (window.confirm('운영자 댓글을 작성하시겠습니까?')) {
-      if (reviewDetail && reviewDetail?.isDelete) {
-        window.confirm('이미 삭제된 리뷰입니다');
+    // 수정 작성 구분하기
+
+    if (
+      reviewDetail &&
+      reviewDetail.adminComment &&
+      reviewDetail.adminComment.commentId
+    ) {
+      if (window.confirm('운영자 댓글을 수정하시겠습니까?')) {
+        if (reviewDetail && reviewDetail?.isDelete) {
+          window.confirm('이미 삭제된 리뷰입니다');
+        } else {
+          editReviewMutate({content: value, id: reviewId});
+          setShowImageModal(false);
+        }
       } else {
-        submitReviewMutate({content: value, id: reviewId});
+        return;
       }
     } else {
-      return;
+      // 작성
+
+      if (window.confirm('운영자 댓글을 작성하시겠습니까?')) {
+        if (reviewDetail && reviewDetail?.isDelete) {
+          window.confirm('이미 삭제된 리뷰입니다');
+        } else {
+          submitReviewMutate({content: value, id: reviewId});
+          setShowImageModal(false);
+        }
+      } else {
+        return;
+      }
     }
   };
 
   const handleAdminCommentDelete = () => {
     //지성님이 운영자 댓글을 하나씩 보내줄떄부터 작업해야됨
-    // if (window.confirm('운영자 댓글을 삭제하시겠습니까?')) {
-    //   //이미 삭제된 댓글이면 안보이게 하기
-    //   if (reviewDetail && reviewDetail?.isDelete) {
-    //     window.confirm('이미 삭제된 리뷰입니다');
-    //   } else {
-    //     console.log(reviewId);
-    //     deleteAdminCommentMutate({id: reviewId});
-    //   }
-    // } else {
-    //   return;
-    // }
+    if (window.confirm('운영자 댓글을 삭제하시겠습니까?')) {
+      //이미 삭제된 댓글이면 안보이게 하기
+      if (reviewDetail && reviewDetail?.isDelete) {
+        window.confirm('이미 삭제된 리뷰입니다');
+      } else {
+        if (!reviewDetail?.adminComment) {
+          window.confirm(
+            `운영자 댓글이 존재하지 않습니다 ${reviewDetail?.adminComment}`,
+          );
+          return;
+        }
+
+        if (!reviewDetail?.adminComment?.commentId) {
+          window.confirm(
+            `운영자 댓글이 존재하지 않습니다 ${reviewDetail?.adminComment?.commentId}`,
+          );
+          return;
+        }
+
+        deleteAdminCommentMutate({id: reviewDetail?.adminComment?.commentId});
+      }
+    } else {
+      return;
+    }
   };
 
   return (
@@ -118,6 +158,7 @@ function ReviewTableModal({open, setOpen, reviewId}) {
             <Wrap2>
               <ReadReview
                 content={reviewDetail && reviewDetail?.contentOrigin}
+                buttonDisable={reviewDetail && reviewDetail?.isDelete}
                 buttonName={'리뷰 신고'}
                 title={'리뷰 본문(읽기만)'}
                 onClickCallback={handleReport}
@@ -125,6 +166,7 @@ function ReviewTableModal({open, setOpen, reviewId}) {
               <ReadReview
                 content={reviewDetail && reviewDetail?.content}
                 buttonName={'리뷰 삭제'}
+                buttonDisable={reviewDetail && reviewDetail?.isDelete}
                 title={'리뷰 수정(읽기만)'}
                 onClickCallback={handleDelete}
               />
@@ -153,7 +195,12 @@ function ReviewTableModal({open, setOpen, reviewId}) {
             </PhotosWrap>
             <Wrap4>
               <ShowCommentsReview
-                content={reviewDetail && reviewDetail?.makersComment}
+                comment={
+                  reviewDetail &&
+                  reviewDetail?.makersComment &&
+                  reviewDetail?.makersComment?.commentId &&
+                  reviewDetail?.makersComment?.comment
+                }
                 buttonName={'작성 취소'}
                 title={'사장님 댓글(마지막 댓글)'}
                 onClickCallback={() => {
@@ -164,16 +211,24 @@ function ReviewTableModal({open, setOpen, reviewId}) {
                   }
                 }}
               />
+
               <ReadReview
                 content={
                   reviewDetail &&
                   reviewDetail?.adminComment &&
-                  reviewDetail?.adminComment.length > 0 &&
-                  reviewDetail?.adminComment[
-                    reviewDetail?.adminComment.length - 1
-                  ].comment
+                  reviewDetail?.adminComment?.commentId &&
+                  reviewDetail?.adminComment?.comment
                 }
-                buttonName={'댓글 작성'}
+                buttonName={
+                  reviewDetail &&
+                  reviewDetail.adminComment &&
+                  reviewDetail.adminComment.commentId
+                    ? '댓글 수정'
+                    : '댓글 작성'
+                }
+                buttonDisable={reviewDetail && reviewDetail?.isDelete}
+                // placeholderMsg='댓글을 수정해주세요'
+                button2Disable={reviewDetail && reviewDetail?.isDelete}
                 buttonName2={'댓글 삭제'}
                 disabled={false}
                 title={'운영자 댓글(작성 / 수정가능)'}

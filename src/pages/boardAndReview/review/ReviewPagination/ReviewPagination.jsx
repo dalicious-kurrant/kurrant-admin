@@ -132,17 +132,17 @@ const ButtonWrap = styled.div`
   }
 `;
 const Button = styled.button`
-  font-size: 1.8rem;
+  font-size: 24px;
 `;
 
 const NumberButton = styled.button`
   color: ${props =>
     props.selected ? `${props.theme.colors.blue[400]}` : `black`};
 
-  font-size: 1.8rem;
+  font-size: 24px;
 `;
 
 const Wrap = styled.div`
   position: absolute;
-  right: 2rem;
+  right: 42px;
 `;

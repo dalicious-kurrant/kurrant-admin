@@ -44,6 +44,8 @@ export const Div = styled.div`
   width: 110px;
   position: relative;
   margin: 10px;
+  align-items: center;
+  justify-content: center;
 
   /* border: 1px solid black; */
   overflow: hidden;

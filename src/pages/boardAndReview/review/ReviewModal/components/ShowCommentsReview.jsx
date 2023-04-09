@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
 const ShowCommentsReview = ({
-  content,
+  comment,
   onClickCallback,
   disabled = true,
   title,
@@ -13,12 +13,12 @@ const ShowCommentsReview = ({
   // 내용 없을때
 
   useEffect(() => {
-    if (content && content.length > 0) {
+    if (comment) {
       // 작성일자 추가해주기
 
-      setValue(content[content.length - 1].comment);
+      setValue(comment);
     }
-  }, [content]);
+  }, [comment]);
 
   const handleChange = e => {
     setValue(e.target.value);

@@ -1,5 +1,5 @@
-import {PageWrapper, TableWrapper} from 'style/common.style';
-import {Button, Checkbox, Dropdown, Table} from 'semantic-ui-react';
+import {PageWrapper} from 'style/common.style';
+import {Button} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
@@ -24,8 +24,7 @@ const ReviewPage = () => {
   // 필터 값들 모으기
 
   // 1. 날짜
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
+
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -52,7 +51,7 @@ const ReviewPage = () => {
     setIsReport(event.target.value);
   };
 
-  const [url, setUrl] = useState('reviews/all?limit=10&page=1');
+  const [url, setUrl] = useState('reviews/all?limit=50&page=1');
 
   useEffect(() => {
     setUrl(
@@ -128,13 +127,11 @@ const ReviewPage = () => {
     setWriter(e.target.value);
   };
 
-  // 4. 페이지네이션 하기
+  // 값 확인하기
 
-  // page, limit, totalPage(비동기)를 준다
-
-  // useReviewPagination으로 만든다
-
-  // ReviewPagination에는
+  useEffect(() => {
+    // console.log(reviewList);
+  }, [reviewList]);
 
   return (
     <PageWrapper>
@@ -165,14 +162,6 @@ const ReviewPage = () => {
                   />
                 </RecoDatePickerBox>
               </RecoDatePickerContainer>
-
-              <Button
-                color="blue"
-                content="검색하기"
-                onClick={() => {
-                  reviewQueryRefetch();
-                }}
-              />
             </DeadLineWrapper>
           </DateWrapper>
 
@@ -200,11 +189,19 @@ const ReviewPage = () => {
               onChange={handleSpotFilter}
             />
 
-            <Button
+            <FilterButton
               content="필터 초기화"
               color="blue"
               onClick={() => {
                 window.location.reload();
+              }}
+            />
+
+            <Button
+              color="blue"
+              content="검색하기"
+              onClick={() => {
+                reviewQueryRefetch();
               }}
             />
           </SelectWrap>
@@ -353,6 +350,10 @@ const RecoDatePickerBox = styled.div`
   margin-top: 10px;
 `;
 
+const FilterButton = styled(Button)`
+  margin-right: 25px !important;
+`;
+
 const SelectWrap = styled.div`
   display: flex;
   margin-bottom: 24px;
@@ -365,7 +366,7 @@ const SelectBox = styled(Select)`
 `;
 
 const TextInput = styled.input`
-  margin-right: 50px;
+  margin-right: 30px;
   border: 1px solid #cccccc;
   border-radius: 3px;
   height: 39px;
@@ -380,7 +381,7 @@ const CheckboxSmallWrap = styled.div`
   margin-bottom: 3px;
 `;
 const CheckboxText = styled.span`
-  margin-right: 5px;
+  margin-right: 8px;
 `;
 
 const NoRespondCountWrap = styled.div`

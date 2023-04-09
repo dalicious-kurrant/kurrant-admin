@@ -32,21 +32,11 @@ export default ReviewImageModalImage;
 export const ImageWrapper = styled.div`
   display: flex;
 
-  /* ${({isHorizontal}) => {
-    if (isHorizontal) {
-      return `height: 90%;`;
-    } else {
-      return `width: 90%;`;
-    }
-  }} */
-
   height: 90%;
-  /* width: 110px; */
+
   position: relative;
   margin: 10px;
 
-  /* border: 1px solid black; */
-  /* overflow: hidden; */
   border-radius: 6px;
 `;
 

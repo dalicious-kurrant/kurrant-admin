@@ -47,7 +47,7 @@ const ReviewTable = ({testData}) => {
                 내용
               </Table.HeaderCell>
               <Table.HeaderCell>사장님 답글 여부</Table.HeaderCell>
-              <Table.HeaderCell>관리자 답글 여부</Table.HeaderCell>
+              <Table.HeaderCell>운영자 답글 여부</Table.HeaderCell>
               <Table.HeaderCell>신고</Table.HeaderCell>
               <Table.HeaderCell>삭제여부</Table.HeaderCell>
             </Table.Row>

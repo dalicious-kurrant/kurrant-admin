@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 const RadioInput = ({
   children,
   value,
@@ -7,7 +9,7 @@ const RadioInput = ({
   onChange,
 }) => {
   return (
-    <label>
+    <Label>
       <input
         type="radio"
         value={value}
@@ -19,7 +21,11 @@ const RadioInput = ({
         }}
       />
       {children}
-    </label>
+    </Label>
   );
 };
 export default RadioInput;
+
+const Label = styled.label`
+  margin-right: 4px;
+`;

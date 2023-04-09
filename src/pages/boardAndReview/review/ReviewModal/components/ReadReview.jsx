@@ -8,6 +8,9 @@ const ReadReview = ({
   disabled = true,
   title,
   buttonName,
+  buttonDisable = false,
+  button2Disable = false,
+
   buttonName2 = undefined,
   confirmButton2Color,
 }) => {
@@ -42,10 +45,17 @@ const ReadReview = ({
       />
 
       <ButtonWrap>
-        <ConfirmButton onClick={handleCallback}>{buttonName}</ConfirmButton>
+        <ConfirmButton
+          disabled={buttonDisable}
+          buttonDisable={buttonDisable}
+          onClick={handleCallback}>
+          {buttonName}
+        </ConfirmButton>
 
         {buttonName2 && (
           <ConfirmButton
+            disabled={button2Disable}
+            buttonDisable={button2Disable}
             confirmButton2Color={confirmButton2Color}
             onClick={handleCallback2}>
             {buttonName2}
@@ -110,6 +120,10 @@ const ConfirmButton = styled.button`
 
   border-radius: 6px;
   color: white;
+
+  opacity: ${({buttonDisable}) => (buttonDisable ? 0.4 : 1)};
+
+  /* opacity: 0.4; */
 
   margin: 0px 5px;
 `;
