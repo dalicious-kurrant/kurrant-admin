@@ -74,7 +74,7 @@ const Download = () => {
                 window.open(GOOGLE_PLAY_STORE_LINK);
               }
             }}>
-            사무실로 주문하기
+            멤버십 가입하러 가기
           </LinkButton>
         </ButtonContainer>
       </ImageContainer>
@@ -92,7 +92,7 @@ const Download = () => {
                 window.open(GOOGLE_PLAY_STORE_LINK);
               }
             }}>
-            한끼 뚝딱 하러!
+            사무실로 주문하기
           </LinkButton>
         </ButtonContainer>
       </ImageContainer>
@@ -110,7 +110,7 @@ const Download = () => {
                 window.open(GOOGLE_PLAY_STORE_LINK);
               }
             }}>
-            멤버십 가입하러 가기
+            한끼 뚝딱 하러!
           </LinkButton>
         </ButtonContainer>
       </ImageContainer>
