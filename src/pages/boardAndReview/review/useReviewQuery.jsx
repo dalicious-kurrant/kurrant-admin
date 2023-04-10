@@ -10,7 +10,6 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
   const [unansweredCount, setUnansweredCount] = useAtom(UnansweredCountAtom);
   const [totalPage, setTotalPage] = useState(0);
 
-  const queryClient = useQueryClient();
   const {
     data,
     status,
