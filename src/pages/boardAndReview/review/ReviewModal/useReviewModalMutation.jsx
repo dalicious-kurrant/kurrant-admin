@@ -83,7 +83,7 @@ const useReviewModalMutation = () => {
     async data => {
       console.log(data);
 
-      const response = await instance.post(
+      const response = await instance.patch(
         `reviews/comment?commentId=${data.id}`,
         data.content,
       );

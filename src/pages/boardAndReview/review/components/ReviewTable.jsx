@@ -20,7 +20,9 @@ const ReviewTable = ({testData}) => {
     setShowModal(true);
   };
 
-  //
+  //값 확인하기
+
+  console.log(testData);
 
   return (
     <>
@@ -94,7 +96,10 @@ const ReviewTable = ({testData}) => {
                       <FlexBox>{row.createdDate}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
-                      <FlexBox>{row.content}</FlexBox>
+                      {/* <ContentFlexBox>{row.content}</ContentFlexBox> */}
+                      <FlexBox>
+                        <Content>{row.content}</Content>
+                      </FlexBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.isMakersComment ? 'o' : 'x'}</FlexBox>
@@ -131,6 +136,13 @@ const FlexBox = styled.div`
 
 const IsDeleteFlexBox = styled(FlexBox)`
   color: red;
+`;
+
+const Content = styled.div`
+  max-width: 400px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const FlexPwdBox = styled.div`
