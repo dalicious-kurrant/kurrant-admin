@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -12,6 +12,23 @@ const APPLE_APP_STORE_LINK = 'itms-apps://itunes.apple.com/us/app/id1663407738';
 // 애플 앱 스토어가 설치되어 있지 않을 때 웹 링크
 const APPLE_APP_STORE_WEB_LINK = 'https://apps.apple.com/us/app/id1663407738';
 const Download = () => {
+  useEffect(() => {
+    if (navigator.userAgent.indexOf('iPhone') != -1) {
+      window.addEventListener(
+        'load',
+        function () {
+          setTimeout(hideURLbar, 0);
+        },
+        false,
+      );
+    } else {
+      hideURLbar();
+    }
+
+    function hideURLbar() {
+      window.scrollTo(0, 1);
+    }
+  }, []);
   return (
     <Container>
       <ImageContainer>
