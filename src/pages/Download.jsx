@@ -13,21 +13,13 @@ const APPLE_APP_STORE_LINK = 'itms-apps://itunes.apple.com/us/app/id1663407738';
 const APPLE_APP_STORE_WEB_LINK = 'https://apps.apple.com/us/app/id1663407738';
 const Download = () => {
   useEffect(() => {
-    if (checkMobile() !== 'ios') {
-      window.addEventListener(
-        'load',
-        function () {
-          setTimeout(hideURLbar, 0);
-        },
-        false,
-      );
-    } else {
-      hideURLbar();
-    }
-
-    function hideURLbar() {
-      window.scrollTo(0, 1);
-    }
+    window.addEventListener(
+      'load',
+      function () {
+        setTimeout(window.scrollTo, 0, 0, 1);
+      },
+      false,
+    );
   }, []);
   return (
     <Container>
