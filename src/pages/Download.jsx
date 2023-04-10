@@ -16,7 +16,8 @@ const Download = () => {
     window.addEventListener(
       'load',
       function () {
-        setTimeout(() => window.scrollTo(0, 1), 1);
+        setTimeout(() => window.scrollTo(0, 10), 1);
+        setTimeout(() => window.scrollTo(0, 1), 100);
       },
       false,
     );
