@@ -11,4 +11,5 @@ export const pointApis = {
       `points/policy/event?policyId=${data.policyId}`,
       data.body,
     ),
+  userPoint: async data => await instance.post('points/user', data),
 };

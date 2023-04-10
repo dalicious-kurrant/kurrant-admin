@@ -13,6 +13,7 @@ import Select from 'react-select';
 import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
 import {groupIdAtom, uerIdAtom, userIdAtom, userStateAtom} from 'utils/store';
+import CustomerPoint from './CustomerPoint';
 
 const CustomerTable = ({
   testData,
@@ -22,6 +23,7 @@ const CustomerTable = ({
   allChk,
   setAllChk,
 }) => {
+  const [pointOpenModal, setPointOpenModal] = useState(false);
   const [showOpenModal, setShowOpenModal] = useState(false);
   const [editId, setEditId] = useState();
   const [clickData, setClickData] = useState();
@@ -62,6 +64,12 @@ const CustomerTable = ({
     };
   });
 
+  const pointModal = () => {
+    if (userCheck.length !== 0) {
+      setPointOpenModal(true);
+    }
+  };
+
   return (
     <>
       <SelectWrap>
@@ -93,6 +101,13 @@ const CustomerTable = ({
           content="필터 초기화"
           color="blue"
           onClick={() => window.location.reload()}
+        />
+        <Button
+          content="포인트 관리"
+          color="green"
+          onClick={() => {
+            pointModal();
+          }}
         />
       </SelectWrap>
       <TableWrapper>
@@ -291,6 +306,13 @@ const CustomerTable = ({
           </Table.Body>
         </Table>
       </TableWrapper>
+      {pointOpenModal && (
+        <CustomerPoint
+          open={pointOpenModal}
+          setOpen={setPointOpenModal}
+          userCheck={userCheck}
+        />
+      )}
     </>
   );
 };
