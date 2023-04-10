@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  foodTypeTag,
   allergyTag,
   appetiteTag,
   countryTag,
@@ -23,6 +24,17 @@ const HashTag = ({clicked, setClicked}) => {
   console.log(clicked);
   return (
     <Wrap>
+      <Title>식품 타입</Title>
+      <BoxWrap>
+        {foodTypeTag.map((el, idx) => (
+          <Box
+            key={el.id}
+            onClick={() => onSelect(el.id)}
+            touch={clicked?.includes(el.id)}>
+            <Text touch={clicked?.includes(el.id)}>{el.style}</Text>
+          </Box>
+        ))}
+      </BoxWrap>
       <Title>요리스타일</Title>
       <BoxWrap>
         {styleTag.map((el, idx) => (
