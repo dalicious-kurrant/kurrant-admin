@@ -3,6 +3,8 @@ import {formattedDateForRecommendation} from 'utils/dateFormatter';
 export const fillMakersDropboxObject = makersListFromServer => {
   // value와 label형태로 만들기
 
+  // 아무것도 선택 안하기
+
   const makersListDropboxArray = makersListFromServer.map(v => {
     return {
       value: v.makersId,
@@ -10,7 +12,7 @@ export const fillMakersDropboxObject = makersListFromServer => {
     };
   });
 
-  return makersListDropboxArray;
+  return [{value: 'none', label: '전체'}, ...makersListDropboxArray];
 };
 
 export const filterReviewList = reviewList => {
@@ -44,7 +46,11 @@ export const buildCustomUrl = (
     basicUrl.push(`&writer=${writer}`);
   }
   if (makersId) {
-    basicUrl.push(`&makersId=${makersId}`);
+    if (makersId === 'none') {
+      // '없음'이면 아무것도 안 함
+    } else {
+      basicUrl.push(`&makersId=${makersId}`);
+    }
   }
 
   // 2. date류 2
