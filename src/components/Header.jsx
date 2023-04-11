@@ -53,6 +53,9 @@ const Header = ({openMenu, setOpenMenu}) => {
     localStorage.removeItem('token');
     window.location.replace('/');
   };
+
+  console.log(MenuList);
+
   const resetJotai = () => {
     resetAtom();
     resetAtom1();
@@ -148,7 +151,8 @@ const FontBox = styled.div`
 `;
 const DropDownMenu = styled(Dropdown)`
   .text {
-    color: ${({name}) => (name === 4 || name === 5 ? 'red' : 'white')};
+    /* color: ${({name}) => (name === 4 || name === 5 ? 'red' : 'white')}; */
+    color: ${({name}) => (name === 4 ? 'red' : 'white')};
   }
   min-width: 160px;
   white-space: nowrap;

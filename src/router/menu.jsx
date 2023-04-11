@@ -158,11 +158,11 @@ export const MenuList = [
     ],
   },
   {
-    name: '게시판&리뷰 (진행중)',
+    name: '게시판&리뷰 ',
     url: '/board',
     children: [
       {
-        name: '리뷰관리(진행중)',
+        name: '리뷰관리',
         url: '/review',
         component: <ReviewPage />,
       },

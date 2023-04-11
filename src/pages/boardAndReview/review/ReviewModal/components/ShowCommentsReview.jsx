@@ -67,6 +67,7 @@ const Input = styled.textarea`
   border-radius: 10px;
   margin-bottom: 20px;
   padding: 20px;
+  resize: none;
 
   /* &:disabled {
     background: #ccc;

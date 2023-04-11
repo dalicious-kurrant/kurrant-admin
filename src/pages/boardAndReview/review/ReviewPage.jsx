@@ -291,6 +291,8 @@ const ReviewPage = () => {
         </Wrap3>
       </Wrap1>
 
+      <p>tip: 필터가 적용되지 않을 경우, '검색하기' 버튼을 눌러보세요</p>
+
       {status == 'success' && reviewList && reviewList.length > 0 ? (
         <ReviewPagination
           page={page}
