@@ -19,10 +19,6 @@ function ReviewTableModal({open, setOpen, reviewId}) {
     reviewId,
   ]);
 
-  useEffect(() => {
-    console.log(reviewDetail);
-  }, [reviewDetail]);
-
   // mutation code 따로 모으기
 
   const {

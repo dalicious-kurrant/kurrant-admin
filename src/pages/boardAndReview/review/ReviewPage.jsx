@@ -97,23 +97,8 @@ const ReviewPage = () => {
   );
 
   useEffect(() => {
-    console.log(url);
     reviewQueryRefetch();
   }, [url]);
-
-  // const timer = callback => {
-  //   setTimeout(() => {
-  //     callback();
-  //   }, 1500);
-  // };
-
-  // useEffect(() => {
-  //   if (!reviewList || reviewList.length < 1) {
-  //     timer(() => {
-  //       reviewQueryRefetch();
-  //     });
-  //   }
-  // }, [reviewList, reviewQueryRefetch]);
 
   // 메이커스 드랍박스 채우기
 
@@ -129,9 +114,9 @@ const ReviewPage = () => {
 
   // 값 확인하기
 
-  useEffect(() => {
-    // console.log(reviewList);
-  }, [reviewList]);
+  // useEffect(() => {
+  // console.log(reviewList);
+  // }, [reviewList]);
 
   return (
     <PageWrapper>

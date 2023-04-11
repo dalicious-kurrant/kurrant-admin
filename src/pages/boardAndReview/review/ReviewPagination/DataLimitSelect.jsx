@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const DataLimitSelect = ({currentValue, setLimit, options, setPage}) => {
   const handleChange = e => {
     const value = e.target.value;
-    // console.log(value);
+
     setLimit(value);
 
     setPage(1);

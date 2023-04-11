@@ -22,8 +22,6 @@ const ReviewTable = ({testData}) => {
 
   //값 확인하기
 
-  console.log(testData);
-
   return (
     <>
       <TableWrapper>

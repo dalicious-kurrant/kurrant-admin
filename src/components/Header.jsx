@@ -54,8 +54,6 @@ const Header = ({openMenu, setOpenMenu}) => {
     window.location.replace('/');
   };
 
-  console.log(MenuList);
-
   const resetJotai = () => {
     resetAtom();
     resetAtom1();
