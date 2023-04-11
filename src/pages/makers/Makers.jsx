@@ -20,7 +20,9 @@ const Makers = () => {
   return (
     <PageWrapper>
       <BtnWrapper></BtnWrapper>
-      {makersInformation && <MakersTable data={makersInformation} />}
+      {makersInformation && (
+        <MakersTable data={makersInformation} setData={setMakersInformation} />
+      )}
       {makersExelInfo && <MakersExelTable data={makersExelInfo} />}
     </PageWrapper>
   );

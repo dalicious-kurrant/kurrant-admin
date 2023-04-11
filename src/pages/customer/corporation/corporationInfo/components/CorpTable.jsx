@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
+import CorpEditModal from './CorpEditModal';
 
 const CorpTable = ({
   data,
@@ -27,7 +28,13 @@ const CorpTable = ({
       label: el.groupName,
     };
   });
-
+  const [showOpenModal, setShowOpenModal] = useState(false);
+  const [clickData, setClickData] = useState();
+  const showEditOpen = id => {
+    const datas = corpListData.filter(v => v.id === id);
+    setClickData(...datas);
+    setShowOpenModal(true);
+  };
   // const diningType = corpListData?.map(el => {
   //   return el.diningTypes.map(v => {
   //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
@@ -142,7 +149,13 @@ const CorpTable = ({
               const garbage = el.isGarbage ? '사용' : '미사용';
               const hotStorage = el.isHotStorage ? '사용' : '미사용';
               return (
-                <Table.Row key={el.id + idx}>
+                <Table.Row
+                  key={el.id + idx}
+                  style={{cursor: 'pointer'}}
+                  onClick={e => {
+                    e.stopPropagation();
+                    showEditOpen(el.id);
+                  }}>
                   <Table.Cell>
                     <input type="checkbox" />
                   </Table.Cell>
@@ -193,6 +206,15 @@ const CorpTable = ({
             })}
           </Table.Body>
         </Table>
+        {clickData && (
+          <CorpEditModal
+            open={showOpenModal}
+            setOpen={setShowOpenModal}
+            nowData={clickData}
+            setNowData={setClickData}
+            testData={corpListData}
+          />
+        )}
       </TableWrapper>
     </PageWrapper>
   );

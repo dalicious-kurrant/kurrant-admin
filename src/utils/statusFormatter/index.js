@@ -98,6 +98,18 @@ export function groupTypeFormatted(data) {
       return '비인가';
   }
 }
+export function groupTypeFormatted2(data) {
+  switch (data) {
+    case '기업':
+      return 0;
+    case '아파트':
+      return 1;
+    case '오픈스팟':
+      return 2;
+    default:
+      return 3;
+  }
+}
 
 export function scheduleFormatted2(data) {
   switch (data) {

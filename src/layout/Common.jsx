@@ -414,6 +414,7 @@ const Common = () => {
             isNutritionInformation: nutrition,
             openTime: item.openTime,
             closeTime: item.closeTime,
+            fee: item.fee,
             bank: item.bank,
             depositHolder: item.depositHolder,
             accountNumber: item.accountNumber,
