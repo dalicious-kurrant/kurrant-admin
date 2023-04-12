@@ -16,6 +16,7 @@ import ReviewPagination from './ReviewPagination/ReviewPagination';
 import RadioInput from './components/Radio/RadioInput';
 import RadioGroup from './components/Radio/RadioGroup';
 import Radio from './components/Radio/Radio';
+import KeyDetector from 'common/KeyDetector/KeyDetector';
 
 const ReviewPage = () => {
   const [page, setPage] = useState(1);
@@ -96,9 +97,9 @@ const ReviewPage = () => {
     url,
   );
 
-  useEffect(() => {
-    reviewQueryRefetch();
-  }, [url]);
+  // useEffect(() => {
+  //   reviewQueryRefetch();
+  // }, [url]);
 
   // 메이커스 드랍박스 채우기
 
@@ -113,6 +114,14 @@ const ReviewPage = () => {
   };
 
   // 값 확인하기
+
+  // 엔터치면 불러오기
+
+  const handleKeyDetector = keyValue => {
+    if (keyValue === 'Enter') {
+      reviewQueryRefetch();
+    }
+  };
 
   // useEffect(() => {
   // console.log(reviewList);
@@ -291,6 +300,7 @@ const ReviewPage = () => {
         <Div></Div>
       )}
       <ReviewTable testData={reviewList} />
+      <KeyDetector sendKeyValue={handleKeyDetector} />
     </PageWrapper>
   );
 };
