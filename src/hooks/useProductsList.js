@@ -13,17 +13,22 @@ export function useGetExportProductsList() {
 }
 
 export function useGetDetailProductsList(foodId, makersId) {
-  return useQuery('detailList', () => {
-    return productApis.productDetailList(foodId, makersId);
-  });
+  return useQuery(
+    'detailList',
+    () => productApis.productDetailList(foodId, makersId),
+    {
+      staleTime: 0,
+    },
+  );
 }
 
 export function useEditProductDetail() {
+  const queryClient = useQueryClient();
   return useMutation(
     (formData, config) => productApis.modifyProductDetail(formData, config),
     {
-      onSuccess: res => {
-        console.log(res, '998');
+      onSuccess: () => {
+        queryClient.invalidateQueries('detailList');
       },
       onError: () => {
         alert('잘못된 데이터가 있습니다. 다시 시도해주세요');
