@@ -94,7 +94,6 @@ const MakersTable = ({data, setData}) => {
 
         <Table.Body>
           {data?.data?.map((el, i) => {
-            console.log(el);
             const parentCompany = el.isParentCompany ? '있음' : '없음';
             return (
               <Table.Row

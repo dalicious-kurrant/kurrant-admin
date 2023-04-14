@@ -227,7 +227,6 @@ const AddOrder = () => {
               <Table.Body>
                 {extraFoodList?.data?.map((el, idx) => {
                   return el.dailyFoods.map((v, i) => {
-                    // console.log(el, v, '01');
                     const groupArr = v.groupList.map(el => {
                       return {
                         value: el.groupId,
