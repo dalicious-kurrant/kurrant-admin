@@ -1,3 +1,4 @@
+import {useUpdateSpotDetail} from 'hooks/useCorporation';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import {
@@ -21,11 +22,40 @@ function CorpEditModal({
   testData,
   setTestData,
 }) {
+  const {mutateAsync: updateSpotDetail} = useUpdateSpotDetail();
   // console.log(nowData);
   // console.log(nowData.userOrderAlarm);
-  const onSubmit = () => {
-    console.log(nowData);
-    // setOpen(false);
+  const onSubmit = async () => {
+    const req = {
+      spotId: nowData.id,
+      spotName: nowData.name,
+      managerId: nowData.managerId,
+      managerName: nowData.managerName,
+      managerPhone: nowData.managerPhone,
+      spotType: nowData.groupType,
+      diningTypes: nowData.diningTypes.join(','),
+      serviceDays: nowData.serviceDays,
+      zipCode: nowData.zipCode,
+      isMembershipSupport: nowData.isMembershipSupport,
+      address1: nowData.address1,
+      address2: nowData.address2,
+      breakfastSupportPrice: nowData.morningSupportPrice,
+      lunchSupportPrice: nowData.lunchSupportPrice,
+      dinnerSupportPrice: nowData.dinnerSupportPrice,
+      location: nowData.location,
+      minPrice: nowData.minimumSpend,
+      maxPrice: nowData.maximumSpend,
+      isSetting: nowData.isSetting,
+      isGarbage: nowData.isGarbage,
+      isHotStorage: nowData.isHotStorage,
+      memo: nowData.memo,
+    };
+    console.log(req);
+    try {
+      await updateSpotDetail(req);
+    } catch (error) {
+      alert(error.toString());
+    }
   };
   return (
     <Form onSubmit={onSubmit}>

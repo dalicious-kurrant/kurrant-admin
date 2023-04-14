@@ -17,3 +17,8 @@ export function useSaveExelCorporation() {
     return corporationApis.corporationExel(data);
   });
 }
+export function useUpdateSpotDetail() {
+  return useMutation(data => {
+    return corporationApis.updateSpotDetail(data);
+  });
+}
