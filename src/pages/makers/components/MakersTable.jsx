@@ -42,6 +42,15 @@ const MakersTable = ({data, setData}) => {
               가능 다이닝타입
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
+              아침 주문마감시간
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              점심 주문마감시간
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              저녁 주문마감시간
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
               아침 가능케파
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
@@ -119,6 +128,9 @@ const MakersTable = ({data, setData}) => {
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
+                <Table.Cell>{el.morningLastOrderTime}</Table.Cell>
+                <Table.Cell>{el.lunchLastOrderTime}</Table.Cell>
+                <Table.Cell>{el.dinnerLastOrderTime}</Table.Cell>
                 <Table.Cell textAlign="center">{el.morningCapacity}</Table.Cell>
                 <Table.Cell textAlign="center">{el.lunchCapacity}</Table.Cell>
                 <Table.Cell textAlign="center">
