@@ -141,7 +141,7 @@ const ItemInfoTable = ({
                   <div style={{width: 200}}>{el.foodName}</div>
                 </Table.Cell>
                 <Table.Cell onClick={e => e.stopPropagation()}>
-                  <div style={{whiteSpace: 'nowrap'}}>
+                  <div style={{whiteSpace: 'nowrap', width: 150}}>
                     <Select
                       options={statusValue}
                       value={defaultValue}

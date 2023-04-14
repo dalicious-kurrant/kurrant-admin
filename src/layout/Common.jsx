@@ -372,18 +372,21 @@ const Common = () => {
           if (item.morningCapa) {
             typeArr.push({
               diningType: 1,
+              lastOrderTime: item.morningLastOrderTime,
               capacity: item.morningCapa,
             });
           }
           if (item.lunchCapa) {
             typeArr.push({
               diningType: 2,
+              lastOrderTime: item.lunchLastOrderTime,
               capacity: item.lunchCapa,
             });
           }
           if (item.dinnerCapa) {
             typeArr.push({
               diningType: 3,
+              lastOrderTime: item.dinnerLastOrderTime,
               capacity: item.dinnerCapa,
             });
           }

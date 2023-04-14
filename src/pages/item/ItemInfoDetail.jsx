@@ -2,7 +2,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {FormProvider, useForm} from 'react-hook-form';
 import Input from '../../components/input/Input';
 import styled from 'styled-components';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import withCommas from '../../utils/withCommas';
 import HashTag from '../../components/hashTag/HashTag';
 import {
@@ -13,9 +13,11 @@ import ItemDetailImage from './components/ItemDetailImage';
 import {useAtom} from 'jotai';
 import {productDataAtom} from 'utils/store';
 import {Button, Label} from 'semantic-ui-react';
-import Select from 'react-select';
 
 const ProductDetailPage = () => {
+  const morningRef = useRef(null);
+  const lunchRef = useRef(null);
+  const dinnerRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const foodId = location.state.foodId;
@@ -66,7 +68,6 @@ const ProductDetailPage = () => {
       }
     }
 
-    //console.log(sendForm, '0000');
     const data = {
       foodId: listData?.foodId,
       defaultPrice: Number(foodPrice.replace(',', '')),
@@ -80,21 +81,23 @@ const ProductDetailPage = () => {
       lunchCapacity: lunchCapacity,
       dinnerCapacity: dinnerCapacity,
       morningLastOrderTime:
-        (morningEndTime === undefined || morningEndTime === false) &&
+        (morningEndTime === undefined ||
+          morningEndTime === false ||
+          morningEndTime.trim() === '') &&
         morningTime === undefined
           ? null
           : morningEndTime + '일전 ' + morningTime,
       lunchLastOrderTime:
         (lunchEndTime === undefined ||
           lunchEndTime === false ||
-          lunchEndTime !== '') &&
+          lunchEndTime.trim() === '') &&
         lunchTime === undefined
           ? null
           : lunchEndTime + '일전 ' + lunchTime,
       dinnerLastOrderTime:
         (dinnerEndTime === undefined ||
           dinnerEndTime === false ||
-          dinnerEndTime !== '') &&
+          dinnerEndTime.trim() === '') &&
         dinnerTime === undefined
           ? null
           : dinnerEndTime + '일전 ' + dinnerTime,
@@ -124,6 +127,19 @@ const ProductDetailPage = () => {
 
   const dscOnChange = e => {
     setText(e.target.value);
+  };
+
+  const morningClearTime = () => {
+    setMorningTime((morningRef.current.value = undefined));
+    setValue('morningEnd', '');
+  };
+  const lunchClearTime = () => {
+    setLunchTime((lunchRef.current.value = undefined));
+    setValue('lunchEnd', '');
+  };
+  const dinnerClearTime = () => {
+    setDinnerTime((dinnerRef.current.value = undefined));
+    setValue('dinnerEnd', '');
   };
 
   useEffect(() => {
@@ -204,6 +220,13 @@ const ProductDetailPage = () => {
       listData?.dinnerLastOrderTime !== '정보 없음' &&
         listData?.dinnerLastOrderTime.split('일전')[0],
     );
+    setMorningTime(
+      listData?.morningLastOrderTime?.split('일전')[1]?.split(' ')[1],
+    );
+    setLunchTime(listData?.lunchLastOrderTime?.split('일전')[1]?.split(' ')[1]);
+    setDinnerTime(
+      listData?.dinnerLastOrderTime?.split('일전')[1]?.split(' ')[1],
+    );
   }, [
     listData?.customPrice,
     listData?.foodName,
@@ -267,16 +290,27 @@ const ProductDetailPage = () => {
                     />
                     <OrderEndTimeText>일 전</OrderEndTimeText>
                   </DayEndTime>
-                  <TimeInput
-                    type="time"
-                    autocomplete="off"
-                    defaultValue={
-                      listData?.morningLastOrderTime
-                        ?.split('일전')[1]
-                        ?.split(' ')[1]
-                    }
-                    onChange={e => setMorningTime(e.target.value)}
-                  />
+                  <TimeWrap>
+                    <ResetTime>
+                      <Label
+                        content="시간초기화"
+                        color="green"
+                        size="tiny"
+                        onClick={morningClearTime}
+                      />
+                    </ResetTime>
+                    <TimeInput
+                      ref={morningRef}
+                      type="time"
+                      key={listData?.morningLastOrderTime}
+                      defaultValue={
+                        listData?.morningLastOrderTime
+                          ?.split('일전')[1]
+                          ?.split(' ')[1]
+                      }
+                      onChange={e => setMorningTime(e.target.value)}
+                    />
+                  </TimeWrap>
                 </EndTimeContents>
                 <EndTimeContents>
                   <DayEndTime>
@@ -287,15 +321,27 @@ const ProductDetailPage = () => {
                     />
                     <OrderEndTimeText>일 전</OrderEndTimeText>
                   </DayEndTime>
-                  <TimeInput
-                    type="time"
-                    defaultValue={
-                      listData?.lunchLastOrderTime
-                        ?.split('일전')[1]
-                        ?.split(' ')[1]
-                    }
-                    onChange={e => setLunchTime(e.target.value)}
-                  />
+                  <TimeWrap>
+                    <ResetTime>
+                      <Label
+                        content="시간초기화"
+                        color="green"
+                        size="tiny"
+                        onClick={lunchClearTime}
+                      />
+                    </ResetTime>
+                    <TimeInput
+                      ref={lunchRef}
+                      type="time"
+                      key={listData?.lunchLastOrderTime}
+                      defaultValue={
+                        listData?.lunchLastOrderTime
+                          ?.split('일전')[1]
+                          ?.split(' ')[1]
+                      }
+                      onChange={e => setLunchTime(e.target.value)}
+                    />
+                  </TimeWrap>
                 </EndTimeContents>
                 <EndTimeContents>
                   <DayEndTime>
@@ -306,15 +352,27 @@ const ProductDetailPage = () => {
                     />
                     <OrderEndTimeText>일 전</OrderEndTimeText>
                   </DayEndTime>
-                  <TimeInput
-                    type="time"
-                    defaultValue={
-                      listData?.dinnerLastOrderTime
-                        ?.split('일전')[1]
-                        ?.split(' ')[1]
-                    }
-                    onChange={e => setDinnerTime(e.target.value)}
-                  />
+                  <TimeWrap>
+                    <ResetTime>
+                      <Label
+                        content="시간초기화"
+                        color="green"
+                        size="tiny"
+                        onClick={dinnerClearTime}
+                      />
+                    </ResetTime>
+                    <TimeInput
+                      ref={dinnerRef}
+                      type="time"
+                      key={listData?.dinnerLastOrderTime}
+                      defaultValue={
+                        listData?.dinnerLastOrderTime
+                          ?.split('일전')[1]
+                          ?.split(' ')[1]
+                      }
+                      onChange={e => setDinnerTime(e.target.value)}
+                    />
+                  </TimeWrap>
                 </EndTimeContents>
               </EndTimeWrap>
             </div>
@@ -481,4 +539,15 @@ const EndTimeWrap = styled.div`
 const OrderEndTimeText = styled.div`
   margin-left: -60px;
   margin-right: 10px;
+`;
+
+const ResetTime = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+`;
+
+const TimeWrap = styled.div`
+  display: flex;
+  flex-direction: column;
 `;

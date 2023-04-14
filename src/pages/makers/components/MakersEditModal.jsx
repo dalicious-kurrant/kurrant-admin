@@ -20,11 +20,11 @@ function MakersEditModal({
   testData,
   setTestData,
 }) {
-  // console.log(nowData);
+  // console.log(testData);
   // console.log(nowData.userOrderAlarm);
   const onSubmit = () => {
     setTestData(
-      testData.map(v => {
+      testData?.data?.map(v => {
         if (v.id === nowData.id) {
           return nowData;
         }
@@ -184,6 +184,51 @@ function MakersEditModal({
                   />
                 </FlexBox>
               </Form.Field>
+              <Form.Field>
+                <FlexBox width={100}>
+                  <Label size="mini">아침 주문가능시간</Label>
+                  <Input
+                    placeholder="아침 주문가능시간"
+                    defaultValue={nowData.morningLastOrderTime}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        morningLastOrderTime: data.value ? data.value : null,
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox width={100}>
+                  <Label size="mini">점심 주문가능시간</Label>
+                  <Input
+                    placeholder="점심 주문가능시간"
+                    defaultValue={nowData.lunchLastOrderTime}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        lunchLastOrderTime: data.value ? data.value : null,
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox width={100}>
+                  <Label size="mini">저녁 주문가능시간</Label>
+                  <Input
+                    placeholder="저녁 주문가능시간"
+                    defaultValue={nowData.dinnerLastOrderTime}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        dinnerLastOrderTime: data.value ? data.value : null,
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
 
               <Form.Field>
                 <FlexBox width={100}>
@@ -226,21 +271,6 @@ function MakersEditModal({
                       setNowData({
                         ...nowData,
                         dinnerCapacity: data.value ? data.value : null,
-                      });
-                    }}
-                  />
-                </FlexBox>
-              </Form.Field>
-              <Form.Field>
-                <FlexBox width={100}>
-                  <Label size="mini">위치</Label>
-                  <Input
-                    placeholder="위치"
-                    defaultValue={nowData.location}
-                    onChange={(e, data) => {
-                      setNowData({
-                        ...nowData,
-                        location: data.value ? data.value : null,
                       });
                     }}
                   />
@@ -341,6 +371,21 @@ function MakersEditModal({
                       setNowData({
                         ...nowData,
                         zipCode: data.value ? data.value : null,
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox width={100}>
+                  <Label size="mini">위치</Label>
+                  <Input
+                    placeholder="위치"
+                    defaultValue={nowData.location}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        location: data.value ? data.value : null,
                       });
                     }}
                   />
