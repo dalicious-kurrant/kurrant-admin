@@ -23,6 +23,7 @@ import Point from 'pages/calculation/point/Point';
 import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
 import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
 import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
+import Notification from 'pages/notification/Notification';
 
 export const MenuList = [
   {
@@ -175,8 +176,9 @@ export const MenuList = [
         url: '/notice',
       },
       {
-        name: '푸쉬알림 (진행중)',
+        name: '푸쉬알림',
         url: '/notification',
+        component: <Notification />,
       },
       {
         name: '이용 가이드 (진행중)',
