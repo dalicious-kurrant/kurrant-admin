@@ -297,6 +297,7 @@ const ProductDetailPage = () => {
                         color="green"
                         size="tiny"
                         onClick={morningClearTime}
+                        style={{cursor: 'pointer'}}
                       />
                     </ResetTime>
                     <TimeInput
@@ -328,6 +329,7 @@ const ProductDetailPage = () => {
                         color="green"
                         size="tiny"
                         onClick={lunchClearTime}
+                        style={{cursor: 'pointer'}}
                       />
                     </ResetTime>
                     <TimeInput
@@ -359,6 +361,7 @@ const ProductDetailPage = () => {
                         color="green"
                         size="tiny"
                         onClick={dinnerClearTime}
+                        style={{cursor: 'pointer'}}
                       />
                     </ResetTime>
                     <TimeInput
