@@ -53,6 +53,7 @@ function CorpEditModal({
     console.log(req);
     try {
       await updateSpotDetail(req);
+      alert('저장완료');
     } catch (error) {
       alert(error.toString());
     }
@@ -317,7 +318,7 @@ function CorpEditModal({
                   <Input
                     style={{width: 450}}
                     placeholder="아침 지원금"
-                    defaultValue={nowData.morningSupportPrice}
+                    defaultValue={nowData.morningSupportPrice || 0}
                     onChange={(e, data) => {
                       setNowData({
                         ...nowData,
@@ -357,7 +358,7 @@ function CorpEditModal({
                   <Input
                     style={{width: 450}}
                     placeholder="점심 지원금"
-                    defaultValue={nowData.lunchSupportPrice}
+                    defaultValue={nowData.lunchSupportPrice || 0}
                     onChange={(e, data) => {
                       setNowData({
                         ...nowData,
@@ -397,7 +398,7 @@ function CorpEditModal({
                   <Input
                     style={{width: 450}}
                     placeholder="저녁 지원금"
-                    defaultValue={nowData.dinnerSupportPrice}
+                    defaultValue={nowData.dinnerSupportPrice || 0}
                     onChange={(e, data) => {
                       setNowData({
                         ...nowData,

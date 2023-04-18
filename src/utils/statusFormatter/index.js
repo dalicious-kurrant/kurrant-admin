@@ -74,6 +74,18 @@ export function diningFormatted(data) {
       return '아침';
   }
 }
+export function diningReverseFormatted(data) {
+  switch (data) {
+    case '아침':
+      return 1;
+    case '점심':
+      return 2;
+    case '저녁':
+      return 3;
+    default:
+      return 1;
+  }
+}
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
