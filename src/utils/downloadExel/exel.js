@@ -440,8 +440,11 @@ export function makersInfoExel(makersInformation) {
     'managerName',
     'managerPhone',
     'diningTypes',
+    'morningLastOrderTime',
     'morningCapa',
+    'lunchLastOrderTime',
     'lunchCapa',
+    'dinnerLastOrderTime',
     'dinnerCapa',
     'dailyCapacity',
     'serviceType',
@@ -473,8 +476,11 @@ export function makersInfoExel(makersInformation) {
     '담당자 이름',
     '담당자 전화번호',
     '가능 다이닝타입',
+    '아침 주문가능시간',
     '아침가능 케파',
+    '점심 주문가능시간',
     '점심가능 케파',
+    '저녁 주문가능시간',
     '저녁가능 케파',
     '일일최대수량',
     '서비스 업종',
@@ -509,8 +515,11 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(el.diningTypes.join(','));
+    reqArray.push(el.morningLastOrderTime);
     reqArray.push(el.morningCapacity);
+    reqArray.push(el.lunchLastOrderTime);
     reqArray.push(el.lunchCapacity);
+    reqArray.push(el.dinnerLastOrderTime);
     reqArray.push(el.dinnerCapacity);
     reqArray.push(el.dailyCapacity);
     reqArray.push(el.serviceType);

@@ -74,6 +74,18 @@ export function diningFormatted(data) {
       return '아침';
   }
 }
+export function diningReverseFormatted(data) {
+  switch (data) {
+    case '아침':
+      return 1;
+    case '점심':
+      return 2;
+    case '저녁':
+      return 3;
+    default:
+      return 1;
+  }
+}
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
@@ -96,6 +108,18 @@ export function groupTypeFormatted(data) {
       return '오픈스팟';
     default:
       return '비인가';
+  }
+}
+export function groupTypeFormatted2(data) {
+  switch (data) {
+    case '기업':
+      return 0;
+    case '아파트':
+      return 1;
+    case '오픈스팟':
+      return 2;
+    default:
+      return 3;
   }
 }
 

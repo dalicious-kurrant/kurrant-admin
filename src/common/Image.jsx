@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Image = ({src, width, height, css = ''}) => {
+const Image = ({src, iconWidth, iconHeight, width, height, css = ''}) => {
   return (
     <Container width={width} height={height} css={css}>
       <Img src={src} />
@@ -20,6 +20,6 @@ const Container = styled.div`
 `;
 
 const Img = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 170%;
+  height: 170%;
 `;

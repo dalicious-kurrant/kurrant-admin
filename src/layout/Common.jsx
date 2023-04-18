@@ -372,18 +372,21 @@ const Common = () => {
           if (item.morningCapa) {
             typeArr.push({
               diningType: 1,
+              lastOrderTime: item.morningLastOrderTime,
               capacity: item.morningCapa,
             });
           }
           if (item.lunchCapa) {
             typeArr.push({
               diningType: 2,
+              lastOrderTime: item.lunchLastOrderTime,
               capacity: item.lunchCapa,
             });
           }
           if (item.dinnerCapa) {
             typeArr.push({
               diningType: 3,
+              lastOrderTime: item.dinnerLastOrderTime,
               capacity: item.dinnerCapa,
             });
           }
@@ -414,6 +417,7 @@ const Common = () => {
             isNutritionInformation: nutrition,
             openTime: item.openTime,
             closeTime: item.closeTime,
+            fee: item.fee,
             bank: item.bank,
             depositHolder: item.depositHolder,
             accountNumber: item.accountNumber,
@@ -755,8 +759,8 @@ const Common = () => {
     pathname !== `/shop/info/${id}` &&
     pathname !== `/order/info/detail/${orderNumber}` &&
     pathname !== `/calc/point` &&
-    pathname !== `/order/additionalOrder`;
-
+    pathname !== `/order/additionalOrder` &&
+    pathname !== '/board/review';
   return (
     <C.Wrapper>
       <C.Bread>

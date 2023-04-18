@@ -1,7 +1,7 @@
-import DataLimitSelect from 'common/Pagination/Childs/DataLimitSelect';
 import {useEffect} from 'react';
 import styled from 'styled-components';
 import {calculatePageMove} from './PaginationLogics';
+import DataLimitSelect from './DataLimitSelect';
 
 const Pagination = ({
   pageList,

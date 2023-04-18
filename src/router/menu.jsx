@@ -18,10 +18,12 @@ import CustomerCustom from '../pages/customer/Customer/CustomerCustom';
 import Group from '../pages/recommendation/group/Group';
 import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
+import ReviewPage from 'pages/boardAndReview/review/ReviewPage';
 import Point from 'pages/calculation/point/Point';
 import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
 import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
 import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
+import Notification from 'pages/notification/Notification';
 
 export const MenuList = [
   {
@@ -157,12 +159,13 @@ export const MenuList = [
     ],
   },
   {
-    name: '게시판&리뷰 (진행중)',
+    name: '게시판&리뷰 ',
     url: '/board',
     children: [
       {
-        name: '리뷰 및 신고 (진행중)',
+        name: '리뷰관리',
         url: '/review',
+        component: <ReviewPage />,
       },
       {
         name: '컨텐츠 관리 (진행중)',
@@ -173,8 +176,9 @@ export const MenuList = [
         url: '/notice',
       },
       {
-        name: '푸쉬알림 (진행중)',
+        name: '푸쉬알림',
         url: '/notification',
+        component: <Notification />,
       },
       {
         name: '이용 가이드 (진행중)',

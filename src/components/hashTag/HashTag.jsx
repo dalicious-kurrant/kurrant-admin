@@ -21,7 +21,7 @@ const HashTag = ({clicked, setClicked}) => {
     }
     setClicked([...clicked, id]);
   };
-  console.log(clicked);
+  // console.log(clicked);
   return (
     <Wrap>
       <Title>식품 타입</Title>

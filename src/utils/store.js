@@ -37,6 +37,7 @@ export const userOptionAtom = atomWithReset('');
 export const makersOptionAtom = atomWithReset('');
 export const spotOptionAtom = atomWithReset('');
 export const diningTypeOptionAtom = atomWithReset('');
+export const orderStatusAtom = atomWithReset('');
 export const statusOptionAtom = atomWithReset([]);
 export const groupInfoAtom = atomWithReset('');
 export const spotListAtom = atomWithReset([]);

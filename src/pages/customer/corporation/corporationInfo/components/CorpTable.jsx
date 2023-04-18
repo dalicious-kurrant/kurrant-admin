@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
+import CorpEditModal from './CorpEditModal';
 
 const CorpTable = ({
   data,
@@ -27,7 +28,13 @@ const CorpTable = ({
       label: el.groupName,
     };
   });
-
+  const [showOpenModal, setShowOpenModal] = useState(false);
+  const [clickData, setClickData] = useState();
+  const showEditOpen = id => {
+    const datas = corpListData.filter(v => v.id === id);
+    setClickData(...datas);
+    setShowOpenModal(true);
+  };
   // const diningType = corpListData?.map(el => {
   //   return el.diningTypes.map(v => {
   //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
@@ -92,6 +99,9 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                식사 요일(지원급 적용X)
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -142,7 +152,13 @@ const CorpTable = ({
               const garbage = el.isGarbage ? '사용' : '미사용';
               const hotStorage = el.isHotStorage ? '사용' : '미사용';
               return (
-                <Table.Row key={el.id + idx}>
+                <Table.Row
+                  key={el.id + idx}
+                  style={{cursor: 'pointer'}}
+                  onClick={e => {
+                    e.stopPropagation();
+                    showEditOpen(el.id);
+                  }}>
                   <Table.Cell>
                     <input type="checkbox" />
                   </Table.Cell>
@@ -157,6 +173,9 @@ const CorpTable = ({
                     <div style={{width: 50}}>{el.location}</div>
                   </Table.Cell>
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 150}}>{el.serviceDays}</div>
+                  </Table.Cell>
                   <Table.Cell>
                     <div style={{width: 150}}>{el.serviceDays}</div>
                   </Table.Cell>
@@ -193,6 +212,15 @@ const CorpTable = ({
             })}
           </Table.Body>
         </Table>
+        {clickData && (
+          <CorpEditModal
+            open={showOpenModal}
+            setOpen={setShowOpenModal}
+            nowData={clickData}
+            setNowData={setClickData}
+            testData={corpListData}
+          />
+        )}
       </TableWrapper>
     </PageWrapper>
   );

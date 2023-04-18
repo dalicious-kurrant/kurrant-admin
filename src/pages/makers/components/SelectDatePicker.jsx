@@ -20,7 +20,7 @@ const PannelButton = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const SelectedDate = styled.div`
+const SelectedDate = styled.span`
   color: #767676;
   font-size: small;
   font-weight: 600;

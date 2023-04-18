@@ -78,6 +78,10 @@ const CustomerTable = ({
           options={userArr}
           onChange={e => {
             //userFilter(e.value);
+
+            console.log('커스터머 테이블');
+            console.log(e);
+
             setUserOption(e.value.toString());
           }}
         />
