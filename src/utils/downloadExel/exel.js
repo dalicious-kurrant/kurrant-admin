@@ -204,6 +204,7 @@ export function userExel(user) {
   reqArrays.push([
     'status',
     'email',
+    'paymentPassword',
     'password',
     'userName',
     'role',
@@ -228,6 +229,7 @@ export function userExel(user) {
   reqArrays.push([
     '유저 상태',
     '이메일',
+    '결제 비밀번호',
     '비밀번호',
     '사용자 명',
     '유저 타입',
@@ -254,6 +256,7 @@ export function userExel(user) {
     const reqArray = [];
     reqArray.push(el.status);
     reqArray.push(el.email);
+    reqArray.push(el.paymentPassword);
     reqArray.push(el.password);
     reqArray.push(el.userName);
     reqArray.push(el.role);

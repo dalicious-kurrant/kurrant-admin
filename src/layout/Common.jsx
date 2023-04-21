@@ -633,6 +633,7 @@ const Common = () => {
       if (i !== 0) {
         return {
           password: v.password || null,
+          paymentPassword: v.paymentPassword || null,
           name: v.userName,
           email: v.email,
           phone: v.phone || null,
@@ -657,6 +658,7 @@ const Common = () => {
     const result = user.map((v, i) => {
       return {
         password: v.password || null,
+        paymentPassword: v.paymentPassword || null,
         name: v.userName,
         email: v.email,
         phone: v.phone || null,

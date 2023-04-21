@@ -151,6 +151,7 @@ const CustomerTable = ({
               <Table.HeaderCell textAlign="center">
                 이메일(필수)
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">결제비밀번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">비밀번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 사용자 명(필수)
@@ -192,6 +193,7 @@ const CustomerTable = ({
           <Table.Body>
             {testData?.length > 0 &&
               testData?.map((row, i) => {
+                console.log(row)
                 return (
                   <Table.Row
                     style={{
@@ -225,6 +227,9 @@ const CustomerTable = ({
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.email}</FlexBox>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <FlexPwdBox>{row.paymentPassword}</FlexPwdBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexPwdBox>{row.password}</FlexPwdBox>
