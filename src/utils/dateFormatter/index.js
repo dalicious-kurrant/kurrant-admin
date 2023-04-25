@@ -217,3 +217,11 @@ export function addDays(date, days) {
   dateTime = new Date(dateTime.setDate(dateTime.getDate() + days));
   return dateTime;
 }
+
+export function formattedYearMonthDate(data, delimiter = '-') {
+  const dateTime = transDateType(data);
+  const year = dateTime.getFullYear();
+  const month = leftPad(dateTime.getMonth());
+
+  return `${[year, month].join(delimiter)}`;
+}

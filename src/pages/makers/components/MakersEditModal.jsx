@@ -22,6 +22,7 @@ function MakersEditModal({
   testData,
   setTestData,
 }) {
+
   const {mutateAsync: updateMakers} = useUpdateMakersDetail();
   const onSubmit = async () => {
     const dining = nowData.diningTypes.map((v, i) => {
@@ -79,6 +80,7 @@ function MakersEditModal({
     } catch (error) {
       alert(error.toString());
     }
+
   };
   return (
     <Form onSubmit={onSubmit}>

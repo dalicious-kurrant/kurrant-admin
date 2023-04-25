@@ -11,6 +11,8 @@ import ScrollToTop from 'shared/ScrollToTop';
 import Test from 'common/test/InputTest';
 import Delivery from 'pages/Delivery';
 import Download from 'pages/Download';
+import MakersCalcDetail from 'pages/adjustment/components/MakersCalcDetail';
+import ClientCalcDetail from 'pages/adjustment/components/ClientCalcDetail';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
@@ -26,6 +28,14 @@ const MainRouter = () => {
             <Route path="/main" element={<Home />} />
             <Route path="/test" element={<Test />} />
             <Route path="/order/info/detail/:code" element={<OrderDetail />} />
+            <Route
+              path="calc/makersCalc/detail"
+              element={<MakersCalcDetail />}
+            />
+            <Route
+              path="calc/groupCalc/detail"
+              element={<ClientCalcDetail />}
+            />
             {MenuList.map(v => (
               <Route key={v.url} path={v.url}>
                 {v.children?.map(b => (

@@ -31,7 +31,7 @@ const Company = () => {
     refetch,
   } = useGetCorporationInfo(100, page, name && name);
   const {data: corpExportList} = useGetExportCorporationInfo();
-  console.log(corpList);
+  // console.log(corpList);
   useEffect(() => {
     setCorporation(corpList);
     setCorporationExport(corpExportList?.data);
