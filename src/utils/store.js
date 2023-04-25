@@ -1,5 +1,9 @@
 import {atomWithReset} from 'jotai/utils';
-import {formattedWeekDate, formattedWeekDateZ} from './dateFormatter';
+import {
+  formattedWeekDate,
+  formattedWeekDateZ,
+  formattedYearMonthDate,
+} from './dateFormatter';
 
 //일정관리 아톰
 export const exelPlanAtom = atomWithReset();
@@ -69,3 +73,21 @@ export const extraOrderEndDateAtom = atomWithReset(days);
 export const extraHistoryStartDateAtom = atomWithReset(days);
 export const extraHistoryEndDateAtom = atomWithReset(days);
 export const extraListDataAtom = atomWithReset();
+export const extraOrderGroupOptionAtom = atomWithReset();
+
+// 메이커스 정산
+
+export const startMonthAtom = atomWithReset(formattedYearMonthDate(day));
+export const endMonthAtom = atomWithReset(formattedYearMonthDate(day));
+export const selectClientAtom = atomWithReset([]);
+export const selectStatusAtom = atomWithReset();
+export const selectModifyAtom = atomWithReset();
+
+// 고객사 정산
+
+export const startMonthClientAtom = atomWithReset(formattedYearMonthDate(day));
+export const endMonthClientAtom = atomWithReset(formattedYearMonthDate(day));
+export const selectClientClientAtom = atomWithReset([]);
+export const selectStatusClientAtom = atomWithReset();
+export const selectModifyClientAtom = atomWithReset();
+export const corpDataAtom = atomWithReset();

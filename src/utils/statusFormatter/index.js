@@ -46,6 +46,10 @@ export function adjustReverseStatusFomatted(data) {
       return 1;
     case '정산금 입금 완료':
       return 2;
+    case '추가 요청 처리 완료':
+      return 3;
+    case '거래명세서 확정':
+      return 4;
     default:
       return 0;
   }

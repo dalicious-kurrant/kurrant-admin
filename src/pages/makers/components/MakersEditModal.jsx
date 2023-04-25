@@ -31,6 +31,7 @@ function MakersEditModal({
         return v;
       }),
     );
+
     setOpen(false);
   };
   return (
