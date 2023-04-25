@@ -2,15 +2,15 @@ import {extraOrderApis} from 'api/extraOrder';
 import useMutate from 'common/CRUD/useMutate';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 
-export function useGetExtraHistory(startDate, endDate) {
+export function useGetExtraHistory(startDate, endDate, groupOption) {
   return useQuery('extraOrderHistory', () => {
-    return extraOrderApis.extraOrderHistory(startDate, endDate);
+    return extraOrderApis.extraOrderHistory(startDate, endDate, groupOption);
   });
 }
 
-export function useGetExtraFoodList(startDate, endDate) {
+export function useGetExtraFoodList(startDate, endDate, groupOption) {
   return useQuery('extraFoodList', () => {
-    return extraOrderApis.extraFoodList(startDate, endDate);
+    return extraOrderApis.extraFoodList(startDate, endDate, groupOption);
   });
 }
 

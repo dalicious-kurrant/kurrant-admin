@@ -77,9 +77,27 @@ export function useUpdateMakersAdjustStatus() {
     },
   });
 }
-export function useMakersAdjustList() {
+export function useMakersAdjustList(
+  startMonth,
+  endMonth,
+  selectClient,
+  selectStatus,
+  selectModify,
+) {
   return useQuery('makersAdjustList', () => {
-    return adjustApis.getAdjustMakersList();
+    return adjustApis.getAdjustMakersList(
+      startMonth,
+      endMonth,
+      selectClient,
+      selectStatus,
+      selectModify,
+    );
+  });
+}
+
+export function useMakersAdjustListDetail(id) {
+  return useQuery('makersAdjustListDetail', () => {
+    return adjustApis.getAdjustMakersDetail(id);
   });
 }
 export function useUpdateSpotsAdjust() {
@@ -107,9 +125,21 @@ export function useUpdateSpotsAdjustStatus() {
     },
   });
 }
-export function useSpotsAdjustList() {
+export function useSpotsAdjustList(
+  startMonth,
+  endMonth,
+  selectClient,
+  selectStatus,
+  selectModify,
+) {
   return useQuery('spotsAdjustList', () => {
-    return adjustApis.getAdjustSpotsList();
+    return adjustApis.getAdjustSpotsList(
+      startMonth,
+      endMonth,
+      selectClient,
+      selectStatus,
+      selectModify,
+    );
   });
 }
 export function useMakersList() {
@@ -120,5 +150,26 @@ export function useMakersList() {
 export function useSpotsList() {
   return useQuery('spotsList', () => {
     return adjustApis.getSpotsList();
+  });
+}
+
+export function useAddMakersIssue() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addMakersIssue(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('makersAdjustListDetail');
+    },
+  });
+}
+
+export function useGetSpotOrders(id) {
+  return useQuery('spotOrders', () => {
+    return adjustApis.getSpotOrders(id);
+  });
+}
+
+export function useGetSpotInvoice(id) {
+  return useQuery('spotVoice', () => {
+    return adjustApis.getSpotInvoice(id);
   });
 }
