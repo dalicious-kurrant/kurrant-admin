@@ -99,6 +99,9 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                식사 요일(지원급 적용X)
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -170,6 +173,9 @@ const CorpTable = ({
                     <div style={{width: 50}}>{el.location}</div>
                   </Table.Cell>
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 150}}>{el.serviceDays}</div>
+                  </Table.Cell>
                   <Table.Cell>
                     <div style={{width: 150}}>{el.serviceDays}</div>
                   </Table.Cell>

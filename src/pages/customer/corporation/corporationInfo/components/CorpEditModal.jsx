@@ -1,3 +1,7 @@
+
+
+
+
 import {useUpdateSpotDetail} from 'hooks/useCorporation';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
@@ -702,3 +706,4 @@ const LineBox = styled.div`
   font-size: 12px;
   gap: 20px;
 `;
+

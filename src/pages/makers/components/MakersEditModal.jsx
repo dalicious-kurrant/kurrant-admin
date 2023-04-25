@@ -1,3 +1,4 @@
+import {useUpdateMakersDetail} from 'hooks/useMakers';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
 import {
@@ -11,6 +12,7 @@ import {
   TextArea,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
+import {diningReverseFormatted} from 'utils/statusFormatter';
 
 function MakersEditModal({
   open,
@@ -20,19 +22,65 @@ function MakersEditModal({
   testData,
   setTestData,
 }) {
-  // console.log(testData);
-  // console.log(nowData.userOrderAlarm);
-  const onSubmit = () => {
-    setTestData(
-      testData?.data?.map(v => {
-        if (v.id === nowData.id) {
-          return nowData;
-        }
-        return v;
-      }),
-    );
 
-    setOpen(false);
+  const {mutateAsync: updateMakers} = useUpdateMakersDetail();
+  const onSubmit = async () => {
+    const dining = nowData.diningTypes.map((v, i) => {
+      const dinigTypeNumber = diningReverseFormatted(v);
+      return {
+        diningType: dinigTypeNumber,
+        lastOrderTime:
+          dinigTypeNumber === 1
+            ? nowData.morningLastOrderTime
+            : dinigTypeNumber === 2
+            ? nowData.lunchLastOrderTime
+            : nowData.dinnerLastOrderTime,
+        capacity:
+          dinigTypeNumber === 1
+            ? Number(nowData.morningCapacity) || 0
+            : dinigTypeNumber === 2
+            ? Number(nowData.lunchCapacity) || 0
+            : Number(nowData.dinnerCapacity) || 0,
+      };
+    });
+    const req = {
+      makersId: nowData.id,
+      code: nowData.code,
+      name: nowData.name,
+      companyName: nowData.companyName,
+      ceo: nowData.ceo,
+      ceoPhone: nowData.ceoPhone,
+      managerName: nowData.managerName,
+      managerPhone: nowData.managerPhone,
+      dailyCapacity: nowData.dailyCapacity,
+      serviceType: nowData.serviceType,
+      serviceForm: nowData.serviceForm,
+      isParentCompany: nowData.isParentCompany,
+      parentCompanyId: nowData.parentCompanyId,
+      zipCode: nowData.zipCode,
+      address1: nowData.address1,
+      address2: nowData.address2,
+      location: nowData.location,
+      companyRegistrationNumber: nowData.companyRegistrationNumber,
+      contractStartDate: nowData.contractStartDate,
+      contractEndDate: nowData.contractEndDate,
+      isNutritionInformation: nowData.isNutritionInformation,
+      openTime: nowData.openTime,
+      closeTime: nowData.closeTime,
+      fee: nowData.fee,
+      bank: nowData.bank,
+      depositHolder: nowData.depositHolder,
+      accountNumber: nowData.accountNumber,
+      diningTypes: dining,
+      memo: nowData.memo,
+    };
+    try {
+      await updateMakers(req);
+      setOpen(false);
+    } catch (error) {
+      alert(error.toString());
+    }
+
   };
   return (
     <Form onSubmit={onSubmit}>
@@ -152,8 +200,32 @@ function MakersEditModal({
                   />
                 </FlexBox>
               </Form.Field>
+              <Form.Field>
+                <FlexBox width={120}>
+                  <Label size="mini">서비스</Label>
+                  <Input
+                    placeholder="서비스 업종"
+                    defaultValue={nowData.serviceForm}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        serviceForm: data.value ? data.value : null,
+                      });
+                    }}
+                  />
+                  <Input
+                    placeholder="서비스 형태"
+                    defaultValue={nowData.serviceType}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        serviceType: data.value ? data.value : '기타',
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
             </LineBox>
-            <LineBox></LineBox>
             <LineBox>
               <Form.Field>
                 <FlexBox width={100}>
@@ -279,31 +351,6 @@ function MakersEditModal({
               </Form.Field>
             </LineBox>
             <LineBox>
-              <Form.Field>
-                <FlexBox width={120}>
-                  <Label size="mini">서비스</Label>
-                  <Input
-                    placeholder="서비스 업종"
-                    defaultValue={nowData.serviceForm}
-                    onChange={(e, data) => {
-                      setNowData({
-                        ...nowData,
-                        serviceForm: data.value ? data.value : null,
-                      });
-                    }}
-                  />
-                  <Input
-                    placeholder="서비스 형태"
-                    defaultValue={nowData.serviceType}
-                    onChange={(e, data) => {
-                      setNowData({
-                        ...nowData,
-                        serviceType: data.value ? data.value : '기타',
-                      });
-                    }}
-                  />
-                </FlexBox>
-              </Form.Field>
               <Form.Field>
                 <FlexBox width={250}>
                   <Label size="mini">모회사</Label>

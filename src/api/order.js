@@ -7,7 +7,7 @@ export const orderApis = {
   makersList: async () => await instance.get('orders/makers'),
   orderList: async (startDate, endDate, params) =>
     await instance.get(
-      `orders?startDate=${startDate}&endDate=${endDate}${params.group}${params.spots}${params.makers}${params.type}${params.user}`,
+      `orders?startDate=${startDate}&endDate=${endDate}${params.group}${params.spots}${params.makers}${params.type}${params.user}${params.order}`,
     ),
   orderDetail: async orderCode => await instance.get(`orders/${orderCode}`),
   orderCancel: async data =>
