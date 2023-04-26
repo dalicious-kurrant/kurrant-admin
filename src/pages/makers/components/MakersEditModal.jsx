@@ -22,7 +22,6 @@ function MakersEditModal({
   testData,
   setTestData,
 }) {
-
   const {mutateAsync: updateMakers} = useUpdateMakersDetail();
   const onSubmit = async () => {
     const dining = nowData.diningTypes.map((v, i) => {
@@ -80,7 +79,6 @@ function MakersEditModal({
     } catch (error) {
       alert(error.toString());
     }
-
   };
   return (
     <Form onSubmit={onSubmit}>
@@ -258,10 +256,10 @@ function MakersEditModal({
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={100}>
-                  <Label size="mini">아침 주문가능시간</Label>
+                <FlexBox width={120}>
+                  <Label size="mini">아침 주문 마감시간</Label>
                   <Input
-                    placeholder="아침 주문가능시간"
+                    placeholder="아침 주문 마감시간"
                     defaultValue={nowData.morningLastOrderTime}
                     onChange={(e, data) => {
                       setNowData({
@@ -273,10 +271,10 @@ function MakersEditModal({
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={100}>
-                  <Label size="mini">점심 주문가능시간</Label>
+                <FlexBox width={120}>
+                  <Label size="mini">점심 주문 마감시간</Label>
                   <Input
-                    placeholder="점심 주문가능시간"
+                    placeholder="점심 주문 마감 시간"
                     defaultValue={nowData.lunchLastOrderTime}
                     onChange={(e, data) => {
                       setNowData({
@@ -288,10 +286,10 @@ function MakersEditModal({
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={100}>
-                  <Label size="mini">저녁 주문가능시간</Label>
+                <FlexBox width={120}>
+                  <Label size="mini">저녁 주문 마감 시간</Label>
                   <Input
-                    placeholder="저녁 주문가능시간"
+                    placeholder="저녁 주문 마감 시간"
                     defaultValue={nowData.dinnerLastOrderTime}
                     onChange={(e, data) => {
                       setNowData({
