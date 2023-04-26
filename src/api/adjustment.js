@@ -50,7 +50,8 @@ export const adjustApis = {
       `paycheck/corporations?startYearMonth=${startMonth}&endYearMonth=${endMonth}`,
       {
         params: {
-          makersIds: selectClient.length === 0 ? null : selectClient.join(','),
+          corporationIds:
+            selectClient.length === 0 ? null : selectClient.join(','),
           status: selectStatus === 99 ? null : selectStatus,
           hasRequest: selectModify === 99 ? null : selectModify,
         },
