@@ -33,7 +33,7 @@ const ClientFilter = () => {
   ];
 
   const modifyStatus = [
-    {key: 0, text: '전체', value: 0},
+    {key: 0, text: '전체', value: 99},
     {key: 1, text: '수정요청 있음', value: true},
     {key: 2, text: '수정요청 없음', value: false},
   ];

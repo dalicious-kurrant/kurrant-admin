@@ -72,25 +72,34 @@ const ClientCalc = () => {
         style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 24}}>
         <TotalWrap>
           <TotalTextWrap>
-            <TotalTite>총액({totalData?.totalCount}개)</TotalTite>
-            <TotalTite>{withCommas(totalData?.totalPrice)}원</TotalTite>
+            <TotalTite>거래명세서 확정 대기</TotalTite>
+            <TotalTite>{withCommas(totalData?.totalPrice)}건</TotalTite>
           </TotalTextWrap>
           <TotalTextWrap>
-            <TotalTite>완료 금액({totalData?.completeCount}개)</TotalTite>
+            <TotalTite>거래명세서 확정</TotalTite>
             <TotalTite>
               {withCommas(
                 totalData?.completePrice === 0 ? '0' : totalData?.completePrice,
               )}
-              원
+              건
             </TotalTite>
           </TotalTextWrap>
           <TotalTextWrap>
-            <TotalTite>남은 금액({totalData?.leftCount}개)</TotalTite>
+            <TotalTite>세금 계산서 발행</TotalTite>
             <TotalTite>
               {withCommas(
                 totalData?.leftPrice === 0 ? '0' : totalData?.leftPrice,
               )}
-              원
+              건
+            </TotalTite>
+          </TotalTextWrap>
+          <TotalTextWrap>
+            <TotalTite>정산금 입금</TotalTite>
+            <TotalTite>
+              {withCommas(
+                totalData?.leftPrice === 0 ? '0' : totalData?.leftPrice,
+              )}
+              건
             </TotalTite>
           </TotalTextWrap>
         </TotalWrap>

@@ -65,4 +65,6 @@ export const adjustApis = {
     await instance.get(`paycheck/corporations/${id}/orders`),
   getSpotInvoice: async id =>
     await instance.get(`paycheck/corporations/${id}/invoice`),
+  addSpotIssue: async data =>
+    await instance.post(`paycheck/corporations/${data.id}/issues`, data.data),
 };

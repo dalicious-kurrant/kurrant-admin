@@ -19,26 +19,33 @@ const MakersCalcDetail = () => {
   const id = location.state.makersId;
   const makersName = location.state.name;
 
+  const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const {data: adjustData} = useMakersAdjustListDetail(id);
-  const {mutateAsync: updateIssue} = useAddMakersIssue();
+  const {mutateAsync: updateIssue, isSuccess} = useAddMakersIssue();
   const [paycheckAdds, setPayChecks] = useState([]);
   const list = adjustData?.data;
 
   const updateButton = async () => {
-    const updateData = paycheckAdds?.filter(
-      el => !list?.paycheckAdds.includes(el),
-    );
+    // const updateData = paycheckAdds?.filter(
+    //   el => !list?.paycheckAdds.includes(el),
+    // );
     const data = {
       id: id,
-      data: updateData,
+      data: paycheckAdds,
     };
-    await updateIssue(data);
+    if (paycheckAdds.length !== 0) {
+      setLoading(true);
+      await updateIssue(data);
+      setPayChecks([]);
+      setLoading(false);
+      alert('업데이트 완료');
+    }
   };
 
-  useEffect(() => {
-    setPayChecks(list?.paycheckAdds);
-  }, [list?.paycheckAdds]);
+  // useEffect(() => {
+  //   setPayChecks(list?.paycheckAdds);
+  // }, [list?.paycheckAdds]);
   return (
     <PageWrapper>
       <MakersDetailTable data={adjustData?.data?.makersPaycheckInfo} />
@@ -56,6 +63,7 @@ const MakersCalcDetail = () => {
           onClick={() => {
             updateButton();
           }}
+          disabled={loading}
         />
       </ButtonWrap>
       <Wrap>
@@ -90,14 +98,14 @@ const MakersCalcDetail = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {paycheckAdds?.length === 0 ? (
+            {list?.paycheckAdds?.length === 0 && paycheckAdds?.length === 0 ? (
               <Table.Row>
                 <Table.Cell textAlign="center" colSpan="3">
                   없음
                 </Table.Cell>
               </Table.Row>
             ) : (
-              paycheckAdds?.map((el, idx) => {
+              list?.paycheckAdds?.map((el, idx) => {
                 return (
                   <Table.Row key={idx}>
                     <Table.Cell textAlign="center">{el.issueDate}</Table.Cell>
@@ -109,6 +117,17 @@ const MakersCalcDetail = () => {
                 );
               })
             )}
+            {paycheckAdds?.map((el, idx) => {
+              return (
+                <Table.Row key={idx}>
+                  <Table.Cell textAlign="center">{el.issueDate}</Table.Cell>
+                  <Table.Cell textAlign="center">{el.memo}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.price)}
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table>
         <TotalPriceWrap>

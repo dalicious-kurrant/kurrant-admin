@@ -25,6 +25,7 @@ const IssueModal = ({open, setOpen, setModifyData}) => {
       price: Number(price),
       memo: content,
     };
+
     if (data.memo !== undefined) {
       setModifyData(prev => [...prev, data]);
     }
