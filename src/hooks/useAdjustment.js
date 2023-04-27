@@ -169,7 +169,16 @@ export function useGetSpotOrders(id) {
 }
 
 export function useGetSpotInvoice(id) {
-  return useQuery('spotVoice', () => {
+  return useQuery('spotInvoice', () => {
     return adjustApis.getSpotInvoice(id);
+  });
+}
+
+export function useAddSpotIssue() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addSpotIssue(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('spotInvoice');
+    },
   });
 }

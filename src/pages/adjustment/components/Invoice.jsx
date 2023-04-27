@@ -6,6 +6,7 @@ import OrderData from './OrderData';
 import {useEffect, useState} from 'react';
 import {
   useAddMakersIssue,
+  useAddSpotIssue,
   useGetSpotInvoice,
   useMakersAdjustListDetail,
 } from 'hooks/useAdjustment';
@@ -16,26 +17,33 @@ import {useAtom} from 'jotai';
 import {corpDataAtom} from 'utils/store';
 
 const Invoice = ({groupName, id}) => {
+  const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [, setCorpData] = useAtom(corpDataAtom);
   const [paycheckAdds, setPayChecks] = useState([]);
-  const {mutateAsync: updateIssue} = useAddMakersIssue();
+  const {mutateAsync: updateIssue} = useAddSpotIssue();
   const {data: spotInvoice} = useGetSpotInvoice(id);
 
   const updateButton = async () => {
-    const updateData = paycheckAdds?.filter(
-      el => !spotInvoice?.data?.paycheckAdds.includes(el),
-    );
+    // const updateData = paycheckAdds?.filter(
+    //   el => !spotInvoice?.data?.paycheckAdds.includes(el),
+    // );
     const data = {
       id: id,
-      data: updateData,
+      data: paycheckAdds,
     };
-    await updateIssue(data);
+    if (data.data.length !== 0) {
+      setLoading(true);
+      await updateIssue(data);
+      setPayChecks([]);
+      setLoading(false);
+      alert('추가이슈 업데이트 완료');
+    }
   };
 
-  useEffect(() => {
-    setPayChecks(spotInvoice?.data?.paycheckAdds);
-  }, [spotInvoice?.data?.paycheckAdds]);
+  // useEffect(() => {
+  //   setPayChecks(spotInvoice?.data?.paycheckAdds);
+  // }, [spotInvoice?.data?.paycheckAdds]);
 
   useEffect(() => {
     setCorpData(spotInvoice?.data?.corporationResponse);
@@ -56,6 +64,7 @@ const Invoice = ({groupName, id}) => {
           onClick={() => {
             updateButton();
           }}
+          disabled={loading}
         />
       </ButtonWrap>
       <Wrap>
@@ -118,15 +127,38 @@ const Invoice = ({groupName, id}) => {
                   paddingTop: 6,
                   paddingBottom: 6,
                 }}>
+                작성자
+              </Table.HeaderCell>
+              <Table.HeaderCell
+                textAlign="center"
+                style={{
+                  paddingTop: 6,
+                  paddingBottom: 6,
+                }}>
                 내용
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            <Table.Row>
-              <Table.Cell textAlign="center">20222222</Table.Cell>
-              <Table.Cell>우동 빠졌음</Table.Cell>
-            </Table.Row>
+            {spotInvoice?.data?.memoResDtos?.length === 0 ? (
+              <Table.Row>
+                <Table.Cell colSpan={3} textAlign="center">
+                  메모 없음
+                </Table.Cell>
+              </Table.Row>
+            ) : (
+              spotInvoice?.data?.memoResDtos?.map((el, idx) => {
+                return (
+                  <Table.Row key={idx}>
+                    <Table.Cell textAlign="center" width={3}>
+                      {el.createdDateTime}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{el.writer}</Table.Cell>
+                    <Table.Cell>{el.memo}</Table.Cell>
+                  </Table.Row>
+                );
+              })
+            )}
           </Table.Body>
         </Table>
       </Wrap>
