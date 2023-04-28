@@ -9,7 +9,62 @@ import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
 import CorpEditModal from './CorpEditModal';
 import { useGetCorporationInfoDetail } from 'hooks/useCorporation';
-
+const defaultPrepaid = [
+  {
+      "code": 1,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 2,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 3,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 4,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 5,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 6,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 7,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 8,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 9,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  }
+]
 const CorpTable = ({
   data,
   isSuccess,
@@ -61,7 +116,7 @@ const CorpTable = ({
   }, [clickId, refetchDetail]);
   useEffect(() => {
     if (clickId) {
-      setClickData(corpDetail?.data)
+      setClickData({...corpDetail?.data, prepaidCategoryList:corpDetail?.data.prepaidCategoryList ? corpDetail?.data.prepaidCategoryList : defaultPrepaid})
       setShowOpenModal(true);
       setClickId();
     }

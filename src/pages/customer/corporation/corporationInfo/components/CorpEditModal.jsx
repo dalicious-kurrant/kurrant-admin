@@ -15,62 +15,7 @@ import {
 import styled from 'styled-components';
 import {diningFormatted, groupTypeFormatted, groupTypeFormatted2, preNumberFormatted} from 'utils/statusFormatter';
 import withCommas from 'utils/withCommas';
-const defaultPrepaid = [
-  {
-      "code": 1,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 2,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 3,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 4,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 5,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 6,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 7,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 8,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  },
-  {
-      "code": 9,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  }
-]
+
 function CorpEditModal({
   open,
   setOpen,
@@ -660,13 +605,13 @@ function CorpEditModal({
                         style={{
                           fontSize: 12,
                         }}
-                        checked={nowData.isPrepaid}
+                        checked={nowData.isPrepaid || false}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
                             isPrepaid: data.checked
                               ? data.checked
-                              : false,
+                              : false
                           });
                         }}
                       />
@@ -688,7 +633,7 @@ function CorpEditModal({
                         </Table.Header>
                         
                         <Table.Body>
-                          {nowData?.prepaidCategoryList ? nowData?.prepaidCategoryList?.map((v)=>{
+                          {nowData?.prepaidCategoryList?.map((v)=>{
                             return (
                               <Table.Row key={v.code}>
                                 <Table.Cell textAlign="center">{preNumberFormatted(v.code)}</Table.Cell>
@@ -728,47 +673,7 @@ function CorpEditModal({
                                 </Table.Cell>
                               </Table.Row>
                             )
-                          }) : defaultPrepaid.map((v)=>{
-                            return (
-                              <Table.Row key={v.code}>
-                                <Table.Cell textAlign="center">{preNumberFormatted(v.code)}</Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  <Input 
-                                    style={{width: 50}} 
-                                    value={withCommas(v.count)} 
-                                    onChange={(e, data) => {
-                                      const priceData = nowData.categoryPrices.find((f)=>{
-                                        return f.code ===v.code
-                                      })
-                                      console.log(priceData,"price")
-                                      setNowData({
-                                        ...nowData,
-                                        prepaidCategoryList: nowData.prepaidCategoryList.map((change)=>{
-                                          if(change.code === v.code){
-                                            return {...change, count:Number(data.value.replace(',',''))}
-                                          }
-                                          return change;
-                                        }),
-                                      });
-                                    }} 
-                                  />
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  <Input style={{width: 100}} value={withCommas(v.totalPrice)} onChange={(e, data) => {
-                                      setNowData({
-                                        ...nowData,
-                                        prepaidCategoryList: nowData.prepaidCategoryList.map((change)=>{
-                                          if(change.code === v.code){
-                                            return {...change, totalPrice:Number(data.value.replace(',',''))}
-                                          }
-                                          return change;
-                                        }),
-                                      });
-                                    }}  />
-                                </Table.Cell>
-                              </Table.Row>
-                            )
-                          })}
+                          }) }
                         </Table.Body>
                       </Table>
                     </div>
