@@ -111,7 +111,9 @@ const MakersCalc = () => {
             <Table.HeaderCell textAlign="center">예금주</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">은행명</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">계좌번호</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center" width={2}>
+              상태
+            </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">수정요청</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">엑셀</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">PDF</Table.HeaderCell>
@@ -157,23 +159,25 @@ const MakersCalc = () => {
                   onClick={() => goToPage(v.id, v.makersName)}>
                   {v.accountNumber}
                 </Table.Cell>
-                <Table.Cell>
-                  <InputBlock>
-                    <Dropdown
-                      placeholder="상태"
-                      fluid
-                      selection
-                      search
-                      options={statusData}
-                      value={adjustReverseStatusFomatted(v.paycheckStatus)}
-                      onChange={async (e, data) => {
-                        await updateStatus({
-                          id: data.value,
-                          status: [v.id],
-                        });
-                      }}
-                    />
-                  </InputBlock>
+                <Table.Cell
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}>
+                  <Dropdown
+                    placeholder="상태"
+                    fluid
+                    selection
+                    search
+                    options={statusData}
+                    value={adjustReverseStatusFomatted(v.paycheckStatus)}
+                    onChange={async (e, data) => {
+                      await updateStatus({
+                        id: data.value,
+                        status: [v.id],
+                      });
+                    }}
+                  />
                 </Table.Cell>
                 <Table.Cell textAlign="center" style={{maxWidth: 130}}>
                   {v.hasRequest ? '있음' : '없음'}
