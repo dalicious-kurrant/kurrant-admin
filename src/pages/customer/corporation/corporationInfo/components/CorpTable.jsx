@@ -97,11 +97,14 @@ const CorpTable = ({
                 <div style={{width: 150}}>상세주소</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>              
               <Table.HeaderCell textAlign="center">
-                식사 요일(지원급 적용X)
+                지원급 적용O
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                지원급 적용X
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -174,10 +177,13 @@ const CorpTable = ({
                   </Table.Cell>
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 150}}>{el.serviceDays}</div>
+                    <div style={{width: 120}}>{el.supportDays}</div>
                   </Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 150}}>{el.serviceDays}</div>
+                    <div style={{width: 120}}>{el.notSupportDays}</div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 120}}>{el.serviceDays}</div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.managerId}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>

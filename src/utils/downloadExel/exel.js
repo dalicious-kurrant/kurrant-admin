@@ -360,6 +360,8 @@ export function corporationInfoExel(corporation) {
     '상세주소',
     '위치',
     '식사 타입',
+    '지원급 적용O',
+    '지원급 적용X',
     '식사 요일',
     '담당자 ID',
     '담당자',
@@ -394,7 +396,9 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
-    reqArray.push(diningType.join(','));
+    reqArray.push(diningType.join(','));    
+    reqArray.push(el.supportDays);
+    reqArray.push(el.notSupportDays);
     reqArray.push(el.serviceDays);
     reqArray.push(el.managerId);
     reqArray.push(el.managerName);
