@@ -30,6 +30,7 @@ function CorpEditModal({
   const {mutateAsync: updateSpotDetail} = useUpdateSpotDetail();
   // console.log(nowData);
   // console.log(nowData.userOrderAlarm);
+
   const onSubmit = async () => {
     const req = {
       spotId: nowData.id,
@@ -39,6 +40,8 @@ function CorpEditModal({
       managerPhone: nowData.managerPhone,
       spotType: nowData.groupType,
       diningTypes: nowData.diningTypes.join(','),
+      supportDays: nowData.supportDays,
+      notSupportDays: nowData.notSupportDays,
       serviceDays: nowData.serviceDays,
       zipCode: nowData.zipCode,
       isMembershipSupport: nowData.isMembershipSupport,
@@ -339,6 +342,24 @@ function CorpEditModal({
                       />
                     </FlexBox>
                   </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={200}>
+                      <LabelBox>
+                        <Label size="mini">지원금O</Label>
+                      </LabelBox>
+                      <Input
+                       style={{width: 130}}
+                        placeholder="지원금O"
+                        defaultValue={nowData.supportDays}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            supportDays: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
                 </LineBox>
                 <LineBox>
                   <Form.Field>
@@ -374,6 +395,24 @@ function CorpEditModal({
                             lunchSupportPrice: data.value
                               ? Number(data.value)
                               : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={200}>
+                      <LabelBox>
+                        <Label size="mini">지원금X</Label>
+                      </LabelBox>
+                      <Input
+                       style={{width: 130}}
+                        placeholder="지원금X"
+                        defaultValue={nowData.notSupportDays}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            notSupportDays: data.value ? data.value : null,
                           });
                         }}
                       />

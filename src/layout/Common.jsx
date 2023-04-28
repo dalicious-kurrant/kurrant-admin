@@ -338,6 +338,8 @@ const Common = () => {
             address2: item.address2,
             location: item.location || null,
             diningTypes: [...item.diningTypes.split(',')],
+            supportDays: item.supportDays,
+            notSupportDays: item.notSupportDays,
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
