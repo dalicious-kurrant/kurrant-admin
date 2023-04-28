@@ -8,6 +8,7 @@ import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
 import CorpEditModal from './CorpEditModal';
+import { useGetCorporationInfoDetail } from 'hooks/useCorporation';
 
 const CorpTable = ({
   data,
@@ -30,11 +31,17 @@ const CorpTable = ({
   });
   const [showOpenModal, setShowOpenModal] = useState(false);
   const [clickData, setClickData] = useState();
+  const [clickId, setClickId] = useState();
   const showEditOpen = id => {
-    const datas = corpListData.filter(v => v.id === id);
-    setClickData(...datas);
-    setShowOpenModal(true);
+    setClickId(id)
+    const datas = corpListData.filter(v => v.id === id);    
+    // setClickData(...datas);
+    
   };
+  const {
+    data: corpDetail,
+    refetch:refetchDetail
+  } = useGetCorporationInfoDetail(clickId);
   // const diningType = corpListData?.map(el => {
   //   return el.diningTypes.map(v => {
   //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
@@ -47,6 +54,18 @@ const CorpTable = ({
       setTotalPage(data?.data?.total);
     }
   }, [data?.data?.total, isSuccess]);
+  useEffect(() => {
+    if (clickId) {
+        refetchDetail()
+    }
+  }, [clickId, refetchDetail]);
+  useEffect(() => {
+    if (clickId) {
+      setClickData(corpDetail?.data)
+      setShowOpenModal(true);
+      setClickId();
+    }
+  }, [corpDetail]);
 
   // useEffect(() => {
   //   refetch();
@@ -221,9 +240,11 @@ const CorpTable = ({
         {clickData && (
           <CorpEditModal
             open={showOpenModal}
+            refetch={refetch}
             setOpen={setShowOpenModal}
             nowData={clickData}
             setNowData={setClickData}
+            setClickId={setClickId}
             testData={corpListData}
           />
         )}

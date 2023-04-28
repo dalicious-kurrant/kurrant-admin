@@ -90,6 +90,65 @@ export function diningReverseFormatted(data) {
       return 1;
   }
 }
+export function preFormatted(data) {
+  switch (data) {
+    case '조식비':
+      return 1;
+    case '중식비':
+      return 2;
+    case '석식비':
+      return 3;
+    case '배송비':
+      return 4;
+    case '멤버십':
+      return 5;
+    case '추가 주문':
+      return 6;
+    case '쓰레기 수거':
+      return 7;
+    case '온장고 사용':
+      return 8;
+    case '식사 세팅':
+      return 9;
+    default:
+      return 1;
+  }
+}
+export function preNumberFormatted(data) {
+  switch (data) {
+    case 1:
+      return '조식비';
+    case 2:
+      return '중식비';
+    case 3:
+      return '석식비';
+    case 4:
+      return '배송비';
+    case 5:
+      return '멤버십';
+    case 6:
+      return '추가 주문';
+    case 7:
+      return '쓰레기 수거';
+    case 8:
+      return '온장고 사용';
+    case 9:
+      return '식사 세팅';
+    default:
+      return null;
+  }
+}
+export const preData = [
+  {value: 1 ,text:'조식비'},
+  {value: 2 ,text:'중식비'},
+  {value: 3 ,text:'석식비'},
+  {value: 4 ,text:'배송비'},
+  {value: 5 ,text:'멤버십'},
+  {value: 6 ,text:'추가 주문'},
+  {value: 7 ,text:'쓰레기 수거'},
+  {value: 8 ,text:'온장고 사용'},
+  {value: 9 ,text:'식사 세팅'},
+]
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
