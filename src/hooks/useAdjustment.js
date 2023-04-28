@@ -169,7 +169,34 @@ export function useGetSpotOrders(id) {
 }
 
 export function useGetSpotInvoice(id) {
-  return useQuery('spotVoice', () => {
+  return useQuery('spotInvoice', () => {
     return adjustApis.getSpotInvoice(id);
+  });
+}
+
+export function useAddSpotIssue() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addSpotIssue(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('spotInvoice');
+    },
+  });
+}
+
+export function useAddMakersMemo() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addMakersMemo(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('makersAdjustListDetail');
+    },
+  });
+}
+
+export function useAddSpotMemo() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addSpotMemo(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('spotInvoice');
+    },
   });
 }

@@ -121,23 +121,40 @@ const InvoiceTable = ({data, paycheckAdds}) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {paycheckAdds?.length === 0 ? (
+          {data?.paycheckAdds?.length === 0 && paycheckAdds?.length === 0 ? (
             <Table.Row>
               <Table.Cell colSpan={3} textAlign="center">
-                추가 요청 없음
+                추가 이슈 없음
               </Table.Cell>
             </Table.Row>
           ) : (
             data?.paycheckAdds?.map((el, idx) => {
               return (
                 <Table.Row key={idx}>
-                  <Table.Cell>d</Table.Cell>
-                  <Table.Cell>d</Table.Cell>
-                  <Table.Cell>d</Table.Cell>
+                  <Table.Cell textAlign="center" width={3}>
+                    {el.issueDate}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{el.memo}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.price)}
+                  </Table.Cell>
                 </Table.Row>
               );
             })
           )}
+          {paycheckAdds?.map((el, idx) => {
+            return (
+              <Table.Row key={idx}>
+                <Table.Cell textAlign="center" width={3}>
+                  {el.issueDate}
+                </Table.Cell>
+                <Table.Cell textAlign="center">{el.memo}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  {withCommas(el.price)}
+                </Table.Cell>
+              </Table.Row>
+            );
+          })}
         </Table.Body>
       </Table>
       <TotalPriceWrap>

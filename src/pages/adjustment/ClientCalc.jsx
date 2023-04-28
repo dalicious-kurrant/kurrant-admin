@@ -43,7 +43,7 @@ const ClientCalc = () => {
     selectModify,
   );
 
-  const totalData = spotsAdjustList?.data?.paycheckPrice;
+  const totalData = spotsAdjustList?.data?.statusLists;
 
   const statusData = [
     {key: 1, text: '정산 신청 완료', value: 0},
@@ -71,28 +71,14 @@ const ClientCalc = () => {
       <div
         style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 24}}>
         <TotalWrap>
-          <TotalTextWrap>
-            <TotalTite>총액({totalData?.totalCount}개)</TotalTite>
-            <TotalTite>{withCommas(totalData?.totalPrice)}원</TotalTite>
-          </TotalTextWrap>
-          <TotalTextWrap>
-            <TotalTite>완료 금액({totalData?.completeCount}개)</TotalTite>
-            <TotalTite>
-              {withCommas(
-                totalData?.completePrice === 0 ? '0' : totalData?.completePrice,
-              )}
-              원
-            </TotalTite>
-          </TotalTextWrap>
-          <TotalTextWrap>
-            <TotalTite>남은 금액({totalData?.leftCount}개)</TotalTite>
-            <TotalTite>
-              {withCommas(
-                totalData?.leftPrice === 0 ? '0' : totalData?.leftPrice,
-              )}
-              원
-            </TotalTite>
-          </TotalTextWrap>
+          {totalData?.map((el, idx) => {
+            return (
+              <TotalTextWrap key={idx}>
+                <TotalTite>{el.status}</TotalTite>
+                <TotalTite>{el.count}건</TotalTite>
+              </TotalTextWrap>
+            );
+          })}
         </TotalWrap>
       </div>
 
@@ -107,14 +93,16 @@ const ClientCalc = () => {
             <Table.HeaderCell textAlign="center">금액</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">전화번호</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center" width={2}>
+              상태
+            </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">수정요청</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">엑셀</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">PDF</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {spotsAdjustList?.data?.map(v => {
+          {spotsAdjustList?.data?.corporationResponses?.map(v => {
             return (
               <Table.Row key={v.id} style={{cursor: 'pointer'}}>
                 <Table.Cell
@@ -152,25 +140,27 @@ const ClientCalc = () => {
                   onClick={() => goToPage(v.id, v.corporationName)}>
                   {v.phone}
                 </Table.Cell>
-                <Table.Cell>
-                  <InputBlock>
-                    <Dropdown
-                      placeholder="상태"
-                      fluid
-                      selection
-                      search
-                      options={statusData}
-                      value={adjustReverseStatusFomatted(v.paycheckStatus)}
-                      onChange={async (e, data) => {
-                        await updateStatus({
-                          id: data.value,
-                          status: [v.id],
-                        });
-                      }}
-                    />
-                  </InputBlock>
+                <Table.Cell
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}>
+                  <Dropdown
+                    placeholder="상태"
+                    fluid
+                    selection
+                    search
+                    options={statusData}
+                    value={adjustReverseStatusFomatted(v.paycheckStatus)}
+                    onChange={async (e, data) => {
+                      await updateStatus({
+                        id: data.value,
+                        status: [v.id],
+                      });
+                    }}
+                  />
                 </Table.Cell>
-                <Table.Cell textAlign="center" style={{maxWidth: 130}}>
+                <Table.Cell textAlign="center">
                   {v.hasRequest ? '있음' : '없음'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
@@ -229,4 +219,5 @@ const TotalTextWrap = styled.div`
 
 const TotalWrap = styled.div`
   min-width: 250px;
+  min-height: 145px;
 `;

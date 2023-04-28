@@ -25,6 +25,7 @@ const IssueModal = ({open, setOpen, setModifyData}) => {
       price: Number(price),
       memo: content,
     };
+
     if (data.memo !== undefined) {
       setModifyData(prev => [...prev, data]);
     }
@@ -76,7 +77,7 @@ const IssueModal = ({open, setOpen, setModifyData}) => {
               {`\u00A0`}
               {`\u00A0`}액
             </Title>
-            <Input name="price" width="200px" />
+            <Input name="price" width="200px" type="number" />
           </InputWrap>
           <InputWrap>
             <Title>이슈내용</Title>
