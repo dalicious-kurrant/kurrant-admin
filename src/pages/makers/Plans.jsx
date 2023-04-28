@@ -103,6 +103,7 @@ const Plans = () => {
   const [accessEndDate, setAccessEndDate] = useState(new Date());
   const recommandData = useCallback(() => {
     setReCommandPlan();
+    setExelPlan();
     if (isRecommandSuccess) {
       console.log(calendarRecommandData?.data);
       setTotalPage(calendarRecommandData?.data?.total);

@@ -8,6 +8,7 @@ import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
 import CorpEditModal from './CorpEditModal';
+import { useGetCorporationInfoDetail } from 'hooks/useCorporation';
 
 const CorpTable = ({
   data,
@@ -30,11 +31,17 @@ const CorpTable = ({
   });
   const [showOpenModal, setShowOpenModal] = useState(false);
   const [clickData, setClickData] = useState();
+  const [clickId, setClickId] = useState();
   const showEditOpen = id => {
-    const datas = corpListData.filter(v => v.id === id);
-    setClickData(...datas);
-    setShowOpenModal(true);
+    setClickId(id)
+    const datas = corpListData.filter(v => v.id === id);    
+    // setClickData(...datas);
+    
   };
+  const {
+    data: corpDetail,
+    refetch:refetchDetail
+  } = useGetCorporationInfoDetail(clickId);
   // const diningType = corpListData?.map(el => {
   //   return el.diningTypes.map(v => {
   //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
@@ -47,6 +54,18 @@ const CorpTable = ({
       setTotalPage(data?.data?.total);
     }
   }, [data?.data?.total, isSuccess]);
+  useEffect(() => {
+    if (clickId) {
+        refetchDetail()
+    }
+  }, [clickId, refetchDetail]);
+  useEffect(() => {
+    if (clickId) {
+      setClickData(corpDetail?.data)
+      setShowOpenModal(true);
+      setClickId();
+    }
+  }, [corpDetail]);
 
   // useEffect(() => {
   //   refetch();
@@ -97,11 +116,14 @@ const CorpTable = ({
                 <div style={{width: 150}}>상세주소</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>              
               <Table.HeaderCell textAlign="center">
-                식사 요일(지원급 적용X)
+                지원급 적용O
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                지원급 적용X
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -174,10 +196,13 @@ const CorpTable = ({
                   </Table.Cell>
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 150}}>{el.serviceDays}</div>
+                    <div style={{width: 120}}>{el.supportDays}</div>
                   </Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 150}}>{el.serviceDays}</div>
+                    <div style={{width: 120}}>{el.notSupportDays}</div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 120}}>{el.serviceDays}</div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.managerId}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
@@ -215,9 +240,11 @@ const CorpTable = ({
         {clickData && (
           <CorpEditModal
             open={showOpenModal}
+            refetch={refetch}
             setOpen={setShowOpenModal}
             nowData={clickData}
             setNowData={setClickData}
+            setClickId={setClickId}
             testData={corpListData}
           />
         )}
