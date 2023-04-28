@@ -1,5 +1,6 @@
 import {
   useAddMakersIssue,
+  useAddMakersMemo,
   useMakersAdjustListDetail,
 } from 'hooks/useAdjustment';
 import {useLocation} from 'react-router-dom';
@@ -21,8 +22,10 @@ const MakersCalcDetail = () => {
 
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [text, setText] = useState('');
   const {data: adjustData} = useMakersAdjustListDetail(id);
-  const {mutateAsync: updateIssue, isSuccess} = useAddMakersIssue();
+  const {mutateAsync: updateIssue} = useAddMakersIssue();
+  const {mutateAsync: addMakersMemo} = useAddMakersMemo();
   const [paycheckAdds, setPayChecks] = useState([]);
   const list = adjustData?.data;
 
@@ -43,9 +46,17 @@ const MakersCalcDetail = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setPayChecks(list?.paycheckAdds);
-  // }, [list?.paycheckAdds]);
+  const addMemo = async () => {
+    const data = {
+      id: id,
+      memo: text.trim(),
+    };
+
+    if (data.memo.trim() !== '') {
+      await addMakersMemo(data);
+      setText('');
+    }
+  };
   return (
     <PageWrapper>
       <MakersDetailTable data={adjustData?.data?.makersPaycheckInfo} />
@@ -180,6 +191,15 @@ const MakersCalcDetail = () => {
                 등록날짜
               </Table.HeaderCell>
               <Table.HeaderCell
+                width={4}
+                textAlign="center"
+                style={{
+                  paddingTop: 6,
+                  paddingBottom: 6,
+                }}>
+                작성자
+              </Table.HeaderCell>
+              <Table.HeaderCell
                 textAlign="center"
                 style={{
                   paddingTop: 6,
@@ -190,19 +210,39 @@ const MakersCalcDetail = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            <Table.Row>
-              <Table.Cell textAlign="center">20222222</Table.Cell>
-              <Table.Cell>우동 빠졌음</Table.Cell>
-            </Table.Row>
+            {list?.memoResDtos?.length === 0 ? (
+              <Table.Row>
+                <Table.Cell colSpan={3} textAlign="center">
+                  메모 없음
+                </Table.Cell>
+              </Table.Row>
+            ) : (
+              list?.memoResDtos?.map((el, idx) => {
+                return (
+                  <Table.Row key={idx}>
+                    <Table.Cell textAlign="center">
+                      {el.createdDateTime}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{el.writer}</Table.Cell>
+                    <Table.Cell>{el.memo}</Table.Cell>
+                  </Table.Row>
+                );
+              })
+            )}
           </Table.Body>
         </Table>
       </Wrap>
       <Wrap>
         <Title style={{marginTop: 24}}> 메모</Title>
         {/* <div>{list?.paycheckMemo}</div> */}
-        <MemoWrap></MemoWrap>
+        <MemoWrap value={text} onChange={e => setText(e.target.value)} />
         <MemoButtonWrap>
-          <Button content="메모작성" color="green" size="mini" />
+          <Button
+            content="메모작성"
+            color="green"
+            size="mini"
+            onClick={addMemo}
+          />
         </MemoButtonWrap>
       </Wrap>
 
@@ -263,12 +303,14 @@ const Statement = styled.div`
   display: flex;
 `;
 
-const MemoWrap = styled.div`
+const MemoWrap = styled.input`
   border: 1px solid ${({theme}) => theme.colors.grey[7]};
   min-height: 100px;
+  width: 100%;
   border-radius: 8px;
   padding: 12px;
   margin-top: 12px;
+  outline: none;
 `;
 
 const ButtonWrap = styled.div`

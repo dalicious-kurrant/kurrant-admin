@@ -182,3 +182,21 @@ export function useAddSpotIssue() {
     },
   });
 }
+
+export function useAddMakersMemo() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addMakersMemo(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('makersAdjustListDetail');
+    },
+  });
+}
+
+export function useAddSpotMemo() {
+  const queryClient = useQueryClient();
+  return useMutation(data => adjustApis.addSpotMemo(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('spotInvoice');
+    },
+  });
+}

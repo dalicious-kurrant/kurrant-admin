@@ -43,7 +43,7 @@ const ClientCalc = () => {
     selectModify,
   );
 
-  const totalData = spotsAdjustList?.data?.paycheckPrice;
+  const totalData = spotsAdjustList?.data?.statusLists;
 
   const statusData = [
     {key: 1, text: '정산 신청 완료', value: 0},
@@ -71,37 +71,14 @@ const ClientCalc = () => {
       <div
         style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 24}}>
         <TotalWrap>
-          <TotalTextWrap>
-            <TotalTite>거래명세서 확정 대기</TotalTite>
-            <TotalTite>{withCommas(totalData?.totalPrice)}건</TotalTite>
-          </TotalTextWrap>
-          <TotalTextWrap>
-            <TotalTite>거래명세서 확정</TotalTite>
-            <TotalTite>
-              {withCommas(
-                totalData?.completePrice === 0 ? '0' : totalData?.completePrice,
-              )}
-              건
-            </TotalTite>
-          </TotalTextWrap>
-          <TotalTextWrap>
-            <TotalTite>세금 계산서 발행</TotalTite>
-            <TotalTite>
-              {withCommas(
-                totalData?.leftPrice === 0 ? '0' : totalData?.leftPrice,
-              )}
-              건
-            </TotalTite>
-          </TotalTextWrap>
-          <TotalTextWrap>
-            <TotalTite>정산금 입금</TotalTite>
-            <TotalTite>
-              {withCommas(
-                totalData?.leftPrice === 0 ? '0' : totalData?.leftPrice,
-              )}
-              건
-            </TotalTite>
-          </TotalTextWrap>
+          {totalData?.map((el, idx) => {
+            return (
+              <TotalTextWrap key={idx}>
+                <TotalTite>{el.status}</TotalTite>
+                <TotalTite>{el.count}건</TotalTite>
+              </TotalTextWrap>
+            );
+          })}
         </TotalWrap>
       </div>
 
@@ -123,7 +100,7 @@ const ClientCalc = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {spotsAdjustList?.data?.map(v => {
+          {spotsAdjustList?.data?.corporationResponses?.map(v => {
             return (
               <Table.Row key={v.id} style={{cursor: 'pointer'}}>
                 <Table.Cell
@@ -238,4 +215,5 @@ const TotalTextWrap = styled.div`
 
 const TotalWrap = styled.div`
   min-width: 250px;
+  min-height: 145px;
 `;
