@@ -1,7 +1,3 @@
-
-
-
-
 import {useUpdateSpotDetail} from 'hooks/useCorporation';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
@@ -560,14 +556,14 @@ function CorpEditModal({
                           fontSize: 12,
                         }}
                         checked={nowData.isMembershipSupport}
-                        onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            isMembershipSupport: data.checked
-                              ? data.checked
-                              : false,
-                          });
-                        }}
+                        // onChange={(e, data) => {
+                        //   setNowData({
+                        //     ...nowData,
+                        //     isMembershipSupport: data.checked
+                        //       ? data.checked
+                        //       : false,
+                        //   });
+                        // }}
                       />
                     </FlexBox>
                     <div>
@@ -706,4 +702,3 @@ const LineBox = styled.div`
   font-size: 12px;
   gap: 20px;
 `;
-

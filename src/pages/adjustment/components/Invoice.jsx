@@ -1,14 +1,11 @@
 import {Button, Header, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
-import withCommas from 'utils/withCommas';
 import DefaultTable from './DefaultTable';
-import OrderData from './OrderData';
 import {useEffect, useState} from 'react';
 import {
-  useAddMakersIssue,
   useAddSpotIssue,
+  useAddSpotMemo,
   useGetSpotInvoice,
-  useMakersAdjustListDetail,
 } from 'hooks/useAdjustment';
 import IssueModal from './IssueModal';
 import logo from '../../../asset/image/logo.png';
@@ -17,17 +14,16 @@ import {useAtom} from 'jotai';
 import {corpDataAtom} from 'utils/store';
 
 const Invoice = ({groupName, id}) => {
+  const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [, setCorpData] = useAtom(corpDataAtom);
   const [paycheckAdds, setPayChecks] = useState([]);
   const {mutateAsync: updateIssue} = useAddSpotIssue();
+  const {mutateAsync: addSpotMemo} = useAddSpotMemo();
   const {data: spotInvoice} = useGetSpotInvoice(id);
 
   const updateButton = async () => {
-    // const updateData = paycheckAdds?.filter(
-    //   el => !spotInvoice?.data?.paycheckAdds.includes(el),
-    // );
     const data = {
       id: id,
       data: paycheckAdds,
@@ -41,9 +37,17 @@ const Invoice = ({groupName, id}) => {
     }
   };
 
-  // useEffect(() => {
-  //   setPayChecks(spotInvoice?.data?.paycheckAdds);
-  // }, [spotInvoice?.data?.paycheckAdds]);
+  const addMemo = async () => {
+    const data = {
+      id: id,
+      memo: text.trim(),
+    };
+
+    if (data.memo.trim() !== '') {
+      await addSpotMemo(data);
+      setText('');
+    }
+  };
 
   useEffect(() => {
     setCorpData(spotInvoice?.data?.corporationResponse);
@@ -165,9 +169,14 @@ const Invoice = ({groupName, id}) => {
       <Wrap>
         <Title style={{marginTop: 24}}> 메모</Title>
         {/* <div>{list?.paycheckMemo}</div> */}
-        <MemoWrap />
+        <MemoWrap value={text} onChange={e => setText(e.target.value)} />
         <MemoButtonWrap>
-          <Button content="메모작성" color="green" size="mini" />
+          <Button
+            content="메모작성"
+            color="green"
+            size="mini"
+            onClick={addMemo}
+          />
         </MemoButtonWrap>
       </Wrap>
       {openModal && (
