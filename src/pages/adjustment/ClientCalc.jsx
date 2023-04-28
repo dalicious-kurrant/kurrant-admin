@@ -93,7 +93,9 @@ const ClientCalc = () => {
             <Table.HeaderCell textAlign="center">금액</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">전화번호</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center" width={2}>
+              상태
+            </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">수정요청</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">엑셀</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">PDF</Table.HeaderCell>
@@ -138,25 +140,27 @@ const ClientCalc = () => {
                   onClick={() => goToPage(v.id, v.corporationName)}>
                   {v.phone}
                 </Table.Cell>
-                <Table.Cell>
-                  <InputBlock>
-                    <Dropdown
-                      placeholder="상태"
-                      fluid
-                      selection
-                      search
-                      options={statusData}
-                      value={adjustReverseStatusFomatted(v.paycheckStatus)}
-                      onChange={async (e, data) => {
-                        await updateStatus({
-                          id: data.value,
-                          status: [v.id],
-                        });
-                      }}
-                    />
-                  </InputBlock>
+                <Table.Cell
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}>
+                  <Dropdown
+                    placeholder="상태"
+                    fluid
+                    selection
+                    search
+                    options={statusData}
+                    value={adjustReverseStatusFomatted(v.paycheckStatus)}
+                    onChange={async (e, data) => {
+                      await updateStatus({
+                        id: data.value,
+                        status: [v.id],
+                      });
+                    }}
+                  />
                 </Table.Cell>
-                <Table.Cell textAlign="center" style={{maxWidth: 130}}>
+                <Table.Cell textAlign="center">
                   {v.hasRequest ? '있음' : '없음'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
