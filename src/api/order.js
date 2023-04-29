@@ -5,10 +5,26 @@ export const orderApis = {
   groupInfoList: async groupId =>
     await instance.get(`orders/groupInfo${groupId}`),
   makersList: async () => await instance.get('orders/makers'),
-  orderList: async (startDate, endDate, params) =>
-    await instance.get(
-      `orders?startDate=${startDate}&endDate=${endDate}${params.group}${params.spots}${params.makers}${params.type}${params.user}${params.order}`,
-    ),
+  orderList: async (
+    startDate,
+    endDate,
+    groupOption,
+    userOption,
+    spotOption,
+    makersOption,
+    diningTypeOption,
+    orderStatusOption,
+  ) =>
+    await instance.get(`orders?startDate=${startDate}&endDate=${endDate}`, {
+      params: {
+        group: groupOption,
+        userId: userOption,
+        spots: spotOption,
+        makersId: makersOption,
+        diningTypeCode: diningTypeOption,
+        orderStatus: orderStatusOption,
+      },
+    }),
   orderDetail: async orderCode => await instance.get(`orders/${orderCode}`),
   orderCancel: async data =>
     await instance.post('orders/orderItems/cancel', data),
