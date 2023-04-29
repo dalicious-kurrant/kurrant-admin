@@ -7,8 +7,6 @@ const InvoiceTable = ({data, paycheckAdds}) => {
   const payCheck = data?.paycheck;
   const month = data?.corporationResponse?.month;
 
-  const totalPrice = (data?.totalPrice - data?.prepaidTotalPrice) * 1.1;
-
   return (
     <div>
       {prepaidPay !== null && (
@@ -173,7 +171,7 @@ const InvoiceTable = ({data, paycheckAdds}) => {
           <TotalPrice>
             <Title>총액(VAT포함)</Title>
             <Title style={{marginRight: 0}}>
-              {withCommas(Math.floor(totalPrice))}
+              {withCommas(data?.vatTotalPrice)}
             </Title>
           </TotalPrice>
         </div>

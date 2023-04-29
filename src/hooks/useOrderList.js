@@ -28,9 +28,27 @@ export function useGetGroupInfoList(groupId) {
   );
 }
 
-export function useGetOrderList(startDate, endDate, params) {
+export function useGetOrderList(
+  startDate,
+  endDate,
+  groupOption,
+  userOption,
+  spotOption,
+  makersOption,
+  diningTypeOption,
+  orderStatusOption,
+) {
   return useQuery('orderList', () => {
-    return orderApis.orderList(startDate, endDate, params);
+    return orderApis.orderList(
+      startDate,
+      endDate,
+      groupOption,
+      userOption,
+      spotOption,
+      makersOption,
+      diningTypeOption,
+      orderStatusOption,
+    );
   });
 }
 

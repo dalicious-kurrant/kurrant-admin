@@ -2,7 +2,7 @@ import {
   useMakersAdjustList,
   useUpdateMakersAdjustStatus,
 } from 'hooks/useAdjustment';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {PageWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import MakersFilter from './components/MakersFilter';
@@ -25,8 +25,8 @@ const MakersCalc = () => {
   const navigate = useNavigate();
 
   const {mutateAsync: updateStatus} = useUpdateMakersAdjustStatus();
-  const [startMonth, setStartMonth] = useAtom(startMonthAtom);
-  const [endMonth, setEndMonth] = useAtom(endMonthAtom);
+  const [startMonth] = useAtom(startMonthAtom);
+  const [endMonth] = useAtom(endMonthAtom);
   const [selectClient] = useAtom(selectClientAtom);
   const [selectStatus] = useAtom(selectStatusAtom);
   const [selectModify] = useAtom(selectModifyAtom);
@@ -123,7 +123,7 @@ const MakersCalc = () => {
           {makersAdjustList?.data?.makersLists?.map(v => {
             // console.log(v);
             return (
-              <Table.Row key={v.makersName} style={{cursor: 'pointer'}}>
+              <Table.Row key={v.id} style={{cursor: 'pointer'}}>
                 <Table.Cell
                   textAlign="center"
                   onClick={() => goToPage(v.id, v.makersName)}>
@@ -215,11 +215,6 @@ const InputImage = styled.img`
   padding: 0px;
   margin: 0px;
   cursor: pointer;
-`;
-
-const InputBlock = styled.div`
-  max-width: 180px;
-  font-size: 14px;
 `;
 
 const TotalTite = styled.div`
