@@ -155,29 +155,19 @@ const Order = () => {
     {value: 14, label: '리뷰 작성 완료'},
   ];
   const groupInfoParam = grouptInfoId && `?groupId=${grouptInfoId}`;
-  const group = groupOption && `&group=${groupOption}`;
-  const user = userOption && `&userId=${userOption.value}`;
-  const spots = spotOption && `&spots=${spotOption.value}`;
-  const makers = makersOption && `&makersId=${makersOption.value}`;
-  const diningTypecode =
-    diningTypeOption && `&diningTypeCode=${diningTypeOption.value}`;
-  const orderStatus =
-    orderStatusOption && `&orderStatus=${orderStatusOption.value}`;
-  const params = {
-    group: group && group,
-    user: user && user,
-    spots: spots && spots,
-    makers: makers && makers,
-    type: diningTypecode && diningTypecode,
-    order: orderStatus && orderStatus,
-  };
+
   const sendGroupInfoParam = groupInfoParam && groupInfoParam;
 
   const {refetch: groupInfoRefetch} = useGetGroupInfoList(sendGroupInfoParam);
   const {data: orderList, refetch} = useGetOrderList(
     startDate,
     endDate,
-    params,
+    groupOption,
+    userOption.value,
+    spotOption.value,
+    makersOption.value,
+    diningTypeOption.value,
+    orderStatusOption.value,
   );
 
   const getStartDate = e => {
@@ -358,7 +348,17 @@ const Order = () => {
 
   useEffect(() => {
     refetch();
-  }, [group, spots, makers, diningTypecode, startDate, endDate, user, refetch]);
+  }, [
+    startDate,
+    endDate,
+    groupOption,
+    userOption,
+    spotOption,
+    makersOption,
+    diningTypeOption,
+    orderStatusOption,
+    refetch,
+  ]);
 
   useEffect(() => {
     groupInfoRefetch();
