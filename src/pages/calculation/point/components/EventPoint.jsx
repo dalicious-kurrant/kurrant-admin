@@ -48,7 +48,8 @@ const EventPoint = () => {
   const completedCount = watch('completedCount');
   const accountLimit = watch('accountLimit');
   const rewardPoint = watch('rewardPoint');
-
+  const noticeId = watch('noticeId');
+  console.log(noticeId);
   const handleSingleCheck = (checked, id, data) => {
     const arr = [data];
 
@@ -68,6 +69,7 @@ const EventPoint = () => {
       rewardPoint: Number(rewardPoint),
       eventStartDate: startDate,
       eventEndDate: endDate,
+      boardId: noticeId ?? null,
     };
     await addEvent(data);
     setValue('completedCount', '');
@@ -131,6 +133,10 @@ const EventPoint = () => {
               <Table.HeaderCell textAlign="center">
                 지급 포인트
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                공지사항 ID
+              </Table.HeaderCell>
+
               <Table.HeaderCell textAlign="center">기간 MIN</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기간 MAX</Table.HeaderCell>
             </Table.Row>
@@ -163,6 +169,9 @@ const EventPoint = () => {
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   <Input name="rewardPoint" />
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  <Input name="noticeId" />
                 </Table.Cell>
               </FormProvider>
               <Table.Cell textAlign="center">
@@ -200,6 +209,9 @@ const EventPoint = () => {
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 지급 포인트
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                공지사항 ID
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기간 MIN</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기간 MAX</Table.HeaderCell>
@@ -240,6 +252,9 @@ const EventPoint = () => {
                   </Table.Cell>
                   <Table.Cell textAlign="center">
                     {withCommas(el.rewardPoint)}p
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {withCommas(el.boardId)}
                   </Table.Cell>
                   <Table.Cell textAlign="center">
                     {el.eventStartDate}

@@ -22,6 +22,7 @@ const Layout = () => {
       )}
       {pathname === '/main' ||
       pathname === '/calc/makers' ||
+      pathname === '/board/notification' ||
       pathname === '/calc/group' ? (
         <div style={{paddingTop: '90px'}} />
       ) : (

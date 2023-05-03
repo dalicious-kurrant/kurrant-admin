@@ -19,6 +19,17 @@ import {
   shopInfoDetailIdAtom,
   spotAtom,
   productPageAtom,
+  extraOrderGroupOptionAtom,
+  startMonthAtom,
+  endMonthAtom,
+  selectClientAtom,
+  selectStatusAtom,
+  selectModifyAtom,
+  startMonthClientAtom,
+  endMonthClientAtom,
+  selectClientClientAtom,
+  selectStatusClientAtom,
+  corpDataAtom,
 } from 'utils/store';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
@@ -38,7 +49,6 @@ const Header = ({openMenu, setOpenMenu}) => {
   const resetAtom5 = useResetAtom(productDataAtom);
   const resetAtom6 = useResetAtom(CustomerDataAtom);
   const resetAtom7 = useResetAtom(SpotInfoDataAtom);
-  const resetAtom16 = useResetAtom(productPageAtom);
 
   const resetAtom8 = useResetAtom(TableCheckboxStatusAtom);
   const resetAtom9 = useResetAtom(TableDeleteListAtom);
@@ -48,6 +58,20 @@ const Header = ({openMenu, setOpenMenu}) => {
 
   const resetAtom14 = useResetAtom(makersExelInfoAtom);
   const resetAtom15 = useResetAtom(exelCorporationAtom);
+  const resetAtom16 = useResetAtom(productPageAtom);
+  const resetAtom17 = useResetAtom(extraOrderGroupOptionAtom);
+
+  const resetAtom18 = useResetAtom(startMonthAtom);
+  const resetAtom19 = useResetAtom(endMonthAtom);
+  const resetAtom20 = useResetAtom(selectClientAtom);
+  const resetAtom21 = useResetAtom(selectStatusAtom);
+  const resetAtom22 = useResetAtom(selectModifyAtom);
+
+  const resetAtom23 = useResetAtom(startMonthClientAtom);
+  const resetAtom24 = useResetAtom(endMonthClientAtom);
+  const resetAtom25 = useResetAtom(selectClientClientAtom);
+  const resetAtom26 = useResetAtom(selectStatusClientAtom);
+  const resetAtom27 = useResetAtom(corpDataAtom);
 
   const logOutButton = () => {
     localStorage.removeItem('token');
@@ -71,6 +95,17 @@ const Header = ({openMenu, setOpenMenu}) => {
     resetAtom14();
     resetAtom15();
     resetAtom16();
+    resetAtom17();
+    resetAtom18();
+    resetAtom19();
+    resetAtom20();
+    resetAtom21();
+    resetAtom22();
+    resetAtom23();
+    resetAtom24();
+    resetAtom25();
+    resetAtom26();
+    resetAtom27();
   };
   return (
     <H.Wrapper>

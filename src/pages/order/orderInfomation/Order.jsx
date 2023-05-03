@@ -38,6 +38,7 @@ import {
   groupOptionAtom,
   makersOptionAtom,
   orderNumberAtom,
+  orderStatusAtom,
   spotListAtom,
   spotOptionAtom,
   startDateAtom,
@@ -54,6 +55,7 @@ const Order = () => {
   const spotRef = useRef(null);
   const makersRef = useRef(null);
   const diningRef = useRef(null);
+  const orderStatusRef = useRef(null);
   // const day = new Date();
   // const days = formattedWeekDate(day);
   const queryClient = useQueryClient();
@@ -64,6 +66,7 @@ const Order = () => {
   const [makersOption, setMakersOption] = useAtom(makersOptionAtom);
   const [spotOption, setSpotOption] = useAtom(spotOptionAtom);
   const [diningTypeOption, setDiningTypeOption] = useAtom(diningTypeOptionAtom);
+  const [orderStatusOption, setOrderStatusOption] = useAtom(orderStatusAtom);
   const [grouptInfoId, setGroupInfoId] = useAtom(groupInfoAtom);
   const [spotList, setSpotList] = useAtom(spotListAtom);
   const [userList, setUserList] = useAtom(userListAtom);
@@ -76,6 +79,7 @@ const Order = () => {
   const [defaultMakers, setDefaultMakers] = useAtom(makersOptionAtom);
   const [defaultSpot, setDefaultSpot] = useAtom(spotOptionAtom);
   const [defaultDining, setDefaultDining] = useAtom(diningTypeOptionAtom);
+  const [defaultOrderStatus, setDefaultOrderStatus] = useAtom(orderStatusAtom);
   const [, setOrderNumber] = useAtom(orderNumberAtom);
 
   const {data: groupList} = useGetGroupList();
@@ -137,27 +141,33 @@ const Order = () => {
     {value: 10, label: '배송완료'},
     {value: 11, label: '수령완료'},
   ];
+  const orderStatusOptionArr = [
+    {value: 4, label: '주문실패'},
+    {value: 5, label: '결제완료'},
+    {value: 6, label: '배송대기'},
+    {value: 7, label: '취소'},
+    {value: 6, label: '배송대기'},
+    {value: 9, label: '배송중'},
+    {value: 10, label: '배송완료'},
+    {value: 11, label: '수령완료'},
+    {value: 12, label: '수동 환불'},
+    {value: 13, label: '자동 환불'},
+    {value: 14, label: '리뷰 작성 완료'},
+  ];
   const groupInfoParam = grouptInfoId && `?groupId=${grouptInfoId}`;
-  const group = groupOption && `&group=${groupOption}`;
-  const user = userOption && `&userId=${userOption.value}`;
-  const spots = spotOption && `&spots=${spotOption.value}`;
-  const makers = makersOption && `&makersId=${makersOption.value}`;
-  const diningTypecode =
-    diningTypeOption && `&diningTypeCode=${diningTypeOption.value}`;
-  const params = {
-    group: group && group,
-    user: user && user,
-    spots: spots && spots,
-    makers: makers && makers,
-    type: diningTypecode && diningTypecode,
-  };
+
   const sendGroupInfoParam = groupInfoParam && groupInfoParam;
 
   const {refetch: groupInfoRefetch} = useGetGroupInfoList(sendGroupInfoParam);
   const {data: orderList, refetch} = useGetOrderList(
     startDate,
     endDate,
-    params,
+    groupOption,
+    userOption.value,
+    spotOption.value,
+    makersOption.value,
+    diningTypeOption.value,
+    orderStatusOption.value,
   );
 
   const getStartDate = e => {
@@ -338,7 +348,17 @@ const Order = () => {
 
   useEffect(() => {
     refetch();
-  }, [group, spots, makers, diningTypecode, startDate, endDate, user, refetch]);
+  }, [
+    startDate,
+    endDate,
+    groupOption,
+    userOption,
+    spotOption,
+    makersOption,
+    diningTypeOption,
+    orderStatusOption,
+    refetch,
+  ]);
 
   useEffect(() => {
     groupInfoRefetch();
@@ -371,7 +391,7 @@ const Order = () => {
       </ResetButton>
 
       <SelectBoxWrapper>
-        <div>
+        <SelectBoxWrap>
           <span>고객사</span>
           <SelectBox
             ref={groupRef}
@@ -388,8 +408,8 @@ const Order = () => {
               }
             }}
           />
-        </div>
-        <div>
+        </SelectBoxWrap>
+        <SelectBoxWrap>
           <span>유저</span>
           <SelectBox
             ref={userRef}
@@ -405,8 +425,8 @@ const Order = () => {
               }
             }}
           />
-        </div>
-        <div>
+        </SelectBoxWrap>
+        <SelectBoxWrap>
           <span>스팟 선택</span>
           <SelectBox
             ref={spotRef}
@@ -422,35 +442,25 @@ const Order = () => {
               }
             }}
           />
-        </div>
-        <div>
-          <div>
-            <span>메이커스 선택</span>
-            <SelectBox
-              ref={makersRef}
-              options={makersArr}
-              placeholder="메이커스 선택"
-              defaultValue={defaultMakers}
-              onChange={e => {
-                if (e) {
-                  setMakersOption(e.value);
-                  setDefaultMakers(e);
-                } else {
-                  setMakersOption('');
-                }
-              }}
-            />
-          </div>
-          <OrderStatus>
-            <span>주문상태 변경</span>
-            <SelectBox
-              options={orderStatusArr}
-              placeholder="주문상태 변경"
-              onChange={e => orderStatusChange(e)}
-            />
-          </OrderStatus>
-        </div>
-        <div>
+        </SelectBoxWrap>
+        <SelectBoxWrap>
+          <span>메이커스 선택</span>
+          <SelectBox
+            ref={makersRef}
+            options={makersArr}
+            placeholder="메이커스 선택"
+            defaultValue={defaultMakers}
+            onChange={e => {
+              if (e) {
+                setMakersOption(e.value);
+                setDefaultMakers(e);
+              } else {
+                setMakersOption('');
+              }
+            }}
+          />
+        </SelectBoxWrap>
+        <SelectBoxWrap>
           <span>식사타입</span>
           <SelectBox
             ref={diningRef}
@@ -466,7 +476,32 @@ const Order = () => {
               }
             }}
           />
-        </div>
+        </SelectBoxWrap>
+        <SelectBoxWrap>
+          <span>주문 상태</span>
+          <SelectBox
+            ref={orderStatusRef}
+            options={orderStatusOptionArr}
+            placeholder="주문 상태"
+            defaultValue={defaultOrderStatus}
+            onChange={e => {
+              if (e) {
+                setOrderStatusOption(e.value);
+                setDefaultOrderStatus(e);
+              } else {
+                setOrderStatusOption('');
+              }
+            }}
+          />
+          <OrderStatus>
+            <span>주문상태 변경</span>
+            <SelectBox
+              options={orderStatusArr}
+              placeholder="주문상태 변경"
+              onChange={e => orderStatusChange(e)}
+            />
+          </OrderStatus>
+        </SelectBoxWrap>
       </SelectBoxWrapper>
 
       <BtnWrapper>
@@ -696,18 +731,19 @@ const Order = () => {
 export default Order;
 
 const SelectBoxWrap = styled.div`
-  margin: 30px 0px;
+  flex: 1;
 `;
 
 const SelectBoxWrapper = styled.div`
   display: flex;
   margin: 24px 0px 24px 0px;
-  width: 80%;
+  width: 90%;
+  gap: 20px;
   justify-content: space-between;
 `;
 
 const SelectBox = styled(Select)`
-  width: 250px;
+  flex: 1;
   margin-top: 4px;
 `;
 

@@ -7,7 +7,64 @@ import {useEffect, useState} from 'react';
 import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
-
+import CorpEditModal from './CorpEditModal';
+import { useGetCorporationInfoDetail } from 'hooks/useCorporation';
+const defaultPrepaid = [
+  {
+      "code": 1,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 2,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 3,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 4,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 5,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 6,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 7,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 8,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  },
+  {
+      "code": 9,
+      "count": null,
+      "price": null,
+      "totalPrice": null
+  }
+]
 const CorpTable = ({
   data,
   isSuccess,
@@ -27,7 +84,19 @@ const CorpTable = ({
       label: el.groupName,
     };
   });
-
+  const [showOpenModal, setShowOpenModal] = useState(false);
+  const [clickData, setClickData] = useState();
+  const [clickId, setClickId] = useState();
+  const showEditOpen = id => {
+    setClickId(id)
+    const datas = corpListData.filter(v => v.id === id);    
+    // setClickData(...datas);
+    
+  };
+  const {
+    data: corpDetail,
+    refetch:refetchDetail
+  } = useGetCorporationInfoDetail(clickId);
   // const diningType = corpListData?.map(el => {
   //   return el.diningTypes.map(v => {
   //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
@@ -40,6 +109,18 @@ const CorpTable = ({
       setTotalPage(data?.data?.total);
     }
   }, [data?.data?.total, isSuccess]);
+  useEffect(() => {
+    if (clickId) {
+        refetchDetail()
+    }
+  }, [clickId, refetchDetail]);
+  useEffect(() => {
+    if (clickId) {
+      setClickData({...corpDetail?.data, prepaidCategoryList:corpDetail?.data.prepaidCategoryList ? corpDetail?.data.prepaidCategoryList : defaultPrepaid})
+      setShowOpenModal(true);
+      setClickId();
+    }
+  }, [corpDetail]);
 
   // useEffect(() => {
   //   refetch();
@@ -90,7 +171,13 @@ const CorpTable = ({
                 <div style={{width: 150}}>상세주소</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>              
+              <Table.HeaderCell textAlign="center">
+                지원급 적용O
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                지원급 적용X
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
@@ -142,7 +229,13 @@ const CorpTable = ({
               const garbage = el.isGarbage ? '사용' : '미사용';
               const hotStorage = el.isHotStorage ? '사용' : '미사용';
               return (
-                <Table.Row key={el.id + idx}>
+                <Table.Row
+                  key={el.id + idx}
+                  style={{cursor: 'pointer'}}
+                  onClick={e => {
+                    e.stopPropagation();
+                    showEditOpen(el.id);
+                  }}>
                   <Table.Cell>
                     <input type="checkbox" />
                   </Table.Cell>
@@ -158,7 +251,13 @@ const CorpTable = ({
                   </Table.Cell>
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 150}}>{el.serviceDays}</div>
+                    <div style={{width: 120}}>{el.supportDays}</div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 120}}>{el.notSupportDays}</div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div style={{width: 120}}>{el.serviceDays}</div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.managerId}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
@@ -193,6 +292,17 @@ const CorpTable = ({
             })}
           </Table.Body>
         </Table>
+        {clickData && (
+          <CorpEditModal
+            open={showOpenModal}
+            refetch={refetch}
+            setOpen={setShowOpenModal}
+            nowData={clickData}
+            setNowData={setClickData}
+            setClickId={setClickId}
+            testData={corpListData}
+          />
+        )}
       </TableWrapper>
     </PageWrapper>
   );

@@ -42,12 +42,29 @@ function CostomerEditModal({
         <Modal.Header>유저 정보 변경</Modal.Header>
         <Modal.Content>
           <Modal.Description>
+            <LineBox>
             <FlexBox>
               <Label>이메일</Label>
               <Label color="blue" size="large">
                 {nowData.email}
               </Label>
             </FlexBox>
+            <Form.Field>
+                <FlexBox width={500}>
+                  <Label>결제 비밀번호</Label>
+                  <Input
+                    placeholder="결제 비밀번호"
+                    defaultValue={nowData.paymentPassword}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        paymentPassword: data.value ? data.value : null,
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              </LineBox>
             <LineBox>
               <Form.Field>
                 <FlexBox>

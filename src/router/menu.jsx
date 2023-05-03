@@ -23,6 +23,9 @@ import Point from 'pages/calculation/point/Point';
 import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
 import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
 import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
+import Notification from 'pages/notification/Notification';
+import MakersCalc from 'pages/adjustment/MakersCalc';
+import ClientCalc from 'pages/adjustment/ClientCalc';
 
 export const MenuList = [
   {
@@ -175,8 +178,9 @@ export const MenuList = [
         url: '/notice',
       },
       {
-        name: '푸쉬알림 (진행중)',
+        name: '푸쉬알림',
         url: '/notification',
+        component: <Notification />,
       },
       {
         name: '이용 가이드 (진행중)',
@@ -190,13 +194,14 @@ export const MenuList = [
     children: [
       {
         name: '고객사 정산',
-        url: '/group',
-        component: <SpotAdjustment />,
+        url: '/groupCalc',
+        component: <ClientCalc />,
       },
+
       {
         name: '메이커스 정산',
-        url: '/makers',
-        component: <MakersAdjustment />,
+        url: '/makersCalc',
+        component: <MakersCalc />,
       },
       {
         name: '수수료 관리 (진행중)',

@@ -4,6 +4,7 @@ import {PageWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import EventPoint from './components/EventPoint';
 import ReviewPoint from './components/ReviewPoint';
+import FoundersPoint from './components/FoundersPoint';
 
 const Point = () => {
   const [index, setIndex] = useState(0);
@@ -19,6 +20,11 @@ const Point = () => {
       id: 1,
       title: '이벤트 포인트',
       component: <EventPoint />,
+    },
+    {
+      id: 2,
+      title: '파운더스 포인트',
+      component: <FoundersPoint />,
     },
   ];
   return (

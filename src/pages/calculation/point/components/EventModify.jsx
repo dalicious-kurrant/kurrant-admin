@@ -45,23 +45,26 @@ const EventModify = ({
   const completedCount = watch('completedCount');
   const accountLimit = watch('accountLimit');
   const rewardPoint = watch('rewardPoint');
+  const noticeId = watch('noticeId');
 
   useEffect(() => {
     setValue('completedCount', initialData[0]?.completedConditionCount);
     setValue('accountLimit', initialData[0]?.accountCompletionLimit);
     setValue('rewardPoint', initialData[0]?.rewardPoint);
+    setValue('noticeId', initialData[0]?.boardId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
 
   const modifyButton = async () => {
     const data = {
       body: {
-        pointCondition: conditionOption,
+        pointCondition: conditionOption.value,
         completedConditionCount: Number(completedCount),
         accountCompletionLimit: Number(accountLimit),
         rewardPoint: Number(rewardPoint),
         eventStartDate: startDate,
         eventEndDate: endDate,
+        boardId: Number(noticeId),
       },
       policyId: checkedId[0],
     };
@@ -80,6 +83,10 @@ const EventModify = ({
       <Modal.Header>이벤트포인트 수정</Modal.Header>
       <Modal.Content>
         <FormProvider {...form}>
+          <div style={{marginBottom: 12}}>
+            <Title>공지사항 ID</Title>
+            <Input name="noticeId" />
+          </div>
           <TopContents>
             <div>
               <Title>조건</Title>

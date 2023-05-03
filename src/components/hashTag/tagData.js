@@ -23,6 +23,10 @@ export const foodTypeTag = [
     id: 11006,
     style: '프로틴식',
   },
+  {
+    id: 11007,
+    style: '한그릇 음식',
+  },
 ];
 export const styleTag = [
   {

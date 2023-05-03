@@ -2,6 +2,7 @@ import instance from 'shared/axios';
 
 export const pointApis = {
   pointPolicy: async () => await instance.get('points/policy/review'),
+  foundersPointPolicy: async () => await instance.get('points/policy/founders'),
   eventPolicy: async () => await instance.get('points/policy/event'),
   addEvent: async data => await instance.post('points/policy/event', data),
   deleteEvent: async policyId =>

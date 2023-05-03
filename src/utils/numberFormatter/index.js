@@ -4,6 +4,6 @@
 
 export function formattedPercent(num) {
   if (!num) return '0%';
-  const percent = num.toFixed(1);
+  const percent = Number(num).toFixed(1);
   return percent + '%';
 }

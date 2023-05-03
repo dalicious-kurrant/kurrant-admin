@@ -1,8 +1,17 @@
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import {formattedPercent} from '../../../utils/numberFormatter';
+import {useState} from 'react';
+import MakersEditModal from './MakersEditModal';
 
-const MakersTable = ({data}) => {
+const MakersTable = ({data, setData}) => {
+  const [showOpenModal, setShowOpenModal] = useState(false);
+  const [clickData, setClickData] = useState();
+  const showEditOpen = id => {
+    const datas = data?.data?.filter(v => v.id === id);
+    setClickData(...datas);
+    setShowOpenModal(true);
+  };
   // console.log(data, '09');
   return (
     <TableWrapper>
@@ -31,6 +40,15 @@ const MakersTable = ({data}) => {
             <Table.HeaderCell textAlign="center">일일최대수량</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
               가능 다이닝타입
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              아침 주문마감시간
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              점심 주문마감시간
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              저녁 주문마감시간
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
               아침 가능케파
@@ -85,10 +103,15 @@ const MakersTable = ({data}) => {
 
         <Table.Body>
           {data?.data?.map((el, i) => {
-            console.log(el);
             const parentCompany = el.isParentCompany ? '있음' : '없음';
             return (
-              <Table.Row key={el.id + i}>
+              <Table.Row
+                key={el.id + i}
+                style={{cursor: 'pointer'}}
+                onClick={e => {
+                  e.stopPropagation();
+                  showEditOpen(el.id);
+                }}>
                 <Table.Cell textAlign="center">{el.id}</Table.Cell>
                 <Table.Cell textAlign="center">{el.code}</Table.Cell>
                 <Table.Cell>{el.name}</Table.Cell>
@@ -105,6 +128,9 @@ const MakersTable = ({data}) => {
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
+                <Table.Cell>{el.morningLastOrderTime}</Table.Cell>
+                <Table.Cell>{el.lunchLastOrderTime}</Table.Cell>
+                <Table.Cell>{el.dinnerLastOrderTime}</Table.Cell>
                 <Table.Cell textAlign="center">{el.morningCapacity}</Table.Cell>
                 <Table.Cell textAlign="center">{el.lunchCapacity}</Table.Cell>
                 <Table.Cell textAlign="center">
@@ -139,6 +165,16 @@ const MakersTable = ({data}) => {
           })}
         </Table.Body>
       </Table>
+      {clickData && (
+        <MakersEditModal
+          open={showOpenModal}
+          setOpen={setShowOpenModal}
+          nowData={clickData}
+          setNowData={setClickData}
+          testData={data}
+          setTestData={setData}
+        />
+      )}
     </TableWrapper>
   );
 };

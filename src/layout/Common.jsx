@@ -338,6 +338,8 @@ const Common = () => {
             address2: item.address2,
             location: item.location || null,
             diningTypes: [...item.diningTypes.split(',')],
+            supportDays: item.supportDays,
+            notSupportDays: item.notSupportDays,
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
@@ -372,18 +374,21 @@ const Common = () => {
           if (item.morningCapa) {
             typeArr.push({
               diningType: 1,
+              lastOrderTime: item.morningLastOrderTime,
               capacity: item.morningCapa,
             });
           }
           if (item.lunchCapa) {
             typeArr.push({
               diningType: 2,
+              lastOrderTime: item.lunchLastOrderTime,
               capacity: item.lunchCapa,
             });
           }
           if (item.dinnerCapa) {
             typeArr.push({
               diningType: 3,
+              lastOrderTime: item.dinnerLastOrderTime,
               capacity: item.dinnerCapa,
             });
           }
@@ -414,6 +419,7 @@ const Common = () => {
             isNutritionInformation: nutrition,
             openTime: item.openTime,
             closeTime: item.closeTime,
+            fee: item.fee,
             bank: item.bank,
             depositHolder: item.depositHolder,
             accountNumber: item.accountNumber,
@@ -629,6 +635,7 @@ const Common = () => {
       if (i !== 0) {
         return {
           password: v.password || null,
+          paymentPassword: v.paymentPassword || null,
           name: v.userName,
           email: v.email,
           phone: v.phone || null,
@@ -653,6 +660,7 @@ const Common = () => {
     const result = user.map((v, i) => {
       return {
         password: v.password || null,
+        paymentPassword: v.paymentPassword || null,
         name: v.userName,
         email: v.email,
         phone: v.phone || null,
@@ -756,7 +764,11 @@ const Common = () => {
     pathname !== `/order/info/detail/${orderNumber}` &&
     pathname !== `/calc/point` &&
     pathname !== `/order/additionalOrder` &&
-    pathname !== '/board/review';
+    pathname !== '/board/review' &&
+    pathname !== '/calc/makersCalc' &&
+    pathname !== '/calc/makersCalc/detail' &&
+    pathname !== '/calc/groupCalc' &&
+    pathname !== '/calc/groupCalc/detail';
   return (
     <C.Wrapper>
       <C.Bread>
