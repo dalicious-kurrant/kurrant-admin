@@ -6,6 +6,11 @@ export function useGetPointPolicy() {
     return pointApis.pointPolicy();
   });
 }
+export function useGetFoundersPointPolicy() {
+  return useQuery('foundersPointPolicy', () => {
+    return pointApis.foundersPointPolicy();
+  });
+}
 
 export function useGetEventPlicy() {
   return useQuery('eventPolicy', () => {

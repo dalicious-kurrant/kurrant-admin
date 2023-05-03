@@ -659,7 +659,8 @@ function CorpEditModal({
                                   />
                                 </Table.Cell>
                                 <Table.Cell textAlign="center">
-                                  <Input style={{width: 100}} value={withCommas(v.totalPrice)} onChange={(e, data) => {
+                                  <Input style={{width: 100}} value={v.totalPrice} onChange={(e, data) => {
+                                      console.log(data.value)
                                       setNowData({
                                         ...nowData,
                                         prepaidCategoryList: nowData.prepaidCategoryList.map((change)=>{
