@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Table} from 'semantic-ui-react';
+import {Button, Dropdown, Table} from 'semantic-ui-react';
 import {
   PageWrapper,
   BtnWrapper,
@@ -73,6 +73,7 @@ const Order = () => {
   const [diningType, setDiningType] = useAtom(diningListAtom);
   const [checkItems, setCheckItems] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectClient, setSelectClient] = useState([]);
 
   const [defaultGroup, setDefaultGroup] = useAtom(groupFilterAtom);
   const [defaultUser, setDefaultUser] = useAtom(userOptionAtom);
@@ -152,6 +153,19 @@ const Order = () => {
     {value: 12, label: '수동 환불'},
     {value: 13, label: '자동 환불'},
     {value: 14, label: '리뷰 작성 완료'},
+  ];
+
+  const orderStatusChangeOptionArr = [
+    // {key: 4, value: 4, text: '주문실패'},
+    {key: 5,value: 5, text: '결제완료'},
+    {key: 6,value: 6, text: '배송대기'},
+    // {key: 7,value: 7, text: '취소'},
+    {key: 9,value: 9, text: '배송중'},
+    // {key: 10,value: 10, text: '배송완료'},
+    {key: 11,value: 11, text: '수령완료'},
+    // {key: 12,value: 12, text: '수동 환불'},
+    // {key: 13,value: 13, text: '자동 환불'},
+    // {key: 14,value: 14, text: '리뷰 작성 완료'},
   ];
   const groupInfoParam = grouptInfoId && `?groupId=${grouptInfoId}`;
 
@@ -349,7 +363,7 @@ const Order = () => {
     orderList?.data?.map(el =>
       el.orderItemDailyFoodGroupList?.map(v =>
         v.orderItemDailyFoods?.map(s =>{
-          if(orderStatusFomatted(s.orderStatus) === 9)
+          if(selectClient.includes(orderStatusFomatted(s.orderStatus)))
             idArray.push(s.orderItemDailyFoodId)
         })
       ),
@@ -358,8 +372,13 @@ const Order = () => {
       status: 10,
       idList: idArray,
     };
+    // console.log(idArray)
     if (idArray.length !== 0) {
       await statusChange(data);
+      setSelectClient([])
+    }else{
+      alert('변경할 상태가 존재하지 않습니다.');
+      setSelectClient([]);
     }
   };
 
@@ -530,6 +549,20 @@ const Order = () => {
             openModal();
           }}
         />
+        
+      </BtnWrapper>
+          <OrderStatusBox>
+          <Dropdown
+            placeholder="변경할 상태"
+            selection
+            search
+            multiple
+            options={orderStatusChangeOptionArr}
+            value={selectClient}
+            onChange={(e, data) => {
+              setSelectClient(data.value);
+            }}
+          />
          <Button
           color="orange"
           content="배송 상태 변경"
@@ -537,8 +570,7 @@ const Order = () => {
             await orderStatusChangeAll();
           }}
         />
-      </BtnWrapper>
- 
+          </OrderStatusBox>
       <TableWrapper>
         <Table celled>
           <Table.Header>
@@ -804,4 +836,10 @@ const OrderCancel = styled.span`
 
 const OrderStatus = styled.div`
   margin-top: 12px;
+`;
+const OrderStatusBox = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  margin-bottom: 20px;
 `;
