@@ -162,7 +162,7 @@ const Order = () => {
     // {key: 7,value: 7, text: '취소'},
     {key: 9,value: 9, text: '배송중'},
     // {key: 10,value: 10, text: '배송완료'},
-    {key: 11,value: 11, text: '수령완료'},
+    // {key: 11,value: 11, text: '수령완료'},
     // {key: 12,value: 12, text: '수동 환불'},
     // {key: 13,value: 13, text: '자동 환불'},
     // {key: 14,value: 14, text: '리뷰 작성 완료'},
