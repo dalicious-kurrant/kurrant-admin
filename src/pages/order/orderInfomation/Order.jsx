@@ -45,7 +45,7 @@ import {
   userListAtom,
   userOptionAtom,
 } from 'utils/store';
-import {scheduleFormatted} from 'utils/statusFormatter';
+import {orderStatusFomatted, scheduleFormatted} from 'utils/statusFormatter';
 
 // 상품 정보 페이지
 const Order = () => {
@@ -146,7 +146,6 @@ const Order = () => {
     {value: 5, label: '결제완료'},
     {value: 6, label: '배송대기'},
     {value: 7, label: '취소'},
-    {value: 6, label: '배송대기'},
     {value: 9, label: '배송중'},
     {value: 10, label: '배송완료'},
     {value: 11, label: '수령완료'},
@@ -345,6 +344,24 @@ const Order = () => {
       await statusChange(data);
     }
   };
+  const orderStatusChangeAll = async e => {
+    const idArray = [];
+    orderList?.data?.map(el =>
+      el.orderItemDailyFoodGroupList?.map(v =>
+        v.orderItemDailyFoods?.map(s =>{
+          if(orderStatusFomatted(s.orderStatus) === 9)
+            idArray.push(s.orderItemDailyFoodId)
+        })
+      ),
+    );
+    const data = {
+      status: 10,
+      idList: idArray,
+    };
+    if (idArray.length !== 0) {
+      await statusChange(data);
+    }
+  };
 
   useEffect(() => {
     refetch();
@@ -513,7 +530,15 @@ const Order = () => {
             openModal();
           }}
         />
+         <Button
+          color="orange"
+          content="배송 상태 변경"
+          onClick={async() => {
+            await orderStatusChangeAll();
+          }}
+        />
       </BtnWrapper>
+ 
       <TableWrapper>
         <Table celled>
           <Table.Header>

@@ -54,6 +54,33 @@ export function adjustReverseStatusFomatted(data) {
       return 0;
   }
 }
+
+export function orderStatusFomatted(data) {
+  switch (data) {
+    case '주문실패':
+      return 4;
+    case '결제완료':
+      return 5;
+    case '배송대기':
+      return 6;
+    case '취소':
+      return 7;
+    case '배송중':
+      return 9;
+    case '배송완료':
+      return 10;
+    case '수령완료':
+      return 11;
+    case '수동 환불':
+      return 12;
+    case '자동 환불':
+      return 13;
+    case '리뷰 작성 완료':
+      return 14;
+    default:
+      return 0;
+  }
+}
 export function adjustTextStatusFomatted(data) {
   switch (data) {
     case '정산 신청 완료':
