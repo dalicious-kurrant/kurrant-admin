@@ -22,7 +22,7 @@ export const orderApis = {
         spots: spotOption,
         makersId: makersOption,
         diningTypeCode: diningTypeOption,
-        orderStatus: orderStatusOption,
+        status: orderStatusOption,
       },
     }),
   orderDetail: async orderCode => await instance.get(`orders/${orderCode}`),
