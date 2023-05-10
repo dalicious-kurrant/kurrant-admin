@@ -30,7 +30,7 @@ const Company = () => {
     data: corpList,
     isSuccess,
     refetch,
-  } = useGetCorporationInfo(100, page, name && name);
+  } = useGetCorporationInfo(2000, page, name && name);
   
   const {data: corpExportList} = useGetExportCorporationInfo();
   // console.log(corpList);

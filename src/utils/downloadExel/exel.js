@@ -335,6 +335,8 @@ export function corporationInfoExel(corporation) {
     'address2',
     'location',
     'diningTypes',
+    'supportDays',
+    'notSupportDays',
     'serviceDays',
     'managerId',
     'managerName',
