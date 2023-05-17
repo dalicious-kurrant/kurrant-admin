@@ -119,11 +119,11 @@ export const MenuList = [
         url: '/info',
         component: <ItemInfo />,
       },
-      {
-        name: '상품 상세 정보',
-        url: '/info/:id',
-        component: <ItemInfoDetail />,
-      },
+      // {
+      //   name: '상품 상세 정보',
+      //   url: '/info/:id',
+      //   component: <ItemInfoDetail />,
+      // },
       {
         name: '상품 등록요청 (진행중)',
         url: '/register',

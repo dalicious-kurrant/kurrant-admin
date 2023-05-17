@@ -200,6 +200,59 @@ export function groupTypeFormatted(data) {
       return '비인가';
   }
 }
+export function  logTypeFormatted(data) {
+  switch (data) {
+    case 1:
+      return '생성';
+    case 2:
+      return '수정';
+    case 3:
+      return '삭세';
+    default:
+      return '미정';
+  }
+}
+
+export function controllerTypeFormatted(data) {
+  switch (data) {
+    case 1:
+      return '식단';
+    case 2:
+      return '배너';
+    case 3:
+      return '인증';
+    case 4:
+      return '배송';
+    case 5:
+      return '파일';
+    case 6:
+      return '음식';
+    case 7:
+      return '기업';
+    case 8:
+      return '메이커스';
+    case 9:
+      return '주문';
+    case 10:
+      return '정산';
+    case 11:
+      return '포인트';
+    case 12:
+      return '공용';
+    case 13:
+      return '푸시 알림';
+    case 14:
+      return '리뷰';
+    case 15:
+      return '메이커스 식단 일정';
+    case 16:
+      return '스팟';
+    case 17:
+      return '유저';
+    default:
+      return '미정';
+  }
+}
 export function groupTypeFormatted2(data) {
   switch (data) {
     case '기업':
