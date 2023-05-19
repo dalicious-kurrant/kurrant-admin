@@ -20,6 +20,9 @@ const MakersTable = ({data, setData}) => {
           <Table.Row>
             <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
+              활성 여부
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
               메이커스 코드
             </Table.HeaderCell>
 
@@ -38,6 +41,7 @@ const MakersTable = ({data, setData}) => {
               담당자 전화번호
             </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">일일최대수량</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">영업 요일</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
               가능 다이닝타입
             </Table.HeaderCell>
@@ -103,7 +107,9 @@ const MakersTable = ({data, setData}) => {
 
         <Table.Body>
           {data?.data?.map((el, i) => {
+            console.log(el)
             const parentCompany = el.isParentCompany ? '있음' : '없음';
+            const isActive = el.isActive ? '활성' : '비활성';
             return (
               <Table.Row
                 key={el.id + i}
@@ -113,6 +119,7 @@ const MakersTable = ({data, setData}) => {
                   showEditOpen(el.id);
                 }}>
                 <Table.Cell textAlign="center">{el.id}</Table.Cell>
+                <Table.Cell textAlign="center">{isActive}</Table.Cell>
                 <Table.Cell textAlign="center">{el.code}</Table.Cell>
                 <Table.Cell>{el.name}</Table.Cell>
                 <Table.Cell>{el.companyName}</Table.Cell>
@@ -127,6 +134,9 @@ const MakersTable = ({data, setData}) => {
                   <div style={{width: 150}}>{el.managerPhone}</div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
+                <Table.Cell>
+                    <div style={{width: 120}}>{el.serviceDays}</div>
+                  </Table.Cell>
                 <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
                 <Table.Cell>{el.morningLastOrderTime}</Table.Cell>
                 <Table.Cell>{el.lunchLastOrderTime}</Table.Cell>

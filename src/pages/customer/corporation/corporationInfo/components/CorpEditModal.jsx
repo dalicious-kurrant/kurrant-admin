@@ -309,6 +309,24 @@ function CorpEditModal({
                       />
                     </FlexBox>
                   </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={250}>
+                      <LabelCheckBox>
+                        <Label size="mini">멤버십 종료 날짜</Label>
+                      </LabelCheckBox>
+                      <Input
+                        style={{width: 200}}
+                        placeholder="멤버십 종료 날짜"
+                        defaultValue={nowData.membershipEndDate}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            membershipEndDate: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
                 </LineBox>
                 <LineBox>
                   <Form.Field>

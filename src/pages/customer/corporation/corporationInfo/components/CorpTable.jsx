@@ -158,6 +158,7 @@ const CorpTable = ({
                 그룹 <br />
                 ID
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">활성 여부</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">기업코드</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -187,6 +188,9 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 기업멤버십 <br />
                 지원여부
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                멤버십 종료 날짜
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 아침 지원금
@@ -220,6 +224,7 @@ const CorpTable = ({
           </Table.Header>
           <Table.Body>
             {corpListData?.map((el, idx) => {
+              console.log(el)
               const diningType = el.diningTypes.map(v =>
                 v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
               );
@@ -227,6 +232,7 @@ const CorpTable = ({
               const membership = el.isMembershipSupport ? '지원' : '미지원';
               const setting = el.isSetting ? '사용' : '미사용';
               const garbage = el.isGarbage ? '사용' : '미사용';
+              const isActive = el.isActive ? '활성' : '비활성';
               const hotStorage = el.isHotStorage ? '사용' : '미사용';
               return (
                 <Table.Row
@@ -240,6 +246,7 @@ const CorpTable = ({
                     <input type="checkbox" />
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.id}</Table.Cell>
+                  <Table.Cell textAlign="center">{isActive}</Table.Cell>
                   <Table.Cell>{groupTypeFormatted(el.groupType)}</Table.Cell>
                   <Table.Cell>{el.code}</Table.Cell>
                   <Table.Cell>{el.name}</Table.Cell>
@@ -267,6 +274,7 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
+                  <Table.Cell textAlign="center">{el.membershipEndDate}</Table.Cell>
                   <Table.Cell textAlign="center">
                     {withCommas(el.morningSupportPrice) || '-'}
                   </Table.Cell>

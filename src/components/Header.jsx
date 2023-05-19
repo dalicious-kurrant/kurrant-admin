@@ -159,6 +159,7 @@ const Header = ({openMenu, setOpenMenu}) => {
                   </DropDownMenu>
                 ))}
               </MenuBox>
+              <Log onClick={()=>navi('/backlog')}>로그</Log>
               <Logout onClick={logOutButton}>로그아웃</Logout>
             </MenuLogout>
           </Menu>
@@ -177,6 +178,15 @@ const Logout = styled.div`
   white-space: nowrap;
   cursor: pointer;
   color: #ccc;
+`;
+const Log = styled.div`
+  display: flex;
+  align-self: center;
+  text-align: end;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
 `;
 const FontBox = styled.div`
   color: #ccc;

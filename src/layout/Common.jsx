@@ -768,6 +768,7 @@ const Common = () => {
     pathname !== '/calc/makersCalc' &&
     pathname !== '/calc/makersCalc/detail' &&
     pathname !== '/calc/groupCalc' &&
+    pathname !== '/backlog' &&
     pathname !== '/calc/groupCalc/detail';
   return (
     <C.Wrapper>

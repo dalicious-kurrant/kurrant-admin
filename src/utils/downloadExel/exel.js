@@ -342,6 +342,7 @@ export function corporationInfoExel(corporation) {
     'managerName',
     'managerPhone',
     'isMembershipSupport',
+    'membershipEndDate',
     'morningSupportPrice',
     'lunchSupportPrice',
     'dinnerSupportPrice',
@@ -369,6 +370,7 @@ export function corporationInfoExel(corporation) {
     '담당자',
     '담당자 전화번호',
     '기업멤버십 지원여부',
+    '멤버십 종료 날짜',
     '아침 지원금',
     '점심 지원금',
     '저녁 지원금',
@@ -406,6 +408,7 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(membership);
+    reqArray.push(el.membershipEndDate);
     reqArray.push(el.morningSupportPrice);
     reqArray.push(el.lunchSupportPrice);
     reqArray.push(el.dinnerSupportPrice);

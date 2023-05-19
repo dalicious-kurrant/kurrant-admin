@@ -49,7 +49,6 @@ const BackLog = ()=>{
                             <Table.Cell>
                                 {dataCount && dataCount[i].value ?v.logs?.map((s)=>{
                                     return <LogMessage count={v.logs.length}>{s}</LogMessage>
-                                    
                                 }):
                                 v.logs[0]}
                             </Table.Cell>
