@@ -18,6 +18,7 @@ const PannelButton = styled.div`
   height: 40px;
   display: flex;
   justify-content: center;
+  white-space: nowrap;
   align-items: center;
 `;
 const SelectedDate = styled.span`
@@ -25,6 +26,9 @@ const SelectedDate = styled.span`
   font-size: small;
   font-weight: 600;
   display: flex;
+  padding: 0px 10px;
+  width: max-content;
+  white-space: nowrap;
   justify-content: center;
   align-items: center;
   text-align: center;

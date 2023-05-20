@@ -166,16 +166,16 @@ export function preNumberFormatted(data) {
   }
 }
 export const preData = [
-  {value: 1 ,text:'조식비'},
-  {value: 2 ,text:'중식비'},
-  {value: 3 ,text:'석식비'},
-  {value: 4 ,text:'배송비'},
-  {value: 5 ,text:'멤버십'},
-  {value: 6 ,text:'추가 주문'},
-  {value: 7 ,text:'쓰레기 수거'},
-  {value: 8 ,text:'온장고 사용'},
-  {value: 9 ,text:'식사 세팅'},
-]
+  {value: 1, text: '조식비'},
+  {value: 2, text: '중식비'},
+  {value: 3, text: '석식비'},
+  {value: 4, text: '배송비'},
+  {value: 5, text: '멤버십'},
+  {value: 6, text: '추가 주문'},
+  {value: 7, text: '쓰레기 수거'},
+  {value: 8, text: '온장고 사용'},
+  {value: 9, text: '식사 세팅'},
+];
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
@@ -200,14 +200,14 @@ export function groupTypeFormatted(data) {
       return '비인가';
   }
 }
-export function  logTypeFormatted(data) {
+export function logTypeFormatted(data) {
   switch (data) {
     case 1:
       return '생성';
     case 2:
       return '수정';
     case 3:
-      return '삭세';
+      return '삭제';
     default:
       return '미정';
   }
