@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {useLocation} from 'react-router';
 import {MenuList} from '../router/menu';
 import {Breadcrumb, Button} from 'semantic-ui-react';
@@ -16,7 +16,6 @@ import {
   recommandPlanAtom,
   deadlineAtom,
   exelUserAtom,
-  saveItemAtom,
   statusOptionAtom,
   corporationAtom,
   exelCorporationAtom,
@@ -597,7 +596,18 @@ const Common = () => {
         }
 
         if (sheetName === '스팟 정보') {
-          setExelCorporation(json);
+          setExelCorporation(json.map((v)=>{
+            if(v.isActive === "활성"){
+              return { 
+                ...v,
+                isActive:true
+              };
+            }
+            return {
+              ...v,
+              isActive:false
+            };
+          }));
           console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
@@ -622,8 +632,16 @@ const Common = () => {
                   closeTime: v.closeTime && formattedTime(v.closeTime),
                 };
               }
-
-              return v;
+              if(v.isActive === "활성"){
+                return {
+                  ...v,
+                  isActive:true
+                };
+              }
+              return {
+                ...v,
+                isActive:false
+              };
             }),
           );
         }

@@ -327,6 +327,7 @@ export function corporationInfoExel(corporation) {
   const reqArrays = [];
   reqArrays.push([
     'id',
+    'isActive',
     'groupType',
     'code',
     'name',
@@ -355,6 +356,7 @@ export function corporationInfoExel(corporation) {
   ]);
   reqArrays.push([
     '그룹ID',
+    '활성여부',
     '스팟타입',
     '기업코드',
     '이름',
@@ -388,11 +390,13 @@ export function corporationInfoExel(corporation) {
     );
 
     const membership = el.isMembershipSupport ? '지원' : '미지원';
+    const isActive = el.isActive ? '활성' : '비활성';
     const setting = el.isSetting ? '사용' : '미사용';
     const garbage = el.isGarbage ? '사용' : '미사용';
     const hotStorage = el.isHotStorage ? '사용' : '미사용';
     const reqArray = [];
     reqArray.push(el.id);
+    reqArray.push(isActive);
     reqArray.push(el.groupType);
     reqArray.push(el.code);
     reqArray.push(el.name);
@@ -444,6 +448,7 @@ export function makersInfoExel(makersInformation) {
   const reqArrays = [];
   reqArrays.push([
     'id',
+    'isActive',
     'code',
     'name',
     'companyName',
@@ -451,6 +456,8 @@ export function makersInfoExel(makersInformation) {
     'ceoPhone',
     'managerName',
     'managerPhone',
+    'dailyCapacity',
+    'serviceDays',
     'diningTypes',
     'morningLastOrderTime',
     'morningCapa',
@@ -480,6 +487,7 @@ export function makersInfoExel(makersInformation) {
   ]);
   reqArrays.push([
     'ID',
+    '활성 여부',
     '메이커스 코드',
     '메이커스 이름',
     '법인명',
@@ -487,6 +495,8 @@ export function makersInfoExel(makersInformation) {
     '대표자 전화번호',
     '담당자 이름',
     '담당자 전화번호',
+    '일일 최대 수량',
+    '영업 요일',
     '가능 다이닝타입',
     '아침 주문가능시간',
     '아침가능 케파',
@@ -517,8 +527,10 @@ export function makersInfoExel(makersInformation) {
 
   makersInformation?.data?.map(el => {
     console.log(el, '9999');
+    const isActive = el.isActive ? '활성' : '비활성';
     const reqArray = [];
     reqArray.push(el.id);
+    reqArray.push(isActive);
     reqArray.push(el.code);
     reqArray.push(el.name);
     reqArray.push(el.companyName);
@@ -526,6 +538,8 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.ceoPhone);
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
+    reqArray.push(el.dailyCapacity);
+    reqArray.push(el.serviceDays);
     reqArray.push(el.diningTypes.join(','));
     reqArray.push(el.morningLastOrderTime);
     reqArray.push(el.morningCapacity);
