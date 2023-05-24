@@ -304,7 +304,7 @@ const AddOrder = () => {
                           <InnerCell>{el.diningType}</InnerCell>
                         </Table.Cell>
                         <Table.Cell textAlign="center">
-                          <InnerCell>{v.foodName}</InnerCell>
+                          <div style={{minWidth: 150}}>{v.foodName}</div>
                         </Table.Cell>
                         <Table.Cell textAlign="center">
                           <InnerCell>{withCommas(v.price)}원</InnerCell>
@@ -318,32 +318,34 @@ const AddOrder = () => {
                             name={`${v.foodId}${el.serviceDate}groupId`}
                             render={({field}) => {
                               return (
-                                <SelectBox
-                                  // {...field}
-                                  // value={field.value || ''}
-                                  options={groupArr}
-                                  placeholder="스팟"
-                                  onChange={e => {
-                                    setExtraListData(
-                                      extraListData.map(extra => {
-                                        if (
-                                          extra.foodId === v.foodId &&
-                                          el.serviceDate === extra.serviceDate
-                                        ) {
-                                          return {
-                                            ...extra,
-                                            groupId: e.value,
-                                          };
-                                        }
-                                        return extra;
-                                      }),
-                                    );
+                                <InnerCell style={{minWidth: 200}}>
+                                  <SelectBox
+                                    // {...field}
+                                    // value={field.value || ''}
+                                    options={groupArr}
+                                    placeholder="스팟"
+                                    onChange={e => {
+                                      setExtraListData(
+                                        extraListData.map(extra => {
+                                          if (
+                                            extra.foodId === v.foodId &&
+                                            el.serviceDate === extra.serviceDate
+                                          ) {
+                                            return {
+                                              ...extra,
+                                              groupId: e.value,
+                                            };
+                                          }
+                                          return extra;
+                                        }),
+                                      );
 
-                                    setSpotOption(e.value);
+                                      setSpotOption(e.value);
 
-                                    return field.onChange(e.value);
-                                  }}
-                                />
+                                      return field.onChange(e.value);
+                                    }}
+                                  />
+                                </InnerCell>
                               );
                             }}
                           />
@@ -354,32 +356,34 @@ const AddOrder = () => {
                             name={`${v.foodId}${el.serviceDate}spotId`}
                             render={({field}) => {
                               return (
-                                <SelectBox
-                                  // {...field}
-                                  // value={field.value || ''}
-                                  options={detailSpotArr}
-                                  placeholder="상세스팟"
-                                  // defaultValue={defaultGroup}
-                                  onChange={e => {
-                                    console.log(e.value);
-                                    setExtraListData(
-                                      extraListData.map(extra => {
-                                        if (
-                                          extra.foodId === v.foodId &&
-                                          el.serviceDate === extra.serviceDate
-                                        ) {
-                                          return {
-                                            ...extra,
-                                            spotId: e.value,
-                                          };
-                                        }
-                                        return extra;
-                                      }),
-                                    );
-                                    setDetailSpotOption(e.value);
-                                    return field.onChange(e.value);
-                                  }}
-                                />
+                                <InnerCell style={{minWidth: 150}}>
+                                  <SelectBox
+                                    // {...field}
+                                    // value={field.value || ''}
+                                    options={detailSpotArr}
+                                    placeholder="상세스팟"
+                                    // defaultValue={defaultGroup}
+                                    onChange={e => {
+                                      console.log(e.value);
+                                      setExtraListData(
+                                        extraListData.map(extra => {
+                                          if (
+                                            extra.foodId === v.foodId &&
+                                            el.serviceDate === extra.serviceDate
+                                          ) {
+                                            return {
+                                              ...extra,
+                                              spotId: e.value,
+                                            };
+                                          }
+                                          return extra;
+                                        }),
+                                      );
+                                      setDetailSpotOption(e.value);
+                                      return field.onChange(e.value);
+                                    }}
+                                  />
+                                </InnerCell>
                               );
                             }}
                           />
