@@ -166,16 +166,16 @@ export function preNumberFormatted(data) {
   }
 }
 export const preData = [
-  {value: 1 ,text:'조식비'},
-  {value: 2 ,text:'중식비'},
-  {value: 3 ,text:'석식비'},
-  {value: 4 ,text:'배송비'},
-  {value: 5 ,text:'멤버십'},
-  {value: 6 ,text:'추가 주문'},
-  {value: 7 ,text:'쓰레기 수거'},
-  {value: 8 ,text:'온장고 사용'},
-  {value: 9 ,text:'식사 세팅'},
-]
+  {value: 1, text: '조식비'},
+  {value: 2, text: '중식비'},
+  {value: 3, text: '석식비'},
+  {value: 4, text: '배송비'},
+  {value: 5, text: '멤버십'},
+  {value: 6, text: '추가 주문'},
+  {value: 7, text: '쓰레기 수거'},
+  {value: 8, text: '온장고 사용'},
+  {value: 9, text: '식사 세팅'},
+];
 export function userStatusFormatted(data) {
   switch (data) {
     case 0:
@@ -198,6 +198,59 @@ export function groupTypeFormatted(data) {
       return '오픈스팟';
     default:
       return '비인가';
+  }
+}
+export function logTypeFormatted(data) {
+  switch (data) {
+    case 1:
+      return '생성';
+    case 2:
+      return '수정';
+    case 3:
+      return '삭제';
+    default:
+      return '미정';
+  }
+}
+
+export function controllerTypeFormatted(data) {
+  switch (data) {
+    case 1:
+      return '식단';
+    case 2:
+      return '배너';
+    case 3:
+      return '인증';
+    case 4:
+      return '배송';
+    case 5:
+      return '파일';
+    case 6:
+      return '음식';
+    case 7:
+      return '기업';
+    case 8:
+      return '메이커스';
+    case 9:
+      return '주문';
+    case 10:
+      return '정산';
+    case 11:
+      return '포인트';
+    case 12:
+      return '공용';
+    case 13:
+      return '푸시 알림';
+    case 14:
+      return '리뷰';
+    case 15:
+      return '메이커스 식단 일정';
+    case 16:
+      return '스팟';
+    case 17:
+      return '유저';
+    default:
+      return '미정';
   }
 }
 export function groupTypeFormatted2(data) {

@@ -13,6 +13,7 @@ import Delivery from 'pages/Delivery';
 import Download from 'pages/Download';
 import MakersCalcDetail from 'pages/adjustment/components/MakersCalcDetail';
 import ClientCalcDetail from 'pages/adjustment/components/ClientCalcDetail';
+import BackLog from 'pages/backlog/Backlog';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
@@ -27,6 +28,8 @@ const MainRouter = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/shop/info/:id" element={ <ItemInfoDetail />} />
+            <Route path="/backlog" element={ <BackLog />} />
             <Route path="/order/info/detail/:code" element={<OrderDetail />} />
             <Route
               path="calc/makersCalc/detail"
@@ -37,7 +40,7 @@ const MainRouter = () => {
               element={<ClientCalcDetail />}
             />
             {MenuList.map(v => (
-              <Route key={v.url} path={v.url}>
+              <Route key={v.url} path={v.url}>              
                 {v.children?.map(b => (
                   <Route
                     key={b.url}
