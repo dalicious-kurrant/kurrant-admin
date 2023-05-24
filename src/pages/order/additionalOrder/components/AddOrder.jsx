@@ -224,7 +224,7 @@ const AddOrder = () => {
 
                       <Table.Cell textAlign="center">
                         {el.orderStatus === '취소' ? (
-                          <CancelText>취소</CancelText>
+                          <CancelText>취소완료</CancelText>
                         ) : (
                           <Button
                             content="취소"
@@ -246,8 +246,8 @@ const AddOrder = () => {
         <div style={{marginTop: 48}}>
           <FormProvider {...form}>
             <Button
-              content="추가 주문"
-              color="blue"
+              content="주문"
+              color="green"
               size="small"
               onClick={form.handleSubmit(onSubmit)}
             />

@@ -8,63 +8,63 @@ import {phoneNumberFormmatter} from '../../../../../utils/phoneNumberFormatter';
 import withCommas from 'utils/withCommas';
 import {groupTypeFormatted} from 'utils/statusFormatter';
 import CorpEditModal from './CorpEditModal';
-import { useGetCorporationInfoDetail } from 'hooks/useCorporation';
+import {useGetCorporationInfoDetail} from 'hooks/useCorporation';
 const defaultPrepaid = [
   {
-      "code": 1,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 1,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 2,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 2,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 3,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 3,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 4,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 4,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 5,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 5,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 6,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 6,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 7,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 7,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 8,
-      "count": null,
-      "price": null,
-      "totalPrice": null
+    code: 8,
+    count: null,
+    price: null,
+    totalPrice: null,
   },
   {
-      "code": 9,
-      "count": null,
-      "price": null,
-      "totalPrice": null
-  }
-]
+    code: 9,
+    count: null,
+    price: null,
+    totalPrice: null,
+  },
+];
 const CorpTable = ({
   data,
   isSuccess,
@@ -88,15 +88,12 @@ const CorpTable = ({
   const [clickData, setClickData] = useState();
   const [clickId, setClickId] = useState();
   const showEditOpen = id => {
-    setClickId(id)
-    const datas = corpListData.filter(v => v.id === id);    
+    setClickId(id);
+    const datas = corpListData.filter(v => v.id === id);
     // setClickData(...datas);
-    
   };
-  const {
-    data: corpDetail,
-    refetch:refetchDetail
-  } = useGetCorporationInfoDetail(clickId);
+  const {data: corpDetail, refetch: refetchDetail} =
+    useGetCorporationInfoDetail(clickId);
   // const diningType = corpListData?.map(el => {
   //   return el.diningTypes.map(v => {
   //     const type = v === 1 ? '아침' : v === 2 ? '점심' : '저녁';
@@ -111,12 +108,17 @@ const CorpTable = ({
   }, [data?.data?.total, isSuccess]);
   useEffect(() => {
     if (clickId) {
-        refetchDetail()
+      refetchDetail();
     }
   }, [clickId, refetchDetail]);
   useEffect(() => {
     if (clickId) {
-      setClickData({...corpDetail?.data, prepaidCategoryList:corpDetail?.data.prepaidCategoryList ? corpDetail?.data.prepaidCategoryList : defaultPrepaid})
+      setClickData({
+        ...corpDetail?.data,
+        prepaidCategoryList: corpDetail?.data.prepaidCategoryList
+          ? corpDetail?.data.prepaidCategoryList
+          : defaultPrepaid,
+      });
       setShowOpenModal(true);
       setClickId();
     }
@@ -126,7 +128,7 @@ const CorpTable = ({
   //   refetch();
   // }, [page, refetch, name, nameOption, setNameOption]);
   return (
-    <PageWrapper>
+    <div>
       <SelectBoxWrapper>
         <div>
           <span>이름 필터</span>
@@ -171,7 +173,7 @@ const CorpTable = ({
                 <div style={{width: 150}}>상세주소</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>              
+              <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 지원급 적용O
               </Table.HeaderCell>
@@ -304,7 +306,7 @@ const CorpTable = ({
           />
         )}
       </TableWrapper>
-    </PageWrapper>
+    </div>
   );
 };
 

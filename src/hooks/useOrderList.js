@@ -65,8 +65,10 @@ export function useGetOrderDetailList(orderCode) {
 }
 
 export function useCancelOrder() {
-  return useMutation(data => {
-    return orderApis.orderCancel(data);
+  return useMutation(data => orderApis.orderCancel(data), {
+    onSuccess: res => {
+      alert(res.message);
+    },
   });
 }
 

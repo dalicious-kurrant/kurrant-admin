@@ -157,10 +157,10 @@ const Order = () => {
 
   const orderStatusChangeOptionArr = [
     // {key: 4, value: 4, text: '주문실패'},
-    {key: 5,value: 5, text: '결제완료'},
-    {key: 6,value: 6, text: '배송대기'},
+    {key: 5, value: 5, text: '결제완료'},
+    {key: 6, value: 6, text: '배송대기'},
     // {key: 7,value: 7, text: '취소'},
-    {key: 9,value: 9, text: '배송중'},
+    {key: 9, value: 9, text: '배송중'},
     // {key: 10,value: 10, text: '배송완료'},
     // {key: 11,value: 11, text: '수령완료'},
     // {key: 12,value: 12, text: '수동 환불'},
@@ -236,9 +236,6 @@ const Order = () => {
       setCheckItems(checkItems.filter(el => el !== id));
     }
   };
-  const checkboxList = orderList?.data
-    ?.map(el => el.orderItemDailyFoodGroupList)
-    .flat();
 
   const handleAllCheck = checked => {
     if (checked) {
@@ -362,10 +359,10 @@ const Order = () => {
     const idArray = [];
     orderList?.data?.map(el =>
       el.orderItemDailyFoodGroupList?.map(v =>
-        v.orderItemDailyFoods?.map(s =>{
-          if(selectClient.includes(orderStatusFomatted(s.orderStatus)))
-            idArray.push(s.orderItemDailyFoodId)
-        })
+        v.orderItemDailyFoods?.map(s => {
+          if (selectClient.includes(orderStatusFomatted(s.orderStatus)))
+            idArray.push(s.orderItemDailyFoodId);
+        }),
       ),
     );
     const data = {
@@ -375,8 +372,8 @@ const Order = () => {
     // console.log(idArray)
     if (idArray.length !== 0) {
       await statusChange(data);
-      setSelectClient([])
-    }else{
+      setSelectClient([]);
+    } else {
       alert('변경할 상태가 존재하지 않습니다.');
       setSelectClient([]);
     }
@@ -549,28 +546,27 @@ const Order = () => {
             openModal();
           }}
         />
-        
       </BtnWrapper>
-          <OrderStatusBox>
-          <Dropdown
-            placeholder="변경할 상태"
-            selection
-            search
-            multiple
-            options={orderStatusChangeOptionArr}
-            value={selectClient}
-            onChange={(e, data) => {
-              setSelectClient(data.value);
-            }}
-          />
-         <Button
+      <OrderStatusBox>
+        <Dropdown
+          placeholder="변경할 상태"
+          selection
+          search
+          multiple
+          options={orderStatusChangeOptionArr}
+          value={selectClient}
+          onChange={(e, data) => {
+            setSelectClient(data.value);
+          }}
+        />
+        <Button
           color="orange"
           content="배송 상태 변경"
-          onClick={async() => {
+          onClick={async () => {
             await orderStatusChangeAll();
           }}
         />
-          </OrderStatusBox>
+      </OrderStatusBox>
       <TableWrapper>
         <Table celled>
           <Table.Header>

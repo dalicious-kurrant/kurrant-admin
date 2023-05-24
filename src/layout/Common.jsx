@@ -28,6 +28,7 @@ import {
   planExportAtom,
   corporationExportAtom,
   orderNumberAtom,
+  indexAtom,
 } from '../utils/store';
 
 import {useAtom} from 'jotai';
@@ -128,6 +129,7 @@ const Common = () => {
   const {mutateAsync: saveUserData} = useSaveUserData();
 
   // 스팟
+  const [indexStatus] = useAtom(indexAtom);
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
   const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
   const [spot, setSpot] = useAtom(spotAtom);
@@ -768,7 +770,9 @@ const Common = () => {
     pathname !== '/calc/makersCalc' &&
     pathname !== '/calc/makersCalc/detail' &&
     pathname !== '/calc/groupCalc' &&
-    pathname !== '/calc/groupCalc/detail';
+    pathname !== '/calc/groupCalc/detail' &&
+    pathname !== '/apply/spot' &&
+    indexStatus !== 1;
   return (
     <C.Wrapper>
       <C.Bread>
