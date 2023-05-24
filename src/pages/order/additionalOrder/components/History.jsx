@@ -144,7 +144,7 @@ const History = () => {
 
                       <Table.Cell textAlign="center">
                         {el.orderStatus === '취소' ? (
-                          <CancelText>취소</CancelText>
+                          <CancelText>취소완료</CancelText>
                         ) : (
                           <Button
                             content="취소"

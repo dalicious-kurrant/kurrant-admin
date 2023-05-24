@@ -26,6 +26,8 @@ import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
 import Notification from 'pages/notification/Notification';
 import MakersCalc from 'pages/adjustment/MakersCalc';
 import ClientCalc from 'pages/adjustment/ClientCalc';
+import Main from 'pages/apply/spot/Main';
+import SpotInformation from 'pages/customer/corporation/SpotInformation';
 
 export const MenuList = [
   {
@@ -43,7 +45,7 @@ export const MenuList = [
         component: <CompletePlans />,
       },
       {
-        name: '주문 추가(진행중)',
+        name: '주문 추가',
         url: '/additionalOrder',
         component: <AdditionalOrder />,
       },
@@ -61,8 +63,8 @@ export const MenuList = [
       },
       {
         name: '스팟 정보',
-        url: '/company',
-        component: <Company />,
+        url: '/spotInformation',
+        component: <SpotInformation />,
       },
       {
         name: '기업 가입리스트 (진행중)',
@@ -149,6 +151,7 @@ export const MenuList = [
       {
         name: '스팟 신청 (진행중)',
         url: '/spot',
+        component: <Main />,
       },
       {
         name: '정기식사 신청 (진행중)',

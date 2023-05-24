@@ -92,3 +92,13 @@ export const selectClientClientAtom = atomWithReset([]);
 export const selectStatusClientAtom = atomWithReset();
 export const selectModifyClientAtom = atomWithReset();
 export const corpDataAtom = atomWithReset();
+
+// 마이스팟
+export const indexAtom = atomWithReset();
+export const checkListAtom = atomWithReset([]);
+export const spotPageAtom = atomWithReset(1);
+
+export const MySpotCityAtom = atomWithReset([]);
+export const MySpotCountyAtom = atomWithReset([]);
+export const MySpotVillageAtom = atomWithReset([]);
+export const MySpotZipcodeAtom = atomWithReset([]);
