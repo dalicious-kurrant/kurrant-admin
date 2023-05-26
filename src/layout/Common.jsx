@@ -396,7 +396,7 @@ const Common = () => {
 
           const result = {
             id: item.id,
-            isActive: item.isActive,
+            isActive: item.isActive === '활성' ?true: false ,
             code: item.code,
             name: item.name,
             companyName: item.companyName,
