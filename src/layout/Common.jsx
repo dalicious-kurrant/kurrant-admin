@@ -396,6 +396,7 @@ const Common = () => {
 
           const result = {
             id: item.id,
+            isActive: item.isActive,
             code: item.code,
             name: item.name,
             companyName: item.companyName,
@@ -403,6 +404,7 @@ const Common = () => {
             ceoPhone: item.ceoPhone,
             managerName: item.managerName,
             managerPhone: item.managerPhone,
+            serviceDays: item.serviceDays,
             diningTypes: typeArr,
             dailyCapacity: item.dailyCapacity,
             serviceType: item.serviceType,
