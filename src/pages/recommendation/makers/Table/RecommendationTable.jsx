@@ -7,6 +7,7 @@ import Select from 'react-select';
 import {TableWrapper} from 'style/common.style';
 
 import {useEffect, useState} from 'react';
+import RecommendationEditModal from '../Modal/RecommendationEditModal';
 // import FoodGroupEditModal from '../Modal/FoodGroupEditModal';
 
 const RecommendationTable = ({data, checkboxList, setCheckboxList}) => {
@@ -289,6 +290,13 @@ const RecommendationTable = ({data, checkboxList, setCheckboxList}) => {
           nowData={clickedData}
           setNowData={setClickedData}
         /> */}
+
+        <RecommendationEditModal
+          open={showModal}
+          setOpen={setShowModal}
+          nowData={clickedData}
+          setNowData={setClickedData}
+        />
       </TableWrapper>
     </>
   );
