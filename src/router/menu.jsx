@@ -28,6 +28,7 @@ import MakersCalc from 'pages/adjustment/MakersCalc';
 import ClientCalc from 'pages/adjustment/ClientCalc';
 import Main from 'pages/apply/spot/Main';
 import SpotInformation from 'pages/customer/corporation/SpotInformation';
+import RecommendationMakersPage from 'pages/recommendation/makers/RecommendationMakersPage';
 
 export const MenuList = [
   {
@@ -240,6 +241,11 @@ export const MenuList = [
     name: '추천시스템 (진행중)',
     url: '/recommendation',
     children: [
+      {
+        name: '고객사별 음식 추천 데이터 생성',
+        url: '/makers',
+        component: <RecommendationMakersPage />,
+      },
       {
         name: '그룹별 추천 메이커 및 음식 (진행중)',
         url: '/group',

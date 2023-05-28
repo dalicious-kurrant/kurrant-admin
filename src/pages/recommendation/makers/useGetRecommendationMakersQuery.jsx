@@ -5,11 +5,7 @@ import instance from 'shared/axios';
 import {useEffect, useState} from 'react';
 import {getRecommendationAtom} from './store';
 
-const useGetRecommendationMakersQuery = (
-  uniqueQueryKey,
-  url,
-  enable = true,
-) => {
+const useGetRecommendationMakersQuery = (enable = true) => {
   const [recommendationMakersData, setRecommendationMakersData] = useAtom(
     getRecommendationAtom,
   );
