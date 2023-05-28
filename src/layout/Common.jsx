@@ -396,7 +396,7 @@ const Common = () => {
 
           const result = {
             id: item.id,
-            isActive: item.isActive === '활성' ?true: false ,
+            isActive: item.isActive === '활성' ? true : false,
             code: item.code,
             name: item.name,
             companyName: item.companyName,
@@ -598,18 +598,20 @@ const Common = () => {
         }
 
         if (sheetName === '스팟 정보') {
-          setExelCorporation(json.map((v)=>{
-            if(v.isActive === "활성"){
-              return { 
+          setExelCorporation(
+            json.map(v => {
+              if (v.isActive === '활성') {
+                return {
+                  ...v,
+                  isActive: true,
+                };
+              }
+              return {
                 ...v,
-                isActive:true
+                isActive: false,
               };
-            }
-            return {
-              ...v,
-              isActive:false
-            };
-          }));
+            }),
+          );
           console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
@@ -634,15 +636,15 @@ const Common = () => {
                   closeTime: v.closeTime && formattedTime(v.closeTime),
                 };
               }
-              if(v.isActive === "활성"){
+              if (v.isActive === '활성') {
                 return {
                   ...v,
-                  isActive:true
+                  isActive: true,
                 };
               }
               return {
                 ...v,
-                isActive:false
+                isActive: false,
               };
             }),
           );
@@ -793,7 +795,8 @@ const Common = () => {
     pathname !== '/calc/groupCalc/detail' &&
     pathname !== '/apply/spot' &&
     indexStatus !== 1 &&
-    pathname !== '/backlog';
+    pathname !== '/backlog' &&
+    pathname !== '/recommendation/makers';
 
   return (
     <C.Wrapper>

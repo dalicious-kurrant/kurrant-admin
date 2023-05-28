@@ -23,8 +23,6 @@ const RecommendationMakersPage = () => {
     if (buttonStatus === 'register') {
       setShowCreateModal(true);
     } else if (buttonStatus === 'delete') {
-      console.log(checkboxList);
-
       if (
         window.confirm(
           `'${checkboxList
