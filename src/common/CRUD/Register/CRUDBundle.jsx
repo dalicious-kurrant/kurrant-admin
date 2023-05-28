@@ -4,9 +4,8 @@ import {Button} from 'semantic-ui-react';
 const CRUDBundle = ({
   handleBundleClick,
   showRegister,
-  // sendFinal,
+  buttonCloseList = [],
   sendDelete,
-  checkboxStatus,
 }) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
@@ -31,22 +30,31 @@ const CRUDBundle = ({
     <Container>
       <Wrap>
         <Button.Group>
-          <BtnWrap>
-            <Button id="register" color="green" inverted onClick={handleClick}>
-              추가 열기
-            </Button>
-          </BtnWrap>
-
-          <BtnWrap>
-            <Button id="edit" color="blue" inverted onClick={handleClick}>
-              수정 열기
-            </Button>
-          </BtnWrap>
-          <BtnWrap>
-            <Button id="delete" inverted color="red" onClick={handleDelete}>
-              삭제하기
-            </Button>
-          </BtnWrap>
+          {!buttonCloseList.includes('register') && (
+            <BtnWrap>
+              <Button
+                id="register"
+                color="green"
+                inverted
+                onClick={handleClick}>
+                추가 열기
+              </Button>
+            </BtnWrap>
+          )}
+          {!buttonCloseList.includes('edit') && (
+            <BtnWrap>
+              <Button id="edit" color="blue" inverted onClick={handleClick}>
+                수정 열기
+              </Button>
+            </BtnWrap>
+          )}
+          {!buttonCloseList.includes('delete') && (
+            <BtnWrap>
+              <Button id="delete" inverted color="red" onClick={handleDelete}>
+                삭제하기
+              </Button>
+            </BtnWrap>
+          )}
         </Button.Group>
         {/* <Wrap2>
           <Button.Group>

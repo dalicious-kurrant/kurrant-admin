@@ -8,6 +8,7 @@ const useRecommendationMutation = setModalOpen => {
     async data => {
       console.log('데이터 ');
       console.log(data);
+      console.log(data.foodType);
 
       const response = await instance.post(`foods/recommends`, data);
       return response;
