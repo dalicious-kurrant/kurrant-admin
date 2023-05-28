@@ -20,7 +20,7 @@ import {
   SpotInfoFieldsToOpen,
   SpotInfoRegisterFieldsToOpen,
 } from './SpotInfoData';
-import {clickButtonBundle} from '../Logics/Logics';
+
 import {SpotInfoDataAtom, SpotInfoGroupIdNameAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 
