@@ -3,7 +3,7 @@ import Diet from '../pages/order/Diet';
 import Order from '../pages/order/orderInfomation/Order';
 import Makers from '../pages/makers/Makers';
 import Spot from '../pages/customer/Spot';
-import Customer from '../pages/customer/Customer/Customer';
+
 import Company from '../pages/customer/corporation/corporationInfo/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';

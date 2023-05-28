@@ -108,7 +108,7 @@ export const clickSpotInfoButtonBundle = (
 
   setRegisterStatus,
   setShowRegister,
-  deleteMutate,
+  deleteFinalMutate,
 ) => {
   numberOfTrues({...checkboxStatus});
 
@@ -130,17 +130,21 @@ export const clickSpotInfoButtonBundle = (
       setShowRegister(true);
     }
   } else if (buttonStatus === 'delete') {
-    if (numberOfTrues === 0) {
-      window.confirm(
-        "아래의 리스트중에 체크박스를 눌러 수정할 리스트를 '하나만' 선택해주세요.",
-      );
-      return;
-    }
+    let deleteIdArray = [];
+    let spotInfoList = [...data];
 
-    if (window.confirm('삭제하시겠습니까?')) {
-      idsToDelete({...checkboxStatus}).forEach(value => {
-        deleteMutate(value);
-      });
+    Object.entries(checkboxStatus).forEach(v => {
+      if (v[1] === true) {
+        // console.log(v[0]);
+
+        const deleteData = spotInfoList.find(val => val.id === parseInt(v[0]));
+        // console.log(deleteData);s
+        deleteIdArray.push(deleteData.spotId);
+      }
+    });
+
+    if (window.confirm(`${deleteIdArray.toString()}를 삭제하시겠습니까?`)) {
+      deleteFinalMutate(deleteIdArray);
     } else {
       return;
     }

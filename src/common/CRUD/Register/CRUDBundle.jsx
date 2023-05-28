@@ -5,7 +5,6 @@ const CRUDBundle = ({
   handleBundleClick,
   showRegister,
   buttonCloseList = [],
-  sendDelete,
 }) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
@@ -16,14 +15,6 @@ const CRUDBundle = ({
     }
 
     handleBundleClick(e.target.id);
-  };
-
-  const handleSend = () => {
-    // sendFinal();
-  };
-
-  const handleDelete = () => {
-    sendDelete();
   };
 
   return (
@@ -50,23 +41,12 @@ const CRUDBundle = ({
           )}
           {!buttonCloseList.includes('delete') && (
             <BtnWrap>
-              <Button id="delete" inverted color="red" onClick={handleDelete}>
+              <Button id="delete" inverted color="red" onClick={handleClick}>
                 삭제하기
               </Button>
             </BtnWrap>
           )}
         </Button.Group>
-        {/* <Wrap2>
-          <Button.Group>
-            <FinalSendButton
-              checkboxstatus={checkboxStatus}
-              onClick={handleSend}
-              // disabled={!Object.values(checkboxStatus).includes(true)}
-            >
-              최종적용하기
-            </FinalSendButton>
-          </Button.Group>
-        </Wrap2> */}
       </Wrap>
     </Container>
   );
