@@ -39,7 +39,6 @@ export const fillGroupsDropboxObjectForRecommendation =
       };
     });
 
-    console.log(groupsListDropboxArray);
     // return [{value: 'none', label: '전체'}, ...groupsListDropboxArray];
     return [...groupsListDropboxArray];
   };

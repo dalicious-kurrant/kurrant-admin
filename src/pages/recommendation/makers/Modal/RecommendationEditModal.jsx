@@ -199,8 +199,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       },
     ];
 
-    console.log(data);
-
     if (!groups || groups.length < 1) {
       // 고객사값이 없을 경우
       window.confirm('고객사 값이 없습니다');
@@ -217,6 +215,31 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       editRecommendationMutation(data);
     }
   };
+
+  useEffect(() => {
+    if (!open) {
+      setGroups('');
+      setFoodTypes1('');
+      setImportance1('');
+      setFoodTypes2('');
+      setImportance2('');
+      setFoodTypes3('');
+      setImportance3('');
+      setFoodTypes4('');
+      setImportance4('');
+      setFoodTypes5('');
+      setImportance5('');
+      setFoodTypes6('');
+      setImportance6('');
+      setFoodGroupMon('');
+      setFoodGroupTue('');
+      setFoodGroupWed('');
+      setFoodGroupThu('');
+      setFoodGroupFri('');
+      setFoodGroupSat('');
+      setFoodGroupSun('');
+    }
+  }, [open]);
 
   useEffect(() => {
     console.log(importance2);
@@ -237,7 +260,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 <FlexBox width={240}>
                   <Label size="mini">고객사</Label>
                   <SelectBox
-                    placeholder="메이커스 리스트"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        메이커스 리스트
+                      </SelectBoxPlaceholder>
+                    }
                     options={groupsDropbox}
                     onChange={e => {
                       if (groups !== '') {
@@ -271,7 +298,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">추천 식품 타입 1</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes1 !== '') {
@@ -314,7 +345,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">추천 식품 타입 2</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes2 !== '') {
@@ -357,7 +392,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">추천 식품 타입 3</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes3 !== '') {
@@ -402,7 +441,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">추천 식품 타입 4</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes4 !== '') {
@@ -445,7 +488,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">추천 식품 타입 5</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes5 !== '') {
@@ -488,7 +535,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">추천 식품 타입 6</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes6 !== '') {
@@ -672,7 +723,17 @@ const LineBox = styled.div`
 
 const SelectBox = styled(Select)`
   width: ${({width}) => width}px;
+
+  &::placeholder {
+    color: blue;
+  }
+
   /* margin-right: 50px; */
+  /* color: blue; */
+`;
+
+const SelectBoxPlaceholder = styled.span`
+  color: #c7c7c7;
 `;
 
 const ResetButton = styled.button``;

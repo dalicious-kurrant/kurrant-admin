@@ -164,8 +164,6 @@ function RecommendationCreateModal({open, setOpen}) {
     }
   }, [open]);
 
-  console.log(groupsList);
-
   return (
     <Form onSubmit={onSubmit}>
       <Modal
@@ -215,7 +213,11 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">추천 식품 타입 1</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes1 !== '') {
@@ -257,7 +259,11 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">추천 식품 타입 2</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes2 !== '') {
@@ -299,7 +305,11 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">추천 식품 타입 3</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes3 !== '') {
@@ -343,7 +353,11 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">추천 식품 타입 4</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes4 !== '') {
@@ -385,7 +399,11 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">추천 식품 타입 5</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes5 !== '') {
@@ -427,7 +445,11 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">추천 식품 타입 6</Label>
                   <SelectBox
                     width={160}
-                    placeholder="식품 타입"
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
                     options={OfficialFoodType}
                     onChange={e => {
                       if (foodTypes6 !== '') {
@@ -606,6 +628,10 @@ const SelectBox = styled(Select)`
 
   /* height: 40px; */
   /* margin-right: 50px; */
+`;
+
+const SelectBoxPlaceholder = styled.span`
+  color: #c7c7c7;
 `;
 
 const ResetButton = styled.button``;
