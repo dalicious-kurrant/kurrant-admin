@@ -119,15 +119,16 @@ export const MenuList = [
     url: '/shop',
     children: [
       {
-        name: '상품 그룹',
-        url: '/foodGroup',
-        component: <FoodGroupPage />,
-      },
-      {
         name: '상품 정보',
         url: '/info',
         component: <ItemInfo />,
       },
+      {
+        name: '상품 그룹',
+        url: '/foodGroup',
+        component: <FoodGroupPage />,
+      },
+
       // {
       //   name: '상품 상세 정보',
       //   url: '/info/:id',

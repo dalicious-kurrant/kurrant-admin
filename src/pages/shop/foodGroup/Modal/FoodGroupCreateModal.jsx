@@ -32,10 +32,6 @@ function FoodGroupCreateModal({open, setOpen}) {
     }
   }, [makersList]);
 
-  useEffect(() => {
-    console.log(makersList);
-  }, [makersList]);
-
   const [makers, setMakers] = useState('');
   const [name, setName] = useState('');
   const [groupNumbers, setGroupNumbers] = useState('');
