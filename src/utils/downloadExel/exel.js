@@ -147,6 +147,8 @@ export function productExel(product) {
     'foodId',
     'makersId',
     'makersName',
+    'foodGroupId',
+    'foodGroup',
     'foodName',
     'foodStatus',
     'supplyPrice',
@@ -162,6 +164,8 @@ export function productExel(product) {
     'ID',
     '메이커스ID',
     '메이커스이름',
+    '상품 추천 ID',
+    '상품 추천 그룹',
     '식품이름',
     '판매상태',
     '공급가',
@@ -179,6 +183,8 @@ export function productExel(product) {
     reqArray.push(el.foodId);
     reqArray.push(el.makersId);
     reqArray.push(el.makersName);
+    reqArray.push(el.foodGroupId);
+    reqArray.push(el.foodGroup);
     reqArray.push(el.foodName);
     reqArray.push(el.foodStatus);
     reqArray.push(el.supplyPrice ?? 0);
@@ -404,7 +410,7 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
-    reqArray.push(diningType.join(','));    
+    reqArray.push(diningType.join(','));
     reqArray.push(el.supportDays);
     reqArray.push(el.notSupportDays);
     reqArray.push(el.serviceDays);

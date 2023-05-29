@@ -99,6 +99,10 @@ const ItemInfoTable = ({
             <Table.HeaderCell textAlign="center">
               메이커스 이름
             </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">상품 추천 ID</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              상품 추천 그룹
+            </Table.HeaderCell>
             <Table.HeaderCell textAlign="center">식품 이름</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">공급가</Table.HeaderCell>
@@ -137,6 +141,8 @@ const ItemInfoTable = ({
                 <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
                 <Table.Cell textAlign="center">{el.makersId}</Table.Cell>
                 <Table.Cell>{el.makersName}</Table.Cell>
+                <Table.Cell>{el.foodGroupId}</Table.Cell>
+                <Table.Cell>{el.foodGroup}</Table.Cell>
                 <Table.Cell>
                   <div style={{width: 200}}>{el.foodName}</div>
                 </Table.Cell>
