@@ -211,6 +211,10 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
     }
   };
 
+  useEffect(() => {
+    console.log(importance2);
+  }, [importance2]);
+
   return (
     <Form onSubmit={onSubmit}>
       <Modal
@@ -289,10 +293,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={140}>
+                <FlexBox width={80}>
                   <Label size="mini">추천 비중</Label>
                   <Input
                     placeholder="예) 1,2"
+                    value={importance1}
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -331,10 +336,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={140}>
+                <FlexBox width={80}>
                   <Label size="mini">추천 비중</Label>
                   <Input
                     placeholder="예) 1,2"
+                    value={importance2}
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -373,10 +379,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={140}>
+                <FlexBox width={80}>
                   <Label size="mini">추천 비중</Label>
                   <Input
                     placeholder="예) 1,2"
+                    value={importance3}
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -417,10 +424,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={140}>
+                <FlexBox width={80}>
                   <Label size="mini">추천 비중</Label>
                   <Input
                     placeholder="예) 1,2"
+                    value={importance4}
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -459,10 +467,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={140}>
+                <FlexBox width={80}>
                   <Label size="mini">추천 비중</Label>
                   <Input
                     placeholder="예) 1,2"
+                    value={importance5}
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -501,10 +510,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={140}>
+                <FlexBox width={80}>
                   <Label size="mini">추천 비중</Label>
                   <Input
                     placeholder="예) 1,2"
+                    value={importance6}
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
