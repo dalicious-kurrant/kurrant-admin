@@ -14,18 +14,27 @@ import {
 import styled from 'styled-components';
 
 import useFoodGroupMutation from '../useFoodGroupMutation';
+import useGetFoodGroupQuery from '../useGetFoodGroupQuery';
 
-function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
-  const {editFoodGroupMutation} = useFoodGroupMutation(setOpen);
+function FoodGroupCreateModal({open, setOpen}) {
+  const {createFoodGroupMutation} = useFoodGroupMutation(setOpen);
+
+  const {makersList} = useGetFoodGroupQuery();
+
+  useEffect(() => {
+    console.log(makersList);
+  }, [makersList]);
+
+  const [makers, setMakers] = useState('');
+  const [name, setName] = useState('');
+  const [groupNumbers, setGroupNumbers] = useState('');
+
   const onSubmit = () => {
-    editFoodGroupMutation([
-      {
-        id: nowData.id,
-        makers: nowData.makers,
-        name: nowData.name,
-        groupNumbers: nowData.groupNumbers,
-      },
-    ]);
+    createFoodGroupMutation({
+      makers: makers,
+      name: name,
+      groupNumbers: groupNumbers,
+    });
   };
 
   return (
@@ -35,11 +44,11 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}>
-        <Modal.Header>상품그룹 정보 수정</Modal.Header>
+        <Modal.Header>상품그룹 정보 추가</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <LineBox>
-              <Form.Field>
+              {/* <Form.Field>
                 <FlexBox width={150}>
                   <Label size="mini">상품 그룹 ID</Label>
                   <Input
@@ -48,18 +57,15 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
                     disabled={true}
                   />
                 </FlexBox>
-              </Form.Field>
+              </Form.Field> */}
               <Form.Field>
                 <FlexBox width={140}>
                   <Label size="mini">메이커스</Label>
                   <Input
-                    placeholder="사용료"
-                    defaultValue={nowData.makers}
+                    placeholder="메이커스 이름"
+                    // defaultValue={nowData.makers}
                     onChange={(e, data) => {
-                      setNowData({
-                        ...nowData,
-                        makers: data.value ? data.value : null,
-                      });
+                      setMakers(data.value);
                     }}
                   />
                 </FlexBox>
@@ -69,12 +75,9 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">상품 그룹 이름</Label>
                   <Input
                     placeholder="상품 그룹 이름"
-                    defaultValue={nowData.name}
+                    // defaultValue={nowData.name}
                     onChange={(e, data) => {
-                      setNowData({
-                        ...nowData,
-                        name: data.value ? data.value : null,
-                      });
+                      setName(data.value);
                     }}
                   />
                 </FlexBox>
@@ -84,12 +87,9 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">동일 날짜 동시 추천 가능 여부</Label>
                   <Input
                     placeholder="예) 1,2"
-                    defaultValue={nowData.groupNumbers}
+                    // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
-                      setNowData({
-                        ...nowData,
-                        groupNumbers: data.value ? data.value : null,
-                      });
+                      setGroupNumbers(data.value);
                     }}
                   />
                 </FlexBox>
@@ -103,7 +103,7 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
           </Button>
           <Button
             type="submit"
-            content="수정"
+            content="추가"
             labelPosition="right"
             icon="checkmark"
             positive
@@ -115,7 +115,7 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
   );
 }
 
-export default FoodGroupEditModal;
+export default FoodGroupCreateModal;
 
 const FlexBox = styled.div`
   display: flex;

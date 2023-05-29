@@ -8,6 +8,7 @@ import {TableWrapper} from 'style/common.style';
 
 import {useEffect, useState} from 'react';
 import FoodGroupEditModal from '../Modal/FoodGroupEditModal';
+// import FoodGroupEditModal from '../Modal/FoodGroupEditModal';
 
 const FoodGroupTable = ({data, checkboxList, setCheckboxList}) => {
   const [showModal, setShowModal] = useState(false);

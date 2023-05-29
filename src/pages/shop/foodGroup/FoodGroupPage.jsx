@@ -4,9 +4,10 @@ import FoodGroupTable from './Table/FoodGroupTable';
 
 import {useEffect, useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
-import FoodGroupCreateModal from './Modal/FoodGroupCreateModal';
+// import FoodGroupCreateModal from './Modal/FoodGroupCreateModal';
 import useGetFoodGroupQuery from './useGetFoodGroupQuery';
 import useFoodGroupMutation from './useFoodGroupMutation';
+import FoodGroupCreateModal from './Modal/FoodGroupCreateModal';
 
 const FoodGroupPage = () => {
   const [showCRUDBundle, setShowCRUDBundle] = useState(false);

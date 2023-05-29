@@ -29,6 +29,7 @@ import ClientCalc from 'pages/adjustment/ClientCalc';
 import Main from 'pages/apply/spot/Main';
 import SpotInformation from 'pages/customer/corporation/SpotInformation';
 import RecommendationMakersPage from 'pages/recommendation/makers/RecommendationMakersPage';
+import FoodGroupPage from 'pages/shop/foodGroup/FoodGroupPage';
 
 export const MenuList = [
   {
@@ -117,6 +118,11 @@ export const MenuList = [
     name: '상품',
     url: '/shop',
     children: [
+      {
+        name: '상품 그룹',
+        url: '/foodGroup',
+        component: <FoodGroupPage />,
+      },
       {
         name: '상품 정보',
         url: '/info',
