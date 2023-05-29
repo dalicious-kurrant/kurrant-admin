@@ -104,6 +104,20 @@ const ItemExelTable = ({isShow, data, checked, checkItems, setCheckItems}) => {
                             </Table.Cell>
                           );
                         }
+                        if (k === 'foodGroupId') {
+                          return (
+                            <Table.Cell key={k + i} textAlign="center">
+                              {el[k]}
+                            </Table.Cell>
+                          );
+                        }
+                        if (k === 'foodGroup') {
+                          return (
+                            <Table.Cell key={k + i} textAlign="center">
+                              {el[k]}
+                            </Table.Cell>
+                          );
+                        }
                         if (k === 'foodName') {
                           return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
                         }
