@@ -261,9 +261,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">고객사</Label>
                   <SelectBox
                     placeholder={
-                      <SelectBoxPlaceholder>
-                        메이커스 리스트
-                      </SelectBoxPlaceholder>
+                      <SelectBoxPlaceholder>고객사 리스트</SelectBoxPlaceholder>
                     }
                     options={groupsDropbox}
                     onChange={e => {
@@ -727,9 +725,6 @@ const SelectBox = styled(Select)`
   &::placeholder {
     color: blue;
   }
-
-  /* margin-right: 50px; */
-  /* color: blue; */
 `;
 
 const SelectBoxPlaceholder = styled.span`

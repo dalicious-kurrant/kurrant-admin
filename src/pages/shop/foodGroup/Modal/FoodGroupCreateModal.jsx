@@ -11,15 +11,26 @@ import {
   Checkbox,
   TextArea,
 } from 'semantic-ui-react';
+
+import Select from 'react-select';
 import styled from 'styled-components';
 
 import useFoodGroupMutation from '../useFoodGroupMutation';
 import useGetFoodGroupQuery from '../useGetFoodGroupQuery';
+import {fillMakersDropboxObjectForFoodGroup} from 'utils/dataFormChangeLogics/logic';
 
 function FoodGroupCreateModal({open, setOpen}) {
   const {createFoodGroupMutation} = useFoodGroupMutation(setOpen);
 
   const {makersList} = useGetFoodGroupQuery();
+
+  const [makersDropbox, setMakersDropbox] = useState([]);
+
+  useEffect(() => {
+    if (makersList) {
+      setMakersDropbox(fillMakersDropboxObjectForFoodGroup(makersList));
+    }
+  }, [makersList]);
 
   useEffect(() => {
     console.log(makersList);
@@ -58,7 +69,39 @@ function FoodGroupCreateModal({open, setOpen}) {
                   />
                 </FlexBox>
               </Form.Field> */}
-              <Form.Field>
+              <FlexBox width={240}>
+                <Label size="mini">메이커스</Label>
+                <SelectBox
+                  placeholder={
+                    <SelectBoxPlaceholder>메이커스 리스트</SelectBoxPlaceholder>
+                  }
+                  options={makersDropbox}
+                  onChange={e => {
+                    // if (makers !== '') {
+                    //   setMakers(`${makers}, ${e.value.toString()}`);
+                    // } else {
+
+                    // }
+                    setMakers(`${e.value.toString()}`);
+                  }}
+                />
+                {/* <GroupsInput
+                  placeholder="메이커스(필수)"
+                  // defaultValue={nowData.name}
+                  value={makers}
+                  disabled
+                  // onChange={(e, data) => {
+                  //   //   setName(data.value);
+                  // }}
+                /> */}
+                {/* <ResetButton
+                  onClick={() => {
+                    setMakers('');
+                  }}>
+                  리셋
+                </ResetButton> */}
+              </FlexBox>
+              {/* <Form.Field>
                 <FlexBox width={140}>
                   <Label size="mini">메이커스</Label>
                   <Input
@@ -69,7 +112,7 @@ function FoodGroupCreateModal({open, setOpen}) {
                     }}
                   />
                 </FlexBox>
-              </Form.Field>
+              </Form.Field> */}
               <Form.Field>
                 <FlexBox width={200}>
                   <Label size="mini">상품 그룹 이름</Label>
@@ -133,3 +176,31 @@ const LineBox = styled.div`
   font-size: 12px;
   gap: 20px;
 `;
+
+const SelectBoxPlaceholder = styled.span`
+  color: #c7c7c7;
+`;
+
+const SelectBox = styled(Select)`
+  width: ${({width}) => width}px;
+
+  /* &::placeholder {
+    color: blue;
+  } */
+`;
+
+const GroupsInput = styled.input`
+  &::placeholder {
+    color: #bebebe;
+  }
+
+  padding-left: 10px;
+
+  color: black;
+  height: 30px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+`;
+
+const ResetButton = styled.button``;

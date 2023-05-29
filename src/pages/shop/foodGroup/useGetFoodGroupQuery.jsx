@@ -16,7 +16,7 @@ const useGetFoodGroupQuery = (enable = true) => {
     isLoading,
     refetch: getFoodGroupQueryRefetch,
   } = useQuery(
-    ['foods', 'group'],
+    ['foods', 'groups'],
 
     async ({queryKey}) => {
       const response = await instance.get('/foods/groups');
