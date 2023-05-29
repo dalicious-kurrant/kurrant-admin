@@ -3,14 +3,14 @@ import {useQuery, useQueryClient} from 'react-query';
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
 import {useEffect, useState} from 'react';
-import {getRecommendationAtom} from './store';
+import {getGroupsAtom, getRecommendationAtom} from './store';
 
 const useGetRecommendationMakersQuery = (enable = true) => {
   const [recommendationMakersData, setRecommendationMakersData] = useAtom(
     getRecommendationAtom,
   );
 
-  const [groupsList, setGroupsList] = useState([]);
+  const [groupsList, setGroupsList] = useAtom(getGroupsAtom);
 
   const {
     data,

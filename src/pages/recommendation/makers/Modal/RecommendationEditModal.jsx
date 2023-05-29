@@ -65,6 +65,13 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   const {editRecommendationMutation} = useRecommendationMutation(setOpen);
 
   const {groupsList} = useGetRecommendationMakersQuery();
+  const [groupsDropbox, setGroupsDropbox] = useState([]);
+
+  useEffect(() => {
+    if (groupsList) {
+      setGroupsDropbox(fillGroupsDropboxObjectForRecommendation(groupsList));
+    }
+  }, [groupsList]);
 
   useEffect(() => {
     if (!nowData) return;
@@ -222,7 +229,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}>
-        <Modal.Header>고객사별 추천 기본 데이터 생성 정보 수정</Modal.Header>
+        <Modal.Header> 데이터 수정</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <LineBox>
@@ -231,11 +238,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Label size="mini">고객사</Label>
                   <SelectBox
                     placeholder="메이커스 리스트"
-                    options={
-                      groupsList
-                        ? fillGroupsDropboxObjectForRecommendation(groupsList)
-                        : []
-                    }
+                    options={groupsDropbox}
                     onChange={e => {
                       if (groups !== '') {
                         setGroups(`${groups}, ${e.value.toString()}`);
@@ -674,9 +677,23 @@ const SelectBox = styled(Select)`
 
 const ResetButton = styled.button``;
 
-const GroupsInput = styled(Input)`
-  &:disabled {
-    color: black;
+// const GroupsInput = styled(Input)`
+//   &:disabled {
+//     color: black;
+//   }
+//   color: black;
+// `;
+
+const GroupsInput = styled.input`
+  &::placeholder {
+    color: #bebebe;
   }
+
+  padding-left: 10px;
+
   color: black;
+  height: 30px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
 `;

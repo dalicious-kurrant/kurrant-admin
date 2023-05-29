@@ -65,6 +65,16 @@ function RecommendationCreateModal({open, setOpen}) {
 
   const {groupsList} = useGetRecommendationMakersQuery();
 
+  const [groupsDropbox, setGroupsDropbox] = useState([]);
+
+  useEffect(() => {
+    if (groupsList) {
+      setGroupsDropbox(fillGroupsDropboxObjectForRecommendation(groupsList));
+    } else {
+      console.log('groupsList가없다');
+    }
+  }, [groupsList]);
+
   const onSubmit = () => {
     const makeFoodType = (foodType, importance, num) => {
       if (foodType !== '' && importance !== '') {
@@ -129,6 +139,33 @@ function RecommendationCreateModal({open, setOpen}) {
     }
   };
 
+  useEffect(() => {
+    if (!open) {
+      setGroups('');
+      setFoodTypes1('');
+      setImportance1('');
+      setFoodTypes2('');
+      setImportance2('');
+      setFoodTypes3('');
+      setImportance3('');
+      setFoodTypes4('');
+      setImportance4('');
+      setFoodTypes5('');
+      setImportance5('');
+      setFoodTypes6('');
+      setImportance6('');
+      setFoodGroupMon('');
+      setFoodGroupTue('');
+      setFoodGroupWed('');
+      setFoodGroupThu('');
+      setFoodGroupFri('');
+      setFoodGroupSat('');
+      setFoodGroupSun('');
+    }
+  }, [open]);
+
+  console.log(groupsList);
+
   return (
     <Form onSubmit={onSubmit}>
       <Modal
@@ -136,7 +173,7 @@ function RecommendationCreateModal({open, setOpen}) {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}>
-        <Modal.Header>고객사별 추천 기본 데이터 생성 정보 추가</Modal.Header>
+        <Modal.Header>데이터 추가</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <LineBox>
@@ -145,11 +182,7 @@ function RecommendationCreateModal({open, setOpen}) {
                   <Label size="mini">고객사</Label>
                   <SelectBox
                     placeholder="메이커스 리스트"
-                    options={
-                      groupsList
-                        ? fillGroupsDropboxObjectForRecommendation(groupsList)
-                        : []
-                    }
+                    options={groupsDropbox}
                     onChange={e => {
                       if (groups !== '') {
                         setGroups(`${groups}, ${e.value.toString()}`);
@@ -570,14 +603,23 @@ const LineBox = styled.div`
 
 const SelectBox = styled(Select)`
   width: ${({width}) => width}px;
+
+  /* height: 40px; */
   /* margin-right: 50px; */
 `;
 
 const ResetButton = styled.button``;
 
-const GroupsInput = styled(Input)`
-  &:disabled {
-    color: black;
+const GroupsInput = styled.input`
+  &::placeholder {
+    color: #bebebe;
   }
+
+  padding-left: 10px;
+  /* background-color: black; */
   color: black;
+  height: 30px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
 `;
