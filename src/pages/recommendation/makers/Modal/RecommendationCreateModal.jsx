@@ -493,7 +493,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_월</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -506,7 +506,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_화</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -519,7 +519,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_수</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -532,7 +532,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_목</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -547,7 +547,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_금</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -560,7 +560,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_토</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
@@ -573,7 +573,7 @@ function RecommendationCreateModal({open, setOpen}) {
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_일</Label>
                   <Input
-                    placeholder="예) 수미판_정식_A"
+                    placeholder="예) 수미찬_정식_A"
                     // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
                       //   setGroupNumbers(data.value);
