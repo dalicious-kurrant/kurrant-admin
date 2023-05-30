@@ -13,10 +13,35 @@ import {
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+import Select from 'react-select';
+
 import useFoodGroupMutation from '../useFoodGroupMutation';
+import useGetFoodGroupQuery from '../useGetFoodGroupQuery';
+import {fillMakersDropboxObjectForFoodGroup} from 'utils/dataFormChangeLogics/logic';
 
 function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
-  const {editFoodGroupMutation} = useFoodGroupMutation(setOpen);
+  useEffect(() => {
+    console.log(nowData);
+  }, [nowData]);
+
+  const {editFoodGroupMutation} = useFoodGroupMutation(
+    () => {},
+    () => {
+      setOpen(false);
+    },
+    () => {},
+  );
+
+  const {makersList} = useGetFoodGroupQuery();
+
+  const [makersDropbox, setMakersDropbox] = useState([]);
+
+  useEffect(() => {
+    if (makersList) {
+      setMakersDropbox(fillMakersDropboxObjectForFoodGroup(makersList));
+    }
+  }, [makersList]);
+
   const onSubmit = () => {
     editFoodGroupMutation([
       {
@@ -49,6 +74,32 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
                   />
                 </FlexBox>
               </Form.Field>
+
+              <Form.Field>
+                <FlexBox width={240}>
+                  <Label size="mini">메이커스</Label>
+                  <SelectBox
+                    width={240}
+                    // height={20}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        {/* 메이커스 리스트 */}
+                        {nowData.makers}
+                      </SelectBoxPlaceholder>
+                    }
+                    // value={nowData.makers}
+                    options={makersDropbox}
+                    onChange={e => {
+                      setNowData({
+                        ...nowData,
+                        makers: e.value.toString() ? e.value.toString() : '',
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+
+              {/* 
               <Form.Field>
                 <FlexBox width={140}>
                   <Label size="mini">메이커스</Label>
@@ -63,7 +114,7 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
                     }}
                   />
                 </FlexBox>
-              </Form.Field>
+              </Form.Field> */}
               <Form.Field>
                 <FlexBox width={200}>
                   <Label size="mini">상품 그룹 이름</Label>
@@ -132,4 +183,19 @@ const LineBox = styled.div`
   display: flex;
   font-size: 12px;
   gap: 20px;
+`;
+
+const SelectBoxPlaceholder = styled.span`
+  /* color: #c7c7c7; */
+  /* color: #c7c7c7; */
+  color: black;
+`;
+
+const SelectBox = styled(Select)`
+  width: ${({width}) => width}px;
+  /* height: ${({height}) => height}px; */
+
+  /* &::placeholder {
+    color: blue;
+  } */
 `;

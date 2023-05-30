@@ -62,7 +62,12 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   const [foodGroupSat, setFoodGroupSat] = useState('');
   const [foodGroupSun, setFoodGroupSun] = useState('');
 
-  const {editRecommendationMutation} = useRecommendationMutation(setOpen);
+  const {editRecommendationMutation} = useRecommendationMutation(
+    () => {},
+    () => {
+      setOpen(false);
+    },
+  );
 
   const {groupsList} = useGetRecommendationMakersQuery();
   const [groupsDropbox, setGroupsDropbox] = useState([]);

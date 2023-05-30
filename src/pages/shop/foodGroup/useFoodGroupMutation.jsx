@@ -10,10 +10,6 @@ const useFoodGroupMutation = (
   // 상품 추천 생성
   const {mutate: createFoodGroupMutation} = useMutation(
     async data => {
-      console.log('데이터 ');
-      console.log(data);
-      console.log(data.foodType);
-
       const response = await instance.post(`foods/groups`, data);
 
       return response;
@@ -42,7 +38,7 @@ const useFoodGroupMutation = (
       console.log('데이터 ');
       console.log(data);
 
-      const response = await instance.post(`foods/groups`, data);
+      const response = await instance.post(`foods/groups/excel`, data);
       return response;
     },
     {

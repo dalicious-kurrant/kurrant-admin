@@ -20,7 +20,9 @@ import useGetFoodGroupQuery from '../useGetFoodGroupQuery';
 import {fillMakersDropboxObjectForFoodGroup} from 'utils/dataFormChangeLogics/logic';
 
 function FoodGroupCreateModal({open, setOpen}) {
-  const {createFoodGroupMutation} = useFoodGroupMutation(setOpen);
+  const {createFoodGroupMutation} = useFoodGroupMutation(() => {
+    setOpen(false);
+  });
 
   const {makersList} = useGetFoodGroupQuery();
 
@@ -65,50 +67,28 @@ function FoodGroupCreateModal({open, setOpen}) {
                   />
                 </FlexBox>
               </Form.Field> */}
-              <FlexBox width={240}>
-                <Label size="mini">메이커스</Label>
-                <SelectBox
-                  placeholder={
-                    <SelectBoxPlaceholder>메이커스 리스트</SelectBoxPlaceholder>
-                  }
-                  options={makersDropbox}
-                  onChange={e => {
-                    // if (makers !== '') {
-                    //   setMakers(`${makers}, ${e.value.toString()}`);
-                    // } else {
-
-                    // }
-                    setMakers(`${e.value.toString()}`);
-                  }}
-                />
-                {/* <GroupsInput
-                  placeholder="메이커스(필수)"
-                  // defaultValue={nowData.name}
-                  value={makers}
-                  disabled
-                  // onChange={(e, data) => {
-                  //   //   setName(data.value);
-                  // }}
-                /> */}
-                {/* <ResetButton
-                  onClick={() => {
-                    setMakers('');
-                  }}>
-                  리셋
-                </ResetButton> */}
-              </FlexBox>
-              {/* <Form.Field>
-                <FlexBox width={140}>
+              <Form.Field>
+                <FlexBox width={240}>
                   <Label size="mini">메이커스</Label>
-                  <Input
-                    placeholder="메이커스 이름"
-                    // defaultValue={nowData.makers}
-                    onChange={(e, data) => {
-                      setMakers(data.value);
+                  <SelectBox
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        메이커스 리스트
+                      </SelectBoxPlaceholder>
+                    }
+                    options={makersDropbox}
+                    onChange={e => {
+                      // if (makers !== '') {
+                      //   setMakers(`${makers}, ${e.value.toString()}`);
+                      // } else {
+
+                      // }
+                      setMakers(`${e.value.toString()}`);
                     }}
                   />
                 </FlexBox>
-              </Form.Field> */}
+              </Form.Field>
+
               <Form.Field>
                 <FlexBox width={200}>
                   <Label size="mini">상품 그룹 이름</Label>

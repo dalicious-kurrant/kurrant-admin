@@ -14,10 +14,6 @@ const FoodGroupTable = ({data, checkboxList, setCheckboxList}) => {
   const [showModal, setShowModal] = useState(false);
   const [clickedData, setClickedData] = useState({});
 
-  //값 확인하기
-
-  // console.log(data);
-
   const handleAllCheck = checked => {
     if (!checked) {
       setCheckboxList([]);
@@ -28,10 +24,8 @@ const FoodGroupTable = ({data, checkboxList, setCheckboxList}) => {
 
   const handleSingleCheck = (checked, id) => {
     if (!checked) {
-      // 체크 되어있을떄 -> 뺴줘야됨
       setCheckboxList(checkboxList.filter(v => v !== id));
     } else {
-      // 체크 안되어있을떄
       setCheckboxList([...checkboxList, id]);
     }
   };

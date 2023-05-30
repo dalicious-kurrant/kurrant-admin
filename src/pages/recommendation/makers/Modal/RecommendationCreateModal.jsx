@@ -61,7 +61,9 @@ function RecommendationCreateModal({open, setOpen}) {
   const [foodGroupSat, setFoodGroupSat] = useState('');
   const [foodGroupSun, setFoodGroupSun] = useState('');
 
-  const {createRecommendationMutation} = useRecommendationMutation(setOpen);
+  const {createRecommendationMutation} = useRecommendationMutation(() => {
+    setOpen(false);
+  });
 
   const {groupsList} = useGetRecommendationMakersQuery();
 

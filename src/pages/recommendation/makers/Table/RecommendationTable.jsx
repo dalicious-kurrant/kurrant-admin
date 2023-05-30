@@ -17,9 +17,6 @@ const RecommendationTable = ({data, checkboxList, setCheckboxList}) => {
 
   //값 확인하기
 
-  //   console.log(data[0].foodType.find(v => v.order === 0).foodTypes);
-  //   console.log(data[0].foodType);
-
   const handleAllCheck = checked => {
     if (!checked) {
       setCheckboxList([]);
