@@ -29,7 +29,7 @@ import {OfficialFoodType} from '../type';
 
 function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   const [id, setId] = useState('');
-  const [groups, setGroups] = useState('');
+  const [groups, setGroups] = useState([]);
 
   //
 
@@ -74,12 +74,9 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   useEffect(() => {
     if (!nowData) return;
 
-    console.log('fhfhfhfhfhfh');
-    console.log(nowData);
-
     setId(nowData.id ? nowData.id : '');
 
-    setGroups(nowData.groups ? nowData.groups : '');
+    setGroups(nowData.groups ? [...nowData.groups.split(', ')] : []);
 
     nowData?.foodType?.forEach((v, i) => {
       switch (v.order) {
@@ -154,8 +151,51 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   }, [nowData]);
 
   const onSubmit = () => {
+    let checkWrong = [false, 0, ''];
+
     const makeFoodType = (foodType, importance, num) => {
-      if (foodType !== '' && importance !== '') {
+      // 둘다 ''보기
+
+      // 하나 ''
+
+      // 여기서 한쪽이 없거나 , 숫자가 안맞으면 에러 보내기
+
+      if (foodType === '' || importance === '') {
+        // if (foodType.split(',').length !== importance.split(',').length) {
+        //   checkWrong = [true, num];
+        // }
+
+        // 추천 식품 타입 1
+        if (
+          (foodType === '' && importance !== '') ||
+          (foodType !== '' && importance === '')
+        ) {
+          checkWrong = [
+            true,
+            num,
+            `추천 식품 타입${
+              num + 1
+            }란 혹은 해당 추천 비중에 빈 값이 있나 확인해 주세요`,
+          ];
+        }
+      } else {
+        if (foodType.split(',').length !== importance.split(',').length) {
+          checkWrong = [
+            true,
+            num,
+            `추천 식품 타입 ${
+              num + 1
+            }의 입력된 식품 타입 값의 갯수와 추천 비중 값의 갯수가 동일한지 확인해 보세요`,
+          ];
+        }
+
+        console.log(foodType);
+        console.log(foodType.split(','));
+        console.log(foodType.split(',').length);
+        console.log(importance);
+        console.log(importance.split(','));
+        console.log(importance.split(',').length);
+
         return {
           order: num,
           foodTypes: foodType,
@@ -194,27 +234,50 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
 
     const data = [
       {
-        groups: groups,
+        groups: groups.join(', '),
         foodType: [...FoodTypeData],
         dailyFoodGroups: [...DailyFoodGroups],
         id: id,
       },
     ];
 
-    if (!groups || groups.length < 1) {
+    console.log(checkWrong);
+
+    if (checkWrong[0]) {
+      if (window.confirm(checkWrong[2])) {
+        return;
+      } else {
+        return;
+      }
+    }
+
+    // const checkErr = data => {
+    //   let checkIt = [false, 0];
+    //   data[0].foodType.forEach((v, i) => {
+    //     // split 한 갯수가 서로 맞아야 된다
+
+    //     if (v.foodTypes.split(',').length !== v.importances.split(',').length) {
+    //       checkIt = [true, v.order];
+    //     }
+    //   });
+
+    //   return checkIt;
+    // };
+
+    // else if (checkErr(data)[0]) {
+    //   window.confirm(
+    //     `추천 식품 타입 ${
+    //       checkErr(data)[1] + 1
+    //     }의 입력된 식품 타입 값의 갯수와 추천 비중 값의 갯수가 동일한지 확인해 보세요`,
+    //   );
+    // }
+
+    if (groups.length < 1) {
       // 고객사값이 없을 경우
       window.confirm('고객사 값이 없습니다');
     }
 
     // 추천 식품 타입 , 추천 비중 타입 숫자가 다를 경우 에러 보내기
-
-    // else if (FoodTypeData.length < 1) {
-    //   // 추천 식품타입이 하나도 없을 경우
-
-    //   window.confirm(
-    //     '적어도 하나의 추천 식품타입, 추천비중을 적어주십시오, 추천 식품타입과 추천비중값이 동시에 기입이 되어있는지 확인해 주십시오',
-    //   );
-    // }
     else {
       editRecommendationMutation(data);
     }
@@ -222,7 +285,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
 
   useEffect(() => {
     if (!open) {
-      setGroups('');
+      setGroups([]);
       setFoodTypes1('');
       setImportance1('');
       setFoodTypes2('');
@@ -245,6 +308,14 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
     }
   }, [open]);
 
+  // useEffect(() => {
+  //   console.log(importance1);
+  // }, [importance1]);
+  // useEffect(() => {
+  //   console.log(foodTypes1);
+  //   console.log(foodTypes1 === '');
+  // }, [foodTypes1]);
+
   return (
     <Form onSubmit={onSubmit}>
       <Modal
@@ -265,17 +336,21 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     }
                     options={groupsDropbox}
                     onChange={e => {
-                      if (groups !== '') {
-                        setGroups(`${groups}, ${e.value.toString()}`);
-                      } else {
-                        setGroups(`${e.value.toString()}`);
-                      }
+                      // if (groups !== []) {
+                      //   // setGroups(`${groups}, ${e.value.toString()}`);
+
+                      // } else {
+                      //   // setGroups(`${e.value.toString()}`);
+                      //   setGroups([e.value.toString()]);
+                      // }
+
+                      setGroups([...groups, e.value.toString()]);
                     }}
                   />
                   <GroupsInput
                     placeholder="고객사(필수)"
                     // defaultValue={nowData.name}
-                    value={groups}
+                    value={groups.join(', ')}
                     disabled
                     // onChange={(e, data) => {
                     //   //   setName(data.value);
@@ -283,7 +358,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   />
                   <ResetButton
                     onClick={() => {
-                      setGroups('');
+                      setGroups([]);
                     }}>
                     리셋
                   </ResetButton>
@@ -312,7 +387,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   />
                   <GroupsInput
                     placeholder="예) 샐러드, 정찬 도시락"
-                    // defaultValue={nowData.name}
                     value={foodTypes1}
                     disabled
                   />
@@ -330,9 +404,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   <Input
                     placeholder="예) 1,2"
                     value={importance1}
-                    // defaultValue={nowData.groupNumbers}
                     onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
                       setImportance1(data.value);
                     }}
                   />
