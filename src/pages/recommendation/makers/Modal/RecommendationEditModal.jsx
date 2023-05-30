@@ -72,83 +72,106 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   }, [groupsList]);
 
   useEffect(() => {
-    if (!nowData) return;
+    if (!open) {
+      setGroups([]);
+      setFoodTypes1('');
+      setImportance1('');
+      setFoodTypes2('');
+      setImportance2('');
+      setFoodTypes3('');
+      setImportance3('');
+      setFoodTypes4('');
+      setImportance4('');
+      setFoodTypes5('');
+      setImportance5('');
+      setFoodTypes6('');
+      setImportance6('');
+      setFoodGroupMon('');
+      setFoodGroupTue('');
+      setFoodGroupWed('');
+      setFoodGroupThu('');
+      setFoodGroupFri('');
+      setFoodGroupSat('');
+      setFoodGroupSun('');
+    } else {
+      if (!nowData) return;
 
-    setId(nowData.id ? nowData.id : '');
+      setId(nowData.id ? nowData.id : '');
 
-    setGroups(nowData.groups ? [...nowData.groups.split(', ')] : []);
+      setGroups(nowData.groups ? [...nowData.groups.split(', ')] : []);
 
-    nowData?.foodType?.forEach((v, i) => {
-      switch (v.order) {
-        case 0:
-          setFoodTypes1(v.foodTypes ? v.foodTypes : '');
-          setImportance1(v.importances ? v.importances : '');
+      nowData?.foodType?.forEach((v, i) => {
+        switch (v.order) {
+          case 0:
+            setFoodTypes1(v.foodTypes ? v.foodTypes : '');
+            setImportance1(v.importances ? v.importances : '');
 
-          break;
-        case 1:
-          setFoodTypes2(v.foodTypes ? v.foodTypes : '');
-          setImportance2(v.importances ? v.importances : '');
+            break;
+          case 1:
+            setFoodTypes2(v.foodTypes ? v.foodTypes : '');
+            setImportance2(v.importances ? v.importances : '');
 
-          break;
-        case 2:
-          setFoodTypes3(v.foodTypes ? v.foodTypes : '');
-          setImportance3(v.importances ? v.importances : '');
+            break;
+          case 2:
+            setFoodTypes3(v.foodTypes ? v.foodTypes : '');
+            setImportance3(v.importances ? v.importances : '');
 
-          break;
-        case 3:
-          setFoodTypes4(v.foodTypes ? v.foodTypes : '');
-          setImportance4(v.importances ? v.importances : '');
+            break;
+          case 3:
+            setFoodTypes4(v.foodTypes ? v.foodTypes : '');
+            setImportance4(v.importances ? v.importances : '');
 
-          break;
-        case 4:
-          setFoodTypes5(v.foodTypes ? v.foodTypes : '');
-          setImportance5(v.importances ? v.importances : '');
+            break;
+          case 4:
+            setFoodTypes5(v.foodTypes ? v.foodTypes : '');
+            setImportance5(v.importances ? v.importances : '');
 
-          break;
-        case 5:
-          setFoodTypes6(v.foodTypes ? v.foodTypes : '');
-          setImportance6(v.importances ? v.importances : '');
+            break;
+          case 5:
+            setFoodTypes6(v.foodTypes ? v.foodTypes : '');
+            setImportance6(v.importances ? v.importances : '');
 
-          break;
+            break;
 
-        default:
-      }
-    });
-    nowData?.dailyFoodGroups?.forEach((v, i) => {
-      switch (v.days) {
-        case 0:
-          setFoodGroupMon(v.foodGroups ? v.foodGroups : '');
+          default:
+        }
+      });
+      nowData?.dailyFoodGroups?.forEach((v, i) => {
+        switch (v.days) {
+          case 0:
+            setFoodGroupMon(v.foodGroups ? v.foodGroups : '');
 
-          break;
-        case 1:
-          setFoodGroupTue(v.foodGroups ? v.foodGroups : '');
+            break;
+          case 1:
+            setFoodGroupTue(v.foodGroups ? v.foodGroups : '');
 
-          break;
-        case 2:
-          setFoodGroupWed(v.foodGroups ? v.foodGroups : '');
+            break;
+          case 2:
+            setFoodGroupWed(v.foodGroups ? v.foodGroups : '');
 
-          break;
-        case 3:
-          setFoodGroupThu(v.foodGroups ? v.foodGroups : '');
+            break;
+          case 3:
+            setFoodGroupThu(v.foodGroups ? v.foodGroups : '');
 
-          break;
-        case 4:
-          setFoodGroupFri(v.foodGroups ? v.foodGroups : '');
+            break;
+          case 4:
+            setFoodGroupFri(v.foodGroups ? v.foodGroups : '');
 
-          break;
-        case 5:
-          setFoodGroupSat(v.foodGroups ? v.foodGroups : '');
+            break;
+          case 5:
+            setFoodGroupSat(v.foodGroups ? v.foodGroups : '');
 
-          break;
-        case 6:
-          setFoodGroupSun(v.foodGroups ? v.foodGroups : '');
+            break;
+          case 6:
+            setFoodGroupSun(v.foodGroups ? v.foodGroups : '');
 
-          break;
+            break;
 
-        default:
-      }
-    });
-  }, [nowData]);
+          default:
+        }
+      });
+    }
+  }, [nowData, open]);
 
   const onSubmit = () => {
     let checkWrong = [false, 0, ''];
@@ -251,30 +274,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
     }
   };
 
-  useEffect(() => {
-    if (!open) {
-      setGroups([]);
-      setFoodTypes1('');
-      setImportance1('');
-      setFoodTypes2('');
-      setImportance2('');
-      setFoodTypes3('');
-      setImportance3('');
-      setFoodTypes4('');
-      setImportance4('');
-      setFoodTypes5('');
-      setImportance5('');
-      setFoodTypes6('');
-      setImportance6('');
-      setFoodGroupMon('');
-      setFoodGroupTue('');
-      setFoodGroupWed('');
-      setFoodGroupThu('');
-      setFoodGroupFri('');
-      setFoodGroupSat('');
-      setFoodGroupSun('');
-    }
-  }, [open]);
+  useEffect(() => {}, [open]);
 
   // useEffect(() => {
   //   console.log(importance1);
