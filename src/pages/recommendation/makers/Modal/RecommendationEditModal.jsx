@@ -25,21 +25,14 @@ import {fillGroupsDropboxObjectForRecommendation} from 'utils/dataFormChangeLogi
 
 import useRecommendationMutation from '../useRecommendationMutation';
 import useGetRecommendationMakersQuery from '../useGetRecommendationMakersQuery';
-
-const OfficialFoodType = [
-  {value: '간편식', label: '간편식'},
-  {value: '셀러드', label: '셀러드'},
-  {value: '정찬도시락', label: '정찬도시락'},
-  {value: '산후조리식', label: '산후조리식'},
-  {value: '다이어트식', label: '다이어트식'},
-  {value: '프로틴식', label: '프로틴식'},
-];
+import {OfficialFoodType} from '../type';
 
 function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   const [id, setId] = useState('');
   const [groups, setGroups] = useState('');
 
   //
+
   const [foodTypes1, setFoodTypes1] = useState('');
   const [importance1, setImportance1] = useState('');
   const [foodTypes2, setFoodTypes2] = useState('');
@@ -80,6 +73,9 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
 
   useEffect(() => {
     if (!nowData) return;
+
+    console.log('fhfhfhfhfhfh');
+    console.log(nowData);
 
     setId(nowData.id ? nowData.id : '');
 
@@ -201,6 +197,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
         groups: groups,
         foodType: [...FoodTypeData],
         dailyFoodGroups: [...DailyFoodGroups],
+        id: id,
       },
     ];
 
@@ -208,6 +205,8 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       // 고객사값이 없을 경우
       window.confirm('고객사 값이 없습니다');
     }
+
+    // 추천 식품 타입 , 추천 비중 타입 숫자가 다를 경우 에러 보내기
 
     // else if (FoodTypeData.length < 1) {
     //   // 추천 식품타입이 하나도 없을 경우
@@ -245,10 +244,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       setFoodGroupSun('');
     }
   }, [open]);
-
-  useEffect(() => {
-    console.log(importance2);
-  }, [importance2]);
 
   return (
     <Form onSubmit={onSubmit}>
@@ -316,7 +311,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes1}
                     disabled

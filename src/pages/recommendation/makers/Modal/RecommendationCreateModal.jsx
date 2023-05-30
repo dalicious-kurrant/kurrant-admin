@@ -25,15 +25,7 @@ import {fillGroupsDropboxObjectForRecommendation} from 'utils/dataFormChangeLogi
 
 import useRecommendationMutation from '../useRecommendationMutation';
 import useGetRecommendationMakersQuery from '../useGetRecommendationMakersQuery';
-
-const OfficialFoodType = [
-  {value: '간편식', label: '간편식'},
-  {value: '셀러드', label: '셀러드'},
-  {value: '정찬도시락', label: '정찬도시락'},
-  {value: '산후조리식', label: '산후조리식'},
-  {value: '다이어트식', label: '다이어트식'},
-  {value: '프로틴식', label: '프로틴식'},
-];
+import {OfficialFoodType} from '../type';
 
 function RecommendationCreateModal({open, setOpen}) {
   const [groups, setGroups] = useState('');
@@ -230,7 +222,7 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes1}
                     disabled
@@ -276,7 +268,7 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes2}
                     disabled
@@ -322,7 +314,7 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes3}
                     disabled
@@ -370,7 +362,7 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes4}
                     disabled
@@ -416,7 +408,7 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes5}
                     disabled
@@ -462,7 +454,7 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                   <GroupsInput
-                    placeholder="예) 셀러드, 정찬 도시락"
+                    placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodTypes6}
                     disabled
