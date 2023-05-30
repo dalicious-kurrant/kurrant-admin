@@ -17,7 +17,17 @@ const RecommendationMakersPage = () => {
   const {getRecommendationMakersQueryRefetch, recommendationMakersData} =
     useGetRecommendationMakersQuery();
 
-  const {deleteRecommendationMutation} = useRecommendationMutation();
+  const {deleteRecommendationMutation} = useRecommendationMutation(
+    () => {
+      setShowCreateModal(false);
+    },
+    () => {
+      setShowCreateModal(false);
+    },
+    () => {
+      setCheckboxList([]);
+    },
+  );
 
   const handleBundleClick = buttonStatus => {
     if (buttonStatus === 'register') {

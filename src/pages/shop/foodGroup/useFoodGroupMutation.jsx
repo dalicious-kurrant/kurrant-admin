@@ -1,7 +1,11 @@
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 
-const useFoodGroupMutation = setModalOpen => {
+const useFoodGroupMutation = (
+  createCallback = () => {},
+  editCallback = () => {},
+  deleteCallback = () => {},
+) => {
   const queryClient = useQueryClient();
   // 상품 추천 생성
   const {mutate: createFoodGroupMutation} = useMutation(
@@ -11,17 +15,18 @@ const useFoodGroupMutation = setModalOpen => {
       console.log(data.foodType);
 
       const response = await instance.post(`foods/groups`, data);
+
       return response;
     },
     {
-      onSuccess: () => {
+      onSuccess: data => {
         console.log('상품 추천 생성 success');
 
         queryClient.invalidateQueries(['foods', 'groups']);
 
         window.confirm('상품 추천 추가가 정상적으로 이루워졌습니다');
 
-        setModalOpen(false);
+        createCallback();
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
@@ -41,14 +46,14 @@ const useFoodGroupMutation = setModalOpen => {
       return response;
     },
     {
-      onSuccess: () => {
+      onSuccess: data => {
         console.log('상품 추천 수정 success');
 
         queryClient.invalidateQueries(['foods', 'groups']);
 
-        window.confirm('상품 추천 수정이 정상적으로 이루워졌습니다');
+        editCallback();
 
-        setModalOpen(false);
+        window.confirm('상품 추천 수정이 정상적으로 이루워졌습니다');
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
@@ -64,18 +69,21 @@ const useFoodGroupMutation = setModalOpen => {
       console.log('데이터 삭제');
       console.log(data);
 
-      const response = await instance.delete(`foods/groups`, data);
+      const response = await instance.delete(
+        `foods/groups`,
+
+        {data: data},
+      );
       return response;
     },
     {
-      onSuccess: () => {
+      onSuccess: data => {
         console.log('상품 추천 삭제 success');
+        console.log(data);
 
         queryClient.invalidateQueries(['foods', 'groups']);
-
+        deleteCallback();
         window.confirm('상품 추천 삭제가 정상적으로 이루워졌습니다');
-
-        setModalOpen(false);
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');

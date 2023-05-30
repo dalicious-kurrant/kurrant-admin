@@ -17,14 +17,22 @@ const FoodGroupPage = () => {
 
   const {getFoodGroupQueryRefetch, foodGroupData} = useGetFoodGroupQuery();
 
-  const {deleteFoodGroupMutation} = useFoodGroupMutation();
+  const {deleteFoodGroupMutation} = useFoodGroupMutation(
+    () => {
+      setShowCreateModal(false);
+    },
+    () => {
+      setShowCreateModal(false);
+    },
+    () => {
+      setCheckboxList([]);
+    },
+  );
 
   const handleBundleClick = buttonStatus => {
     if (buttonStatus === 'register') {
       setShowCreateModal(true);
     } else if (buttonStatus === 'delete') {
-      console.log(checkboxList);
-
       if (
         window.confirm(
           `'${checkboxList

@@ -1,7 +1,11 @@
 import {useMutation, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 
-const useRecommendationMutation = setModalOpen => {
+const useRecommendationMutation = (
+  createCallback = () => {},
+  editCallback = () => {},
+  deleteCallback = () => {},
+) => {
   const queryClient = useQueryClient();
   // 상품 추천 생성
   const {mutate: createRecommendationMutation} = useMutation(
@@ -19,9 +23,9 @@ const useRecommendationMutation = setModalOpen => {
 
         queryClient.invalidateQueries(['recommendation', 'makers']);
 
-        window.confirm('상품 추천 추가가 정상적으로 이루워졌습니다');
+        createCallback();
 
-        setModalOpen(false);
+        window.confirm('상품 추천 추가가 정상적으로 이루워졌습니다');
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
@@ -46,9 +50,8 @@ const useRecommendationMutation = setModalOpen => {
 
         queryClient.invalidateQueries(['recommendation', 'makers']);
 
+        editCallback();
         window.confirm('상품 추천 수정이 정상적으로 이루워졌습니다');
-
-        setModalOpen(false);
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
@@ -64,7 +67,7 @@ const useRecommendationMutation = setModalOpen => {
       console.log('데이터 삭제');
       console.log(data);
 
-      const response = await instance.delete(`foods/recommends`, data);
+      const response = await instance.delete(`foods/recommends`, {data: data});
       return response;
     },
     {
@@ -72,10 +75,8 @@ const useRecommendationMutation = setModalOpen => {
         console.log('상품 추천 삭제 success');
 
         queryClient.invalidateQueries(['recommendation', 'makers']);
-
+        deleteCallback();
         window.confirm('상품 추천 삭제가 정상적으로 이루워졌습니다');
-
-        setModalOpen(false);
       },
       onError: err => {
         console.log('이런 ㅜㅜ 에러가 떳군요, 어서 코드를 확인해보셔요');
