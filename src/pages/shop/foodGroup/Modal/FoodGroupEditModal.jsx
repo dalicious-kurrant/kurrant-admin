@@ -131,8 +131,11 @@ function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={150}>
-                  <Label size="mini">동일 날짜 동시 추천 가능 여부</Label>
+                <FlexBox width={330}>
+                  <Label size="mini">
+                    동일 날짜 동시 추천 가능 여부 (숫자가 같은 그룹끼리는 같은
+                    날 추천 가능)
+                  </Label>
                   <Input
                     placeholder="예) 1,2"
                     defaultValue={nowData.groupNumbers}
