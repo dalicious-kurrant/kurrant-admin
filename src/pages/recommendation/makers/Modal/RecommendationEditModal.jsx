@@ -161,10 +161,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       // 여기서 한쪽이 없거나 , 숫자가 안맞으면 에러 보내기
 
       if (foodType === '' || importance === '') {
-        // if (foodType.split(',').length !== importance.split(',').length) {
-        //   checkWrong = [true, num];
-        // }
-
         // 추천 식품 타입 1
         if (
           (foodType === '' && importance !== '') ||
@@ -188,13 +184,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
             }의 입력된 식품 타입 값의 갯수와 추천 비중 값의 갯수가 동일한지 확인해 보세요`,
           ];
         }
-
-        console.log(foodType);
-        console.log(foodType.split(','));
-        console.log(foodType.split(',').length);
-        console.log(importance);
-        console.log(importance.split(','));
-        console.log(importance.split(',').length);
 
         return {
           order: num,
@@ -250,27 +239,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
         return;
       }
     }
-
-    // const checkErr = data => {
-    //   let checkIt = [false, 0];
-    //   data[0].foodType.forEach((v, i) => {
-    //     // split 한 갯수가 서로 맞아야 된다
-
-    //     if (v.foodTypes.split(',').length !== v.importances.split(',').length) {
-    //       checkIt = [true, v.order];
-    //     }
-    //   });
-
-    //   return checkIt;
-    // };
-
-    // else if (checkErr(data)[0]) {
-    //   window.confirm(
-    //     `추천 식품 타입 ${
-    //       checkErr(data)[1] + 1
-    //     }의 입력된 식품 타입 값의 갯수와 추천 비중 값의 갯수가 동일한지 확인해 보세요`,
-    //   );
-    // }
 
     if (groups.length < 1) {
       // 고객사값이 없을 경우
