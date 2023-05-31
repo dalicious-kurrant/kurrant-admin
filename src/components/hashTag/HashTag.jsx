@@ -53,7 +53,7 @@ const HashTag = ({clicked, setClicked, makersId}) => {
 
       <Title>식품 그룹</Title>
       <BoxWrap>
-        {foodGroupList.length < 1 ? (
+        {foodGroupList.length >= 1 ? (
           foodGroupList.map((el, idx) => (
             <Box
               key={el.id}
