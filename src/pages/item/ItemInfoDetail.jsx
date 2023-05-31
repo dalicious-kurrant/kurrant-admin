@@ -34,6 +34,8 @@ const ProductDetailPage = () => {
   const [lunchTime, setLunchTime] = useState();
   const [dinnerTime, setDinnerTime] = useState();
 
+  const [selectedFoodGroup, setSelectedFoodGroup] = useState({});
+
   const form = useForm({
     mode: 'all',
   });
@@ -72,6 +74,8 @@ const ProductDetailPage = () => {
       foodId: listData?.foodId,
       defaultPrice: Number(foodPrice.replace(',', '')),
       supplyPrice: Number(supplyPrice.replace(',', '')),
+      foodGroup: selectedFoodGroup.name,
+      foodGroupId: selectedFoodGroup.id,
       makersDiscountRate: Number(discountRate),
       periodDiscountRate: Number(periodDiscountRate),
       customPrice: Number(customPrice.replace(',', '')),
@@ -388,6 +392,8 @@ const ProductDetailPage = () => {
               clicked={clicked}
               setClicked={setClicked}
               makersId={makersId}
+              selectedFoodGroup={selectedFoodGroup}
+              setSelectedFoodGroup={setSelectedFoodGroup}
             />
           </HashTagWrap>
         </div>

@@ -14,21 +14,15 @@ import {
   wayTag,
 } from './tagData';
 import useGetFoodGroupQuery from 'pages/shop/foodGroup/useGetFoodGroupQuery';
-import {useEffect, useState} from 'react';
 
-const HashTag = ({clicked, setClicked, makersId}) => {
+const HashTag = ({
+  clicked,
+  setClicked,
+  makersId,
+  selectedFoodGroup,
+  setSelectedFoodGroup,
+}) => {
   const {foodGroupList} = useGetFoodGroupQuery(makersId);
-
-  const [selectedFoodGroup, setSelectedFoodGroup] = useState({});
-
-  useEffect(() => {
-    console.log(selectedFoodGroup);
-  }, [selectedFoodGroup]);
-
-  // foodGroupList 바꾸기
-  // useEffect(() => {
-  //   console.log(foodGroupList);
-  // }, [foodGroupList]);
 
   const onSelect = id => {
     if (clicked?.includes(id)) {
