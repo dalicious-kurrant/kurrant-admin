@@ -384,7 +384,11 @@ const ProductDetailPage = () => {
         <div>
           <TagTitle>해시태그 등록</TagTitle>
           <HashTagWrap>
-            <HashTag clicked={clicked} setClicked={setClicked} />
+            <HashTag
+              clicked={clicked}
+              setClicked={setClicked}
+              makersId={makersId}
+            />
           </HashTagWrap>
         </div>
         <div>

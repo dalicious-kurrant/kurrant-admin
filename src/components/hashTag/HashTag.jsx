@@ -13,8 +13,23 @@ import {
   typeTag,
   wayTag,
 } from './tagData';
+import useGetFoodGroupQuery from 'pages/shop/foodGroup/useGetFoodGroupQuery';
+import {useEffect, useState} from 'react';
 
-const HashTag = ({clicked, setClicked}) => {
+const HashTag = ({clicked, setClicked, makersId}) => {
+  const {foodGroupList} = useGetFoodGroupQuery(makersId);
+
+  const [selectedFoodGroup, setSelectedFoodGroup] = useState({});
+
+  useEffect(() => {
+    console.log(selectedFoodGroup);
+  }, [selectedFoodGroup]);
+
+  // foodGroupList 바꾸기
+  // useEffect(() => {
+  //   console.log(foodGroupList);
+  // }, [foodGroupList]);
+
   const onSelect = id => {
     if (clicked?.includes(id)) {
       return setClicked(clicked?.filter(v => v !== id));
@@ -34,6 +49,30 @@ const HashTag = ({clicked, setClicked}) => {
             <Text touch={clicked?.includes(el.id)}>{el.style}</Text>
           </Box>
         ))}
+      </BoxWrap>
+
+      <Title>식품 그룹</Title>
+      <BoxWrap>
+        {foodGroupList.length < 1 ? (
+          foodGroupList.map((el, idx) => (
+            <Box
+              key={el.id}
+              onClick={() => {
+                if (selectedFoodGroup.id === el.id) {
+                  setSelectedFoodGroup({});
+                } else {
+                  setSelectedFoodGroup({...el});
+                }
+              }}
+              touch={el.id === selectedFoodGroup.id}>
+              <Text touch={el.id === selectedFoodGroup.id}>{el.name}</Text>
+            </Box>
+          ))
+        ) : (
+          <FoodGroupListSpan>
+            해당 메이커스의 식품 그룹이 아직 존재하지 않습니다.{' '}
+          </FoodGroupListSpan>
+        )}
       </BoxWrap>
       <Title>요리스타일</Title>
       <BoxWrap>
@@ -198,4 +237,8 @@ const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
   margin: 24px 0px;
+`;
+
+const FoodGroupListSpan = styled.span`
+  margin-left: 16px;
 `;
