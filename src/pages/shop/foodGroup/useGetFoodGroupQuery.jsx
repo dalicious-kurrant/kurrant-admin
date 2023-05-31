@@ -5,7 +5,7 @@ import instance from 'shared/axios';
 import {useEffect, useState} from 'react';
 import {getFoodGroupAtom, getMakersAtom} from './store';
 
-const useGetFoodGroupQuery = (enable = true) => {
+const useGetFoodGroupQuery = makersId => {
   const [foodGroupData, setFoodGroupData] = useAtom(getFoodGroupAtom);
 
   const [makersList, setMakersList] = useAtom(getMakersAtom);
@@ -28,7 +28,7 @@ const useGetFoodGroupQuery = (enable = true) => {
       return response.data;
     },
     {
-      enabled: enable,
+      enabled: true,
       retry: 1,
       retryDelay: 800,
     },
@@ -45,16 +45,42 @@ const useGetFoodGroupQuery = (enable = true) => {
       return response.data;
     },
     {
-      enabled: enable,
+      enabled: true,
       retry: 1,
       retryDelay: 800,
     },
   );
 
+  const [foodGroupList, setFoodGroupList] = useState([]);
+
+  const {refetch: getFoodGroupListRefetchQuery} = useQuery(
+    ['util', 'foodGroupList'],
+
+    async ({queryKey}) => {
+      const response = await instance.get(`/foods/makers/${makersId}/groups`);
+
+      setFoodGroupList(response.data);
+
+      return response.data;
+    },
+    {
+      enabled: false,
+      retry: 1,
+      retryDelay: 800,
+    },
+  );
+
+  useEffect(() => {
+    if (makersId) {
+      getFoodGroupListRefetchQuery();
+    }
+  }, [makersId]);
+
   return {
     getFoodGroupQueryRefetch,
     foodGroupData,
     makersList,
+    foodGroupList,
   };
 };
 export default useGetFoodGroupQuery;
