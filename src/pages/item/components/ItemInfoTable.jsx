@@ -141,8 +141,10 @@ const ItemInfoTable = ({
                 <Table.Cell textAlign="center">{el.foodId}</Table.Cell>
                 <Table.Cell textAlign="center">{el.makersId}</Table.Cell>
                 <Table.Cell>{el.makersName}</Table.Cell>
-                <Table.Cell>{el.foodGroupId}</Table.Cell>
-                <Table.Cell>{el.foodGroup}</Table.Cell>
+                <Table.Cell textAlign="center">{el.foodGroupId}</Table.Cell>
+                <Table.Cell textAlign="center">
+                  <div style={{width: 160}}>{el.foodGroup}</div>
+                </Table.Cell>
                 <Table.Cell>
                   <div style={{width: 200}}>{el.foodName}</div>
                 </Table.Cell>
