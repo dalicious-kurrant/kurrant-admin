@@ -23,6 +23,7 @@ const MakersExelTable = ({data}) => {
               <Table.Header key={el.id + i}>
                 <Table.Row>
                   {HeaderData.map((h, i) => {
+                    console.log(h)
                     return (
                       <Table.HeaderCell key={h + i} textAlign="center">
                         {h}
@@ -45,6 +46,9 @@ const MakersExelTable = ({data}) => {
                             {el[k]}
                           </Table.Cell>
                         );
+                      }
+                      if (k === 'isActive') {
+                        return <Table.Cell key={k + i}>{el[k] }</Table.Cell>;
                       }
                       if (k === 'code') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
@@ -80,7 +84,58 @@ const MakersExelTable = ({data}) => {
                         );
                       }
                       if (k === 'diningTypes') {
-                        return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
+                        return <Table.Cell key={k + i}>{el[k] || '-'}</Table.Cell>;
+                      }
+                      if (k === 'serviceDays') {
+                        return <Table.Cell key={k + i}>{el[k] || '-'}</Table.Cell>;
+                      }
+                      if (k === 'morningLastOrderTime') {
+                        return <Table.Cell key={k + i}>{el[k]|| '-'}</Table.Cell>;
+                      }
+                      if (k === 'morningCapa') {
+                        return <Table.Cell key={k + i}>{el[k]|| '-'}</Table.Cell>;
+                      }
+                      if (k === 'morningMinTime') {
+                        return <Table.Cell key={k + i}>{typeof el[k] === typeof new Date()
+                          ? formattedTime(el[k])
+                          : el[k]}</Table.Cell>;
+                      }
+                      if (k === 'morningMaxTime') {
+                        return <Table.Cell key={k + i}>{typeof el[k] === typeof new Date()
+                          ? formattedTime(el[k])
+                          : el[k]}</Table.Cell>;
+                      }
+                      if (k === 'lunchLastOrderTime') {
+                        return <Table.Cell key={k + i}>{el[k]|| '-'}</Table.Cell>;
+                      }
+                      if (k === 'lunchCapa') {
+                        return <Table.Cell key={k + i}>{el[k]|| '-'}</Table.Cell>;
+                      }
+                      if (k === 'lunchMinTime') {
+                        return <Table.Cell key={k + i}>{typeof el[k] === typeof new Date()
+                          ? formattedTime(el[k])
+                          : el[k]}</Table.Cell>;
+                      }
+                      if (k === 'lunchMaxTime') {
+                        return <Table.Cell key={k + i}> {typeof el[k] === typeof new Date()
+                          ? formattedTime(el[k])
+                          : el[k]}</Table.Cell>;
+                      }
+                      if (k === 'dinnerLastOrderTime') {
+                        return <Table.Cell key={k + i}>{el[k]|| '-'}</Table.Cell>;
+                      }
+                      if (k === 'dinnerCapa') {
+                        return <Table.Cell key={k + i}>{el[k]|| '-'}</Table.Cell>;
+                      }
+                      if (k === 'dinnerMinTime') {
+                        return <Table.Cell key={k + i}>{typeof el[k] === typeof new Date()
+                          ? formattedTime(el[k])
+                          : el[k]}</Table.Cell>;
+                      }
+                      if (k === 'dinnerMaxTime') {
+                        return <Table.Cell key={k + i}>{typeof el[k] === typeof new Date()
+                          ? formattedTime(el[k])
+                          : el[k]}</Table.Cell>;
                       }
                       if (k === 'dailyCapacity') {
                         return <Table.Cell key={k + i}>{el[k]}</Table.Cell>;
@@ -133,7 +188,6 @@ const MakersExelTable = ({data}) => {
                         );
                       }
                       if (k === 'contractStartDate') {
-                        console.log(el[k]);
                         return (
                           <Table.Cell key={k + i}>
                             <div style={{width: 130}}>

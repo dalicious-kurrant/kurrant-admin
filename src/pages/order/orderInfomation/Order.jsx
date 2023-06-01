@@ -309,8 +309,8 @@ const Order = () => {
       '오더번호',
     ]);
     orderList?.data.map(el => {
-      return el.orderItemDailyFoodGroupList.map(v => {
-        return v.orderItemDailyFoods.map(item => {
+      return el.orderItemDailyFoodGroupList?.map(v => {
+        return v.orderItemDailyFoods?.map(item => {
           const reqArray = [];
           reqArray.push(v.serviceDate);
           reqArray.push(v.orderDateTime.split('T')[0]);
@@ -611,8 +611,8 @@ const Order = () => {
 
           <Table.Body>
             {orderList?.data?.map(el => {
-              return el.orderItemDailyFoodGroupList.map((v, i) => {
-                return v.orderItemDailyFoods.map((item, idx) => {
+              return el.orderItemDailyFoodGroupList?.map((v, i) => {
+                return v.orderItemDailyFoods?.map((item, idx) => {
                   return (
                     <TableRow
                       onClick={() => goToPage(v.orderCode)}

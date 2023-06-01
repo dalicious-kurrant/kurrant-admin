@@ -19,9 +19,7 @@ const MakersTable = ({data, setData}) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell textAlign="center">ID</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">
-              활성 여부
-            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">활성 여부</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">
               메이커스 코드
             </Table.HeaderCell>
@@ -63,6 +61,12 @@ const MakersTable = ({data, setData}) => {
             <Table.HeaderCell textAlign="center">
               저녁 가능케파
             </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">아침 시작</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">점심 시작</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">저녁 시작</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">아침 종료</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">점심 종료</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">저녁 종료</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">서비스 업종</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">서비스 형태</Table.HeaderCell>
             <Table.HeaderCell textAlign="center">모회사 여부</Table.HeaderCell>
@@ -107,7 +111,6 @@ const MakersTable = ({data, setData}) => {
 
         <Table.Body>
           {data?.data?.map((el, i) => {
-            console.log(el)
             const parentCompany = el.isParentCompany ? '있음' : '없음';
             const isActive = el.isActive ? '활성' : '비활성';
             return (
@@ -135,16 +138,46 @@ const MakersTable = ({data, setData}) => {
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.dailyCapacity}</Table.Cell>
                 <Table.Cell>
-                    <div style={{width: 120}}>{el.serviceDays}</div>
-                  </Table.Cell>
-                <Table.Cell>{el.diningTypes.join(',')}</Table.Cell>
-                <Table.Cell>{el.morningLastOrderTime}</Table.Cell>
-                <Table.Cell>{el.lunchLastOrderTime}</Table.Cell>
-                <Table.Cell>{el.dinnerLastOrderTime}</Table.Cell>
-                <Table.Cell textAlign="center">{el.morningCapacity}</Table.Cell>
-                <Table.Cell textAlign="center">{el.lunchCapacity}</Table.Cell>
+                  <div style={{width: 120}}>{el.serviceDays}</div>
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.diningTypes.join(',')}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.morningLastOrderTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.lunchLastOrderTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.dinnerLastOrderTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.morningCapacity || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.lunchCapacity || '-'}
+                </Table.Cell>
                 <Table.Cell textAlign="center">
                   {el.dinnerCapacity || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.morningMinTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.lunchMinTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.dinnerMinTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.morningMaxTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.lunchMaxTime || '-'}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  {el.dinnerMaxTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.serviceForm}</Table.Cell>
                 <Table.Cell textAlign="center">{el.serviceType}</Table.Cell>
