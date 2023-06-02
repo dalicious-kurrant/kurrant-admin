@@ -223,10 +223,11 @@ function RecommendationCreateModal({open, setOpen}) {
                 </FlexBox>
               </Form.Field>
             </LineBox>
+            <TitleH1>추천 상품 타입</TitleH1>
             <LineBox>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 1</Label>
+                  <Label size="mini">추천 상품 타입 1</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -272,7 +273,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 2</Label>
+                  <Label size="mini">추천 상품 타입 2</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -318,7 +319,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>{' '}
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 3</Label>
+                  <Label size="mini">추천 상품 타입 3</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -366,7 +367,7 @@ function RecommendationCreateModal({open, setOpen}) {
             <LineBox>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 4</Label>
+                  <Label size="mini">추천 상품 타입 4</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -412,7 +413,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 5</Label>
+                  <Label size="mini">추천 상품 타입 5</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -458,7 +459,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>{' '}
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 6</Label>
+                  <Label size="mini">추천 상품 타입 6</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -504,103 +505,15 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
             </LineBox>
 
-            <LineBox>
-              <Form.Field>
-                <FlexBox width={160}>
-                  <Label size="mini">상품 그룹 확정 추가_월</Label>
-                  <SelectBox
-                    width={160}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        식품 타입 선택
-                      </SelectBoxPlaceholder>
-                    }
-                    options={OfficialFoodType}
-                    onChange={e => {
-                      if (foodTypes1 !== '') {
-                        setFoodTypes1(`${foodTypes1}, ${e.value.toString()}`);
-                      } else {
-                        setFoodTypes1(`${e.value.toString()}`);
-                      }
-                    }}
-                  />
-                  <GroupsInput
-                    placeholder="예) 샐러드, 정찬 도시락"
-                    // defaultValue={nowData.name}
-                    value={foodTypes1}
-                    disabled
-                  />
-                  <ResetButton
-                    onClick={() => {
-                      setFoodTypes1('');
-                    }}>
-                    리셋
-                  </ResetButton>
-                </FlexBox>
-              </Form.Field>
-
-              {/* <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_월</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupMon(data.value);
-                    }}
-                  />
-                </FlexBox>
-              </Form.Field> */}
-
-              {/* <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_화</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupTue(data.value);
-                    }}
-                  />
-                </FlexBox>
-              </Form.Field>
-              <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_수</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupWed(data.value);
-                    }}
-                  />
-                </FlexBox>
-              </Form.Field>
-              <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_목</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupThu(data.value);
-                    }}
-                  />
-                </FlexBox>
-              </Form.Field> */}
-            </LineBox>
-
+            <TitleH1>상품 그룹 확정 추가</TitleH1>
             <LineBox>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_월</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (월)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -614,10 +527,11 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_화</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (화)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -631,10 +545,11 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_수</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (수)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -650,10 +565,11 @@ function RecommendationCreateModal({open, setOpen}) {
             <LineBox>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_목</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (목)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -667,10 +583,11 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_금</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (금)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -684,10 +601,11 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_토</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (토)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -703,10 +621,11 @@ function RecommendationCreateModal({open, setOpen}) {
             <LineBox>
               <Form.Field>
                 <FlexBox>
-                  <Label size="mini">상품 그룹 확정 추가_일</Label>
+                  <Label size="mini">상품 그룹 확정 추가 (일)</Label>
 
                   <Select
                     closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
                     isMulti
@@ -784,4 +703,9 @@ const GroupsInput = styled.input`
   background-color: white;
   border: 1px solid #cccccc;
   border-radius: 3px;
+`;
+const TitleH1 = styled.h1`
+  font-size: 20px;
+  margin-left: 8px;
+  margin-bottom: 20px;
 `;
