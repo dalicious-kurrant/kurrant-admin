@@ -65,14 +65,11 @@ const useGetRecommendationMakersQuery = (enable = true) => {
     },
   );
 
-  useEffect(() => {
-    console.log(foodGroupList);
-  }, [foodGroupList]);
-
   return {
     getRecommendationMakersQueryRefetch,
     recommendationMakersData,
     groupsList,
+    foodGroupList,
   };
 };
 export default useGetRecommendationMakersQuery;

@@ -21,7 +21,10 @@ import Select from 'react-select';
 //   fillMakersDropboxObjectForRecommendation,
 // } from 'utils/dataModifyLogic/logic';
 
-import {fillGroupsDropboxObjectForRecommendation} from 'utils/dataFormChangeLogics/logic';
+import {
+  fillFoodGroupDropboxObjectForRecommendation,
+  fillGroupsDropboxObjectForRecommendation,
+} from 'utils/dataFormChangeLogics/logic';
 
 import useRecommendationMutation from '../useRecommendationMutation';
 import useGetRecommendationMakersQuery from '../useGetRecommendationMakersQuery';
@@ -57,9 +60,10 @@ function RecommendationCreateModal({open, setOpen}) {
     setOpen(false);
   });
 
-  const {groupsList} = useGetRecommendationMakersQuery();
+  const {groupsList, foodGroupList} = useGetRecommendationMakersQuery();
 
   const [groupsDropbox, setGroupsDropbox] = useState([]);
+  const [foodGroupDropbox, setFoodGroupDropbox] = useState([]);
 
   useEffect(() => {
     if (groupsList) {
@@ -68,6 +72,20 @@ function RecommendationCreateModal({open, setOpen}) {
       console.log('groupsList가없다');
     }
   }, [groupsList]);
+
+  useEffect(() => {
+    if (foodGroupList) {
+      setFoodGroupDropbox(
+        fillFoodGroupDropboxObjectForRecommendation(foodGroupList),
+      );
+    } else {
+      console.log('groupsList가없다');
+    }
+  }, [foodGroupList]);
+
+  useEffect(() => {
+    console.log(foodGroupDropbox);
+  }, [foodGroupDropbox]);
 
   const onSubmit = () => {
     const makeFoodType = (foodType, importance, num) => {

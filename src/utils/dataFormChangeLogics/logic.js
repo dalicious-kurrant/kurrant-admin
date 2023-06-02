@@ -42,3 +42,19 @@ export const fillGroupsDropboxObjectForRecommendation =
     // return [{value: 'none', label: '전체'}, ...groupsListDropboxArray];
     return [...groupsListDropboxArray];
   };
+export const fillFoodGroupDropboxObjectForRecommendation =
+  foodGroupListFromServer => {
+    // value와 label형태로 만들기
+
+    // 아무것도 선택 안하기
+
+    const foodGroupListDropboxArray = foodGroupListFromServer.map(v => {
+      return {
+        value: v.name,
+        label: v.name,
+      };
+    });
+
+    // return [{value: 'none', label: '전체'}, ...groupsListDropboxArray];
+    return [...foodGroupListDropboxArray];
+  };
