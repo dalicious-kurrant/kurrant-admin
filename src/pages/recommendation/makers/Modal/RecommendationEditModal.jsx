@@ -297,12 +297,17 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   };
 
   useEffect(() => {
+    console.log(foodGroupMon);
+  }, [foodGroupMon]);
+
+  useEffect(() => {
     setFoodGroupMonArr(
       adaptFoodGroupListToFoodGroupDropboxOptions(
         foodGroupMon.split(',').map(v => v.trim()),
       ),
     );
   }, [foodGroupMon]);
+
   useEffect(() => {
     setFoodGroupTueArr(
       adaptFoodGroupListToFoodGroupDropboxOptions(
@@ -693,6 +698,8 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      console.log(arr);
+                      setFoodGroupMon(arr.length === 0 ? '' : arr.join(', '));
                       setFoodGroupMonArr(arr);
                     }}
                   />
@@ -813,7 +820,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
           </Button>
           <Button
             type="submit"
-            content="추가"
+            content="수정"
             labelPosition="right"
             icon="checkmark"
             positive

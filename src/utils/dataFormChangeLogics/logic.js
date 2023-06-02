@@ -62,6 +62,10 @@ export const fillFoodGroupDropboxObjectForRecommendation =
 export const adaptFoodGroupListToFoodGroupDropboxOptions = arr => {
   // console.log(arr);
 
+  if (arr[0] === '') {
+    return [];
+  }
+
   return arr.map((v, i) => {
     return {
       key: i,
