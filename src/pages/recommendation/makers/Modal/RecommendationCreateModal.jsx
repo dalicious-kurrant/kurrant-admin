@@ -502,10 +502,10 @@ function RecommendationCreateModal({open, setOpen}) {
 
             <LineBox>
               <Form.Field>
-                <FlexBox width={160}>
+                <FlexBox width={300}>
                   <Label size="mini">상품 그룹 확정 추가_월</Label>
                   <SelectBox
-                    width={160}
+                    width={300}
                     placeholder={
                       <SelectBoxPlaceholder>
                         상품 그룹 선택
@@ -522,7 +522,7 @@ function RecommendationCreateModal({open, setOpen}) {
                       }
                     }}
                   />
-                  <GroupsInput
+                  <GroupsTextarea
                     placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
                     value={foodGroupMon}
@@ -536,85 +536,220 @@ function RecommendationCreateModal({open, setOpen}) {
                   </ResetButton>
                 </FlexBox>
               </Form.Field>
-
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox width={300}>
                   <Label size="mini">상품 그룹 확정 추가_화</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupTue(data.value);
+                  <SelectBox
+                    width={300}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        상품 그룹 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={foodGroupDropbox}
+                    onChange={e => {
+                      if (foodGroupTue !== '') {
+                        setFoodGroupTue(
+                          `${foodGroupTue}, ${e.value.toString()}`,
+                        );
+                      } else {
+                        setFoodGroupTue(`${e.value.toString()}`);
+                      }
                     }}
                   />
+                  <GroupsTextarea
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodGroupTue}
+                    disabled
+                  />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodGroupTue('');
+                    }}>
+                    리셋
+                  </ResetButton>
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox width={300}>
                   <Label size="mini">상품 그룹 확정 추가_수</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupWed(data.value);
+                  <SelectBox
+                    width={300}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        상품 그룹 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={foodGroupDropbox}
+                    onChange={e => {
+                      if (foodGroupWed !== '') {
+                        setFoodGroupWed(
+                          `${foodGroupWed}, ${e.value.toString()}`,
+                        );
+                      } else {
+                        setFoodGroupWed(`${e.value.toString()}`);
+                      }
                     }}
                   />
-                </FlexBox>
-              </Form.Field>
-              <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_목</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupThu(data.value);
-                    }}
+                  <GroupsTextarea
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodGroupWed}
+                    disabled
                   />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodGroupWed('');
+                    }}>
+                    리셋
+                  </ResetButton>
                 </FlexBox>
               </Form.Field>
             </LineBox>
+
             <LineBox>
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox width={300}>
+                  <Label size="mini">상품 그룹 확정 추가_목</Label>
+                  <SelectBox
+                    width={300}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        상품 그룹 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={foodGroupDropbox}
+                    onChange={e => {
+                      if (foodGroupThu !== '') {
+                        setFoodGroupThu(
+                          `${foodGroupThu}, ${e.value.toString()}`,
+                        );
+                      } else {
+                        setFoodGroupThu(`${e.value.toString()}`);
+                      }
+                    }}
+                  />
+                  <GroupsTextarea
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodGroupThu}
+                    disabled
+                  />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodGroupThu('');
+                    }}>
+                    리셋
+                  </ResetButton>
+                </FlexBox>
+              </Form.Field>{' '}
+              <Form.Field>
+                <FlexBox width={300}>
                   <Label size="mini">상품 그룹 확정 추가_금</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupFri(data.value);
+                  <SelectBox
+                    width={300}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        상품 그룹 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={foodGroupDropbox}
+                    onChange={e => {
+                      if (foodGroupFri !== '') {
+                        setFoodGroupFri(
+                          `${foodGroupFri}, ${e.value.toString()}`,
+                        );
+                      } else {
+                        setFoodGroupFri(`${e.value.toString()}`);
+                      }
                     }}
                   />
+                  <GroupsTextarea
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodGroupFri}
+                    disabled
+                  />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodGroupFri('');
+                    }}>
+                    리셋
+                  </ResetButton>
                 </FlexBox>
-              </Form.Field>
+              </Form.Field>{' '}
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox width={300}>
                   <Label size="mini">상품 그룹 확정 추가_토</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupSat(data.value);
+                  <SelectBox
+                    width={300}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        상품 그룹 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={foodGroupDropbox}
+                    onChange={e => {
+                      if (foodGroupSat !== '') {
+                        setFoodGroupSat(
+                          `${foodGroupSat}, ${e.value.toString()}`,
+                        );
+                      } else {
+                        setFoodGroupSat(`${e.value.toString()}`);
+                      }
                     }}
                   />
+                  <GroupsTextarea
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodGroupSat}
+                    disabled
+                  />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodGroupSat('');
+                    }}>
+                    리셋
+                  </ResetButton>
                 </FlexBox>
               </Form.Field>
+            </LineBox>
+
+            <LineBox>
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox width={300}>
                   <Label size="mini">상품 그룹 확정 추가_일</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupSun(data.value);
+                  <SelectBox
+                    width={300}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        상품 그룹 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={foodGroupDropbox}
+                    onChange={e => {
+                      if (foodGroupSun !== '') {
+                        setFoodGroupSun(
+                          `${foodGroupSun}, ${e.value.toString()}`,
+                        );
+                      } else {
+                        setFoodGroupSun(`${e.value.toString()}`);
+                      }
                     }}
                   />
+                  <GroupsTextarea
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodGroupSun}
+                    disabled
+                  />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodGroupSun('');
+                    }}>
+                    리셋
+                  </ResetButton>
                 </FlexBox>
               </Form.Field>
             </LineBox>
@@ -680,6 +815,19 @@ const GroupsInput = styled.input`
   /* background-color: black; */
   color: black;
   height: 30px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+`;
+const GroupsTextarea = styled.textarea`
+  &::placeholder {
+    color: #bebebe;
+  }
+
+  padding-left: 10px;
+  /* background-color: black; */
+  color: black;
+  height: 70px;
   background-color: white;
   border: 1px solid #cccccc;
   border-radius: 3px;
