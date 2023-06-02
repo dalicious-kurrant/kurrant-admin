@@ -483,6 +483,40 @@ function RecommendationCreateModal({open, setOpen}) {
             </LineBox>
 
             <LineBox>
+              {/* <Form.Field>
+                <FlexBox width={160}>
+                  <Label size="mini">추천 식품 타입 1</Label>
+                  <SelectBox
+                    width={160}
+                    placeholder={
+                      <SelectBoxPlaceholder>
+                        식품 타입 선택
+                      </SelectBoxPlaceholder>
+                    }
+                    options={OfficialFoodType}
+                    onChange={e => {
+                      if (foodTypes1 !== '') {
+                        setFoodTypes1(`${foodTypes1}, ${e.value.toString()}`);
+                      } else {
+                        setFoodTypes1(`${e.value.toString()}`);
+                      }
+                    }}
+                  />
+                  <GroupsInput
+                    placeholder="예) 샐러드, 정찬 도시락"
+                    // defaultValue={nowData.name}
+                    value={foodTypes1}
+                    disabled
+                  />
+                  <ResetButton
+                    onClick={() => {
+                      setFoodTypes1('');
+                    }}>
+                    리셋
+                  </ResetButton>
+                </FlexBox>
+              </Form.Field> */}
+
               <Form.Field>
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_월</Label>
@@ -496,6 +530,7 @@ function RecommendationCreateModal({open, setOpen}) {
                   />
                 </FlexBox>
               </Form.Field>
+
               <Form.Field>
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_화</Label>

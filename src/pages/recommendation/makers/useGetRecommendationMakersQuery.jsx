@@ -3,7 +3,7 @@ import {useQuery, useQueryClient} from 'react-query';
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
 import {useEffect, useState} from 'react';
-import {getGroupsAtom, getRecommendationAtom} from './store';
+import {getFoodGroupAtom, getGroupsAtom, getRecommendationAtom} from './store';
 
 const useGetRecommendationMakersQuery = (enable = true) => {
   const [recommendationMakersData, setRecommendationMakersData] = useAtom(
@@ -11,13 +11,9 @@ const useGetRecommendationMakersQuery = (enable = true) => {
   );
 
   const [groupsList, setGroupsList] = useAtom(getGroupsAtom);
+  const [foodGroupList, setFoodGroupList] = useAtom(getFoodGroupAtom);
 
-  const {
-    data,
-    status,
-    isLoading,
-    refetch: getRecommendationMakersQueryRefetch,
-  } = useQuery(
+  const {refetch: getRecommendationMakersQueryRefetch} = useQuery(
     ['recommendation', 'makers'],
 
     async ({queryKey}) => {
@@ -36,7 +32,7 @@ const useGetRecommendationMakersQuery = (enable = true) => {
     },
   );
 
-  const {refetch: getGroupsListRefetchQuery} = useQuery(
+  useQuery(
     ['util', 'groupsList'],
 
     async ({queryKey}) => {
@@ -52,6 +48,26 @@ const useGetRecommendationMakersQuery = (enable = true) => {
       retryDelay: 800,
     },
   );
+  useQuery(
+    ['util', 'foodGroupList'],
+
+    async ({queryKey}) => {
+      const response = await instance.get('/foods/groups');
+
+      setFoodGroupList(response.data);
+
+      return response.data;
+    },
+    {
+      enabled: enable,
+      retry: 1,
+      retryDelay: 800,
+    },
+  );
+
+  useEffect(() => {
+    console.log(foodGroupList);
+  }, [foodGroupList]);
 
   return {
     getRecommendationMakersQueryRefetch,
