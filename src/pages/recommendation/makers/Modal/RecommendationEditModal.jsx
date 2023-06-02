@@ -297,10 +297,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   };
 
   useEffect(() => {
-    console.log(foodGroupMon);
-  }, [foodGroupMon]);
-
-  useEffect(() => {
     setFoodGroupMonArr(
       adaptFoodGroupListToFoodGroupDropboxOptions(
         foodGroupMon.split(',').map(v => v.trim()),
@@ -350,6 +346,10 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       ),
     );
   }, [foodGroupSun]);
+
+  useEffect(() => {
+    console.log(foodGroupMon);
+  }, [foodGroupMon]);
 
   return (
     <Form onSubmit={onSubmit}>
@@ -699,7 +699,12 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     // styles={colourStyles}
                     onChange={arr => {
                       console.log(arr);
-                      setFoodGroupMon(arr.length === 0 ? '' : arr.join(', '));
+
+                      setFoodGroupMon(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupMonArr(arr);
                     }}
                   />
@@ -717,6 +722,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      setFoodGroupTue(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupTueArr(arr);
                     }}
                   />
@@ -734,6 +744,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      setFoodGroupWed(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupWedArr(arr);
                     }}
                   />
@@ -753,6 +768,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      setFoodGroupThu(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupThuArr(arr);
                     }}
                   />
@@ -770,6 +790,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      setFoodGroupFri(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupFriArr(arr);
                     }}
                   />
@@ -787,6 +812,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      setFoodGroupSat(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupSatArr(arr);
                     }}
                   />
@@ -806,6 +836,11 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
+                      setFoodGroupSun(
+                        arr.length === 0
+                          ? ''
+                          : arr.map(v => v.value).join(', '),
+                      );
                       setFoodGroupSunArr(arr);
                     }}
                   />
