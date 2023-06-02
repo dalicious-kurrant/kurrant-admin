@@ -56,6 +56,10 @@ function RecommendationCreateModal({open, setOpen}) {
   const [foodGroupSat, setFoodGroupSat] = useState('');
   const [foodGroupSun, setFoodGroupSun] = useState('');
 
+  useEffect(() => {
+    console.log(foodGroupTue);
+  }, [foodGroupTue]);
+
   const {createRecommendationMutation} = useRecommendationMutation(() => {
     setOpen(false);
   });
@@ -501,9 +505,9 @@ function RecommendationCreateModal({open, setOpen}) {
             </LineBox>
 
             <LineBox>
-              {/* <Form.Field>
+              <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 1</Label>
+                  <Label size="mini">상품 그룹 확정 추가_월</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -533,9 +537,9 @@ function RecommendationCreateModal({open, setOpen}) {
                     리셋
                   </ResetButton>
                 </FlexBox>
-              </Form.Field> */}
+              </Form.Field>
 
-              <Form.Field>
+              {/* <Form.Field>
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_월</Label>
                   <Input
@@ -547,9 +551,9 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                 </FlexBox>
-              </Form.Field>
+              </Form.Field> */}
 
-              <Form.Field>
+              {/* <Form.Field>
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_화</Label>
                   <Input
@@ -587,44 +591,129 @@ function RecommendationCreateModal({open, setOpen}) {
                     }}
                   />
                 </FlexBox>
+              </Form.Field> */}
+            </LineBox>
+
+            <LineBox>
+              <Form.Field>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가_월</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupMon(arr.map(v => v.value).join(', '));
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가_화</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupTue(arr.map(v => v.value).join(', '));
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가_수</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupWed(arr.map(v => v.value).join(', '));
+                    }}
+                  />
+                </FlexBox>
               </Form.Field>
             </LineBox>
             <LineBox>
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가_목</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupThu(arr.map(v => v.value).join(', '));
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox>
                   <Label size="mini">상품 그룹 확정 추가_금</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupFri(data.value);
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupFri(arr.map(v => v.value).join(', '));
                     }}
                   />
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox>
                   <Label size="mini">상품 그룹 확정 추가_토</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupSat(data.value);
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupSat(arr.map(v => v.value).join(', '));
                     }}
                   />
                 </FlexBox>
               </Form.Field>
+            </LineBox>
+            <LineBox>
               <Form.Field>
-                <FlexBox width={180}>
+                <FlexBox>
                   <Label size="mini">상품 그룹 확정 추가_일</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupSun(data.value);
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupSun(arr.map(v => v.value).join(', '));
                     }}
                   />
                 </FlexBox>
