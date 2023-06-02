@@ -14,6 +14,7 @@ import ItemDetailImage from './components/ItemDetailImage';
 import {useAtom} from 'jotai';
 import {productDataAtom} from 'utils/store';
 import {Button, Label} from 'semantic-ui-react';
+import ItemKeyword from './ItemKeyword';
 
 const ProductDetailPage = () => {
   const morningRef = useRef(null);
@@ -398,7 +399,7 @@ const ProductDetailPage = () => {
             <HashTag clicked={clicked} setClicked={setClicked} />
           </HashTagWrap>
         </div>
-        <div></div>
+        <div>{/* <ItemKeyword /> */}</div>
         <div>
           <TagTitle>이미지 등록 (최대 6장)</TagTitle>
           <Label content="기존 이미지" color="blue" />
