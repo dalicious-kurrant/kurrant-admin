@@ -433,7 +433,6 @@ export function corporationInfoExel(corporation) {
 
     return reqArrays;
   });
-  console.log(reqArrays);
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
@@ -467,10 +466,16 @@ export function makersInfoExel(makersInformation) {
     'diningTypes',
     'morningLastOrderTime',
     'morningCapa',
+    'morningMinTime',
+    'morningMaxTime',
     'lunchLastOrderTime',
     'lunchCapa',
+    'lunchMinTime',
+    'lunchMaxTime',
     'dinnerLastOrderTime',
     'dinnerCapa',
+    'dinnerMinTime',
+    'dinnerMaxTime',
     'dailyCapacity',
     'serviceType',
     'serviceForm',
@@ -493,7 +498,7 @@ export function makersInfoExel(makersInformation) {
   ]);
   reqArrays.push([
     'ID',
-    '활성 여부',
+    '활성여부',
     '메이커스 코드',
     '메이커스 이름',
     '법인명',
@@ -506,10 +511,16 @@ export function makersInfoExel(makersInformation) {
     '가능 다이닝타입',
     '아침 주문가능시간',
     '아침가능 케파',
+    '아침 시작',
+    '아침 종료',
     '점심 주문가능시간',
     '점심가능 케파',
+    '점심 시작',
+    '점심 종료',
     '저녁 주문가능시간',
     '저녁가능 케파',
+    '저녁 시작',
+    '저녁 종료',
     '일일최대수량',
     '서비스 업종',
     '서비스 형태',
@@ -549,10 +560,16 @@ export function makersInfoExel(makersInformation) {
     reqArray.push(el.diningTypes.join(','));
     reqArray.push(el.morningLastOrderTime);
     reqArray.push(el.morningCapacity);
+    reqArray.push(el.morningMinTime);
+    reqArray.push(el.morningMaxTime);
     reqArray.push(el.lunchLastOrderTime);
     reqArray.push(el.lunchCapacity);
+    reqArray.push(el.lunchMinTime);
+    reqArray.push(el.lunchMaxTime);
     reqArray.push(el.dinnerLastOrderTime);
     reqArray.push(el.dinnerCapacity);
+    reqArray.push(el.dinnerMinTime);
+    reqArray.push(el.dinnerMaxTime);
     reqArray.push(el.dailyCapacity);
     reqArray.push(el.serviceType);
     reqArray.push(el.serviceForm);

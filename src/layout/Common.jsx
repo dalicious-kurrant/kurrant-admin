@@ -379,6 +379,14 @@ const Common = () => {
               diningType: 1,
               lastOrderTime: item.morningLastOrderTime,
               capacity: item.morningCapa,
+              minTime:
+                typeof item.morningMinTime === typeof new Date()
+                  ? formattedTime(item.morningMinTime)
+                  : item.morningMinTime,
+              maxTime:
+                typeof item.morningMaxTime === typeof new Date()
+                  ? formattedTime(item.morningMaxTime)
+                  : item.morningMaxTime,
             });
           }
           if (item.lunchCapa) {
@@ -386,6 +394,14 @@ const Common = () => {
               diningType: 2,
               lastOrderTime: item.lunchLastOrderTime,
               capacity: item.lunchCapa,
+              minTime:
+                typeof item.lunchMaxTime === typeof new Date()
+                  ? formattedTime(item.lunchMaxTime)
+                  : item.lunchMaxTime,
+              maxTime:
+                typeof item.lunchMaxTime === typeof new Date()
+                  ? formattedTime(item.lunchMaxTime)
+                  : item.lunchMaxTime,
             });
           }
           if (item.dinnerCapa) {
@@ -393,12 +409,26 @@ const Common = () => {
               diningType: 3,
               lastOrderTime: item.dinnerLastOrderTime,
               capacity: item.dinnerCapa,
+              minTime:
+                typeof item.dinnerMinTime === typeof new Date()
+                  ? formattedTime(item.dinnerMinTime)
+                  : item.dinnerMinTime,
+              maxTime:
+                typeof item.dinnerMaxTime === typeof new Date()
+                  ? formattedTime(item.dinnerMaxTime)
+                  : item.dinnerMaxTime,
             });
           }
 
+          console.log(typeArr);
           const result = {
             id: item.id,
-            isActive: item.isActive === '활성' ? true : false,
+            isActive:
+              item.isActive === '활성여부'
+                ? item.isActive
+                : '활성'
+                ? true
+                : false,
             code: item.code,
             name: item.name,
             companyName: item.companyName,
@@ -602,16 +632,18 @@ const Common = () => {
         if (sheetName === '스팟 정보') {
           setExelCorporation(
             json.map(v => {
+              if (v.isActive === '활성여부') {
+                return {
+                  ...v,
+                  isActive: v.isActive,
+                };
+              }
               if (v.isActive === '활성') {
                 return {
                   ...v,
-                  isActive: true,
+                  isActive: false,
                 };
               }
-              return {
-                ...v,
-                isActive: false,
-              };
             }),
           );
           console.log(json, 'json');
@@ -636,6 +668,12 @@ const Common = () => {
                     v.contractEndDate && formattedWeekDate(v.contractEndDate),
                   openTime: v.openTime && formattedTime(v.openTime),
                   closeTime: v.closeTime && formattedTime(v.closeTime),
+                };
+              }
+              if (v.isActive === '활성여부') {
+                return {
+                  ...v,
+                  isActive: v.isActive,
                 };
               }
               if (v.isActive === '활성') {
