@@ -20,10 +20,6 @@ import useGetFoodGroupQuery from '../useGetFoodGroupQuery';
 import {fillMakersDropboxObjectForFoodGroup} from 'utils/dataFormChangeLogics/logic';
 
 function FoodGroupEditModal({open, setOpen, nowData, setNowData}) {
-  useEffect(() => {
-    console.log(nowData);
-  }, [nowData]);
-
   const {editFoodGroupMutation} = useFoodGroupMutation(
     () => {},
     () => {

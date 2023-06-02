@@ -275,8 +275,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       },
     ];
 
-    console.log(checkWrong);
-
     if (checkWrong[0]) {
       if (window.confirm(checkWrong[2])) {
         return;
@@ -346,10 +344,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
       ),
     );
   }, [foodGroupSun]);
-
-  useEffect(() => {
-    console.log(foodGroupMon);
-  }, [foodGroupMon]);
 
   return (
     <Form onSubmit={onSubmit}>
@@ -698,8 +692,6 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     options={foodGroupDropbox}
                     // styles={colourStyles}
                     onChange={arr => {
-                      console.log(arr);
-
                       setFoodGroupMon(
                         arr.length === 0
                           ? ''
