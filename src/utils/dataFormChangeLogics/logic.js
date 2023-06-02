@@ -59,6 +59,18 @@ export const fillFoodGroupDropboxObjectForRecommendation =
     return [...foodGroupListDropboxArray];
   };
 
+export const adaptFoodGroupListToFoodGroupDropboxOptions = arr => {
+  // console.log(arr);
+
+  return arr.map((v, i) => {
+    return {
+      key: i,
+      value: v,
+      label: v,
+    };
+  });
+};
+
 // export const fillFoodGroupDropboxObjectForRecommendation2 =
 //   foodGroupListFromServer => {
 //     // value와 label형태로 만들기

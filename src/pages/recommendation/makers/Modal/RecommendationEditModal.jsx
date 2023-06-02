@@ -1,6 +1,6 @@
 import {useUpdateMakersDetail} from 'hooks/useMakers';
 import {useAtom} from 'jotai';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   Button,
   Header,
@@ -21,7 +21,11 @@ import Select from 'react-select';
 //   fillMakersDropboxObjectForRecommendation,
 // } from 'utils/dataModifyLogic/logic';
 
-import {fillGroupsDropboxObjectForRecommendation} from 'utils/dataFormChangeLogics/logic';
+import {
+  adaptFoodGroupListToFoodGroupDropboxOptions,
+  fillFoodGroupDropboxObjectForRecommendation,
+  fillGroupsDropboxObjectForRecommendation,
+} from 'utils/dataFormChangeLogics/logic';
 
 import useRecommendationMutation from '../useRecommendationMutation';
 import useGetRecommendationMakersQuery from '../useGetRecommendationMakersQuery';
@@ -55,6 +59,14 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
   const [foodGroupSat, setFoodGroupSat] = useState('');
   const [foodGroupSun, setFoodGroupSun] = useState('');
 
+  const [foodGroupMonArr, setFoodGroupMonArr] = useState([]);
+  const [foodGroupTueArr, setFoodGroupTueArr] = useState([]);
+  const [foodGroupWedArr, setFoodGroupWedArr] = useState([]);
+  const [foodGroupThuArr, setFoodGroupThuArr] = useState([]);
+  const [foodGroupFriArr, setFoodGroupFriArr] = useState([]);
+  const [foodGroupSatArr, setFoodGroupSatArr] = useState([]);
+  const [foodGroupSunArr, setFoodGroupSunArr] = useState([]);
+
   const {editRecommendationMutation} = useRecommendationMutation(
     () => {},
     () => {
@@ -62,14 +74,24 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
     },
   );
 
-  const {groupsList} = useGetRecommendationMakersQuery();
+  const {groupsList, foodGroupList} = useGetRecommendationMakersQuery();
   const [groupsDropbox, setGroupsDropbox] = useState([]);
+
+  const [foodGroupDropbox, setFoodGroupDropbox] = useState([]);
 
   useEffect(() => {
     if (groupsList) {
       setGroupsDropbox(fillGroupsDropboxObjectForRecommendation(groupsList));
     }
   }, [groupsList]);
+
+  useEffect(() => {
+    if (foodGroupList) {
+      setFoodGroupDropbox(
+        fillFoodGroupDropboxObjectForRecommendation(foodGroupList),
+      );
+    }
+  }, [foodGroupList]);
 
   useEffect(() => {
     if (!open) {
@@ -274,15 +296,55 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
     }
   };
 
-  useEffect(() => {}, [open]);
-
-  // useEffect(() => {
-  //   console.log(importance1);
-  // }, [importance1]);
-  // useEffect(() => {
-  //   console.log(foodTypes1);
-  //   console.log(foodTypes1 === '');
-  // }, [foodTypes1]);
+  useEffect(() => {
+    setFoodGroupMonArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupMon.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupMon]);
+  useEffect(() => {
+    setFoodGroupTueArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupTue.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupTue]);
+  useEffect(() => {
+    setFoodGroupWedArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupWed.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupWed]);
+  useEffect(() => {
+    setFoodGroupThuArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupThu.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupThu]);
+  useEffect(() => {
+    setFoodGroupFriArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupFri.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupFri]);
+  useEffect(() => {
+    setFoodGroupSatArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupSat.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupSat]);
+  useEffect(() => {
+    setFoodGroupSunArr(
+      adaptFoodGroupListToFoodGroupDropboxOptions(
+        foodGroupSun.split(',').map(v => v.trim()),
+      ),
+    );
+  }, [foodGroupSun]);
 
   return (
     <Form onSubmit={onSubmit}>
@@ -619,19 +681,23 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
 
             <LineBox>
               <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_월</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupMon(data.value);
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (월)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupMonArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupMonArr(arr);
                     }}
-                    value={foodGroupMon}
                   />
                 </FlexBox>
               </Form.Field>
+
               <Form.Field>
                 <FlexBox width={180}>
                   <Label size="mini">상품 그룹 확정 추가_화</Label>

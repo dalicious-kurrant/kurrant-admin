@@ -56,10 +56,6 @@ function RecommendationCreateModal({open, setOpen}) {
   const [foodGroupSat, setFoodGroupSat] = useState('');
   const [foodGroupSun, setFoodGroupSun] = useState('');
 
-  useEffect(() => {
-    console.log(foodGroupTue);
-  }, [foodGroupTue]);
-
   const {createRecommendationMutation} = useRecommendationMutation(() => {
     setOpen(false);
   });
@@ -72,8 +68,6 @@ function RecommendationCreateModal({open, setOpen}) {
   useEffect(() => {
     if (groupsList) {
       setGroupsDropbox(fillGroupsDropboxObjectForRecommendation(groupsList));
-    } else {
-      console.log('groupsList가없다');
     }
   }, [groupsList]);
 
@@ -82,14 +76,8 @@ function RecommendationCreateModal({open, setOpen}) {
       setFoodGroupDropbox(
         fillFoodGroupDropboxObjectForRecommendation(foodGroupList),
       );
-    } else {
-      console.log('groupsList가없다');
     }
   }, [foodGroupList]);
-
-  useEffect(() => {
-    console.log(foodGroupDropbox);
-  }, [foodGroupDropbox]);
 
   const onSubmit = () => {
     const makeFoodType = (foodType, importance, num) => {
@@ -135,8 +123,6 @@ function RecommendationCreateModal({open, setOpen}) {
       foodType: [...FoodTypeData],
       dailyFoodGroups: [...DailyFoodGroups],
     };
-
-    console.log(data);
 
     if (!groups || groups.length < 1) {
       // 고객사값이 없을 경우
