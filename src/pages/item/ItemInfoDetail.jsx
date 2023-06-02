@@ -6,6 +6,7 @@ import {useEffect, useRef, useState} from 'react';
 import withCommas from '../../utils/withCommas';
 import HashTag from '../../components/hashTag/HashTag';
 import {
+  useAddProductKeyword,
   useEditProductDetail,
   useGetDetailProductsList,
 } from '../../hooks/useProductsList';
@@ -25,6 +26,16 @@ const ProductDetailPage = () => {
 
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
+
+  const {mutateAsync: addKeyword} = useAddProductKeyword();
+
+  useEffect(() => {
+    addKeyword({
+      foodId: 1,
+      names: ['키워드1', '키워드2'],
+    });
+  }, [addKeyword]);
+
   const listData = detailData?.data;
   const [clicked, setClicked] = useState([]);
   const [dataList, setDataList] = useAtom(productDataAtom); // 이미지
@@ -387,6 +398,7 @@ const ProductDetailPage = () => {
             <HashTag clicked={clicked} setClicked={setClicked} />
           </HashTagWrap>
         </div>
+        <div></div>
         <div>
           <TagTitle>이미지 등록 (최대 6장)</TagTitle>
           <Label content="기존 이미지" color="blue" />

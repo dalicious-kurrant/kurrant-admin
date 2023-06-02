@@ -36,6 +36,18 @@ export function useEditProductDetail() {
     },
   );
 }
+export function useAddProductKeyword() {
+  const queryClient = useQueryClient();
+  return useMutation(data => productApis.addProductKeyword(data), {
+    onSuccess: data => {
+      console.log(data);
+      // queryClient.invalidateQueries('detailList');
+    },
+    onError: () => {
+      alert('잘못된 키워드 입력입니다 ');
+    },
+  });
+}
 
 export function useDeleteProductList() {
   return useMutation(data => {

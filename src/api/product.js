@@ -13,4 +13,5 @@ export const productApis = {
     await instance.post('admins/files/images', formData, config), // 안쓰는듯
   editProductStatus: async data => await instance.post('foods/status', data),
   exelProductData: async data => await instance.post('foods/mass', data),
+  addProductKeyword: async data => await instance.post('reviews/keyword', data),
 };
