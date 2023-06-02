@@ -641,9 +641,13 @@ const Common = () => {
               if (v.isActive === '활성') {
                 return {
                   ...v,
-                  isActive: false,
+                  isActive: true,
                 };
               }
+              return {
+                ...v,
+                isActive: false,
+              };
             }),
           );
           console.log(json, 'json');
