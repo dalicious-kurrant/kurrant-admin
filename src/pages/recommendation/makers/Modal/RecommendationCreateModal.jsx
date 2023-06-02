@@ -166,6 +166,10 @@ function RecommendationCreateModal({open, setOpen}) {
     }
   }, [open]);
 
+  useEffect(() => {
+    console.log(foodGroupMon);
+  }, [foodGroupMon]);
+
   return (
     <Form onSubmit={onSubmit}>
       <Modal
