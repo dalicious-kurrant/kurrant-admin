@@ -68,8 +68,6 @@ function RecommendationCreateModal({open, setOpen}) {
   useEffect(() => {
     if (groupsList) {
       setGroupsDropbox(fillGroupsDropboxObjectForRecommendation(groupsList));
-    } else {
-      console.log('groupsList가없다');
     }
   }, [groupsList]);
 
@@ -78,14 +76,8 @@ function RecommendationCreateModal({open, setOpen}) {
       setFoodGroupDropbox(
         fillFoodGroupDropboxObjectForRecommendation(foodGroupList),
       );
-    } else {
-      console.log('groupsList가없다');
     }
   }, [foodGroupList]);
-
-  useEffect(() => {
-    console.log(foodGroupDropbox);
-  }, [foodGroupDropbox]);
 
   const onSubmit = () => {
     const makeFoodType = (foodType, importance, num) => {
@@ -132,8 +124,6 @@ function RecommendationCreateModal({open, setOpen}) {
       dailyFoodGroups: [...DailyFoodGroups],
     };
 
-    console.log(data);
-
     if (!groups || groups.length < 1) {
       // 고객사값이 없을 경우
       window.confirm('고객사 값이 없습니다');
@@ -175,6 +165,10 @@ function RecommendationCreateModal({open, setOpen}) {
       setFoodGroupSun('');
     }
   }, [open]);
+
+  useEffect(() => {
+    console.log(foodGroupMon);
+  }, [foodGroupMon]);
 
   return (
     <Form onSubmit={onSubmit}>
@@ -219,10 +213,11 @@ function RecommendationCreateModal({open, setOpen}) {
                 </FlexBox>
               </Form.Field>
             </LineBox>
+            <TitleH1>추천 상품 타입</TitleH1>
             <LineBox>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 1</Label>
+                  <Label size="mini">추천 상품 타입 1</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -268,7 +263,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 2</Label>
+                  <Label size="mini">추천 상품 타입 2</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -314,7 +309,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>{' '}
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 3</Label>
+                  <Label size="mini">추천 상품 타입 3</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -362,7 +357,7 @@ function RecommendationCreateModal({open, setOpen}) {
             <LineBox>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 4</Label>
+                  <Label size="mini">추천 상품 타입 4</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -408,7 +403,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 5</Label>
+                  <Label size="mini">추천 상품 타입 5</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -454,7 +449,7 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>{' '}
               <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 6</Label>
+                  <Label size="mini">추천 상품 타입 6</Label>
                   <SelectBox
                     width={160}
                     placeholder={
@@ -500,61 +495,40 @@ function RecommendationCreateModal({open, setOpen}) {
               </Form.Field>
             </LineBox>
 
+            <TitleH1>상품 그룹 확정 추가</TitleH1>
             <LineBox>
               <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_월</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (월)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
                     options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupMon !== '') {
-                        setFoodGroupMon(
-                          `${foodGroupMon}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupMon(`${e.value.toString()}`);
-                      }
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupMon(arr.map(v => v.value).join(', '));
                     }}
                   />
-                  <GroupsTextarea
-                    placeholder="예) 샐러드, 정찬 도시락"
-                    // defaultValue={nowData.name}
-                    value={foodGroupMon}
-                    disabled
-                  />
-                  <ResetButton
-                    onClick={() => {
-                      setFoodGroupMon('');
-                    }}>
-                    리셋
-                  </ResetButton>
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_화</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (화)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
                     options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupTue !== '') {
-                        setFoodGroupTue(
-                          `${foodGroupTue}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupTue(`${e.value.toString()}`);
-                      }
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupTue(arr.map(v => v.value).join(', '));
                     }}
                   />
                   <GroupsTextarea
@@ -572,31 +546,20 @@ function RecommendationCreateModal({open, setOpen}) {
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_수</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (수)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
                     options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupWed !== '') {
-                        setFoodGroupWed(
-                          `${foodGroupWed}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupWed(`${e.value.toString()}`);
-                      }
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupWed(arr.map(v => v.value).join(', '));
                     }}
-                  />
-                  <GroupsTextarea
-                    placeholder="예) 샐러드, 정찬 도시락"
-                    // defaultValue={nowData.name}
-                    value={foodGroupWed}
-                    disabled
                   />
                   <ResetButton
                     onClick={() => {
@@ -610,59 +573,19 @@ function RecommendationCreateModal({open, setOpen}) {
 
             <LineBox>
               <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_목</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (목)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
                     options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupThu !== '') {
-                        setFoodGroupThu(
-                          `${foodGroupThu}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupThu(`${e.value.toString()}`);
-                      }
-                    }}
-                  />
-                  <GroupsTextarea
-                    placeholder="예) 샐러드, 정찬 도시락"
-                    // defaultValue={nowData.name}
-                    value={foodGroupThu}
-                    disabled
-                  />
-                  <ResetButton
-                    onClick={() => {
-                      setFoodGroupThu('');
-                    }}>
-                    리셋
-                  </ResetButton>
-                </FlexBox>
-              </Form.Field>{' '}
-              <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_금</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
-                    options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupFri !== '') {
-                        setFoodGroupFri(
-                          `${foodGroupFri}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupFri(`${e.value.toString()}`);
-                      }
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupThu(arr.map(v => v.value).join(', '));
                     }}
                   />
                   <GroupsTextarea
@@ -680,24 +603,19 @@ function RecommendationCreateModal({open, setOpen}) {
                 </FlexBox>
               </Form.Field>{' '}
               <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_토</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (금)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
                     options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupSat !== '') {
-                        setFoodGroupSat(
-                          `${foodGroupSat}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupSat(`${e.value.toString()}`);
-                      }
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupFri(arr.map(v => v.value).join(', '));
                     }}
                   />
                   <GroupsTextarea
@@ -718,24 +636,39 @@ function RecommendationCreateModal({open, setOpen}) {
 
             <LineBox>
               <Form.Field>
-                <FlexBox width={300}>
-                  <Label size="mini">상품 그룹 확정 추가_일</Label>
-                  <SelectBox
-                    width={300}
-                    placeholder={
-                      <SelectBoxPlaceholder>
-                        상품 그룹 선택
-                      </SelectBoxPlaceholder>
-                    }
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (토)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
                     options={foodGroupDropbox}
-                    onChange={e => {
-                      if (foodGroupSun !== '') {
-                        setFoodGroupSun(
-                          `${foodGroupSun}, ${e.value.toString()}`,
-                        );
-                      } else {
-                        setFoodGroupSun(`${e.value.toString()}`);
-                      }
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupSat(arr.map(v => v.value).join(', '));
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+            </LineBox>
+            <LineBox>
+              <Form.Field>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (일)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    // defaultValue={[foodGroupDropbox[0], foodGroupDropbox[1]]}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupSun(arr.map(v => v.value).join(', '));
                     }}
                   />
                   <GroupsTextarea
@@ -819,16 +752,8 @@ const GroupsInput = styled.input`
   border: 1px solid #cccccc;
   border-radius: 3px;
 `;
-const GroupsTextarea = styled.textarea`
-  &::placeholder {
-    color: #bebebe;
-  }
-
-  padding-left: 10px;
-  /* background-color: black; */
-  color: black;
-  height: 70px;
-  background-color: white;
-  border: 1px solid #cccccc;
-  border-radius: 3px;
+const TitleH1 = styled.h1`
+  font-size: 20px;
+  margin-left: 8px;
+  margin-bottom: 20px;
 `;
