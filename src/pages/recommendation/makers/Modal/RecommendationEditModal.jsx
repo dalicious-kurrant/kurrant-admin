@@ -688,6 +688,7 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                     closeMenuOnSelect={false}
                     placeholder={'식품 타입 선택'}
                     value={foodGroupMonArr}
+                    // value={[]}
                     isMulti
                     options={foodGroupDropbox}
                     // styles={colourStyles}
@@ -697,90 +698,109 @@ function RecommendationEditModal({open, setOpen, nowData, setNowData}) {
                   />
                 </FlexBox>
               </Form.Field>
+              <Form.Field>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (화)</Label>
 
-              <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_화</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupTue(data.value);
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupTueArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupTueArr(arr);
                     }}
-                    value={foodGroupTue}
                   />
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_수</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupWed(data.value);
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (수)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupWedArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupWedArr(arr);
                     }}
-                    value={foodGroupWed}
-                  />
-                </FlexBox>
-              </Form.Field>
-              <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_목</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupThu(data.value);
-                    }}
-                    value={foodGroupThu}
                   />
                 </FlexBox>
               </Form.Field>
             </LineBox>
             <LineBox>
               <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_금</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupFri(data.value);
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (목)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupThuArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupThuArr(arr);
                     }}
-                    value={foodGroupFri}
                   />
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_토</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupSat(data.value);
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (금)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupFriArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupFriArr(arr);
                     }}
-                    value={foodGroupSat}
                   />
                 </FlexBox>
               </Form.Field>
               <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_일</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupSun(data.value);
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (토)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupSatArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupSatArr(arr);
                     }}
-                    value={foodGroupSun}
+                  />
+                </FlexBox>
+              </Form.Field>
+            </LineBox>
+            <LineBox>
+              <Form.Field>
+                <FlexBox>
+                  <Label size="mini">상품 그룹 확정 추가 (일)</Label>
+
+                  <Select
+                    closeMenuOnSelect={false}
+                    placeholder={'식품 타입 선택'}
+                    value={foodGroupSunArr}
+                    isMulti
+                    options={foodGroupDropbox}
+                    // styles={colourStyles}
+                    onChange={arr => {
+                      setFoodGroupSunArr(arr);
+                    }}
                   />
                 </FlexBox>
               </Form.Field>
