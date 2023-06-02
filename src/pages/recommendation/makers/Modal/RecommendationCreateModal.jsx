@@ -501,51 +501,39 @@ function RecommendationCreateModal({open, setOpen}) {
             </LineBox>
 
             <LineBox>
-              {/* <Form.Field>
+              <Form.Field>
                 <FlexBox width={160}>
-                  <Label size="mini">추천 식품 타입 1</Label>
+                  <Label size="mini">상품 그룹 확정 추가_월</Label>
                   <SelectBox
                     width={160}
                     placeholder={
                       <SelectBoxPlaceholder>
-                        식품 타입 선택
+                        상품 그룹 선택
                       </SelectBoxPlaceholder>
                     }
-                    options={OfficialFoodType}
+                    options={foodGroupDropbox}
                     onChange={e => {
-                      if (foodTypes1 !== '') {
-                        setFoodTypes1(`${foodTypes1}, ${e.value.toString()}`);
+                      if (foodGroupMon !== '') {
+                        setFoodGroupMon(
+                          `${foodGroupMon}, ${e.value.toString()}`,
+                        );
                       } else {
-                        setFoodTypes1(`${e.value.toString()}`);
+                        setFoodGroupMon(`${e.value.toString()}`);
                       }
                     }}
                   />
                   <GroupsInput
                     placeholder="예) 샐러드, 정찬 도시락"
                     // defaultValue={nowData.name}
-                    value={foodTypes1}
+                    value={foodGroupMon}
                     disabled
                   />
                   <ResetButton
                     onClick={() => {
-                      setFoodTypes1('');
+                      setFoodGroupMon('');
                     }}>
                     리셋
                   </ResetButton>
-                </FlexBox>
-              </Form.Field> */}
-
-              <Form.Field>
-                <FlexBox width={180}>
-                  <Label size="mini">상품 그룹 확정 추가_월</Label>
-                  <Input
-                    placeholder="예) 수미찬_정식_A"
-                    // defaultValue={nowData.groupNumbers}
-                    onChange={(e, data) => {
-                      //   setGroupNumbers(data.value);
-                      setFoodGroupMon(data.value);
-                    }}
-                  />
                 </FlexBox>
               </Form.Field>
 
