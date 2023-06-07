@@ -40,7 +40,7 @@ export function useAddProductKeyword() {
   const queryClient = useQueryClient();
   return useMutation(data => productApis.addProductKeyword(data), {
     onSuccess: data => {
-      console.log(data);
+      // console.log(data);
       // queryClient.invalidateQueries('detailList');
     },
     onError: () => {

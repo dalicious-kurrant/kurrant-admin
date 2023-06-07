@@ -14,7 +14,7 @@ import ItemDetailImage from './components/ItemDetailImage';
 import {useAtom} from 'jotai';
 import {productDataAtom} from 'utils/store';
 import {Button, Label} from 'semantic-ui-react';
-import ItemKeyword from './ItemKeyword';
+import ItemKeyword from './ItemKeyword/ItemKeyword';
 
 const ProductDetailPage = () => {
   const morningRef = useRef(null);
@@ -24,6 +24,8 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const foodId = location.state.foodId;
   const makersId = location.state.makersId;
+
+  console.log(foodId);
 
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
@@ -399,7 +401,10 @@ const ProductDetailPage = () => {
             <HashTag clicked={clicked} setClicked={setClicked} />
           </HashTagWrap>
         </div>
-        <div>{/* <ItemKeyword /> */}</div>
+
+        <div>
+          <ItemKeyword foodId={foodId} />
+        </div>
         <div>
           <TagTitle>이미지 등록 (최대 6장)</TagTitle>
           <Label content="기존 이미지" color="blue" />
