@@ -76,6 +76,7 @@ const Button = styled.button`
   background-color: #21ba45;
   border: 1px solid #e9e9ec;
   border-radius: 4px;
-  height: 30px;
+  padding-top: 5px;
+  /* height: 30px; */
   color: white;
 `;
