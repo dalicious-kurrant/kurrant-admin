@@ -11,6 +11,8 @@ import {
   MySpotCountyAtom,
   MySpotVillageAtom,
   MySpotZipcodeAtom,
+  maxUserAtom,
+  minUserAtom,
 } from 'utils/store';
 
 const Filter = ({click, setClick}) => {
@@ -31,6 +33,9 @@ const Filter = ({click, setClick}) => {
   const [selectVillage, setSelectVillage] = useAtom(MySpotVillageAtom);
   const [selectZipcode, setSelectZipcode] = useAtom(MySpotZipcodeAtom);
 
+  const [, SetMinUser] = useAtom(minUserAtom);
+  const [, SetMaxUser] = useAtom(maxUserAtom);
+
   const {data: filterData, refetch} = useGetFilterList(
     selectCity,
     selectCounty,
@@ -38,11 +43,22 @@ const Filter = ({click, setClick}) => {
   );
 
   const userFilter = () => {
-    setClick(false);
+    if (max !== undefined && max !== '') {
+      SetMinUser(min);
+      SetMaxUser(max);
+      setClick(false);
+    }
   };
+
   const resetFilter = () => {
     setValue('min', '');
     setValue('max', '');
+    setSelectCity([]);
+    setSelectCounty([]);
+    setSelectVillage([]);
+    setSelectZipcode([]);
+    SetMinUser('');
+    SetMaxUser('');
   };
 
   useEffect(() => {
@@ -78,107 +94,112 @@ const Filter = ({click, setClick}) => {
   }, [refetch, selectCity, selectCounty, selectVillage]);
   return (
     <Wrap>
-      <InputBlock>
-        <Dropdown
-          placeholder="시/도"
-          fluid
-          selection
-          search
-          multiple
-          options={cityList || []}
-          value={selectCity}
-          onChange={(e, data) => {
-            setSelectCity(data.value);
-          }}
-        />
-      </InputBlock>
-      <InputBlock>
-        <Dropdown
-          placeholder="군/구"
-          fluid
-          selection
-          search
-          multiple
-          options={countyList || []}
-          value={selectCounty}
-          onChange={(e, data) => {
-            setSelectCounty(data.value);
-          }}
-        />
-      </InputBlock>
-      <InputBlock>
-        <Dropdown
-          placeholder="동/읍/리"
-          fluid
-          selection
-          search
-          multiple
-          options={villageList || []}
-          value={selectVillage}
-          onChange={(e, data) => {
-            setSelectVillage(data.value);
-          }}
-        />
-      </InputBlock>
-      <InputBlock>
-        <Dropdown
-          placeholder="우편번호"
-          fluid
-          selection
-          search
-          multiple
-          options={zipcodeList || []}
-          value={selectZipcode}
-          onChange={(e, data) => {
-            setSelectZipcode(data.value);
-          }}
-        />
-      </InputBlock>
-      <InputBlock>
-        <Box onClick={() => setClick(true)}>
-          {max === undefined || max === '' ? (
-            <PlaceHolderText>신청 유저 수</PlaceHolderText>
-          ) : (
-            <div>
-              {min}
-              {max !== undefined && max !== '' && ' ~ '}
-              {max}
-            </div>
-          )}
-
-          {!(min !== undefined || max !== undefined) && <Arrow>▾</Arrow>}
-        </Box>
-        {click && (
-          <UserDrop>
-            <FormProvider {...form}>
-              <div style={{display: 'flex', justifyContent: 'center'}}>
-                <div
-                  style={{
-                    display: 'flex',
-                    width: '80%',
-                    justifyContent: 'space-between',
-                  }}>
-                  <div>최소(명)</div>
-                  <div> ~ </div> <div>최대(명)</div>
-                </div>
+      <div
+        style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 12}}>
+        <Button content="필터초기화" color="blue" onClick={resetFilter} />
+      </div>
+      <div style={{display: 'flex'}}>
+        <InputBlock>
+          <Dropdown
+            placeholder="시/도"
+            fluid
+            selection
+            search
+            multiple
+            options={cityList || []}
+            value={selectCity}
+            onChange={(e, data) => {
+              setSelectCity(data.value);
+            }}
+          />
+        </InputBlock>
+        <InputBlock>
+          <Dropdown
+            placeholder="군/구"
+            fluid
+            selection
+            search
+            multiple
+            options={countyList || []}
+            value={selectCounty}
+            onChange={(e, data) => {
+              setSelectCounty(data.value);
+            }}
+          />
+        </InputBlock>
+        <InputBlock>
+          <Dropdown
+            placeholder="동/읍/리"
+            fluid
+            selection
+            search
+            multiple
+            options={villageList || []}
+            value={selectVillage}
+            onChange={(e, data) => {
+              setSelectVillage(data.value);
+            }}
+          />
+        </InputBlock>
+        <InputBlock>
+          <Dropdown
+            placeholder="우편번호"
+            fluid
+            selection
+            search
+            multiple
+            options={zipcodeList || []}
+            value={selectZipcode}
+            onChange={(e, data) => {
+              setSelectZipcode(data.value);
+            }}
+          />
+        </InputBlock>
+        <InputBlock>
+          <Box onClick={() => setClick(true)}>
+            {max === undefined || max === '' ? (
+              <PlaceHolderText>신청 유저 수</PlaceHolderText>
+            ) : (
+              <div>
+                {min}
+                {max !== undefined && max !== '' && ' ~ '}
+                {max}
               </div>
-              <InputWrap>
-                <Input width="80px" name="min" type="number" />
+            )}
 
-                <Input width="80px" name="max" type="number" />
-              </InputWrap>
-              <ButtonWrap>
-                <Button
-                  content="확인"
-                  color="blue"
-                  size="tiny"
-                  onClick={userFilter}
-                />
-              </ButtonWrap>
-            </FormProvider>
-          </UserDrop>
-        )}
-        {/* <Dropdown
+            {!(min !== undefined || max !== undefined) && <Arrow>▾</Arrow>}
+          </Box>
+          {click && (
+            <UserDrop>
+              <FormProvider {...form}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      width: '80%',
+                      justifyContent: 'space-between',
+                    }}>
+                    <div>최소(명)</div>
+                    <div> ~ </div> <div>최대(명)</div>
+                  </div>
+                </div>
+                <InputWrap>
+                  <Input width="80px" name="min" type="number" />
+
+                  <Input width="80px" name="max" type="number" />
+                </InputWrap>
+                <ButtonWrap>
+                  <Button
+                    content="확인"
+                    color="blue"
+                    size="tiny"
+                    onClick={userFilter}
+                  />
+                </ButtonWrap>
+              </FormProvider>
+            </UserDrop>
+          )}
+          {/* <Dropdown
           placeholder="신청 유저 수"
           fluid
           selection
@@ -189,10 +210,8 @@ const Filter = ({click, setClick}) => {
             setSelectModify(data.value);
           }}
         /> */}
-      </InputBlock>
-
-      <Button content="필터초기화" color="blue" onClick={resetFilter} />
-      <Button content="스팟 개설" color="green" onClick={resetFilter} />
+        </InputBlock>
+      </div>
     </Wrap>
   );
 };
@@ -218,6 +237,8 @@ const InputBlock = styled.div`
 
 const Wrap = styled.div`
   display: flex;
+  flex-direction: column;
+  width: 80%;
   //justify-content: space-between;
 `;
 

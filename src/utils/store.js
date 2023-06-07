@@ -102,3 +102,18 @@ export const MySpotCityAtom = atomWithReset([]);
 export const MySpotCountyAtom = atomWithReset([]);
 export const MySpotVillageAtom = atomWithReset([]);
 export const MySpotZipcodeAtom = atomWithReset([]);
+
+export const minUserAtom = atomWithReset('');
+export const maxUserAtom = atomWithReset('');
+
+// 마이 스팟 관리
+
+export const adminCheckListAtom = atomWithReset([]);
+
+export const spotPageAdminAtom = atomWithReset(1);
+export const MySpotNameAdminAtom = atomWithReset([]);
+export const MySpotCityAdminAtom = atomWithReset([]);
+export const MySpotCountyAdminAtom = atomWithReset([]);
+export const MySpotVillageAdminAtom = atomWithReset([]);
+export const MySpotZipcodeAdminAtom = atomWithReset([]);
+export const MySpotStatusAdminAtom = atomWithReset([]);

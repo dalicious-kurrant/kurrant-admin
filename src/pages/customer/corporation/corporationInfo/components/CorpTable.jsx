@@ -226,7 +226,6 @@ const CorpTable = ({
           </Table.Header>
           <Table.Body>
             {corpListData?.map((el, idx) => {
-              console.log(el)
               const diningType = el.diningTypes.map(v =>
                 v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
               );
@@ -276,7 +275,9 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
-                  <Table.Cell textAlign="center">{el.membershipEndDate}</Table.Cell>
+                  <Table.Cell textAlign="center">
+                    {el.membershipEndDate}
+                  </Table.Cell>
                   <Table.Cell textAlign="center">
                     {withCommas(el.morningSupportPrice) || '-'}
                   </Table.Cell>
