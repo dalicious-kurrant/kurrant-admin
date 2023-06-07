@@ -6,12 +6,20 @@ import MySpot from './mySpotZone/MySpotZone';
 import styled from 'styled-components';
 import Modal from './mySpotZone/components/Modal';
 import {useAtom} from 'jotai';
-import {indexAtom} from 'utils/store';
+import {adminCheckListAtom, indexAtom} from 'utils/store';
+import {useDeleteMySpotAdmin} from 'hooks/useMySpotAdmin';
 
 const SpotInformation = () => {
   const [index, setIndex] = useState(0);
   const [showOpenModal, setShowOpenModal] = useState(false);
   const [, setIndexState] = useAtom(indexAtom);
+  const [checkItems] = useAtom(adminCheckListAtom);
+  const {mutateAsync: deleteSpot} = useDeleteMySpotAdmin();
+  const deleteButton = async () => {
+    if (checkItems.length !== 0) {
+      await deleteSpot(checkItems);
+    }
+  };
 
   useEffect(() => {
     setIndexState(index);
@@ -52,7 +60,13 @@ const SpotInformation = () => {
               size="small"
               onClick={() => setShowOpenModal(true)}
             />
-            <Button content="삭제하기" inverted color="red" size="small" />
+            <Button
+              content="삭제하기"
+              inverted
+              color="red"
+              size="small"
+              onClick={deleteButton}
+            />
           </div>
         )}
       </ButtonWrap>

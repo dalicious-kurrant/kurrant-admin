@@ -1,37 +1,36 @@
 import instance from 'shared/axios';
 
-export const MySpotApis = {
-  addMySpot: async data => await instance.post('my/zone/requests', data),
-  loadMySpot: async (
+export const mySpotAdminApis = {
+  loadMySpotAdmin: async (
     page,
+    selectName,
     selectCity,
     selectCounty,
     selectVillage,
     selectZipcode,
-    minUser,
-    maxUser,
+    selectStatus,
   ) =>
-    await instance.get(`my/zone/requests/all?limit=50&page=${page}`, {
+    await instance.get(`groups/my/spot/zones?limit=50&size=${page}`, {
       params: {
+        name: selectName.length === 0 ? null : selectName.join(','),
         city: selectCity.length === 0 ? null : selectCity.join(','),
         county: selectCounty.length === 0 ? null : selectCounty.join(','),
         villages: selectVillage.length === 0 ? null : selectVillage.join(','),
         zipcode: selectZipcode.length === 0 ? null : selectZipcode.join(','),
-        min: minUser === '' ? null : minUser,
-        max: maxUser === '' ? null : maxUser,
+        status: selectStatus.length === 0 ? null : selectStatus.join(','),
       },
     }),
-  deleteMySpot: async data =>
-    await instance.delete('my/zone/requests', {data: data}),
-  modifyMySpot: async data => await instance.patch('my/zone/requests', data),
   filterData: async (selectCity, selectCounty, selectVillage) =>
-    await instance.get('my/zone/requests/filter', {
+    await instance.get('groups/my/spot/zones/filter', {
       params: {
         city: selectCity.length === 0 ? null : selectCity.join(','),
         county: selectCounty.length === 0 ? null : selectCounty.join(','),
         villages: selectVillage.length === 0 ? null : selectVillage.join(','),
       },
     }),
-  createSpot: async data =>
-    await instance.post('my/zone/requests/create/zone', data),
+
+  addMySpotAdmin: async data => instance.post('groups/my/spot/zones', data),
+  modifyMySpotAdmin: async data => instance.patch('groups/my/spot/zones', data),
+  deleteMySpotAdmin: async data =>
+    instance.patch('groups/my/spot/zones/delete', data),
 };

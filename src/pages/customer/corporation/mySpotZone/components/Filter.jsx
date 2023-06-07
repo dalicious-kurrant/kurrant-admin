@@ -1,56 +1,95 @@
-import Input from 'components/input/Input';
-import {useMakersList} from 'hooks/useAdjustment';
+import {useGetAdminFilterList} from 'hooks/useMySpotAdmin';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
-import {FormProvider, useForm, useFormContext} from 'react-hook-form';
+
 import {Button, Dropdown} from 'semantic-ui-react';
 import styled from 'styled-components';
-import {formattedYearMonthDate} from 'utils/dateFormatter';
+
 import {
-  endMonthAtom,
-  selectClientAtom,
-  selectModifyAtom,
-  selectStatusAtom,
-  startMonthAtom,
+  MySpotCityAdminAtom,
+  MySpotCountyAdminAtom,
+  MySpotNameAdminAtom,
+  MySpotStatusAdminAtom,
+  MySpotVillageAdminAtom,
+  MySpotZipcodeAdminAtom,
 } from 'utils/store';
 
 const Filter = ({click, setClick}) => {
   const statusData = [
     {key: 0, text: '오픈 대기', value: 0},
     {key: 1, text: '오픈', value: 1},
+    {key: 2, text: '정지', value: 3},
   ];
 
-  const form = useForm({
-    mode: 'all',
-  });
-  const {watch, setValue} = form;
+  const [nameList, setNameList] = useState([]);
+  const [cityList, setCityList] = useState([]);
+  const [countyList, setCountyList] = useState([]);
+  const [villageList, setVillageList] = useState([]);
+  const [zipcodeList, setZipcodeList] = useState([]);
+  const [statusList, setStatusList] = useState([]);
+  const [selectName, setSelectName] = useAtom(MySpotNameAdminAtom);
+  const [selectCity, setSelectCity] = useAtom(MySpotCityAdminAtom);
+  const [selectCounty, setSelectCounty] = useAtom(MySpotCountyAdminAtom);
+  const [selectVillage, setSelectVillage] = useAtom(MySpotVillageAdminAtom);
+  const [selectZipcode, setSelectZipcode] = useAtom(MySpotZipcodeAdminAtom);
+  const [selectStatus, setSelectStatus] = useAtom(MySpotStatusAdminAtom);
+  const {data: filterData, refetch} = useGetAdminFilterList(
+    selectCity,
+    selectCounty,
+    selectVillage,
+  );
 
-  const min = watch('min');
-  const max = watch('max');
-  console.log(min);
-  const [groupInfoList, setGroupInfoList] = useState([]);
-  const [startMonth, setStartMonth] = useAtom(startMonthAtom);
-  const [endMonth, setEndMonth] = useAtom(endMonthAtom);
-  const [selectClient, setSelectClient] = useAtom(selectClientAtom);
-  const [selectStatus, setSelectStatus] = useAtom(selectStatusAtom);
-  const [selectModify, setSelectModify] = useAtom(selectModifyAtom);
-
-  const userFilter = () => {
-    setClick(false);
-  };
   const resetFilter = () => {
-    setSelectClient([]);
-    setSelectStatus(null);
-    setSelectModify(null);
+    setSelectName([]);
+    setSelectCity([]);
+    setSelectCounty([]);
+    setSelectVillage([]);
+    setSelectZipcode([]);
+    setSelectStatus([]);
   };
 
-  //   useEffect(() => {
-  //     setGroupInfoList(
-  //       makersList?.data.map(v => {
-  //         return {key: v.makersId, text: v.makersName, value: v.makersId};
-  //       }),
-  //     );
-  //   }, [makersList]);
+  useEffect(() => {
+    setNameList(
+      filterData?.data?.name?.map((v, i) => {
+        return {key: v.id, text: v.name, value: v.id};
+      }),
+    );
+    setCityList(
+      filterData?.data?.cityInfos?.map((v, i) => {
+        return {key: v.id, text: v.name, value: v.id};
+      }),
+    );
+    setCountyList(
+      filterData?.data?.countyInfos?.map((v, i) => {
+        return {key: v.id, text: v.name, value: v.id};
+      }),
+    );
+    setVillageList(
+      filterData?.data?.villageInfos?.map((v, i) => {
+        return {key: v.id, text: v.name, value: v.id};
+      }),
+    );
+    setZipcodeList(
+      filterData?.data?.zipcodeInfos?.map((v, i) => {
+        return {key: v.id, text: v.name, value: v.id};
+      }),
+    );
+    setStatusList(
+      filterData?.data?.status?.map((v, i) => {
+        return {key: v.code, text: v.status, value: v.code};
+      }),
+    );
+  }, [
+    filterData?.data?.cityInfos,
+    filterData?.data?.countyInfos,
+    filterData?.data?.name,
+    filterData?.data?.status,
+    filterData?.data?.villageInfos,
+    filterData?.data?.zipcodeInfos,
+  ]);
+  useEffect(() => {
+    refetch();
+  }, [refetch, selectCity, selectCounty, selectVillage]);
   return (
     <Wrap>
       <InputBlock>
@@ -59,10 +98,11 @@ const Filter = ({click, setClick}) => {
           fluid
           selection
           search
-          //options={modifyStatus}
-          //value={selectModify}
+          multiple
+          options={nameList || []}
+          value={selectName}
           onChange={(e, data) => {
-            setSelectModify(data.value);
+            setSelectName(data.value);
           }}
         />
       </InputBlock>
@@ -73,23 +113,24 @@ const Filter = ({click, setClick}) => {
           selection
           search
           multiple
-          options={groupInfoList}
-          //value={selectClient}
+          options={cityList || []}
+          value={selectCity}
           onChange={(e, data) => {
-            setSelectClient(data.value);
+            setSelectCity(data.value);
           }}
         />
       </InputBlock>
       <InputBlock>
         <Dropdown
-          placeholder="군/구"
+          placeholder="시/군/구"
           fluid
           selection
           search
-          //options={statusData}
-          //value={selectStatus}
+          multiple
+          options={countyList || []}
+          value={selectCounty}
           onChange={(e, data) => {
-            setSelectStatus(data.value);
+            setSelectCounty(data.value);
           }}
         />
       </InputBlock>
@@ -99,10 +140,11 @@ const Filter = ({click, setClick}) => {
           fluid
           selection
           search
-          //options={modifyStatus}
-          //value={selectModify}
+          multiple
+          options={villageList || []}
+          value={selectVillage}
           onChange={(e, data) => {
-            setSelectModify(data.value);
+            setSelectVillage(data.value);
           }}
         />
       </InputBlock>
@@ -112,10 +154,11 @@ const Filter = ({click, setClick}) => {
           fluid
           selection
           search
-          //options={modifyStatus}
-          //value={selectModify}
+          multiple
+          options={zipcodeList || []}
+          value={selectZipcode}
           onChange={(e, data) => {
-            setSelectModify(data.value);
+            setSelectZipcode(data.value);
           }}
         />
       </InputBlock>
@@ -125,10 +168,11 @@ const Filter = ({click, setClick}) => {
           fluid
           selection
           search
-          options={statusData}
-          //value={selectModify}
+          multiple
+          options={statusList || []}
+          value={selectStatus}
           onChange={(e, data) => {
-            setSelectModify(data.value);
+            setSelectStatus(data.value);
           }}
         />
       </InputBlock>
@@ -139,17 +183,6 @@ const Filter = ({click, setClick}) => {
 };
 
 export default Filter;
-const InputBox = styled.input`
-  display: flex;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  //text-align: end;
-  //padding-right: 8px;
-  text-align: center;
-  width: 100%;
-`;
 
 const InputBlock = styled.div`
   min-width: 200px;
@@ -160,48 +193,4 @@ const InputBlock = styled.div`
 const Wrap = styled.div`
   display: flex;
   //justify-content: space-between;
-`;
-
-const Box = styled.div`
-  width: 198px;
-  height: 38px;
-  border: 1px solid rgba(34, 36, 38, 0.15);
-  border-radius: 4px;
-  padding: 8px 14px;
-  position: relative;
-  box-sizing: border-box;
-`;
-
-const PlaceHolderText = styled.span`
-  color: rgba(191, 191, 191, 0.87);
-`;
-
-const UserDrop = styled.div`
-  z-index: 2;
-  position: absolute;
-  border: 1px solid rgba(34, 36, 38, 0.15);
-  border-radius: 4px;
-  padding: 12px 0px;
-
-  background-color: white;
-  width: 198px;
-`;
-
-const InputWrap = styled.div`
-  display: flex;
-  justify-content: center;
-
-  padding-left: 8px;
-`;
-
-const ButtonWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-`;
-
-const Arrow = styled.div`
-  position: absolute;
-  bottom: 10px;
-  right: 11px;
 `;
