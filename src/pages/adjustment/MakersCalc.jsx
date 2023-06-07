@@ -20,6 +20,7 @@ import {
 } from 'utils/store';
 import {useAtom} from 'jotai';
 import withCommas from 'utils/withCommas';
+import MakersAdjustment from './components/MakersAdjustment';
 
 const MakersCalc = () => {
   const navigate = useNavigate();
@@ -68,7 +69,16 @@ const MakersCalc = () => {
   return (
     <PageWrapper>
       <div
-        style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 24}}>
+        style={{display: 'flex', justifyContent: 'space-between', marginBottom: 24}}>
+          <div style={{display: 'flex', flexDirection: 'column',justifySelf:'flex-start',alignSelf:'flex-start'}}>
+         
+         <div style={{marginBottom: 20}}>
+           <MakersAdjustment addData/>
+         </div>
+         <div style={{marginBottom: 60}}>
+           <MakersAdjustment deleteData/>
+         </div>
+       </div>
         <TotalWrap>
           <TotalTextWrap>
             <TotalTite>총액({totalData?.totalCount}개)</TotalTite>

@@ -10,7 +10,7 @@ export const adjustApis = {
   updateAdjustStatusMakers: async value =>
     await instance.put(`paycheck/makers/status/${value.id}`, value.status),
   deleteAdjustMakers: async value =>
-    await instance.delete(`paycheck/makers/`, value),
+    await instance.delete(`paycheck/makers`, {data:{ ...value}}),
   getAdjustMakersList: async (
     startMonth,
     endMonth,
@@ -38,7 +38,7 @@ export const adjustApis = {
       value.status,
     ),
   deleteAdjustSpots: async value =>
-    await instance.delete(`paycheck/corporations`, value),
+    await instance.delete(`paycheck/corporations`,{data:{ ...value}}),
   getAdjustSpotsList: async (
     startMonth,
     endMonth,
@@ -61,12 +61,16 @@ export const adjustApis = {
   getSpotsList: async () => await instance.get('corporationInfos'),
   addMakersIssue: async data =>
     await instance.post(`paycheck/makers/${data.id}/issues`, data.data),
+  addMakersAdjustment: async data =>
+    await instance.post(`paycheck/makers`, data),
   getSpotOrders: async id =>
     await instance.get(`paycheck/corporations/${id}/orders`),
   getSpotInvoice: async id =>
     await instance.get(`paycheck/corporations/${id}/invoice`),
   addSpotIssue: async data =>
     await instance.post(`paycheck/corporations/${data.id}/issues`, data.data),
+  addSpotAdjustment: async data =>
+    await instance.post(`paycheck/corporations`, data),
   addMakersMemo: async data =>
     await instance.put(`paycheck/makers/${data.id}/memo`, {memo: data.memo}),
   addSpotMemo: async data =>
