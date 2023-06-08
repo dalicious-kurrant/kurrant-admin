@@ -1,7 +1,8 @@
 import instance from 'shared/axios';
 
 export const MySpotApis = {
-  addMySpot: async data => await instance.post('my/zone/requests', data),
+  addMySpot: async data =>
+    await instance.post('application-forms/spots/my', data),
   loadMySpot: async (
     page,
     selectCity,
@@ -11,7 +12,7 @@ export const MySpotApis = {
     minUser,
     maxUser,
   ) =>
-    await instance.get(`my/zone/requests/all?limit=50&page=${page}`, {
+    await instance.get(`application-forms/spots/my?limit=50&page=${page}`, {
       params: {
         city: selectCity.length === 0 ? null : selectCity.join(','),
         county: selectCounty.length === 0 ? null : selectCounty.join(','),
@@ -22,10 +23,11 @@ export const MySpotApis = {
       },
     }),
   deleteMySpot: async data =>
-    await instance.delete('my/zone/requests', {data: data}),
-  modifyMySpot: async data => await instance.patch('my/zone/requests', data),
+    await instance.delete('application-forms/spots/my', {data: data}),
+  modifyMySpot: async data =>
+    await instance.patch('application-forms/spots/my', data),
   filterData: async (selectCity, selectCounty, selectVillage) =>
-    await instance.get('my/zone/requests/filter', {
+    await instance.get('application-forms/spots/my/filter', {
       params: {
         city: selectCity.length === 0 ? null : selectCity.join(','),
         county: selectCounty.length === 0 ? null : selectCounty.join(','),
@@ -33,5 +35,5 @@ export const MySpotApis = {
       },
     }),
   createSpot: async data =>
-    await instance.post('my/zone/requests/create/zone', data),
+    await instance.post('application-forms/spots/my', data),
 };
