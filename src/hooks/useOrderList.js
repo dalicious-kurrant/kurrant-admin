@@ -3,9 +3,9 @@ import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {diningListAtom, spotListAtom, userListAtom} from 'utils/store';
 import {orderApis} from '../api/order';
 
-export function useGetGroupList() {
+export function useGetGroupList(spotType) {
   return useQuery('groupList', () => {
-    return orderApis.groupList();
+    return orderApis.groupList(spotType);
   });
 }
 
@@ -24,6 +24,8 @@ export function useGetGroupInfoList(groupId) {
         setSpotList(res.data.spots);
         setDiningType(res.data.diningTypes);
       },
+      retry:false,
+      enabled:groupId !== 0,
     },
   );
 }
@@ -49,6 +51,8 @@ export function useGetOrderList(
       diningTypeOption,
       orderStatusOption,
     );
+  },{
+    retry:false
   });
 }
 

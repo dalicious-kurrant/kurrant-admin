@@ -1,7 +1,11 @@
 import instance from '../shared/axios';
 
 export const orderApis = {
-  groupList: async () => await instance.get('orders/group'),
+  groupList: async (spotType) => {
+    const url = 'orders/group';
+    const spot = `?spotType=${spotType}`
+   return await instance.get(spotType ?url+spot :url)
+  },
   groupInfoList: async groupId =>
     await instance.get(`orders/groupInfo${groupId}`),
   makersList: async () => await instance.get('orders/makers'),
