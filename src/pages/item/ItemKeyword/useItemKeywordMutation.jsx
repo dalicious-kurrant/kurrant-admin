@@ -6,13 +6,15 @@ const useItemKeywordMutation = (handleCallback = () => {}) => {
 
   const {mutate: addKeywordMutate} = useMutation(
     async data => {
+      console.log('안녕');
+
       const response = await instance.post(`reviews/keyword`, data);
 
       return response;
     },
     {
-      onSuccess: () => {
-        // console.log('리뷰 신고 success');
+      onSuccess: data => {
+        console.log(data);
         queryClient.invalidateQueries(['review', 'keywordSearch']);
 
         handleCallback();

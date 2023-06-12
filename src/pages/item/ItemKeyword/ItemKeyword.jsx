@@ -31,6 +31,7 @@ const ItemKeywordInput = ({foodId}) => {
       </Wrap>
       <Button
         onClick={() => {
+          console.log('클릭');
           addKeywordMutate({
             foodId: foodId,
             names: names,
