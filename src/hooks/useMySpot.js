@@ -20,6 +20,8 @@ export function useGetMySpotList(
   selectCounty,
   selectVillage,
   selectZipcode,
+  minUser,
+  maxUser,
 ) {
   return useQuery('mySpotZone', () => {
     return MySpotApis.loadMySpot(
@@ -28,13 +30,15 @@ export function useGetMySpotList(
       selectCounty,
       selectVillage,
       selectZipcode,
+      minUser,
+      maxUser,
     );
   });
 }
 
-export function useGetFilterList() {
+export function useGetFilterList(selectCity, selectCounty, selectVillage) {
   return useQuery('spotFilter', () => {
-    return MySpotApis.filterData();
+    return MySpotApis.filterData(selectCity, selectCounty, selectVillage);
   });
 }
 
@@ -54,6 +58,19 @@ export function useModifyMySpot() {
   return useMutation(data => MySpotApis.modifyMySpot(data), {
     onSuccess: () => {
       queryClient.invalidateQueries('mySpotZone');
+    },
+    onError: err => {
+      console.log(err);
+    },
+  });
+}
+
+export function useCreateMySpot() {
+  const queryClient = useQueryClient();
+  return useMutation(data => MySpotApis.createSpot(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('mySpotZone');
+      queryClient.invalidateQueries('spotFilter');
     },
     onError: err => {
       console.log(err);
