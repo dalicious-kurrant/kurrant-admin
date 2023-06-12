@@ -610,8 +610,7 @@ const Order = () => {
           </Table.Header>
 
           <Table.Body>
-            {orderList?.data?.map(el => {
-              return el.orderItemDailyFoodGroupList?.map((v, i) => {
+            {orderList?.data?.map(v => {
                 return v.orderItemDailyFoods?.map((item, idx) => {
                   return (
                     <TableRow
@@ -763,7 +762,6 @@ const Order = () => {
                     </TableRow>
                   );
                 });
-              });
             })}
           </Table.Body>
         </Table>

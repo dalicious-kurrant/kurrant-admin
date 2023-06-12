@@ -1,9 +1,7 @@
 import {useUpdateSpotDetail} from 'hooks/useCorporation';
-import {useAtom} from 'jotai';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   Button,
-  Header,
   Form,
   Modal,
   Input,
@@ -13,9 +11,43 @@ import {
   Table,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
-import {diningFormatted, groupTypeFormatted, groupTypeFormatted2, preNumberFormatted} from 'utils/statusFormatter';
+import {
+  groupTypeFormatted,
+  groupTypeFormatted2,
+  preNumberFormatted,
+} from 'utils/statusFormatter';
 import withCommas from 'utils/withCommas';
-
+const data = [
+  {
+      "diningType": 2,
+      "deliveryTimes": "12:00,12:30,13:00,13:30",
+      "membershipBenefitTime": "0일전 10:00",
+      "lastOrderTime": "0일전 10:00",
+      "serviceDays": "월, 화, 수, 목, 금",
+      "supportPriceByDays": [
+          {
+              "serviceDay": "금",
+              "supportPrice": 10000
+          },
+          {
+              "serviceDay": "목",
+              "supportPrice": 10000
+          },
+          {
+              "serviceDay": "수",
+              "supportPrice": 10000
+          },
+          {
+              "serviceDay": "월",
+              "supportPrice": 10000
+          },
+          {
+              "serviceDay": "화",
+              "supportPrice": 10000
+          }
+      ]
+  }
+]
 function CorpEditModal({
   open,
   setOpen,
@@ -27,8 +59,6 @@ function CorpEditModal({
   setTestData,
 }) {
   const {mutateAsync: updateSpotDetail} = useUpdateSpotDetail();
-  console.log(nowData);
-  // console.log(nowData.userOrderAlarm);
 
   const onSubmit = async () => {
     const req = {
@@ -58,25 +88,47 @@ function CorpEditModal({
       isGarbage: nowData.isGarbage,
       isHotStorage: nowData.isHotStorage,
       isPrepaid: nowData.isPrepaid,
-      memo:nowData.memo,
-      prepaidCategoryList:nowData.prepaidCategoryList,
+      memo: nowData.memo,
+      prepaidCategoryList: nowData.prepaidCategoryList,
     };
-    console.log(req);
+
     try {
       await updateSpotDetail(req);
       setNowData();
       setClickId();
       refetch();
-      setOpen(false)
-
+      setOpen(false);
     } catch (error) {
       alert(error.toString());
     }
   };
+  console.log(nowData)
+  const supportPrice = nowData?.mealInfos?.map((v)=>{
+    return v.supportPriceByDays !== null && v.supportPriceByDays.map((price)=>{
+      return {diningType:v.diningType, serviceDay:price.serviceDay, supportPrice:price.supportPrice}
+    })
+  });
+  const morningFilter = nowData?.mealInfos?.filter((v)=>v.diningType===1);
+  const lunchFilter = nowData?.mealInfos?.filter((v)=>v.diningType===2);
+  const dinnerFilter = nowData?.mealInfos?.filter((v)=>v.diningType===3);
+  const morningData = morningFilter?.length > 0 ? morningFilter[0]: null;
+  const lunchData = lunchFilter?.length > 0 ? lunchFilter[0]: null;
+  const dinnerData =dinnerFilter?.length > 0 ? dinnerFilter[0]: null;
+  // console.log(supportPrice)
+  // const supportPrice = [
+  //   [
+  //     {diningType: 2, serviceDay: '월', supportPrice: 3000},
+  //     {diningType: 2, serviceDay: '화', supportPrice: 5000},
+  //     {diningType: 2, serviceDay: '수', supportPrice: 2000},
+  //     {diningType: 2, serviceDay: '목', supportPrice: 10000},
+  //     {diningType: 2, serviceDay: '금', supportPrice: 12000},
+  //   ],
+  // ];
+  const supportPrices = supportPrice.flat();
   return (
     <Form onSubmit={onSubmit}>
       <Modal
-        style={{width: 'auto'}}
+        style={{width:'auto'}}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}>
@@ -171,7 +223,7 @@ function CorpEditModal({
                           setNowData({
                             ...nowData,
                             spotType: data.value
-                              ? groupTypeFormatted2(data.value)
+                              ? groupTypeFormatted2(data.value) 
                               : null,
                           });
                         }}
@@ -348,47 +400,7 @@ function CorpEditModal({
                     </FlexBox>
                   </Form.Field>
                   <Form.Field>
-                    <FlexBox width={300}>
-                      <LabelBox>
-                        <Label size="mini">아침 지원금</Label>
-                      </LabelBox>
-                      <Input
-                        style={{width: 450}}
-                        placeholder="아침 지원금"
-                        defaultValue={nowData.breakfastSupportPrice}
-                        onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            breakfastSupportPrice: data.value
-                              ? Number(data.value)
-                              : null,
-                          });
-                        }}
-                      />
-                    </FlexBox>
-                  </Form.Field>
-                  <Form.Field>
-                    <FlexBox width={200}>
-                      <LabelBox>
-                        <Label size="mini">지원금O</Label>
-                      </LabelBox>
-                      <Input
-                       style={{width: 130}}
-                        placeholder="지원금O"
-                        defaultValue={nowData.supportDays}
-                        onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            supportDays: data.value ? data.value : null,
-                          });
-                        }}
-                      />
-                    </FlexBox>
-                  </Form.Field>
-                </LineBox>
-                <LineBox>
-                  <Form.Field>
-                    <FlexBox width={300}>
+                    <FlexBox width={250}>
                       <LabelBox>
                         <Label size="mini">상세주소</Label>
                       </LabelBox>
@@ -406,47 +418,7 @@ function CorpEditModal({
                     </FlexBox>
                   </Form.Field>
                   <Form.Field>
-                    <FlexBox width={300}>
-                      <LabelBox>
-                        <Label size="mini">점심 지원금</Label>
-                      </LabelBox>
-                      <Input
-                        style={{width: 450}}
-                        placeholder="점심 지원금"
-                        defaultValue={nowData.lunchSupportPrice}
-                        onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            lunchSupportPrice: data.value
-                              ? Number(data.value)
-                              : null,
-                          });
-                        }}
-                      />
-                    </FlexBox>
-                  </Form.Field>
-                  <Form.Field>
-                    <FlexBox width={200}>
-                      <LabelBox>
-                        <Label size="mini">지원금X</Label>
-                      </LabelBox>
-                      <Input
-                       style={{width: 130}}
-                        placeholder="지원금X"
-                        defaultValue={nowData.notSupportDays}
-                        onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            notSupportDays: data.value ? data.value : null,
-                          });
-                        }}
-                      />
-                    </FlexBox>
-                  </Form.Field>
-                </LineBox>
-                <LineBox>
-                  <Form.Field>
-                    <FlexBox width={300}>
+                    <FlexBox width={250}>
                       <LabelBox>
                         <Label size="mini">위치</Label>
                       </LabelBox>
@@ -458,26 +430,6 @@ function CorpEditModal({
                           setNowData({
                             ...nowData,
                             location: data.value ? data.value : null,
-                          });
-                        }}
-                      />
-                    </FlexBox>
-                  </Form.Field>
-                  <Form.Field>
-                    <FlexBox width={300}>
-                      <LabelBox>
-                        <Label size="mini">저녁 지원금</Label>
-                      </LabelBox>
-                      <Input
-                        style={{width: 450}}
-                        placeholder="저녁 지원금"
-                        defaultValue={nowData.dinnerSupportPrice}
-                        onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            dinnerSupportPrice: data.value
-                              ? Number(data.value)
-                              : null,
                           });
                         }}
                       />
@@ -553,9 +505,7 @@ function CorpEditModal({
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              minPrice: data.value
-                                ? Number(data.value)
-                                : null,
+                              minPrice: data.value ? Number(data.value) : null,
                             });
                           }}
                         />
@@ -573,15 +523,241 @@ function CorpEditModal({
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              maxPrice: data.value
-                                ? Number(data.value)
-                                : null,
+                              maxPrice: data.value ? Number(data.value) : null,
                             });
                           }}
                         />
                       </FlexBox>
                     </Form.Field>
                   </FlexCheckBox>
+                </LineBox>
+                <LineBox>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">아침 주문 요일</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="아침 주문 요일"
+                        defaultValue={morningData?.serviceDays}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">아침 주문 마감시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="아침 주문 마감시간"
+                        defaultValue={morningData?.lastOrderTime}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                </LineBox>
+                <LineBox>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">점심 주문 요일</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="점심 주문 요일"
+                        defaultValue={lunchData?.serviceDays}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">점심 주문 마감시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="점심 주문 마감시간"
+                        defaultValue={lunchData?.lastOrderTime}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                </LineBox>
+                <LineBox>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">져녁 주문 요일</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="져녁 주문 요일"
+                        defaultValue={dinnerData?.serviceDays}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">져녁 주문 마감시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="져녁 주문 마감시간"
+                        defaultValue={dinnerData?.lastOrderTime}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                </LineBox>
+                <LineBox>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">아침 배송시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="아침 배송시간"
+                        defaultValue={morningData?.deliveryTimes}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">아침멤버십마감시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="아침멤버십마감시간"
+                        defaultValue={morningData?.membershipBenefitTime}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                </LineBox>
+                <LineBox>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">점심 배송시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="점심 배송시간"
+                        defaultValue={lunchData?.deliveryTimes}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">점심멤버십마감시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="점심멤버십마감시간"
+                        defaultValue={lunchData?.membershipBenefitTime}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                </LineBox>
+                <LineBox>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">져녁 배송시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="져녁 배송시간"
+                        defaultValue={dinnerData?.deliveryTimes}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
+                  <Form.Field>
+                    <FlexBox width={300}>
+                      <LabelBox>
+                        <Label size="mini">져녁멤버십마감시간</Label>
+                      </LabelBox>
+                      <Input
+                        style={{width: 300}}
+                        placeholder="져녁멤버십마감시간"
+                        defaultValue={dinnerData?.membershipBenefitTime}
+                        onChange={(e, data) => {
+                          setNowData({
+                            ...nowData,
+                            spotName: data.value ? data.value : null,
+                          });
+                        }}
+                      />
+                    </FlexBox>
+                  </Form.Field>
                 </LineBox>
                 <Form.Field>
                   <LabelBox>
@@ -612,6 +788,120 @@ function CorpEditModal({
                 </Form.Field>
                 <LineBox></LineBox>
               </div>
+              {supportPrice[0] && <div style={{marginRight: 20}}>
+                <LineBox>
+                  <Form.Field>
+                    <div>
+                      <LabelCheckBox style={{width: 70}}>
+                        <Label size="mini">지원금</Label>
+                      </LabelCheckBox>
+                      <Table celled>
+                        <Table.Header>
+                          <Table.Row>
+                            <Table.HeaderCell textAlign="center">
+                              지원 요일
+                            </Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">
+                              아침
+                            </Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">
+                              점심
+                            </Table.HeaderCell>
+                            <Table.HeaderCell textAlign="center">
+                              저녁
+                            </Table.HeaderCell>
+                          </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                          {nowData?.serviceDays?.split(',')?.map(v => {
+                            const morningSupport = supportPrices.filter(
+                              m => m.diningType === 1,
+                            );
+                            const lunchSupport = supportPrices.filter(
+                              m => m.diningType === 2,
+                            );
+                            const dinnerSupport = supportPrices.filter(
+                              m => m.diningType === 3,
+                            );
+                            console.log(morningSupport)
+                            return (
+                              <Table.Row key={v}>
+                                <Table.Cell textAlign="center">
+                                  {v?.trim()}
+                                </Table.Cell>
+                                <Table.Cell textAlign="center">
+                                  <Input
+                                    style={{width: 65}}
+                                    placeholder="아침 지원금"
+                                    defaultValue={
+                                      morningSupport?.length > 0
+                                        ? morningSupport?.find(
+                                            p => p.serviceDay === v?.trim(),
+                                          )?.supportPrice
+                                        : 0
+                                    }
+                                    onChange={(e, data) => {
+                                      setNowData({
+                                        ...nowData,
+                                        maxPrice: data.value
+                                          ? Number(data.value)
+                                          : null,
+                                      });
+                                    }}
+                                  />
+                                </Table.Cell>
+                                <Table.Cell textAlign="center">
+                                  <Input
+                                    style={{width: 65}}
+                                    placeholder="점심 지원금"
+                                    defaultValue={
+                                      lunchSupport?.length > 0
+                                        ? lunchSupport?.find(
+                                            p => p.serviceDay === v?.trim(),
+                                          )?.supportPrice
+                                        : 0
+                                    }
+                                    onChange={(e, data) => {
+                                      setNowData({
+                                        ...nowData,
+                                        maxPrice: data.value
+                                          ? Number(data.value)
+                                          : null,
+                                      });
+                                    }}
+                                  />
+                                </Table.Cell>
+                                <Table.Cell textAlign="center">
+                                  <Input
+                                    style={{width: 65}}
+                                    placeholder="저녁 지원금"
+                                    defaultValue={
+                                      dinnerSupport?.length > 0
+                                        ? dinnerSupport?.find(
+                                            p => p.serviceDay === v?.trim(),
+                                          )?.supportPrice
+                                        : 0
+                                    }
+                                    onChange={(e, data) => {
+                                      setNowData({
+                                        ...nowData,
+                                        maxPrice: data.value
+                                          ? Number(data.value)
+                                          : null,
+                                      });
+                                    }}
+                                  />
+                                </Table.Cell>
+                              </Table.Row>
+                            );
+                          })}
+                        </Table.Body>
+                      </Table>
+                    </div>
+                  </Form.Field>
+                </LineBox>
+              </div>}
               <div>
                 <LineBox>
                   <Form.Field>
@@ -627,13 +917,12 @@ function CorpEditModal({
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
-                            isPrepaid: data.checked
-                              ? data.checked
-                              : false
+                            isPrepaid: data.checked ? data.checked : false,
                           });
                         }}
                       />
                     </FlexBox>
+
                     <div>
                       <Table celled>
                         <Table.Header>
@@ -649,50 +938,73 @@ function CorpEditModal({
                             </Table.HeaderCell>
                           </Table.Row>
                         </Table.Header>
-                        
+
                         <Table.Body>
-                          {nowData?.prepaidCategoryList?.map((v)=>{
+                          {nowData?.prepaidCategoryList?.map(v => {
                             return (
                               <Table.Row key={v.code}>
-                                <Table.Cell textAlign="center">{preNumberFormatted(v.code)}</Table.Cell>
                                 <Table.Cell textAlign="center">
-                                  <Input 
-                                    style={{width: 50}} 
-                                    value={withCommas(v.count)} 
+                                  {preNumberFormatted(v.code)}
+                                </Table.Cell>
+                                <Table.Cell textAlign="center">
+                                  <Input
+                                    style={{width: 50}}
+                                    value={withCommas(v.count)}
                                     onChange={(e, data) => {
-                                      const priceData = nowData.categoryPrices.find((f)=>{
-                                        return f.code ===v.code
-                                      })
-                                      console.log(priceData,"price")
+                                      const priceData =
+                                        nowData.categoryPrices.find(f => {
+                                          return f.code === v.code;
+                                        });
+                                      console.log(priceData, 'price');
                                       setNowData({
                                         ...nowData,
-                                        prepaidCategoryList: nowData.prepaidCategoryList.map((change)=>{
-                                          if(change.code === v.code){
-                                            return {...change, count:Number(data.value.replace(',',''))}
-                                          }
-                                          return change;
-                                        }),
+                                        prepaidCategoryList:
+                                          nowData.prepaidCategoryList.map(
+                                            change => {
+                                              if (change.code === v.code) {
+                                                return {
+                                                  ...change,
+                                                  count: Number(
+                                                    data.value.replace(',', ''),
+                                                  ),
+                                                };
+                                              }
+                                              return change;
+                                            },
+                                          ),
                                       });
-                                    }} 
+                                    }}
                                   />
                                 </Table.Cell>
                                 <Table.Cell textAlign="center">
-                                  <Input style={{width: 100}} value={v.totalPrice} onChange={(e, data) => {
-                                      console.log(data.value)
+                                  <Input
+                                    style={{width: 100}}
+                                    value={v.totalPrice}
+                                    onChange={(e, data) => {
+                                      console.log(data.value);
                                       setNowData({
                                         ...nowData,
-                                        prepaidCategoryList: nowData.prepaidCategoryList.map((change)=>{
-                                          if(change.code === v.code){
-                                            return {...change, totalPrice:Number(data.value.replace(',',''))}
-                                          }
-                                          return change;
-                                        }),
+                                        prepaidCategoryList:
+                                          nowData.prepaidCategoryList.map(
+                                            change => {
+                                              if (change.code === v.code) {
+                                                return {
+                                                  ...change,
+                                                  totalPrice: Number(
+                                                    data.value.replace(',', ''),
+                                                  ),
+                                                };
+                                              }
+                                              return change;
+                                            },
+                                          ),
                                       });
-                                    }}  />
+                                    }}
+                                  />
                                 </Table.Cell>
                               </Table.Row>
-                            )
-                          }) }
+                            );
+                          })}
                         </Table.Body>
                       </Table>
                     </div>
@@ -725,7 +1037,7 @@ export default CorpEditModal;
 const FlexBox = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   width: ${({width}) => (width ? `${width}px` : '300px')};
 `;
 const FlexCheckBox = styled.div`

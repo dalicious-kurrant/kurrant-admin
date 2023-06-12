@@ -15,10 +15,38 @@ export function useSaveMakersAdjust() {
     },
   );
 }
+export function useGetOneMakersAdjust() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (data) => adjustApis.addMakersAdjustment(data),
+    {
+      onSuccess: res => {
+        queryClient.invalidateQueries('makersAdjustList');
+      },
+      onError: e => {
+        alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());
+      },
+    },
+  );
+}
 export function useSaveSpotsAdjust() {
   const queryClient = useQueryClient();
   return useMutation(
     (formData, config) => adjustApis.saveAdjustSpots(formData, config),
+    {
+      onSuccess: res => {
+        queryClient.invalidateQueries('spotsAdjustList');
+      },
+      onError: e => {
+        alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());
+      },
+    },
+  );
+}
+export function useGetOneSpotAdjust() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (data) => adjustApis.addSpotAdjustment(data),
     {
       onSuccess: res => {
         queryClient.invalidateQueries('spotsAdjustList');
