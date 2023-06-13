@@ -807,7 +807,9 @@ const Schedule = () => {
                               {v.foods.map(f => {
                                 return (
                                   <Table.Row key={f.foodId}>
-                                    <Table.Cell style={{maxWidth:300}}>{f.foodName}</Table.Cell>
+                                    <Table.Cell style={{maxWidth: 300}}>
+                                      {f.foodName}
+                                    </Table.Cell>
                                     <Table.Cell>{f.foodCount}</Table.Cell>
                                   </Table.Row>
                                 );
@@ -817,7 +819,9 @@ const Schedule = () => {
                                   backgroundColor: '#efefef',
                                   fontWeight: 600,
                                 }}>
-                                <Table.Cell style={{maxWidth:600}}>합계</Table.Cell>
+                                <Table.Cell style={{maxWidth: 600}}>
+                                  합계
+                                </Table.Cell>
                                 <Table.Cell textAlign="center">
                                   {v.foodCount}
                                 </Table.Cell>
