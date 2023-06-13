@@ -1,12 +1,14 @@
 import {useRef, useState} from 'react';
 import {Button, Header, Label, Table} from 'semantic-ui-react';
-import styled from 'styled-components';
+import styled, {css, useTheme} from 'styled-components';
 import {PageWrapper, TableWrapper} from '../../style/common.style';
 import {formattedWeekDate} from '../../utils/dateFormatter';
 import Select from 'react-select';
 import DiningButton from './components/DiningButton';
 import {useGetMakersList} from '../../hooks/useOrderList';
 import {useGetSalesList} from '../../hooks/useSalesList';
+import withCommas from 'utils/withCommas';
+import {groupTypeFormatted} from 'utils/statusFormatter';
 const deliveryGroupsByDates = {
   deliveryGroupsByDates: [
     {
@@ -38,9 +40,14 @@ const deliveryGroupsByDates = {
           foodBySpots: [
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 534 글라스타워 17층',
+              address2: '글라스타워 17층',
               spotName: '글라스타워 7F',
               groupName: '메드트로닉',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 730,
@@ -58,9 +65,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울특별시 강남구 테헤란로51길 21 3F 달리셔스',
+              address2: '3F 달리셔스',
               spotName: '달리셔스',
               groupName: '달리셔스',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 730,
@@ -78,9 +90,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 영동대로 302 3층 4층',
+              address2: '3층 4층',
               spotName: '롯데상사 4F',
               groupName: '롯데상사',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 734,
@@ -93,9 +110,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울특별시 강남구 영동대로 302 3F 4F',
+              address2: '3F 4F',
               spotName: '롯데상사 3F',
               groupName: '롯데상사',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 734,
@@ -108,9 +130,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울특별시 강남구 학동로 230 유빔빌딩 3F',
+              address2: '유빔빌딩 3F',
               spotName: '유빔빌딩 3F',
               groupName: '세이클',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 734,
@@ -123,9 +150,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 416 연봉빌딩 14층',
+              address2: '연봉빌딩 14층',
               spotName: '연봉빌딩 14F',
               groupName: '쓰리빌리언',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 729,
@@ -148,9 +180,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 217 오렌지플레닛, 7층',
+              address2: '오렌지플레닛, 7층',
               spotName: '오렌지플래닛 7F',
               groupName: '루센트블록',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 729,
@@ -173,9 +210,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 416 연봉빌딩 13층',
+              address2: '연봉빌딩 13층',
               spotName: '연봉빌딩 13F',
               groupName: '쓰리빌리언',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 734,
@@ -220,9 +262,14 @@ const deliveryGroupsByDates = {
           foodBySpots: [
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울특별시 강남구 영동대로 302 3F 4F',
+              address2: '3F 4F',
               spotName: '롯데상사 3F',
               groupName: '롯데상사',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 735,
@@ -235,9 +282,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 영동대로 302 3층 4층',
+              address2: '3층 4층',
               spotName: '롯데상사 4F',
               groupName: '롯데상사',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 735,
@@ -250,9 +302,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 언주로 552 5층',
+              address2: '5층',
               spotName: 'MJC 빌딩 5F',
               groupName: '도미네이트',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 735,
@@ -265,9 +322,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 217 오렌지플레닛, 7층',
+              address2: '오렌지플레닛, 7층',
               spotName: '오렌지플래닛 7F',
               groupName: '루센트블록',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 735,
@@ -280,9 +342,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 416 연봉빌딩 14층',
+              address2: '연봉빌딩 14층',
               spotName: '연봉빌딩 14F',
               groupName: '쓰리빌리언',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 729,
@@ -305,9 +372,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 427 5층 데이터독',
+              address2: '5층 데이터독',
               spotName: '위워크 선릉2호점 5F',
               groupName: '데이터독',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 729,
@@ -330,9 +402,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 534 글라스타워 17층',
+              address2: '글라스타워 17층',
               spotName: '글라스타워 7F',
               groupName: '메드트로닉',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 729,
@@ -355,9 +432,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 518 섬유센터 13층 137호',
+              address2: '섬유센터 13층 137호',
               spotName: '섬유센터 13F',
               groupName: '벤처블릭 코리아',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 731,
@@ -375,9 +457,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로 416 연봉빌딩 13층',
+              address2: '연봉빌딩 13층',
               spotName: '연봉빌딩 13F',
               groupName: '쓰리빌리언',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 731,
@@ -395,9 +482,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울특별시 강남구 테헤란로51길 21 3F 달리셔스',
+              address2: '3F 달리셔스',
               spotName: '달리셔스',
               groupName: '달리셔스',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 731,
@@ -409,9 +501,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 테헤란로51길 21 3층 달리셔스',
+              address2: '3층 달리셔스',
               spotName: '대시모빌리티',
               groupName: '대시모빌리티',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 729,
@@ -423,9 +520,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '11:20',
+              address1: '서울 강남구 언주로 552 5층',
+              address2: '5층',
               spotName: 'MJC 빌딩 5F',
               groupName: '브랜드리팩터링',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 731,
@@ -457,9 +559,14 @@ const deliveryGroupsByDates = {
           foodBySpots: [
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '12:20',
+              address1: '서울 강남구 봉은사로68길 31 지층 뷰티셀렉션',
+              address2: '지층 뷰티셀렉션',
               spotName: '은혜빌딩 지하1층',
               groupName: '뷰티셀렉션 (은혜빌딩)',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 731,
@@ -477,9 +584,14 @@ const deliveryGroupsByDates = {
             },
             {
               deliveryId: null,
+              spotType: 0,
               pickUpTime: '12:20',
+              address1: '서울 강남구 봉은사로 465 아이타워 6층',
+              address2: '아이타워 6층',
               spotName: '아이타워 6F',
               groupName: '뷰티셀렉션 (아이타워)',
+              userName: null,
+              phone: null,
               foods: [
                 {
                   foodId: 735,
@@ -588,7 +700,7 @@ const Schedule = () => {
   const [endDate, setEndDate] = useState(days);
   const [diningSelect, setDiningSelect] = useState([0, 1, 2]);
   const [makersOption, setMakersOption] = useState('');
-
+  const themeApp = useTheme();
   const {data: makersList} = useGetMakersList();
 
   const types =
@@ -622,7 +734,7 @@ const Schedule = () => {
   const loadButton = () => {
     refetch();
   };
-  const totalFood = salesList?.data?.totalFoods;
+  const totalFood = deliveryGroupsByDates?.totalFoods;
 
   const totalCount = totalFood
     ?.map(el => el.totalFoodCount)
@@ -636,7 +748,14 @@ const Schedule = () => {
       label: el.makersName,
     };
   });
-
+  const spotContentsText = (text1, text2) => {
+    return (
+      <ContentsDetailLabelWrap>
+        <ContentsDetailLabel>{text1} :</ContentsDetailLabel>
+        <ContentsDetailLabel2>{text2}</ContentsDetailLabel2>
+      </ContentsDetailLabelWrap>
+    );
+  };
   return (
     <Wrapper>
       <Header as="h2">기간별 판매 내역</Header>
@@ -686,7 +805,7 @@ const Schedule = () => {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {salesList?.data?.totalFoods?.map((el, i) => {
+                {deliveryGroupsByDates?.totalFoods?.map((el, i) => {
                   return (
                     <Table.Row key={el.foodName + i}>
                       <Table.Cell>
@@ -719,7 +838,7 @@ const Schedule = () => {
             </Table>
           </TotalTable>
           <DetailTable>
-            {salesList?.data?.foodByDateDiningTypes.map((el, i) => {
+            {deliveryGroupsByDates?.foodByDateDiningTypes?.map((el, i) => {
               const test = totalFood.map(s => {
                 return el.foods.filter(v => v.foodId === s.foodId)[0];
               });
@@ -770,10 +889,7 @@ const Schedule = () => {
           const spotTotal = el.spotCount;
           return (
             <MakersTable key={idx}>
-              <BoldText>
-                {el.serviceDate + `\u00A0` + el.diningType} ( {spotTotal}개 상세
-                스팟)
-              </BoldText>
+              <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
               <DateLine />
               <DiningTypeWrap>
                 <MealDetailWrap>
@@ -781,54 +897,32 @@ const Schedule = () => {
                     const deliveryCount = v.foodBySpots?.length || 0;
                     return (
                       <MealDetail key={index}>
-                        <TimeWrap>
-                          <TimeBox>
-                            배송 시간{' '}
-                            <TimeBoxTime>({v.deliveryTime})</TimeBoxTime>
-                          </TimeBox>
-                          <TimeBox>
-                            총 배송지{' '}
-                            <TimeBoxTime>({deliveryCount}개)</TimeBoxTime>
-                          </TimeBox>
-                        </TimeWrap>
-                        <TimeWrap2>
-                          <Table celled>
-                            <Table.Header>
-                              <Table.Row>
-                                <Table.HeaderCell textAlign="center">
-                                  상품명
-                                </Table.HeaderCell>
-                                <Table.HeaderCell textAlign="center">
-                                  총 수량
-                                </Table.HeaderCell>
-                              </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                              {v.foods.map(f => {
-                                return (
-                                  <Table.Row key={f.foodId}>
-                                    <Table.Cell style={{maxWidth: 300}}>
-                                      {f.foodName}
-                                    </Table.Cell>
-                                    <Table.Cell>{f.foodCount}</Table.Cell>
-                                  </Table.Row>
-                                );
-                              })}
-                              <Table.Row
-                                style={{
-                                  backgroundColor: '#efefef',
-                                  fontWeight: 600,
-                                }}>
-                                <Table.Cell style={{maxWidth: 600}}>
-                                  합계
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  {v.foodCount}
-                                </Table.Cell>
-                              </Table.Row>
-                            </Table.Body>
-                          </Table>
-                        </TimeWrap2>
+                        <TimeWrapContainer>
+                          <TimeWrap>
+                            <TimeBox>
+                              도착 완료 시간
+                              <TimeBoxTime>{v.deliveryTime}</TimeBoxTime>
+                            </TimeBox>
+                            <TimeBox>
+                              총 주문수량
+                              <TimeBoxTime>{deliveryCount}개</TimeBoxTime>
+                            </TimeBox>
+                          </TimeWrap>
+                          <TotalFoodWrap>
+                            {v.foods.map(f => {
+                              return (
+                                <TotalFoodItems key={f.foodId}>
+                                  <FoodItemName>{f.foodName}</FoodItemName>
+                                  <FoodCount>{f.foodCount} 개</FoodCount>
+                                </TotalFoodItems>
+                              );
+                            })}
+                            <TotalFoodCount>
+                              총 {withCommas(v.foodCount)} 개
+                            </TotalFoodCount>
+                          </TotalFoodWrap>
+                        </TimeWrapContainer>
+
                         <MealDetailTimeWrap>
                           {v.foodBySpots.map((spot, i) => {
                             let foodTotalCount = 0;
@@ -836,83 +930,59 @@ const Schedule = () => {
                               <TableWrap key={i}>
                                 <TableBox>
                                   <LabelWrap>
-                                    <div>
-                                      <Label
-                                        content={`배송 ID: ${spot.deliveryId} `}
-                                        color="blue"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label
-                                        content={`예상 픽업 시간: ${spot.pickUpTime} `}
-                                        color="black"
-                                      />
-                                    </div>
-                                    <div style={{marginTop: 4}}>
-                                      <Label
-                                        content={`배송지: ${spot.spotName} `}
-                                        color="blue"
-                                      />
-                                    </div>
-                                    <div style={{marginTop: 4}}>
-                                      <Label
-                                        content={spot.groupName}
-                                        color="green"
-                                      />
-                                    </div>
+                                    <SpotLabel spot={spot.spotType}>
+                                      {groupTypeFormatted(spot.spotType)}
+                                    </SpotLabel>
+                                    <TitleIdLabel
+                                      spot={
+                                        spot.spotType
+                                      }>{`배송 번호: ${spot.deliveryId} `}</TitleIdLabel>
+                                    {spot.pickUpTime &&
+                                      spotContentsText(
+                                        '예상 픽업',
+                                        spot.pickUpTime,
+                                      )}
+                                    {spot.address1 &&
+                                      spotContentsText('도로명', spot.address1)}
+                                    {spot.address2 &&
+                                      spotContentsText('지번', spot.address2)}
+                                    {spot.groupName &&
+                                      spotContentsText(
+                                        '스팟명',
+                                        spot.groupName,
+                                      )}
+                                    {spot.spotName &&
+                                      spotContentsText(
+                                        '배송스팟명',
+                                        spot.spotName,
+                                      )}
+                                    {spot.userName &&
+                                      spotContentsText(
+                                        '유저이름',
+                                        spot.userName,
+                                      )}
+                                    {spot.phone &&
+                                      spotContentsText('전화번호', spot.phone)}
                                   </LabelWrap>
-                                  <Table celled>
-                                    <Table.Header>
-                                      <Table.Row>
-                                        <Table.HeaderCell textAlign="center">
-                                          상품명
-                                        </Table.HeaderCell>
-                                        <Table.HeaderCell textAlign="center">
-                                          수량
-                                        </Table.HeaderCell>
-                                      </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                      {spot.foods.map((food, index) => {
-                                        foodTotalCount =
-                                          foodTotalCount + food.foodCount;
-                                        return (
-                                          <Table.Row
-                                            key={
-                                              spot.spotId +
-                                              spot.spotName +
-                                              food.foodName +
-                                              index +
-                                              i +
-                                              idx
-                                            }>
-                                            <Table.Cell>
-                                              <div style={{width: 150}}>
-                                                {food.foodName}
-                                              </div>
-                                            </Table.Cell>
-                                            <Table.Cell textAlign="center">
-                                              <div style={{width: 50}}>
-                                                {food.foodCount}
-                                              </div>
-                                            </Table.Cell>
-                                          </Table.Row>
-                                        );
-                                      })}
-                                      <Table.Row
-                                        style={{
-                                          backgroundColor: '#efefef',
-                                          fontWeight: 600,
-                                        }}>
-                                        <Table.Cell>합계</Table.Cell>
-                                        <Table.Cell textAlign="center">
-                                          <div style={{width: 50}}>
-                                            {foodTotalCount}
-                                          </div>
-                                        </Table.Cell>
-                                      </Table.Row>
-                                    </Table.Body>
-                                  </Table>
+                                  <Line />
+                                  {spot.foods.map((food, index) => {
+                                    return (
+                                      <TotalFoodItems2 key={food.foodId}>
+                                        <FoodItemName2>
+                                          {food.foodName}
+                                        </FoodItemName2>
+                                        <FoodCount2>
+                                          {food.foodCount} 개
+                                        </FoodCount2>
+                                      </TotalFoodItems2>
+                                    );
+                                  })}
+                                  <TotalSpotFoodItem>
+                                    <FoodItemName2>총 수량</FoodItemName2>
+                                    <FoodCount2>
+                                      {withCommas(spot.foodCount)} 개
+                                    </FoodCount2>
+                                  </TotalSpotFoodItem>
                                 </TableBox>
                               </TableWrap>
                             );
@@ -949,7 +1019,56 @@ const DateInput = styled.input`
   border-radius: 4px;
   border: 1px solid #bdbac1;
 `;
-
+const TotalFoodItems = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 13px;
+`;
+const FoodItemName = styled.div`
+  max-width: 150px;
+`;
+const FoodCount = styled.div`
+  flex-wrap: nowrap;
+  white-space: nowrap;
+`;
+const TotalFoodItems2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 400;
+  font-size: 14px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+`;
+const TotalSpotFoodItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  padding-top: 12px;
+`;
+const FoodItemName2 = styled.div`
+  max-width: 215px;
+`;
+const FoodCount2 = styled.div`
+  flex-wrap: nowrap;
+  white-space: nowrap;
+`;
+const Line = styled.div`
+  height: 1px;
+  background-color: #f5f5f5;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  width: 100%;
+`;
+const TotalFoodCount = styled.div`
+  font-weight: 400;
+  align-self: flex-end;
+  font-size: 13px;
+`;
 const CalendarWrap = styled.div`
   display: flex;
   align-items: center;
@@ -985,6 +1104,7 @@ const MealDetailTimeWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 10px;
+  gap: 40px;
 `;
 
 const DiningTypeWrap = styled.div`
@@ -1002,33 +1122,48 @@ const ButtonWrap = styled.div`
 
 const TableWrap = styled.div`
   display: flex;
+  max-width: 306px;
+  padding: 24px;
+  border: 1px solid #f5f5f5;
+  border-radius: 8px;
+`;
+const TimeWrapContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-family: 'Pretendard';
+  min-width: 207px;
+  margin-right: 48px;
 `;
 const TimeWrap = styled.div`
   display: flex;
-  flex-direction: column;
-  padding-left: 30px;
-  padding-right: 30px;
+  justify-content: space-between;
+  font-family: 'Pretendard';
+  min-width: 207px;
 `;
-const TimeWrap2 = styled.div`
+const TotalFoodWrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 30px;
-  padding-right: 30px;
-  min-width: 300px;
-  max-width: 300px;
+  padding: 16px;
+  margin-top: 24px;
+  background-color: #f5f5f5;
+  gap: 8px;
 `;
 const TimeBox = styled.div`
   display: flex;
   flex-wrap: nowrap;
   white-space: nowrap;
-  font-size: 30px;
-  align-items: flex-end;
+  font-size: 16px;
+  font-weight: 400;
+  align-items: flex-start;
+  flex-direction: column;
 `;
 const TimeBoxTime = styled.div`
   display: flex;
   flex-wrap: nowrap;
   white-space: nowrap;
-  font-size: 25px;
+  font-weight: 600;
+  margin-top: 4px;
+  font-size: 20px;
 `;
 const BoldText = styled.span`
   font-weight: 700;
@@ -1042,7 +1177,58 @@ const DateLine = styled.div`
 const LabelWrap = styled.div`
   min-width: 250px;
 `;
+const SpotLabel = styled.label`
+  font-size: 12px;
+  font-weight: 400;
+  padding: 2px 4px;
+  letter-spacing: -0.5px;
+  border-radius: 4px;
+  ${({spot, theme}) => {
+    if (spot === 0)
+      return css`
+        color: ${theme.colors.blue[500]};
+        background-color: ${theme.colors.blue[100]};
+      `;
+    return css`
+      color: ${theme.colors.pink[500]};
+      background-color: ${theme.colors.pink[100]};
+    `;
+  }}
+`;
+const TitleIdLabel = styled.div`
+  display: flex;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-family: 'Pretendard';
+  font-size: 20px;
+  font-weight: 600;
 
+  color: ${({spot, theme}) =>
+    spot === 0 ? theme.colors.blue[500] : theme.colors.pink[500]};
+`;
+const ContentsDetailLabel = styled.div`
+  display: flex;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-family: 'Pretendard';
+  font-size: 14px;
+  font-weight: 600;
+  color: #343337;
+`;
+const ContentsDetailLabel2 = styled.div`
+  display: flex;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-family: 'Pretendard';
+  font-size: 14px;
+  font-weight: 600;
+  color: #343337;
+`;
+const ContentsDetailLabelWrap = styled.div`
+  display: flex;
+  gap: 5px;
+`;
 const FoodName = styled.div`
   white-space: nowrap;
   overflow: hidden;
