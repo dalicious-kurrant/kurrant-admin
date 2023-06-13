@@ -192,7 +192,7 @@ const CorpTable = ({
                 저녁 지원금
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
-              
+
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
@@ -206,7 +206,7 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 멤버십 종료 날짜
               </Table.HeaderCell>
-              
+
               <Table.HeaderCell textAlign="center">사원수</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 식사 세팅 지원 <br />
@@ -247,7 +247,7 @@ const CorpTable = ({
               const dinnerData = el.mealInfos.find(
                 morning => morning.diningType === 3,
               );
-              console.log(morningData, lunchData, dinnerData);
+              // console.log(morningData, lunchData, dinnerData);
               return (
                 <Table.Row
                   key={el.id + idx}
@@ -268,7 +268,12 @@ const CorpTable = ({
                   <Table.Cell>{el.address1}</Table.Cell>
                   <Table.Cell>{el.address2}</Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 80}}>{el.location}</div>
+                    <div
+                      style={{
+                        width: 'auto',
+                      }}>
+                      {el.location}
+                    </div>
                   </Table.Cell>
                   <Table.Cell>
                     <div>
@@ -337,7 +342,7 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell>
-                  <div>
+                    <div>
                       <div
                         style={{
                           width: 'auto',
@@ -370,7 +375,7 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell>
-                  <div>
+                    <div>
                       <div
                         style={{
                           width: 'auto',
@@ -403,56 +408,68 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell>
-                    {morningData?.supportPriceByDays && morningData?.supportPriceByDays?.map((data)=>{
-                      return (
-                        <div
-                        style={{
-                          width: 'auto',
-                          height: 15,
-                          marginTop:5,
-                          whiteSpace: 'nowrap',
-                        }}>
-                        {data?.serviceDay &&
-                          data?.serviceDay+': ' + withCommas(data?.supportPrice)}
-                      </div>
-                      )
-                    })}
+                    {morningData?.supportPriceByDays &&
+                      morningData?.supportPriceByDays?.map(data => {
+                        return (
+                          <div
+                            key={el.id + data.serviceDay + data.supportPrice}
+                            style={{
+                              width: 'auto',
+                              height: 15,
+                              marginTop: 5,
+                              whiteSpace: 'nowrap',
+                            }}>
+                            {data?.serviceDay &&
+                              data?.serviceDay +
+                                ': ' +
+                                withCommas(data?.supportPrice)}
+                          </div>
+                        );
+                      })}
                   </Table.Cell>
                   <Table.Cell>
-                  {lunchData?.supportPriceByDays && lunchData?.supportPriceByDays?.map((data)=>{
-                      return (
-                        <div
-                        style={{
-                          width: 'auto',
-                          height: 15,
-                          marginTop:5,
-                          whiteSpace: 'nowrap',
-                        }}>
-                        {data?.serviceDay &&
-                          data?.serviceDay+': ' + withCommas(data?.supportPrice)}
-                      </div>
-                      )
-                    })}
+                    {lunchData?.supportPriceByDays &&
+                      lunchData?.supportPriceByDays?.map(data => {
+                        return (
+                          <div
+                            key={el.id + data.serviceDay + data.supportPrice}
+                            style={{
+                              width: 'auto',
+                              height: 15,
+                              marginTop: 5,
+                              whiteSpace: 'nowrap',
+                            }}>
+                            {data?.serviceDay &&
+                              data?.serviceDay +
+                                ': ' +
+                                withCommas(data?.supportPrice)}
+                          </div>
+                        );
+                      })}
                   </Table.Cell>
                   <Table.Cell>
-                  {dinnerData?.supportPriceByDays && dinnerData?.supportPriceByDays?.map((data)=>{
-                      return (
-                        <div
-                        style={{
-                          width: 'auto',
-                          height: 15,
-                          marginTop:5,
-                          whiteSpace: 'nowrap',
-                        }}>
-                        {data?.serviceDay &&
-                          data?.serviceDay+': ' + withCommas(data?.supportPrice)}
-                      </div>
-                      )
-                    })}
+                    {dinnerData?.supportPriceByDays &&
+                      dinnerData?.supportPriceByDays?.map(data => {
+                        return (
+                          <div
+                            key={el.id + data.serviceDay + data.supportPrice}
+                            style={{
+                              width: 'auto',
+                              height: 15,
+                              marginTop: 5,
+                              whiteSpace: 'nowrap',
+                            }}>
+                            {data?.serviceDay &&
+                              data?.serviceDay +
+                                ': ' +
+                                withCommas(data?.supportPrice)}
+                          </div>
+                        );
+                      })}
                   </Table.Cell>
-               
+
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
-                
+
                   <Table.Cell>
                     <div style={{width: 120}}>{el.serviceDays}</div>
                   </Table.Cell>
