@@ -778,35 +778,54 @@ const Schedule = () => {
               <DiningTypeWrap>
                 <MealDetailWrap>
                   {el.deliveryGroups.map((v, index) => {
-                    const deliveryCount = v.foodBySpots?.length || 0
+                    const deliveryCount = v.foodBySpots?.length || 0;
                     return (
                       <MealDetail key={index}>
                         <TimeWrap>
-                          <TimeBox>배송 시간 <TimeBoxTime>({v.deliveryTime})</TimeBoxTime></TimeBox>
-                          <TimeBox>총 배송지 <TimeBoxTime>({deliveryCount}개)</TimeBoxTime></TimeBox>
+                          <TimeBox>
+                            배송 시간{' '}
+                            <TimeBoxTime>({v.deliveryTime})</TimeBoxTime>
+                          </TimeBox>
+                          <TimeBox>
+                            총 배송지{' '}
+                            <TimeBoxTime>({deliveryCount}개)</TimeBoxTime>
+                          </TimeBox>
                         </TimeWrap>
                         <TimeWrap2>
-                        <Table celled>
-                                    <Table.Header>
-                                      <Table.Row>
-                                        <Table.HeaderCell textAlign="center">
-                                          상품명
-                                        </Table.HeaderCell>
-                                        <Table.HeaderCell textAlign="center">
-                                          총 수량
-                                        </Table.HeaderCell>
-                                      </Table.Row>
-                                    </Table.Header>
-                                    <Table.Body>
-                                    <Table.Row>
-                                      <Table.Cell>
-
-                                      </Table.Cell>
-                                    </Table.Row>
-                                    </Table.Body>
-                                    </Table>
+                          <Table celled>
+                            <Table.Header>
+                              <Table.Row>
+                                <Table.HeaderCell textAlign="center">
+                                  상품명
+                                </Table.HeaderCell>
+                                <Table.HeaderCell textAlign="center">
+                                  총 수량
+                                </Table.HeaderCell>
+                              </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                              {v.foods.map(f => {
+                                return (
+                                  <Table.Row key={f.foodId}>
+                                    <Table.Cell style={{maxWidth:300}}>{f.foodName}</Table.Cell>
+                                    <Table.Cell>{f.foodCount}</Table.Cell>
+                                  </Table.Row>
+                                );
+                              })}
+                              <Table.Row
+                                style={{
+                                  backgroundColor: '#efefef',
+                                  fontWeight: 600,
+                                }}>
+                                <Table.Cell style={{maxWidth:600}}>합계</Table.Cell>
+                                <Table.Cell textAlign="center">
+                                  {v.foodCount}
+                                </Table.Cell>
+                              </Table.Row>
+                            </Table.Body>
+                          </Table>
                         </TimeWrap2>
-                        <MealDetailTimeWrap >
+                        <MealDetailTimeWrap>
                           {v.foodBySpots.map((spot, i) => {
                             let foodTotalCount = 0;
                             return (
@@ -815,24 +834,26 @@ const Schedule = () => {
                                   <LabelWrap>
                                     <div>
                                       <Label
-                                        content={`상세 스팟 ID: ${spot.deliveryId} `}
+                                        content={`배송 ID: ${spot.deliveryId} `}
                                         color="blue"
                                       />
                                     </div>
-                                    <div style={{marginTop: 4}}>
+                                    <div>
                                       <Label
-                                        content={`상세 스팟 이름: ${spot.spotName} `}
-                                        color="blue"
-                                      />
-                                    </div>
-                                    <div style={{marginTop: 4}}>
-                                      <Label
-                                        content={v.groupName}
-                                        color="green"
-                                      />
-                                      <Label
-                                        content={spot.pickupTime}
+                                        content={`예상 픽업 시간: ${spot.pickUpTime} `}
                                         color="black"
+                                      />
+                                    </div>
+                                    <div style={{marginTop: 4}}>
+                                      <Label
+                                        content={`배송지: ${spot.spotName} `}
+                                        color="blue"
+                                      />
+                                    </div>
+                                    <div style={{marginTop: 4}}>
+                                      <Label
+                                        content={spot.groupName}
+                                        color="green"
                                       />
                                     </div>
                                   </LabelWrap>
@@ -977,18 +998,20 @@ const ButtonWrap = styled.div`
 
 const TableWrap = styled.div`
   display: flex;
-  //margin-right: 5px;
 `;
 const TimeWrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px;
-  background-color: gold;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 const TimeWrap2 = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  min-width: 300px;
+  max-width: 300px;
 `;
 const TimeBox = styled.div`
   display: flex;
