@@ -4,7 +4,7 @@ export const corporationApis = {
   corporationInfo: async (limit, page, name) =>
     await instance.get(`groups?limit=${limit}&page=${page}${name}`),
     corporationInfoDetail: async (spotId) =>
-    await instance.get(`groups/detail?spotId=${spotId}`),
+    await instance.get(`groups/detail?groupId=${spotId}`),
   corporationExportInfo: async () => await instance.get(`groups/excels`),
   corporationExel: async data => await instance.post('groups/excel', data),
   updateSpotDetail: async data =>

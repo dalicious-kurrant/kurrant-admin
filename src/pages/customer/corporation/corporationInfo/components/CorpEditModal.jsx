@@ -19,35 +19,35 @@ import {
 import withCommas from 'utils/withCommas';
 const data = [
   {
-      "diningType": 2,
-      "deliveryTimes": "12:00,12:30,13:00,13:30",
-      "membershipBenefitTime": "0일전 10:00",
-      "lastOrderTime": "0일전 10:00",
-      "serviceDays": "월, 화, 수, 목, 금",
-      "supportPriceByDays": [
-          {
-              "serviceDay": "금",
-              "supportPrice": 10000
-          },
-          {
-              "serviceDay": "목",
-              "supportPrice": 10000
-          },
-          {
-              "serviceDay": "수",
-              "supportPrice": 10000
-          },
-          {
-              "serviceDay": "월",
-              "supportPrice": 10000
-          },
-          {
-              "serviceDay": "화",
-              "supportPrice": 10000
-          }
-      ]
-  }
-]
+    diningType: 2,
+    deliveryTimes: '12:00,12:30,13:00,13:30',
+    membershipBenefitTime: '0일전 10:00',
+    lastOrderTime: '0일전 10:00',
+    serviceDays: '월, 화, 수, 목, 금',
+    supportPriceByDays: [
+      {
+        serviceDay: '금',
+        supportPrice: 10000,
+      },
+      {
+        serviceDay: '목',
+        supportPrice: 10000,
+      },
+      {
+        serviceDay: '수',
+        supportPrice: 10000,
+      },
+      {
+        serviceDay: '월',
+        supportPrice: 10000,
+      },
+      {
+        serviceDay: '화',
+        supportPrice: 10000,
+      },
+    ],
+  },
+];
 function CorpEditModal({
   open,
   setOpen,
@@ -59,41 +59,21 @@ function CorpEditModal({
   setTestData,
 }) {
   const {mutateAsync: updateSpotDetail} = useUpdateSpotDetail();
-
+  const week = ['월', '화', '수', '목', '금', '토', '일'];
+  console.log(nowData);
+  const updateMealinfoData = (nullData,diningData,mealInfos)=>{
+    if(diningData === null){
+      return setNowData({...nowData,mealInfos:[...nowData.mealInfos,nullData]})
+    }
+    return setNowData({
+      ...nowData,
+      mealInfos: mealInfos,
+    });
+  }
   const onSubmit = async () => {
-    const req = {
-      spotId: nowData.spotId,
-      code: nowData.code,
-      spotName: nowData.spotName,
-      managerName: nowData.managerName,
-      managerId: nowData.managerId,
-      employeeCount: nowData.employeeCount,
-      managerPhone: nowData.managerPhone,
-      spotType: nowData.spotType,
-      diningTypes: nowData.diningTypes,
-      serviceDays: nowData.serviceDays,
-      supportDays: nowData.supportDays,
-      notSupportDays: nowData.notSupportDays,
-      zipCode: nowData.zipCode,
-      isMembershipSupport: nowData.isMembershipSupport,
-      address1: nowData.address1,
-      address2: nowData.address2,
-      breakfastSupportPrice: nowData.breakfastSupportPrice || 0,
-      lunchSupportPrice: nowData.lunchSupportPrice || 0,
-      dinnerSupportPrice: nowData.dinnerSupportPrice || 0,
-      location: nowData.location,
-      minPrice: nowData.minPrice,
-      maxPrice: nowData.maxPrice,
-      isSetting: nowData.isSetting,
-      isGarbage: nowData.isGarbage,
-      isHotStorage: nowData.isHotStorage,
-      isPrepaid: nowData.isPrepaid,
-      memo: nowData.memo,
-      prepaidCategoryList: nowData.prepaidCategoryList,
-    };
-
-    try {
-      await updateSpotDetail(req);
+    console.log(nowData,'nowData')
+      try {
+      await updateSpotDetail(nowData);
       setNowData();
       setClickId();
       refetch();
@@ -102,18 +82,25 @@ function CorpEditModal({
       alert(error.toString());
     }
   };
-  console.log(nowData)
-  const supportPrice = nowData?.mealInfos?.map((v)=>{
-    return v.supportPriceByDays !== null && v.supportPriceByDays.map((price)=>{
-      return {diningType:v.diningType, serviceDay:price.serviceDay, supportPrice:price.supportPrice}
-    })
+  // console.log(nowData);
+  const supportPrice = nowData?.mealInfos?.map(v => {
+    return (
+      v.supportPriceByDays !== null &&
+      v.supportPriceByDays.map(price => {
+        return {
+          diningType: v.diningType,
+          serviceDay: price.serviceDay,
+          supportPrice: price.supportPrice,
+        };
+      })
+    );
   });
-  const morningFilter = nowData?.mealInfos?.filter((v)=>v.diningType===1);
-  const lunchFilter = nowData?.mealInfos?.filter((v)=>v.diningType===2);
-  const dinnerFilter = nowData?.mealInfos?.filter((v)=>v.diningType===3);
-  const morningData = morningFilter?.length > 0 ? morningFilter[0]: null;
-  const lunchData = lunchFilter?.length > 0 ? lunchFilter[0]: null;
-  const dinnerData =dinnerFilter?.length > 0 ? dinnerFilter[0]: null;
+  const morningFilter = nowData?.mealInfos?.filter(v => v.diningType === 1);
+  const lunchFilter = nowData?.mealInfos?.filter(v => v.diningType === 2);
+  const dinnerFilter = nowData?.mealInfos?.filter(v => v.diningType === 3);
+  const morningData = morningFilter?.length > 0 ? morningFilter[0] : null;
+  const lunchData = lunchFilter?.length > 0 ? lunchFilter[0] : null;
+  const dinnerData = dinnerFilter?.length > 0 ? dinnerFilter[0] : null;
   // console.log(supportPrice)
   // const supportPrice = [
   //   [
@@ -128,7 +115,7 @@ function CorpEditModal({
   return (
     <Form onSubmit={onSubmit}>
       <Modal
-        style={{width:'auto'}}
+        style={{width: 'auto'}}
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}>
@@ -146,7 +133,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 50}}
                         placeholder="그룹 ID"
-                        defaultValue={nowData.spotId}
+                        defaultValue={nowData.id|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -164,7 +151,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 80}}
                         placeholder="기업 코드"
-                        defaultValue={nowData.code}
+                        defaultValue={nowData.code|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -181,7 +168,7 @@ function CorpEditModal({
                       </LabelBox>
                       <Input
                         placeholder="담당자"
-                        defaultValue={nowData.managerName}
+                        defaultValue={nowData.managerName|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -198,7 +185,7 @@ function CorpEditModal({
                       </LabelBox>
                       <Input
                         placeholder="담당자 번호"
-                        defaultValue={nowData.managerPhone}
+                        defaultValue={nowData.managerPhone|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -218,12 +205,12 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="스팟 타입"
-                        defaultValue={groupTypeFormatted(nowData.spotType)}
+                        defaultValue={groupTypeFormatted(nowData.spotType)|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
                             spotType: data.value
-                              ? groupTypeFormatted2(data.value) 
+                              ? groupTypeFormatted2(data.value)
                               : null,
                           });
                         }}
@@ -237,7 +224,7 @@ function CorpEditModal({
                       </LabelBox>
                       <Input
                         placeholder="담당자 ID"
-                        defaultValue={nowData.managerId}
+                        defaultValue={nowData.managerId|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -254,7 +241,7 @@ function CorpEditModal({
                       </LabelBox>
                       <Input
                         placeholder="사원수"
-                        defaultValue={nowData.employeeCount}
+                        defaultValue={nowData.employeeCount|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -276,11 +263,11 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="이름"
-                        defaultValue={nowData.spotName}
+                        defaultValue={nowData.name|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
-                            spotName: data.value ? data.value : null,
+                            name: data.value ? data.value : null,
                           });
                         }}
                       />
@@ -293,7 +280,7 @@ function CorpEditModal({
                       </LabelBox>
                       <Input
                         placeholder="식사타입"
-                        defaultValue={nowData.diningTypes}
+                        defaultValue={nowData.diningTypes|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -310,7 +297,7 @@ function CorpEditModal({
                       </LabelBox>
                       <Input
                         placeholder="식사요일"
-                        defaultValue={nowData.serviceDays}
+                        defaultValue={nowData.serviceDays|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -330,7 +317,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="우편번호"
-                        defaultValue={nowData.zipCode}
+                        defaultValue={nowData.zipCode|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -349,7 +336,7 @@ function CorpEditModal({
                         style={{
                           fontSize: 12,
                         }}
-                        checked={nowData.isMembershipSupport}
+                        checked={nowData.isMembershipSupport|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -369,7 +356,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 200}}
                         placeholder="멤버십 종료 날짜"
-                        defaultValue={nowData.membershipEndDate}
+                        defaultValue={nowData.membershipEndDate|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -389,7 +376,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="기본주소"
-                        defaultValue={nowData.address1}
+                        defaultValue={nowData.address1|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -407,7 +394,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="상세주소"
-                        defaultValue={nowData.address2}
+                        defaultValue={nowData.address2|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -425,7 +412,7 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="위치"
-                        defaultValue={nowData.location}
+                        defaultValue={nowData.location|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -501,7 +488,7 @@ function CorpEditModal({
                         <Input
                           style={{width: 350}}
                           placeholder="최소 구매 가능 금액"
-                          defaultValue={nowData.minPrice}
+                          defaultValue={nowData.minPrice||''}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
@@ -519,7 +506,7 @@ function CorpEditModal({
                         <Input
                           style={{width: 350}}
                           placeholder="최대 구매 가능 금액"
-                          defaultValue={nowData.maxPrice}
+                          defaultValue={nowData.maxPrice||''}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
@@ -540,12 +527,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="아침 주문 요일"
-                        defaultValue={morningData?.serviceDays}
+                        defaultValue={morningData?.serviceDays||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 1) {
+                              return {
+                                ...info,
+                                serviceDays: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 1,
+                            lastOrderTime: null,
+                            membershipBenefitTime: null,
+                            serviceDays: data.value ? data.value : null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,morningData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -558,12 +559,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="아침 주문 마감시간"
-                        defaultValue={morningData?.lastOrderTime}
+                        defaultValue={morningData?.lastOrderTime||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 1) {
+                              return {
+                                ...info,
+                                lastOrderTime: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 1,
+                            lastOrderTime: data.value ? data.value : null,
+                            membershipBenefitTime: null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,morningData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -580,10 +595,24 @@ function CorpEditModal({
                         placeholder="점심 주문 요일"
                         defaultValue={lunchData?.serviceDays}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 2) {
+                              return {
+                                ...info,
+                                serviceDays: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 2,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: null,
+                            serviceDays:data.value ? data.value : null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,lunchData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -596,12 +625,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="점심 주문 마감시간"
-                        defaultValue={lunchData?.lastOrderTime}
+                        defaultValue={lunchData?.lastOrderTime||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 2) {
+                              return {
+                                ...info,
+                                lastOrderTime: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 2,
+                            lastOrderTime: data.value ? data.value : null,
+                            membershipBenefitTime: null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,lunchData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -616,12 +659,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="져녁 주문 요일"
-                        defaultValue={dinnerData?.serviceDays}
+                        defaultValue={dinnerData?.serviceDays||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 3) {
+                              return {
+                                ...info,
+                                serviceDays: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 3,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: null,
+                            serviceDays:data.value ? data.value : null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,dinnerData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -634,12 +691,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="져녁 주문 마감시간"
-                        defaultValue={dinnerData?.lastOrderTime}
+                        defaultValue={dinnerData?.lastOrderTime||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 3) {
+                              return {
+                                ...info,
+                                lastOrderTime: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 3,
+                            lastOrderTime: data.value ? data.value : null,
+                            membershipBenefitTime: null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,dinnerData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -654,12 +725,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="아침 배송시간"
-                        defaultValue={morningData?.deliveryTimes}
+                        defaultValue={morningData?.deliveryTimes||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 1) {
+                              return {
+                                ...info,
+                                deliveryTimes: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: data.value ? data.value : null,
+                            diningType: 1,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,morningData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -672,12 +757,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="아침멤버십마감시간"
-                        defaultValue={morningData?.membershipBenefitTime}
+                        defaultValue={morningData?.membershipBenefitTime||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 1) {
+                              return {
+                                ...info,
+                                membershipBenefitTime: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: null,
+                            diningType: 1,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: data.value ? data.value : null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,morningData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -692,12 +791,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="점심 배송시간"
-                        defaultValue={lunchData?.deliveryTimes}
+                        defaultValue={lunchData?.deliveryTimes||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 2) {
+                              return {
+                                ...info,
+                                deliveryTimes: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: data.value ? data.value : null,
+                            diningType: 2,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,lunchData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -710,12 +823,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="점심멤버십마감시간"
-                        defaultValue={lunchData?.membershipBenefitTime}
+                        defaultValue={lunchData?.membershipBenefitTime||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 2) {
+                              return {
+                                ...info,
+                                membershipBenefitTime: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes:null,
+                            diningType: 2,
+                            lastOrderTime:  null,
+                            membershipBenefitTime:  data.value ? data.value : null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,lunchData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -730,12 +857,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="져녁 배송시간"
-                        defaultValue={dinnerData?.deliveryTimes}
+                        defaultValue={dinnerData?.deliveryTimes||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 3) {
+                              return {
+                                ...info,
+                                deliveryTimes: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes: data.value ? data.value : null,
+                            diningType: 3,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,dinnerData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -748,12 +889,26 @@ function CorpEditModal({
                       <Input
                         style={{width: 300}}
                         placeholder="져녁멤버십마감시간"
-                        defaultValue={dinnerData?.membershipBenefitTime}
+                        defaultValue={dinnerData?.membershipBenefitTime||''}
                         onChange={(e, data) => {
-                          setNowData({
-                            ...nowData,
-                            spotName: data.value ? data.value : null,
-                          });
+                          const updateData = nowData.mealInfos.map(info => {
+                            if (info.diningType === 3) {
+                              return {
+                                ...info,
+                                membershipBenefitTime: data.value ? data.value : null,
+                              };
+                            }
+                            return info;
+                          })
+                          const nullData = {
+                            deliveryTimes:  null,
+                            diningType: 3,
+                            lastOrderTime:  null,
+                            membershipBenefitTime: data.value ? data.value : null,
+                            serviceDays: null,
+                            supportPriceByDays: null,
+                          };
+                          return updateMealinfoData(nullData,dinnerData,updateData)
                         }}
                       />
                     </FlexBox>
@@ -776,7 +931,7 @@ function CorpEditModal({
                       }}
                       rows={4}
                       placeholder="메모"
-                      defaultValue={nowData.memo}
+                      defaultValue={nowData.memo||''}
                       onChange={(e, data) => {
                         setNowData({
                           ...nowData,
@@ -788,120 +943,177 @@ function CorpEditModal({
                 </Form.Field>
                 <LineBox></LineBox>
               </div>
-              {supportPrice[0] && <div style={{marginRight: 20}}>
-                <LineBox>
-                  <Form.Field>
-                    <div>
-                      <LabelCheckBox style={{width: 70}}>
-                        <Label size="mini">지원금</Label>
-                      </LabelCheckBox>
-                      <Table celled>
-                        <Table.Header>
-                          <Table.Row>
-                            <Table.HeaderCell textAlign="center">
-                              지원 요일
-                            </Table.HeaderCell>
-                            <Table.HeaderCell textAlign="center">
-                              아침
-                            </Table.HeaderCell>
-                            <Table.HeaderCell textAlign="center">
-                              점심
-                            </Table.HeaderCell>
-                            <Table.HeaderCell textAlign="center">
-                              저녁
-                            </Table.HeaderCell>
-                          </Table.Row>
-                        </Table.Header>
+                <div style={{marginRight: 20}}>
+                  <LineBox>
+                    <Form.Field>
+                      <div>
+                        <LabelCheckBox style={{width: 70}}>
+                          <Label size="mini">지원금</Label>
+                        </LabelCheckBox>
+                        <Table celled>
+                          <Table.Header>
+                            <Table.Row>
+                              <Table.HeaderCell textAlign="center">
+                                지원 요일
+                              </Table.HeaderCell>
+                              <Table.HeaderCell textAlign="center">
+                                아침
+                              </Table.HeaderCell>
+                              <Table.HeaderCell textAlign="center">
+                                점심
+                              </Table.HeaderCell>
+                              <Table.HeaderCell textAlign="center">
+                                저녁
+                              </Table.HeaderCell>
+                            </Table.Row>
+                          </Table.Header>
 
-                        <Table.Body>
-                          {nowData?.serviceDays?.split(',')?.map(v => {
-                            const morningSupport = supportPrices.filter(
-                              m => m.diningType === 1,
-                            );
-                            const lunchSupport = supportPrices.filter(
-                              m => m.diningType === 2,
-                            );
-                            const dinnerSupport = supportPrices.filter(
-                              m => m.diningType === 3,
-                            );
-                            console.log(morningSupport)
-                            return (
-                              <Table.Row key={v}>
-                                <Table.Cell textAlign="center">
-                                  {v?.trim()}
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  <Input
-                                    style={{width: 65}}
-                                    placeholder="아침 지원금"
-                                    defaultValue={
-                                      morningSupport?.length > 0
-                                        ? morningSupport?.find(
-                                            p => p.serviceDay === v?.trim(),
-                                          )?.supportPrice
-                                        : 0
-                                    }
-                                    onChange={(e, data) => {
-                                      setNowData({
-                                        ...nowData,
-                                        maxPrice: data.value
-                                          ? Number(data.value)
-                                          : null,
-                                      });
-                                    }}
-                                  />
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  <Input
-                                    style={{width: 65}}
-                                    placeholder="점심 지원금"
-                                    defaultValue={
-                                      lunchSupport?.length > 0
-                                        ? lunchSupport?.find(
-                                            p => p.serviceDay === v?.trim(),
-                                          )?.supportPrice
-                                        : 0
-                                    }
-                                    onChange={(e, data) => {
-                                      setNowData({
-                                        ...nowData,
-                                        maxPrice: data.value
-                                          ? Number(data.value)
-                                          : null,
-                                      });
-                                    }}
-                                  />
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  <Input
-                                    style={{width: 65}}
-                                    placeholder="저녁 지원금"
-                                    defaultValue={
-                                      dinnerSupport?.length > 0
-                                        ? dinnerSupport?.find(
-                                            p => p.serviceDay === v?.trim(),
-                                          )?.supportPrice
-                                        : 0
-                                    }
-                                    onChange={(e, data) => {
-                                      setNowData({
-                                        ...nowData,
-                                        maxPrice: data.value
-                                          ? Number(data.value)
-                                          : null,
-                                      });
-                                    }}
-                                  />
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          })}
-                        </Table.Body>
-                      </Table>
-                    </div>
-                  </Form.Field>
-                </LineBox>
-              </div>}
+                          <Table.Body>
+                            {nowData?.serviceDays?.split(',')?.map(v => {
+                              const morningSupport = supportPrices.filter(
+                                m => m.diningType === 1,
+                              );
+                              const lunchSupport = supportPrices.filter(
+                                m => m.diningType === 2,
+                              );
+                              const dinnerSupport = supportPrices.filter(
+                                m => m.diningType === 3,
+                              );
+                              return (
+                                <Table.Row key={v}>
+                                  <Table.Cell textAlign="center">
+                                    {v?.trim()}
+                                  </Table.Cell>
+                                  <Table.Cell textAlign="center">
+                                    <Input
+                                      style={{width: 65}}
+                                      placeholder="아침 지원금"
+                                      defaultValue={
+                                        morningSupport?.length > 0
+                                          ? morningSupport?.find(
+                                              p => p.serviceDay === v?.trim(),
+                                            )?.supportPrice
+                                          : 0
+                                      }
+                                      onChange={(e, data) => {
+                                        const priceData = [];
+                                        priceData.push({serviceDay: v?.trim(), supportPrice: data.value? Number(data.value) : 0});
+                                        const updateData = nowData.mealInfos.map(info => {
+                                          if (info.diningType === 1) {
+                                            if(!info.supportPriceByDays){
+                                              return {
+                                                ...info,
+                                                supportPriceByDays: priceData
+                                              };
+                                            }
+                                            return {
+                                              ...info,
+                                              supportPriceByDays: info.supportPriceByDays?  info.supportPriceByDays?.map((price)=>{                                                console.log(price.serviceDay ,v)
+                                                if(price.serviceDay.trim() === v.trim()){
+                                                  return {
+                                                    serviceDay:v.trim(),
+                                                    supportPrice:data.value? Number(data.value) : 0
+                                                  }
+                                                }
+                                                return price
+                                              }): null,
+                                            };
+                                          }
+                                          return info;
+                                        })
+                                        console.log(updateData);
+                                        const nullData = {
+                                          deliveryTimes:  null,
+                                          diningType: 1,
+                                          lastOrderTime:  null,
+                                          membershipBenefitTime: null,
+                                          serviceDays: null,
+                                          supportPriceByDays: priceData,
+                                        };
+                                        return updateMealinfoData(nullData,morningData,updateData)
+                                      }}
+                                    />
+                                  </Table.Cell>
+                                  <Table.Cell textAlign="center">
+                                    <Input
+                                      style={{width: 65}}
+                                      placeholder="점심 지원금"
+                                      defaultValue={
+                                        lunchSupport?.length > 0
+                                          ? lunchSupport?.find(
+                                              p => p.serviceDay === v?.trim(),
+                                            )?.supportPrice
+                                          : 0
+                                      }
+                                      onChange={(e, data) => {
+                                        const priceData = [];
+                                        priceData.push({serviceDay: v?.trim(), supportPrice: data.value? Number(data.value) : 0});
+                                        const updateData = nowData.mealInfos.map(info => {
+                                          if (info.diningType === 2) {
+                                            if(!info.supportPriceByDays){
+                                              return {
+                                                ...info,
+                                                supportPriceByDays: priceData
+                                              };
+                                            }
+                                            return {
+                                              ...info,
+                                              supportPriceByDays: info.supportPriceByDays?  info.supportPriceByDays?.map((price)=>{                                                
+                                                if(price.serviceDay.trim() === v?.trim()){
+                                                  return {
+                                                    serviceDay:v?.trim(),
+                                                    supportPrice:data.value? Number(data.value) : 0
+                                                  }
+                                                }
+                                                return price
+                                              }): null,
+                                            };
+                                          }
+                                          return info;
+                                        })
+                                        const nullData = {
+                                          deliveryTimes:  null,
+                                          diningType: 2,
+                                          lastOrderTime:  null,
+                                          membershipBenefitTime: null,
+                                          serviceDays: null,
+                                          supportPriceByDays: priceData,
+                                        };
+                                        return updateMealinfoData(nullData,morningData,updateData)
+                                      }}
+                                    />
+                                  </Table.Cell>
+                                  <Table.Cell textAlign="center">
+                                    <Input
+                                      style={{width: 65}}
+                                      placeholder="저녁 지원금"
+                                      defaultValue={
+                                        dinnerSupport?.length > 0
+                                          ? dinnerSupport?.find(
+                                              p => p.serviceDay === v?.trim(),
+                                            )?.supportPrice
+                                          : 0
+                                      }
+                                      onChange={(e, data) => {
+                                        setNowData({
+                                          ...nowData,
+                                          maxPrice: data.value
+                                            ? Number(data.value)
+                                            : null,
+                                        });
+                                      }}
+                                    />
+                                  </Table.Cell>
+                                </Table.Row>
+                              );
+                            })}
+                          </Table.Body>
+                        </Table>
+                      </div>
+                    </Form.Field>
+                  </LineBox>
+                </div>
+             
               <div>
                 <LineBox>
                   <Form.Field>
@@ -949,7 +1161,7 @@ function CorpEditModal({
                                 <Table.Cell textAlign="center">
                                   <Input
                                     style={{width: 50}}
-                                    value={withCommas(v.count)}
+                                    value={withCommas(v.count||0)}
                                     onChange={(e, data) => {
                                       const priceData =
                                         nowData.categoryPrices.find(f => {
@@ -979,9 +1191,8 @@ function CorpEditModal({
                                 <Table.Cell textAlign="center">
                                   <Input
                                     style={{width: 100}}
-                                    value={v.totalPrice}
+                                    value={v.totalPrice||0}
                                     onChange={(e, data) => {
-                                      console.log(data.value);
                                       setNowData({
                                         ...nowData,
                                         prepaidCategoryList:

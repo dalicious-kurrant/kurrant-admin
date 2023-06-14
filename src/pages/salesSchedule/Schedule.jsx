@@ -886,7 +886,6 @@ const Schedule = () => {
       </TableWrapper>
       <TableWrapper>
         {deliveryGroupsByDates.deliveryGroupsByDates.map((el, idx) => {
-          const spotTotal = el.spotCount;
           return (
             <MakersTable key={idx}>
               <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
@@ -1036,11 +1035,11 @@ const FoodCount = styled.div`
 const TotalFoodItems2 = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   font-weight: 400;
   font-size: 14px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 `;
 const TotalSpotFoodItem = styled.div`
   display: flex;
