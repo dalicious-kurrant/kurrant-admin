@@ -33,4 +33,6 @@ export const mySpotAdminApis = {
   modifyMySpotAdmin: async data => instance.patch('groups/my/spot/zones', data),
   deleteMySpotAdmin: async data =>
     instance.patch('groups/my/spot/zones/delete', data),
+  changeStatusMySpotAdmin: async data =>
+    instance.patch('groups/my/spot/zones/status', data),
 };

@@ -4,7 +4,12 @@ import {Button, Pagination, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
 import ModalComponent from './components/Modal';
-import {useCreateMySpot, useGetMySpotList} from 'hooks/useMySpot';
+import {
+  useCreateMySpot,
+  useGetMySpotList,
+  useRenew,
+  useRenewMySpot,
+} from 'hooks/useMySpot';
 import {useAtom} from 'jotai';
 import {
   MySpotCityAtom,
@@ -35,6 +40,9 @@ const MySpotZone = () => {
   const [maxUser] = useAtom(maxUserAtom);
 
   const {mutateAsync: createSpot} = useCreateMySpot();
+  const {mutateAsync: renewSpot} = useRenew();
+  const {data: renewData} = useRenewMySpot();
+
   const {data: mySpotData, refetch: spotListRefetch} = useGetMySpotList(
     page,
     selectCity,
@@ -76,6 +84,11 @@ const MySpotZone = () => {
     }
   };
 
+  const renewSpotButton = async () => {
+    await renewSpot(renewData?.data);
+  };
+
+  useEffect(() => {}, []);
   useEffect(() => {
     if (mySpotData) {
       setTotalPage(mySpotData?.data?.total);
@@ -105,7 +118,19 @@ const MySpotZone = () => {
     <Wrap ref={el}>
       <Filter setClick={setClick} click={click} />
       <PaginationWrap>
-        <Button content="스팟 개설" color="green" onClick={spotCreateButton} />
+        <ButtonWrap>
+          <div>
+            <Button
+              content="스팟 개설"
+              color="green"
+              onClick={spotCreateButton}
+            />
+          </div>
+          <div style={{position: 'relative'}}>
+            {renewData?.data?.length !== 0 && <Circle />}
+            <Button content="갱신" color="olive" onClick={renewSpotButton} />
+          </div>
+        </ButtonWrap>
         <Pagination
           ellipsisItem={null}
           defaultActivePage={page}
@@ -204,4 +229,18 @@ const PaginationWrap = styled.div`
   justify-content: space-between;
   width: 80%;
   //justify-content: flex-end;
+`;
+
+const Circle = styled.div`
+  background-color: red;
+  width: 6px;
+  height: 6px;
+  border-radius: 50px;
+  position: absolute;
+  right: 4px;
+  top: -10px;
+`;
+
+const ButtonWrap = styled.div`
+  display: flex;
 `;
