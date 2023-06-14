@@ -1,6 +1,7 @@
 import {MySpotApis} from 'api/mySpot';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 
+// 추가
 export function useAddMySpot() {
   const queryClient = useQueryClient();
   return useMutation(data => MySpotApis.addMySpot(data), {
@@ -14,6 +15,7 @@ export function useAddMySpot() {
   });
 }
 
+// 조회
 export function useGetMySpotList(
   page,
   selectCity,
@@ -36,12 +38,14 @@ export function useGetMySpotList(
   });
 }
 
+// 필터 정보 조회
 export function useGetFilterList(selectCity, selectCounty, selectVillage) {
   return useQuery('spotFilter', () => {
     return MySpotApis.filterData(selectCity, selectCounty, selectVillage);
   });
 }
 
+// 삭제
 export function useDeleteMySpot() {
   const queryClient = useQueryClient();
   return useMutation(data => MySpotApis.deleteMySpot(data), {
@@ -53,6 +57,8 @@ export function useDeleteMySpot() {
     },
   });
 }
+
+// 수정
 export function useModifyMySpot() {
   const queryClient = useQueryClient();
   return useMutation(data => MySpotApis.modifyMySpot(data), {
@@ -65,15 +71,38 @@ export function useModifyMySpot() {
   });
 }
 
+// 스팟 개설
 export function useCreateMySpot() {
   const queryClient = useQueryClient();
   return useMutation(data => MySpotApis.createSpot(data), {
     onSuccess: () => {
       queryClient.invalidateQueries('mySpotZone');
       queryClient.invalidateQueries('spotFilter');
+      queryClient.invalidateQueries('renewData');
     },
     onError: err => {
       console.log(err);
+    },
+  });
+}
+
+// 스팟 갱신 조회
+
+export function useRenewMySpot() {
+  return useQuery('renewData', () => {
+    return MySpotApis.renewSpotLoad();
+  });
+}
+
+// 스팟 갱신
+
+export function useRenew() {
+  const queryClient = useQueryClient();
+  return useMutation(data => MySpotApis.renewSpot(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('renewData');
+      queryClient.invalidateQueries('mySpotZone');
+      queryClient.invalidateQueries('spotFilter');
     },
   });
 }

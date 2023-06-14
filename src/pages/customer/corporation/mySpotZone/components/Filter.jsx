@@ -15,12 +15,6 @@ import {
 } from 'utils/store';
 
 const Filter = ({click, setClick}) => {
-  const statusData = [
-    {key: 0, text: '오픈 대기', value: 0},
-    {key: 1, text: '오픈', value: 1},
-    {key: 2, text: '정지', value: 3},
-  ];
-
   const [nameList, setNameList] = useState([]);
   const [cityList, setCityList] = useState([]);
   const [countyList, setCountyList] = useState([]);
@@ -185,7 +179,7 @@ const Filter = ({click, setClick}) => {
 export default Filter;
 
 const InputBlock = styled.div`
-  min-width: 200px;
+  min-width: 180px;
   font-size: 14px;
   margin-right: 24px;
 `;
