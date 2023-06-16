@@ -8,23 +8,41 @@ import MySpotZone from './MySpotZone';
 import ModalComponent from './components/Modal';
 import {useDeleteMySpot} from 'hooks/useMySpot';
 import {useAtom} from 'jotai';
-import {checkListAtom} from 'utils/store';
+import {checkListAtom, checkShareListAtom} from 'utils/store';
+import ShareSpotZone from './ShareSpotZone';
+import AddShareModal from './components/AddShareModal';
+import { useDeleteShareSpot } from 'hooks/useSpot';
 
 const Main = () => {
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState(0);
   const [checkItems] = useAtom(checkListAtom);
+  const [checkShareItems] = useAtom(checkShareListAtom);
   const [showOpenModal, setShowOpenModal] = useState(false);
+  const [showOpenModal2, setShowOpenModal2] = useState(false);
   const {mutateAsync: deleteMySpot} = useDeleteMySpot();
+  const {mutateAsync: deleteShareSpot} = useDeleteShareSpot();
 
   const deleteMySpotButton = async () => {
     if (checkItems.length !== 0) {
-      await deleteMySpot(checkItems);
+     
+      if(index===1)
+        return await deleteMySpot(checkItems);
+      
+    }
+    if (checkShareItems.length !== 0) {
+      if(index===0)return await deleteShareSpot(checkShareItems)
     }
   };
   const tab = [
     {
       id: 0,
       title: '공유/프라이빗 스팟',
+      component: (
+        <ShareSpotZone
+          showOpenModal={showOpenModal2}
+          setShowOpenModal={setShowOpenModal2}
+        />
+      ),
     },
     {
       id: 1,
@@ -57,7 +75,13 @@ const Main = () => {
             inverted
             color="green"
             size="small"
-            onClick={() => setShowOpenModal(true)}
+            onClick={() => {
+              if(index === 1){
+                setShowOpenModal(true)
+              }else{
+                setShowOpenModal2(true)
+              }
+            }}
           />
           <Button
             content="삭제하기"
@@ -65,7 +89,7 @@ const Main = () => {
             color="red"
             size="small"
             onClick={() => {
-              if (checkItems.length !== 0) {
+              if (checkItems.length !== 0 || checkShareItems?.length !== 0) {
                 if (window.confirm('정말로 삭제하시겠어요?'))
                   deleteMySpotButton();
               } else {
@@ -87,6 +111,14 @@ const Main = () => {
           button="추가"
           open={showOpenModal}
           setOpen={setShowOpenModal}
+        />
+      )}
+      {showOpenModal2 && (
+        <AddShareModal
+          title="공유스팟 추가"
+          button="추가"
+          open={showOpenModal2}
+          setOpen={setShowOpenModal2}
         />
       )}
     </PageWrapper>
