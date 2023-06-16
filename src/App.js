@@ -5,6 +5,7 @@ import MainRouter from './router/MainRouter';
 import {ModalProvider} from './hooks/useModal';
 import {ThemeProvider} from 'styled-components';
 import Theme from './style/Theme';
+import './Fonts/Font.css';
 
 const App = () => {
   return (

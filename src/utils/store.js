@@ -98,6 +98,7 @@ export const corpDataAtom = atomWithReset();
 // 마이스팟
 export const indexAtom = atomWithReset();
 export const checkListAtom = atomWithReset([]);
+export const checkShareListAtom = atomWithReset([]);
 export const spotPageAtom = atomWithReset(1);
 
 export const MySpotCityAtom = atomWithReset([]);

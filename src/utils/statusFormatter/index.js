@@ -191,11 +191,11 @@ export function userStatusFormatted(data) {
 export function groupTypeFormatted(data) {
   switch (data) {
     case 0:
-      return '기업';
+      return '프라이빗 스팟';
     case 1:
-      return '아파트';
+      return '공유 스팟';
     case 2:
-      return '오픈스팟';
+      return '마이 스팟';
     default:
       return '비인가';
   }
