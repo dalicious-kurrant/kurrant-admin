@@ -110,8 +110,8 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
   };
 
   useEffect(() => {
-    setValue('openDate', data?.openStartDate);
-    setValue('closeDate', data?.openCloseDate);
+    setValue('openDate', data?.openDate);
+    setValue('closeDate', data?.closeDate);
     setValue('spotId', data?.id);
     setValue('name', data?.name);
     setValue('zipcode', data?.zipcodes);
