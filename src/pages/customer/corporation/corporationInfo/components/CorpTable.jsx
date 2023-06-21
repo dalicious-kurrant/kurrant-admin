@@ -174,6 +174,7 @@ const CorpTable = ({
                 <div style={{width: 150}}>상세주소</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">배송비조건</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">주문요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">배송시간</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -192,7 +193,6 @@ const CorpTable = ({
                 저녁 지원금
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
-
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
@@ -211,6 +211,9 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 식사 세팅 지원 <br />
                 서비스
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                샐러드 필요 유무
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 쓰레기 수거 <br />
@@ -235,6 +238,7 @@ const CorpTable = ({
               );
               const membership = el.isMembershipSupport ? '지원' : '미지원';
               const setting = el.isSetting ? '사용' : '미사용';
+              const saladRequired = el.isSaladRequired ? '필요' : '불필요';
               const garbage = el.isGarbage ? '사용' : '미사용';
               const isActive = el.isActive ? '활성' : '비활성';
               const hotStorage = el.isHotStorage ? '사용' : '미사용';
@@ -247,7 +251,6 @@ const CorpTable = ({
               const dinnerData = el.mealInfos.find(
                 morning => morning.diningType === 3,
               );
-              // console.log(morningData, lunchData, dinnerData);
               return (
                 <Table.Row
                   key={el.id + idx}
@@ -261,7 +264,7 @@ const CorpTable = ({
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.id}</Table.Cell>
                   <Table.Cell textAlign="center">{isActive}</Table.Cell>
-                  <Table.Cell>{groupTypeFormatted(el.groupType)}</Table.Cell>
+                  <Table.Cell style={{whiteSpace:'nowrap'}}>{groupTypeFormatted(el.groupType)}</Table.Cell>
                   <Table.Cell>{el.code}</Table.Cell>
                   <Table.Cell>{el.name}</Table.Cell>
                   <Table.Cell>{el.zipCode}</Table.Cell>
@@ -275,6 +278,7 @@ const CorpTable = ({
                       {el.location}
                     </div>
                   </Table.Cell>
+                  <Table.Cell textAlign="center">{el.deliveryFeeOption}</Table.Cell>
                   <Table.Cell>
                     <div>
                       <div
@@ -486,6 +490,7 @@ const CorpTable = ({
                     {el.membershipEndDate}
                   </Table.Cell>
                   <Table.Cell>{withCommas(el.employeeCount)}</Table.Cell>
+                  <Table.Cell textAlign="center">{saladRequired}</Table.Cell>
                   <Table.Cell textAlign="center">{setting}</Table.Cell>
                   <Table.Cell textAlign="center">{garbage}</Table.Cell>
                   <Table.Cell textAlign="center">{hotStorage}</Table.Cell>

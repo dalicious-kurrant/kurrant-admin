@@ -60,7 +60,6 @@ function CorpEditModal({
 }) {
   const {mutateAsync: updateSpotDetail} = useUpdateSpotDetail();
   const week = ['월', '화', '수', '목', '금', '토', '일'];
-  console.log(nowData);
   const updateMealinfoData = (nullData,diningData,mealInfos)=>{
     if(diningData === null){
       return setNowData({...nowData,mealInfos:[...nowData.mealInfos,nullData]})
@@ -71,9 +70,9 @@ function CorpEditModal({
     });
   }
   const onSubmit = async () => {
-    console.log(nowData,'nowData')
+    console.log(nowData)
       try {
-      await updateSpotDetail(nowData);
+      await updateSpotDetail({...nowData,isActive:nowData.isActive ? nowData.isActive :false});
       setNowData();
       setClickId();
       refetch();
@@ -205,11 +204,11 @@ function CorpEditModal({
                       <Input
                         style={{width: 450}}
                         placeholder="스팟 타입"
-                        defaultValue={groupTypeFormatted(nowData.spotType)|| ''}
+                        defaultValue={groupTypeFormatted(nowData.groupType)|| ''}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
-                            spotType: data.value
+                            groupType: data.value
                               ? groupTypeFormatted2(data.value)
                               : null,
                           });
@@ -284,7 +283,7 @@ function CorpEditModal({
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
-                            diningTypes: data.value ? data.value : null,
+                            diningTypes: data.value ? data.value.split(',').map(v=>Number(v)) : null,
                           });
                         }}
                       />
@@ -336,7 +335,7 @@ function CorpEditModal({
                         style={{
                           fontSize: 12,
                         }}
-                        checked={nowData.isMembershipSupport|| ''}
+                        checked={nowData.isMembershipSupport|| false}
                         onChange={(e, data) => {
                           setNowData({
                             ...nowData,
@@ -426,6 +425,23 @@ function CorpEditModal({
                 <LineBox>
                   <Form.Field>
                     <FlexCheckBox width={300}>
+                    <FlexBox>
+                        <LabelCheckBox>
+                          <Label size="mini">활성여부</Label>
+                        </LabelCheckBox>
+                        <Checkbox
+                          style={{
+                            fontSize: 12,
+                          }}
+                          checked={nowData.isActive || false}
+                          onChange={(e, data) => {
+                            setNowData({
+                              ...nowData,
+                              isActive: data.checked ? data.checked : false,
+                            });
+                          }}
+                        />
+                      </FlexBox>
                       <FlexBox>
                         <LabelCheckBox>
                           <Label size="mini">식사세팅 지원 서비스</Label>
@@ -434,7 +450,7 @@ function CorpEditModal({
                           style={{
                             fontSize: 12,
                           }}
-                          checked={nowData.isSetting}
+                          checked={nowData.isSetting || false}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
@@ -451,7 +467,7 @@ function CorpEditModal({
                           style={{
                             fontSize: 12,
                           }}
-                          checked={nowData.isGarbage}
+                          checked={nowData.isGarbage || false}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
@@ -468,7 +484,7 @@ function CorpEditModal({
                           style={{
                             fontSize: 12,
                           }}
-                          checked={nowData.isHotStorage}
+                          checked={nowData.isHotStorage || false}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
@@ -479,38 +495,73 @@ function CorpEditModal({
                       </FlexBox>
                     </FlexCheckBox>
                   </Form.Field>
-                  <FlexCheckBox width={350}>
+                  <FlexCheckBox width={300}>
                     <Form.Field>
-                      <FlexBox width={350}>
+                      <FlexBox width={300}>
                         <LabelBox>
                           <Label size="mini">최소 구매 가능 금액</Label>
                         </LabelBox>
                         <Input
-                          style={{width: 350}}
                           placeholder="최소 구매 가능 금액"
-                          defaultValue={nowData.minPrice||''}
+                          defaultValue={nowData.minimumSpend||''}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              minPrice: data.value ? Number(data.value) : null,
+                              minimumSpend: data.value ? Number(data.value) : null,
                             });
                           }}
                         />
                       </FlexBox>
                     </Form.Field>
                     <Form.Field>
-                      <FlexBox width={350}>
+                      <FlexBox width={300}>
                         <LabelBox>
                           <Label size="mini">최대 구매 가능 금액</Label>
                         </LabelBox>
                         <Input
-                          style={{width: 350}}
                           placeholder="최대 구매 가능 금액"
-                          defaultValue={nowData.maxPrice||''}
+                          defaultValue={nowData.maximumSpend||''}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              maxPrice: data.value ? Number(data.value) : null,
+                              maximumSpend: data.value ? Number(data.value) : null,
+                            });
+                          }}
+                        />
+                      </FlexBox>
+                      <FlexBox>
+                        <LabelCheckBox>
+                          <Label size="mini">샐러드 필요 유무</Label>
+                        </LabelCheckBox>
+                        <Checkbox
+                          style={{
+                            fontSize: 12,
+                          }}
+                          checked={nowData.isSaladRequired || false}
+                          onChange={(e, data) => {
+                            setNowData({
+                              ...nowData,
+                              isSaladRequired: data.checked ? data.checked : false,
+                            });
+                          }}
+                        />
+                      </FlexBox>
+                    </Form.Field>
+                  </FlexCheckBox>
+                  <FlexCheckBox width={200}>
+                  <Form.Field>
+                      <FlexBox width={200}>
+                        <LabelBox>
+                          <Label size="mini">배송비 조건</Label>
+                        </LabelBox>
+                        <Input
+                          style={{width:100}}
+                          placeholder="배송비 조건"
+                          defaultValue={nowData.deliveryFeeOption||''}
+                          onChange={(e, data) => {
+                            setNowData({
+                              ...nowData,
+                              deliveryFeeOption: data.value ? data.value : null,
                             });
                           }}
                         />
@@ -1000,18 +1051,18 @@ function CorpEditModal({
                                         priceData.push({serviceDay: v?.trim(), supportPrice: data.value? Number(data.value) : 0});
                                         const updateData = nowData.mealInfos.map(info => {
                                           if (info.diningType === 1) {
-                                            if(!info.supportPriceByDays){
+                                            if(!info.supportPriceByDays || info.supportPriceByDays?.findIndex(s=>s.serviceDay === v?.trim())=== -1){
                                               return {
                                                 ...info,
-                                                supportPriceByDays: priceData
+                                                supportPriceByDays: [...info.supportPriceByDays ,...priceData]
                                               };
                                             }
                                             return {
                                               ...info,
-                                              supportPriceByDays: info.supportPriceByDays?  info.supportPriceByDays?.map((price)=>{                                                console.log(price.serviceDay ,v)
-                                                if(price.serviceDay.trim() === v.trim()){
+                                              supportPriceByDays: info.supportPriceByDays?  info.supportPriceByDays?.map((price)=>{                                                
+                                                if(price.serviceDay.trim() === v?.trim()){
                                                   return {
-                                                    serviceDay:v.trim(),
+                                                    serviceDay:v?.trim(),
                                                     supportPrice:data.value? Number(data.value) : 0
                                                   }
                                                 }
@@ -1021,7 +1072,6 @@ function CorpEditModal({
                                           }
                                           return info;
                                         })
-                                        console.log(updateData);
                                         const nullData = {
                                           deliveryTimes:  null,
                                           diningType: 1,
@@ -1050,10 +1100,16 @@ function CorpEditModal({
                                         priceData.push({serviceDay: v?.trim(), supportPrice: data.value? Number(data.value) : 0});
                                         const updateData = nowData.mealInfos.map(info => {
                                           if (info.diningType === 2) {
-                                            if(!info.supportPriceByDays){
+                                            if(!info.supportPriceByDays || info.supportPriceByDays?.findIndex(s=>s.serviceDay === v?.trim())=== -1){
+                                              if(!info.supportPriceByDays){
+                                                return {
+                                                  ...info,
+                                                  supportPriceByDays: priceData
+                                                };
+                                              }
                                               return {
                                                 ...info,
-                                                supportPriceByDays: priceData
+                                                supportPriceByDays: [...info.supportPriceByDays ,...priceData]
                                               };
                                             }
                                             return {
@@ -1079,7 +1135,7 @@ function CorpEditModal({
                                           serviceDays: null,
                                           supportPriceByDays: priceData,
                                         };
-                                        return updateMealinfoData(nullData,morningData,updateData)
+                                        return updateMealinfoData(nullData,lunchData,updateData)
                                       }}
                                     />
                                   </Table.Cell>
@@ -1095,12 +1151,40 @@ function CorpEditModal({
                                           : 0
                                       }
                                       onChange={(e, data) => {
-                                        setNowData({
-                                          ...nowData,
-                                          maxPrice: data.value
-                                            ? Number(data.value)
-                                            : null,
-                                        });
+                                        const priceData = [];
+                                        priceData.push({serviceDay: v?.trim(), supportPrice: data.value? Number(data.value) : 0});
+                                        const updateData = nowData.mealInfos.map(info => {
+                                          if (info.diningType === 3) {
+                                            if(!info.supportPriceByDays || info.supportPriceByDays?.findIndex(s=>s.serviceDay === v?.trim())=== -1){
+                                              return {
+                                                ...info,
+                                                supportPriceByDays: [...info.supportPriceByDays ,...priceData]
+                                              };
+                                            }
+                                            return {
+                                              ...info,
+                                              supportPriceByDays: info.supportPriceByDays?  info.supportPriceByDays?.map((price)=>{                                                
+                                                if(price.serviceDay.trim() === v?.trim()){
+                                                  return {
+                                                    serviceDay:v?.trim(),
+                                                    supportPrice:data.value? Number(data.value) : 0
+                                                  }
+                                                }
+                                                return price
+                                              }): null,
+                                            };
+                                          }
+                                          return info;
+                                        })
+                                        const nullData = {
+                                          deliveryTimes:  null,
+                                          diningType: 2,
+                                          lastOrderTime:  null,
+                                          membershipBenefitTime: null,
+                                          serviceDays: null,
+                                          supportPriceByDays: priceData,
+                                        };
+                                        return updateMealinfoData(nullData,dinnerData,updateData)
                                       }}
                                     />
                                   </Table.Cell>
@@ -1167,7 +1251,6 @@ function CorpEditModal({
                                         nowData.categoryPrices.find(f => {
                                           return f.code === v.code;
                                         });
-                                      console.log(priceData, 'price');
                                       setNowData({
                                         ...nowData,
                                         prepaidCategoryList:

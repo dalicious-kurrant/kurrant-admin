@@ -193,9 +193,9 @@ export function groupTypeFormatted(data) {
     case 0:
       return '프라이빗 스팟';
     case 1:
-      return '공유 스팟';
-    case 2:
       return '마이 스팟';
+    case 2:
+      return '공유 스팟';
     default:
       return '비인가';
   }
@@ -210,6 +210,26 @@ export function logTypeFormatted(data) {
       return '삭제';
     default:
       return '미정';
+  }
+}
+export function deliveryFeeOptionFormatted(data) {
+  switch (data) {
+    case 0:
+      return '개인';
+    case 1:
+      return '기업';
+    default:
+      return '미정';
+  }
+}
+export function deliveryFeeOptionReverseFormatted(data) {
+  switch (data) {
+    case '개인':
+      return '개인';
+    case '기업':
+      return '기업';
+    default:
+      return null;
   }
 }
 
@@ -253,16 +273,29 @@ export function controllerTypeFormatted(data) {
       return '미정';
   }
 }
+
 export function groupTypeFormatted2(data) {
   switch (data) {
-    case '기업':
+    case '프라이빗 스팟':
       return 0;
-    case '아파트':
+    case '공유 스팟':
+      return 2;
+    case '마이 스팟':
       return 1;
-    case '오픈스팟':
+    case '프라이빗':
+      return 0;
+    case '공유':
+      return 2;
+    case '마이':
+      return 1;
+    case 0:
+      return 0;
+    case 1:
+      return 1;
+    case 2:
       return 2;
     default:
-      return 3;
+      return 0;
   }
 }
 

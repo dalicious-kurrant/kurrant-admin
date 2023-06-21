@@ -1,6 +1,6 @@
 import {formattedDate, formattedTime} from 'utils/dateFormatter';
 import * as XLSX from 'xlsx';
-import {scheduleFormatted} from '../statusFormatter';
+import {groupTypeFormatted, scheduleFormatted} from '../statusFormatter';
 const week = ['월', '화', '수', '목', '금', '토', '일'];
 export function planExel(plan) {
   const reqArrays = [];
@@ -335,6 +335,7 @@ export function corporationInfoExel(corporation) {
     'address1',
     'address2',
     'location',
+    'deliveryFeeOption',
     'orderServiceDays',
     'deliveryTime',
     'lastOrderTime',
@@ -351,6 +352,7 @@ export function corporationInfoExel(corporation) {
     'membershipEndDate',
     'employeeCount',
     'isSetting',
+    'isSaladRequired',
     'isGarbage',
     'isHotStorage',
     'minimumSpend',
@@ -366,6 +368,7 @@ export function corporationInfoExel(corporation) {
     '기본주소',
     '상세주소',
     '위치',
+    '배송비 조건',
     '주문요일',
     '배송시간',
     '주문마감시간',
@@ -382,6 +385,7 @@ export function corporationInfoExel(corporation) {
     '멤버십 종료 날짜',
     '사원수',
     '식사 세팅 지원 서비스',
+    '샐러드 필요 유무',
     '쓰레기 수거 서비스',
     '온장고 대여 서비스',
     '최소 구매 가능 금액',
@@ -389,6 +393,7 @@ export function corporationInfoExel(corporation) {
   ]);
 
   corporation?.map(el => {
+    console.log(el)
     const diningType = el.diningTypes.map(v =>
       v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
     );
@@ -397,6 +402,7 @@ export function corporationInfoExel(corporation) {
     const isActive = el.isActive ? '활성' : '비활성';
     const setting = el.isSetting ? '사용' : '미사용';
     const garbage = el.isGarbage ? '사용' : '미사용';
+    const isSaladRequired = el.isSaladRequired ? '필요' : '불필요';
     const hotStorage = el.isHotStorage ? '사용' : '미사용';
     const morningData = el.mealInfos.find(morning => morning.diningType === 1);
     const lunchData = el.mealInfos.find(morning => morning.diningType === 2);
@@ -499,13 +505,14 @@ export function corporationInfoExel(corporation) {
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(isActive);
-    reqArray.push(el.groupType);
+    reqArray.push(groupTypeFormatted(el.groupType));
     reqArray.push(el.code);
     reqArray.push(el.name);
     reqArray.push(el.zipCode);
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
+    reqArray.push(el.deliveryFeeOption);
     reqArray.push(orderServiceDays);
     reqArray.push(deliveryTime);
     reqArray.push(lastOrderTime);
@@ -522,6 +529,7 @@ export function corporationInfoExel(corporation) {
     reqArray.push(el.membershipEndDate);
     reqArray.push(el.employeeCount);
     reqArray.push(setting);
+    reqArray.push(isSaladRequired);
     reqArray.push(garbage);
     reqArray.push(hotStorage);
     reqArray.push(el.minimumSpend);
