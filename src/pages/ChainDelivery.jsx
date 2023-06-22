@@ -1,23 +1,38 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 
 import styled from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {useState} from 'react';
 import PublicSelectDatePicker from 'components/PublicSelectDatePicker';
-import {Dropdown, Label} from 'semantic-ui-react';
+import {Button, Dropdown, Label, Table} from 'semantic-ui-react';
 import {useQuery} from 'react-query';
 import axios from 'axios';
 import {formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
 import useTitle from 'hooks/useTitle';
+import chainInstance from 'shared/chainAxios';
+import { diningFormatted } from 'utils/statusFormatter';
+import * as XLSX from 'xlsx';
 
+const TableHeaderData = [
+  {id: 0, text: '스팟 타입'},
+  {id: 1, text: '날짜'},
+  {id: 2, text: '식사 타입'},
+  {id: 3, text: '배송 시간'},
+  {id: 4, text: '배송 번호'},
+  {id: 5, text: '메이커스 이름'},
+  {id: 6, text: '메이커스 주소'},
+  {id: 7, text: '메이커스 번호'},
+  {id: 8, text: '상품 이름'},
+  {id: 9, text: '수량'},
+  {id: 10, text: '유저 이름'},
+  {id: 11, text: '유저 주소'},
+  {id: 12, text: '유저 핸드폰 번호'},
+  {id: 13, text: '배송 메모'},
+];
 
-const baseURL =
-  process.env.REACT_APP_NODE_ENV === 'prod'
-    ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
-    : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 const ChainDelivery = () => {
-  useTitle('배송정보 페이지');
+  useTitle('배송업체 주문 정보 페이지');
   const curr = new Date();
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const [startDate, setStartDate] = useState(
@@ -30,58 +45,185 @@ const ChainDelivery = () => {
       curr.getTime() + curr.getTimezoneOffset() * 60 * 1000 + KR_TIME_DIFF,
     ),
   );
-  const [selectClient, setSelectClient] = useState([]);
-  const [selectSpot, setSelectSpot] = useState([]);
+  const deliveryIdListRef = useRef();
+  const [selectSpotType, setSelectSpotType] = useState();
+  const [selectMakers, setSelectMakers] = useState();
+  const [selectMealType, setSelectMealType] = useState();
+  const [selectDeliveryTime, setSelectDeliveryTime] = useState();
+  const [selectDeliveryId, setSelectDeliveryId] = useState();
+  const [selectUser, setSelectUser] = useState();
   const {
     data: deliveryInfo,
     refetch: deliveryRefetch,
     isFetching: deliveryLoading,
-  } = useQuery(['deliveryInfo'], async () => {
-    let groupIds = '';
-    let spotIds = '';
-    if (selectClient.length > 0) {
-      groupIds = `&groupIds=${selectClient.join(',')}`;
-    }
-    if (selectSpot.length > 0) {
-      spotIds = `&spotIds=${selectSpot.join(',')}`;
-    }
-    return await axios.get(
-      `${baseURL}/delivery?startDate=${formattedWeekDateZ(
-        startDate,
-      )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}${spotIds}`,
-    );
-  });
+  } = useQuery(
+    ['chainDelivery'],
+    () => {
+      return chainInstance.get(
+        `/delivery/drivers?startDate=${formattedWeekDateZ(
+          startDate,
+        )}&endDate=${formattedWeekDateZ(endDate)}`,
+      );
+    },
+    {
+      retry: false,
+    },
+  );
   const [deliveryInfoList, setDeliveryInfoList] = useState([]);
-  const [groupInfoList, setGroupInfoList] = useState([]);
-  const [spotInfoList, setSpotInfoList] = useState([]);
+  const [spotTypeList, setSpotTypeList] = useState([]);
+  const [makersList, setMakersList] = useState([]);
+  const [mealTypeList, setMealTypeList] = useState([]);
+  const [deliveryTimeList, setDeliveryTimeList] = useState([]);
+  const [deliveryIdList, setDeliveryIdList] = useState([]);
+  const [userList, setUserList] = useState([]);
+
+  const excelButton = async () => {
+    const reqArrays = [];
+    reqArrays.push([
+      'spotType',
+      'serviceDate',
+      'diningType',
+      'deliveryTime',
+      'orderNumber',
+      'makersName',
+      'makersAddress',
+      'makersPhone',
+      'foodName',
+      'count',
+      'userName',
+      'userAddress',
+      'userPhone',
+      'memo',
+    ]);
+    reqArrays.push(TableHeaderData.map(v => v.text));
+    deliveryInfoList.map(el => {
+      const reqArray = [];
+      reqArray.push(el.spotType);
+      reqArray.push(el.serviceDate);
+      reqArray.push(el.diningType);
+      reqArray.push(el.deliveryTime);
+      reqArray.push(el.orderNumber);
+      reqArray.push(el.makersName);
+      reqArray.push(el.makersAddress);
+      reqArray.push(el.makersPhone);
+      reqArray.push(el.foodName);
+      reqArray.push(el.count);
+      reqArray.push(el.userName);
+      reqArray.push(el.userAddress);
+      reqArray.push(el.userPhone);
+      reqArray.push(el.memo);
+      reqArrays.push(reqArray);
+      return reqArrays;
+    });
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, '배송 정보');
+    XLSX.writeFile(workbook, '배송 정보.xlsx');
+  };
+  
+  const onClearSelect = useCallback(() => {
+    setSelectSpotType('');
+    setSelectMakers('');
+    setSelectMealType('');
+    setSelectDeliveryTime('');
+    setSelectDeliveryId('');
+    setSelectUser('');    
+   }, []);
+
+
   useEffect(() => {
-    if (deliveryInfo) {
-      setDeliveryInfoList(deliveryInfo?.data?.data?.deliveryInfoList);
-      setGroupInfoList(
-        deliveryInfo?.data?.data?.groupInfoList?.map(v => {
-          return {key: v.groupId, text: v.groupName, value: v.groupId};
+    deliveryRefetch();
+  }, [startDate, endDate, deliveryRefetch]);
+  useEffect(() => {
+    if (deliveryInfo?.data) {
+      const spotData = deliveryInfo?.data.map(v => v.spotType);
+      const userNameData = deliveryInfo?.data.map(v => v.userName);
+      const orderNumberData = deliveryInfo?.data.map(v => v.orderNumber);
+      const deliveryTimeData = deliveryInfo?.data.map(v => v.deliveryTime);
+      const makersNameData = deliveryInfo?.data.map(v => v.makersName);
+      const diningTypeData = deliveryInfo?.data.map(v => v.diningType);
+      const spotFilterData = spotData.filter((element, index) => {
+        return spotData.indexOf(element) === index;
+      });
+      const userNameFilterData = userNameData.filter((element, index) => {
+        return userNameData.indexOf(element) === index;
+      });
+      const orderNumberFilterData = orderNumberData.filter((element, index) => {
+        return orderNumberData.indexOf(element) === index;
+      });
+      const deliveryTimeFilterData = deliveryTimeData.filter(
+        (element, index) => {
+          return deliveryTimeData.indexOf(element) === index;
+        },
+      );
+      const makersNameFilterData = makersNameData.filter((element, index) => {
+        return makersNameData.indexOf(element) === index;
+      });
+      const diningTypeFilterData = diningTypeData.filter((element, index) => {
+        return diningTypeData.indexOf(element) === index;
+      });
+      setSpotTypeList(
+        spotFilterData.map((v, i) => {
+          return {key: v, text: v, value: v};
         }),
       );
-      setSpotInfoList(
-        deliveryInfo?.data?.data?.spotInfoList?.map(v => {
-          return {
-            key: v.spotId,
-            text: v.spotId + '-' + v.spotName,
-            value: v.spotId,
-          };
+      setMakersList(
+        makersNameFilterData.map(v => {
+          return {key: v, text: v, value: v};
+        }),
+      );
+      setMealTypeList(
+        diningTypeFilterData.map(v => {
+          return {key: v, text: diningFormatted(v), value: v};
+        }),
+      );
+      setDeliveryTimeList(
+        deliveryTimeFilterData.map(v => {
+          return {key: v, text: v, value: v};
+        }),
+      );
+      setDeliveryIdList(
+        orderNumberFilterData.map(v => {
+          return {key: v, text: v, value: v};
+        }),
+      );
+      setUserList(
+        userNameFilterData.map(v => {
+          return {key: v, text: v, value: v};
         }),
       );
     }
-  }, [deliveryInfo]);
+  }, [deliveryInfo?.data]);
   useEffect(() => {
-    setDeliveryInfoList([]);
+    const data = deliveryInfo?.data
+      ?.map(v => {
+        if (
+          (selectMakers ? v.makersName === selectMakers : true) &&
+          (selectSpotType ? v.spotType === selectSpotType : true) &&
+          (selectMealType ? v.diningType === selectMealType : true) &&
+          (selectDeliveryTime ? v.deliveryTime === selectDeliveryTime : true) &&
+          (selectDeliveryId ? v.orderNumber === selectDeliveryId : true) &&
+          (selectUser ? v.userName === selectUser : true)
+        ) {
+          return v;
+        }
+      })
+      .filter(v => v);
+    setDeliveryInfoList(data);
 
-    deliveryRefetch();
-  }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
-
+  }, [
+    selectSpotType,
+    selectMakers,
+    selectMealType,
+    selectDeliveryTime,
+    selectDeliveryId,
+    selectUser,
+    deliveryInfo?.data,
+  ]);
   return (
     <Container>
-      <HeadTitle>배송정보</HeadTitle>
+      <HeadTitle>배송업체 주문 정보</HeadTitle>
       <DateSelectBox>
         <DatePicker
           selected={startDate}
@@ -101,129 +243,172 @@ const ChainDelivery = () => {
           customInput={<PublicSelectDatePicker />}
         />
       </DateSelectBox>
+
       <FilterBox>
         <DropBox>
-          <Label>스팟</Label>
+          <Label>스팟 타입</Label>
           <Dropdown
-            placeholder="스팟"
+            placeholder="스팟 타입"
             fluid
-            multiple
             selection
             search
-            options={groupInfoList}
-            value={selectClient}
+            options={spotTypeList}
+            value={selectSpotType}
             onChange={(e, data) => {
-              setSelectSpot([]);
-              setSelectClient(data.value);
+              setSelectSpotType(data.value);
             }}
           />
         </DropBox>
         <DropBox>
-          <Label>상세 스팟</Label>
+          <Label>메이커스</Label>
           <Dropdown
-            placeholder="상세 스팟"
+            placeholder="메이커스"
             fluid
-            multiple
             selection
             search
-            options={spotInfoList}
-            value={selectSpot}
+            options={makersList}
+            value={selectMakers}
             onChange={(e, data) => {
-              setSelectSpot(data.value);
+              setSelectMakers(data.value);
             }}
           />
         </DropBox>
+        <DropBoxVertical>
+          <DropBox>
+            <Label>식사 타입</Label>
+            <Dropdown
+              placeholder="식사 타입"
+              fluid
+              selection
+              search
+              options={mealTypeList}
+              value={selectMealType}
+              onChange={(e, data) => {
+                setSelectMealType(data.value);
+              }}
+            />
+          </DropBox>
+          <DropBox>
+            <Label>배송 시간</Label>
+            <Dropdown
+              placeholder="배송 시간"
+              fluid
+              selection
+              search
+              options={deliveryTimeList}
+              value={selectDeliveryTime}
+              onChange={(e, data) => {
+                setSelectDeliveryTime(data.value);
+              }}
+            />
+          </DropBox>
+          <DropBox>
+            <Label>배송 번호</Label>
+            <Dropdown
+              ref={deliveryIdListRef}
+              placeholder="상세 스팟"
+              fluid
+              selection
+              search
+              options={deliveryIdList}
+              value={selectDeliveryId}
+              onChange={(e, data) => {
+                setSelectDeliveryId(data.value);
+              }}
+            />
+          </DropBox>
+        </DropBoxVertical>
+        <DropBox>
+          <Label>유저</Label>
+          <Dropdown
+            placeholder="유저"
+            fluid
+            selection
+            search
+            options={userList}
+            value={selectUser}
+            onChange={(e, data) => {
+              setSelectUser(data.value);
+            }}
+          />
+        </DropBox>
+        <ButtonBox>
+          <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
+          <Button
+            color="black"
+            content="필터 초기화"
+            icon="redo"
+            onClick={onClearSelect}
+          />
+        </ButtonBox>
       </FilterBox>
-      {deliveryLoading ? (
-        <LoadingPage>로딩중...</LoadingPage>
-      ) : (
-        <DeliveryInfoBox>
-          {deliveryInfoList.map(date => {
-            return (
-              <DateContainer key={date.serviceDate}>
-                <DateBox>{date.serviceDate}</DateBox>
-                {date.group.map(group => {
-                  return (
-                    <GroupContainer
-                      key={
-                        '스팟' +
-                        date.serviceDate +
-                        group.groupName +
-                        group.groupId +
-                        group.deliveryTime +
-                        group.diningType +
-                        group.spotName +
-                        group.spotId
-                      }>
-                      <GroupHeader>
-                        <Group>
-                          <GroupName>스팟 이름 : {group.groupName}</GroupName>
-                          <Spot>
-                            <SpotId>상세 스팟 ID : {group.spotId || 0}</SpotId>
-                          </Spot>
-                          <Spot>
-                            <SpotName>
-                              상세 스팟 이름 :{group.spotName || '상세 스팟'}
-                            </SpotName>
-                          </Spot>
-                        </Group>
-                        <DeliveryTime>도착:{group.deliveryTime}</DeliveryTime>
-                      </GroupHeader>
-                      <GroupAddress>
-                        <Address>배송지 : {group.address || '배송지'}</Address>
-                      </GroupAddress>
-                      {group.makers.map(makers => {
-                        return (
-                          <MakersContainer
-                            key={
-                              '메이커스' +
-                              date.serviceDate +
-                              group.groupId +
-                              makers.makersId +
-                              makers.pickupTime +
-                              group.diningType
-                            }>
-                            <MakersHeader>
-                              <MakersFront>
-                                <MakersName>{makers.makersName}</MakersName>
-                                <MakersAddress>{makers.address}</MakersAddress>
-                              </MakersFront>
-                              <PickupTime>픽업:{makers.pickupTime}</PickupTime>
-                            </MakersHeader>
-                            {makers?.foods?.map(food => {
-                              return (
-                                <FoodsContainer
-                                  key={
-                                    '푸드' +
-                                    date.serviceDate +
-                                    group.groupId +
-                                    makers.makersId +
-                                    makers.pickupTime +
-                                    food.foodName +
-                                    food.foodCount +
-                                    food.foodId +
-                                    group.diningType +
-                                    group.spotName +
-                                    group.spotId
-                                  }>
-                                  <FoodHeader>
-                                    <FoodName>{food.foodName}</FoodName>
-                                    <FoodName>{food.foodCount}</FoodName>
-                                  </FoodHeader>
-                                </FoodsContainer>
-                              );
-                            })}
-                          </MakersContainer>
-                        );
-                      })}
-                    </GroupContainer>
-                  );
-                })}
-              </DateContainer>
-            );
-          })}
-        </DeliveryInfoBox>
-      )}
+      <DeliveryInfoBox>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              {TableHeaderData.map(header => {
+                return (
+                  <Table.HeaderCell key={header.id} textAlign="center">
+                    {header.text}
+                  </Table.HeaderCell>
+                );
+              })}
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {deliveryInfoList?.length > 0 &&
+              deliveryInfoList.map((v, i) => {
+                console.log(v, i);
+                return (
+                  <Table.Row key={i}>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.spotType}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.serviceDate}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.diningType}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.deliveryTime}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.orderNumber}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.makersName}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.makersAddress}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.makersPhone}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.foodName}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.count}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.userName}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.userAddress}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.userPhone}
+                    </Table.Cell>
+                    <Table.Cell style={{whiteSpace: 'nowrap'}}>
+                      {v.memo}
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
+          </Table.Body>
+        </Table>
+      </DeliveryInfoBox>
     </Container>
   );
 };
@@ -233,7 +418,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  max-width: 1200px;
   margin: 0 auto;
 `;
 const HeadTitle = styled.div`
@@ -266,17 +450,33 @@ const FilterBox = styled.div`
     flex-direction: column;
   }
 `;
+const DropBoxVertical = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 5px;
+`;
+
+const ButtonBox = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+`;
+
 const DropBox = styled.div`
   min-width: 250px;
   max-width: 350px;
   padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding-bottom: 10px;
 `;
 
 const DeliveryInfoBox = styled.div`
   display: flex;
-
   flex-direction: column;
+  overflow-x: auto;
 `;
 const LoadingPage = styled.div`
   display: flex;

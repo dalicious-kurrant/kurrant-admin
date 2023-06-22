@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('chain-token');
 
 const baseURL =
   process.env.REACT_APP_NODE_ENV === 'prod'
     ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
     : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 
-const instance = axios.create({baseURL});
+const chainInstance = axios.create({baseURL});
 
 const setToken = config => {
   config.headers['Authorization'] = `Bearer ${token}`;
@@ -15,10 +15,10 @@ const setToken = config => {
 };
 
 if (token) {
-  instance.interceptors.request.use(setToken);
+  chainInstance.interceptors.request.use(setToken);
 }
 
-instance.interceptors.response.use(
+chainInstance.interceptors.response.use(
   response => {
     return response.data;
   },
@@ -26,13 +26,13 @@ instance.interceptors.response.use(
     const {response} = error;
 
     if (response.status === 403) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('chain-token');
 
       alert('로그인이 만료되어 로그아웃 됩니다.');
-      window.location.replace('/');
+      window.location.replace('/chain');
     }
     return Promise.reject(error);
   },
 );
 
-export default instance;
+export default chainInstance;
