@@ -142,7 +142,7 @@ const ManualNotificationTable = () => {
                 <Table.Cell width={4}>
                   <TextArea
                     rows={3}
-                    maxLength="35"
+                    maxLength="100"
                     defaultValue={v.message}
                     style={{
                       width: '100%',
