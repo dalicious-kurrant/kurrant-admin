@@ -174,7 +174,7 @@ const AddManualNotificationTable = () => {
             <Table.Cell>
               <TextArea
                 rows={3}
-                maxLength="35"
+                maxLength="350"
                 style={{
                   width: '100%',
                   border: '1px solid #eee',
