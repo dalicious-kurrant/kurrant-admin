@@ -6,8 +6,6 @@ const useItemKeywordMutation = (handleCallback = () => {}) => {
 
   const {mutate: addKeywordMutate} = useMutation(
     async data => {
-      console.log('안녕');
-
       const response = await instance.post(`reviews/keyword`, data);
 
       return response;

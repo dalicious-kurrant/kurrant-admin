@@ -11,6 +11,10 @@ const ItemKeywordInput = ({foodId}) => {
   const {reviewKeywordSearchQueryRefetch, keywordArr} =
     useGetItemKeyword(foodId);
 
+  // useEffect(() => {
+  //   reviewKeywordSearchQueryRefetch();
+  // }, []);
+
   const {addKeywordMutate} = useItemKeywordMutation(() => {
     reviewKeywordSearchQueryRefetch();
   });
@@ -22,6 +26,11 @@ const ItemKeywordInput = ({foodId}) => {
   const handleChange = e => {
     setInput(e.target.value);
   };
+
+  useEffect(() => {
+    console.log('키워드 배열');
+    console.log(keywordArr);
+  }, [keywordArr]);
 
   return (
     <Container>
@@ -42,7 +51,16 @@ const ItemKeywordInput = ({foodId}) => {
       </Button>
       <Wrap>
         <Title>키워드 TOP8</Title>
-        <Input disabled value={keywordArr.join(', ')} />
+        <Input
+          disabled
+          value={
+            keywordArr === undefined
+              ? undefined
+              : Array.isArray(keywordArr) && keywordArr.length > 0
+              ? keywordArr.join(', ')
+              : '리뷰 키워드가 등록되지 않았습니다.'
+          }
+        />
       </Wrap>
     </Container>
   );
