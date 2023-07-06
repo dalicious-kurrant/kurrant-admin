@@ -90,7 +90,7 @@ const ManualNotificationTable = () => {
             <Table.HeaderCell>상세스팟</Table.HeaderCell>
             <Table.HeaderCell>유저</Table.HeaderCell>
             <Table.HeaderCell>이메일</Table.HeaderCell>
-            <Table.HeaderCell>메시지 (한글 100자)</Table.HeaderCell>
+            <Table.HeaderCell>메시지</Table.HeaderCell>
             <Table.HeaderCell>화면전환</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -142,7 +142,7 @@ const ManualNotificationTable = () => {
                 <Table.Cell width={4}>
                   <TextArea
                     rows={3}
-                    maxLength="100"
+                    maxLength="1000"
                     defaultValue={v.message}
                     style={{
                       width: '100%',
