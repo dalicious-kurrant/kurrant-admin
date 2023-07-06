@@ -360,18 +360,17 @@ const Order = () => {
     ]);
     reqArrays.push(TableHeaderData.map(v => v.text));
     orderList?.data.map(el => {
-      return el.orderItemDailyFoodGroupList?.map(v => {
-        return v.orderItemDailyFoods?.map(item => {
+        return el.orderItemDailyFoods?.map(item => {
           const reqArray = [];
-          reqArray.push(v.serviceDate);
-          reqArray.push(v.orderDateTime.split('T')[0]);
-          reqArray.push(v.orderDateTime.split('T')[1].split('.')[0]);
-          reqArray.push(v.groupName);
-          reqArray.push(v.spotName);
-          reqArray.push(v.userName);
-          reqArray.push(v.userEmail);
-          reqArray.push(v.phone);
-          reqArray.push(v.diningType);
+          reqArray.push(el.serviceDate);
+          reqArray.push(el.orderDateTime.split('T')[0]);
+          reqArray.push(el.orderDateTime.split('T')[1].split('.')[0]);
+          reqArray.push(el.groupName);
+          reqArray.push(el.spotName);
+          reqArray.push(el.userName);
+          reqArray.push(el.userEmail);
+          reqArray.push(el.phone);
+          reqArray.push(el.diningType);
           reqArray.push(item.deliveryTime);
           reqArray.push(item.orderStatus);
           reqArray.push(item.makers);
@@ -379,15 +378,14 @@ const Order = () => {
           reqArray.push(item.count);
           reqArray.push(item.supplyPrice ?? 0);
           reqArray.push(item.price);
-          reqArray.push(v.totalPrice);
-          reqArray.push(v.supportPrice);
-          reqArray.push(v.payPrice);
-          reqArray.push(v.deliveryPrice);
-          reqArray.push(v.orderCode);
+          reqArray.push(el.totalPrice);
+          reqArray.push(el.supportPrice);
+          reqArray.push(el.payPrice);
+          reqArray.push(el.deliveryPrice);
+          reqArray.push(el.orderCode);
           reqArrays.push(reqArray);
           return reqArrays;
         });
-      });
     });
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
@@ -409,12 +407,10 @@ const Order = () => {
   const orderStatusChangeAll = async e => {
     const idArray = [];
     orderList?.data?.map(el =>
-      el.orderItemDailyFoodGroupList?.map(v =>
-        v.orderItemDailyFoods?.map(s => {
+      el.orderItemDailyFoods?.map(s => {
           if (selectClient.includes(orderStatusFomatted(s.orderStatus)))
             idArray.push(s.orderItemDailyFoodId);
         }),
-      ),
     );
     const data = {
       status: 10,
