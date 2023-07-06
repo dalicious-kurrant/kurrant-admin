@@ -60,7 +60,7 @@ const AutoNotificationTable = () => {
             <Table.HeaderCell>상태</Table.HeaderCell>
             <Table.HeaderCell>ID</Table.HeaderCell>
             <Table.HeaderCell>조건</Table.HeaderCell>
-            <Table.HeaderCell>메시지 (한글 100자)</Table.HeaderCell>
+            <Table.HeaderCell>메시지</Table.HeaderCell>
             <Table.HeaderCell>화면전환</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -97,7 +97,7 @@ const AutoNotificationTable = () => {
                       {v.isEdit ? (
                         <TextArea
                           rows={1}
-                          maxLength="100"
+                          maxLength="1000"
                           defaultValue={v.message}
                           style={{
                             minWidth: 300,
