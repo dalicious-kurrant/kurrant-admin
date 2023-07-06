@@ -74,9 +74,9 @@ const Schedule = () => {
       </ContentsDetailLabelWrap>
     );
   };
-  useEffect(()=>{
-    console.log(salesList)
-  },[salesList])
+  useEffect(() => {
+    console.log(salesList);
+  }, [salesList]);
   return (
     <Wrapper>
       <Header as="h2">기간별 판매 내역</Header>
@@ -224,7 +224,7 @@ const Schedule = () => {
                               <TimeBoxTime>{v.deliveryTime}</TimeBoxTime>
                             </TimeBox>
                             <TimeBox>
-                              총 주문수량
+                              총 배송 건수
                               <TimeBoxTime>{deliveryCount}개</TimeBoxTime>
                             </TimeBox>
                           </TimeWrap>
