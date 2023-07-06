@@ -41,7 +41,7 @@ const MySpotZone = () => {
 
   const {mutateAsync: createSpot} = useCreateMySpot();
   const {mutateAsync: renewSpot} = useRenew();
-  const {data: renewData} = useRenewMySpot();
+  const {data: renewData, isSuccess} = useRenewMySpot();
 
   const {data: mySpotData, refetch: spotListRefetch} = useGetMySpotList(
     page,
@@ -127,7 +127,7 @@ const MySpotZone = () => {
             />
           </div>
           <div style={{position: 'relative'}}>
-            {renewData?.data?.length !== 0 && <Circle />}
+            {renewData?.data?.length !== 0 && isSuccess && <Circle />}
             <Button content="갱신" color="olive" onClick={renewSpotButton} />
           </div>
         </ButtonWrap>
