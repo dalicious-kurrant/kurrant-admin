@@ -1,10 +1,8 @@
 import {
-  useMakersAdjustList,
   useSpotsAdjustList,
-  useUpdateMakersAdjustStatus,
   useUpdateSpotsAdjustStatus,
 } from 'hooks/useAdjustment';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {PageWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import {Dropdown, Table} from 'semantic-ui-react';
@@ -22,6 +20,7 @@ import {
 import {useAtom} from 'jotai';
 import withCommas from 'utils/withCommas';
 import ClientFilter from './components/ClientFilter';
+import ClientAdjustment from './components/ClientAdjustment';
 
 const ClientCalc = () => {
   const navigate = useNavigate();
@@ -69,7 +68,16 @@ const ClientCalc = () => {
   return (
     <PageWrapper>
       <div
-        style={{display: 'flex', justifyContent: 'flex-end', marginBottom: 24}}>
+        style={{display: 'flex', justifyContent: 'space-between', marginBottom: 1}}>
+        <div style={{display: 'flex', flexDirection: 'column',justifySelf:'flex-start',alignSelf:'flex-start'}}>
+         
+          <div style={{marginBottom: 20}}>
+            <ClientAdjustment addData/>
+          </div>
+          <div style={{marginBottom: 60}}>
+            <ClientAdjustment deleteData/>
+          </div>
+        </div>
         <TotalWrap>
           {totalData?.map((el, idx) => {
             return (

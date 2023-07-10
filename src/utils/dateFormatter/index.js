@@ -183,6 +183,18 @@ export function formattedDateType(data) {
       break;
   }
 }
+export function formattedDateReverseType(data) {
+  switch (data) {
+    case '아침':
+      return 1;
+    case '점심':
+      return 2;
+    case '저녁':
+      return 3;
+    default:
+      break;
+  }
+}
 // export function daysLeft(endDate) {
 //   const dayNow = new Date();
 

@@ -79,8 +79,8 @@ const CustomerTable = ({
           onChange={e => {
             //userFilter(e.value);
 
-            console.log('커스터머 테이블');
-            console.log(e);
+            // console.log('커스터머 테이블');
+            // console.log(e);
 
             setUserOption(e.value.toString());
           }}
@@ -151,7 +151,9 @@ const CustomerTable = ({
               <Table.HeaderCell textAlign="center">
                 이메일(필수)
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">결제비밀번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                결제비밀번호
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">비밀번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 사용자 명(필수)
@@ -193,7 +195,6 @@ const CustomerTable = ({
           <Table.Body>
             {testData?.length > 0 &&
               testData?.map((row, i) => {
-                console.log(row)
                 return (
                   <Table.Row
                     style={{

@@ -174,13 +174,25 @@ const CorpTable = ({
                 <div style={{width: 150}}>상세주소</div>
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">위치</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">배송비조건</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">주문요일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">배송시간</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                주문마감시간
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                멤버십마감시간
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                아침 지원금
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                점심 지원금
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                저녁 지원금
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 타입</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">
-                지원급 적용O
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">
-                지원급 적용X
-              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">식사 요일</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자 ID</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">담당자</Table.HeaderCell>
@@ -194,19 +206,14 @@ const CorpTable = ({
               <Table.HeaderCell textAlign="center">
                 멤버십 종료 날짜
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">
-                아침 지원금
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">
-                점심 지원금
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">
-                저녁 지원금
-              </Table.HeaderCell>
+
               <Table.HeaderCell textAlign="center">사원수</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 식사 세팅 지원 <br />
                 서비스
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                샐러드 필요 유무
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 쓰레기 수거 <br />
@@ -226,16 +233,24 @@ const CorpTable = ({
           </Table.Header>
           <Table.Body>
             {corpListData?.map((el, idx) => {
-              console.log(el)
               const diningType = el.diningTypes.map(v =>
                 v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
               );
-
               const membership = el.isMembershipSupport ? '지원' : '미지원';
               const setting = el.isSetting ? '사용' : '미사용';
+              const saladRequired = el.isSaladRequired ? '필요' : '불필요';
               const garbage = el.isGarbage ? '사용' : '미사용';
               const isActive = el.isActive ? '활성' : '비활성';
               const hotStorage = el.isHotStorage ? '사용' : '미사용';
+              const morningData = el.mealInfos.find(
+                morning => morning.diningType === 1,
+              );
+              const lunchData = el.mealInfos.find(
+                morning => morning.diningType === 2,
+              );
+              const dinnerData = el.mealInfos.find(
+                morning => morning.diningType === 3,
+              );
               return (
                 <Table.Row
                   key={el.id + idx}
@@ -249,25 +264,220 @@ const CorpTable = ({
                   </Table.Cell>
                   <Table.Cell textAlign="center">{el.id}</Table.Cell>
                   <Table.Cell textAlign="center">{isActive}</Table.Cell>
-                  <Table.Cell>{groupTypeFormatted(el.groupType)}</Table.Cell>
+                  <Table.Cell style={{whiteSpace:'nowrap'}}>{groupTypeFormatted(el.groupType)}</Table.Cell>
                   <Table.Cell>{el.code}</Table.Cell>
                   <Table.Cell>{el.name}</Table.Cell>
                   <Table.Cell>{el.zipCode}</Table.Cell>
                   <Table.Cell>{el.address1}</Table.Cell>
                   <Table.Cell>{el.address2}</Table.Cell>
                   <Table.Cell>
-                    <div style={{width: 50}}>{el.location}</div>
+                    <div
+                      style={{
+                        width: 'auto',
+                      }}>
+                      {el.location}
+                    </div>
                   </Table.Cell>
+                  <Table.Cell textAlign="center">{el.deliveryFeeOption}</Table.Cell>
+                  <Table.Cell>
+                    <div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {morningData?.serviceDays &&
+                          '아침: ' + morningData?.serviceDays}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          marginBottom: 10,
+                          marginTop: 10,
+                        }}>
+                        {lunchData?.serviceDays &&
+                          '점심: ' + lunchData?.serviceDays}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {dinnerData?.serviceDays &&
+                          '저녁: ' + dinnerData?.serviceDays}
+                      </div>
+                    </div>
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    <div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {morningData?.deliveryTimes &&
+                          '아침: ' + morningData?.deliveryTimes}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          marginBottom: 10,
+                          marginTop: 10,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {lunchData?.deliveryTimes &&
+                          '점심: ' + lunchData?.deliveryTimes}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {dinnerData?.deliveryTimes &&
+                          '저녁: ' + dinnerData?.deliveryTimes}
+                      </div>
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {morningData?.lastOrderTime &&
+                          '아침: ' + morningData?.lastOrderTime}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          marginBottom: 10,
+                          marginTop: 10,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {lunchData?.lastOrderTime &&
+                          '점심: ' + lunchData?.lastOrderTime}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {dinnerData?.lastOrderTime &&
+                          '저녁: ' + dinnerData?.lastOrderTime}
+                      </div>
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {morningData?.membershipBenefitTime &&
+                          '아침: ' + morningData?.membershipBenefitTime}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          marginBottom: 10,
+                          marginTop: 10,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {lunchData?.membershipBenefitTime &&
+                          '점심: ' + lunchData?.membershipBenefitTime}
+                      </div>
+                      <div
+                        style={{
+                          width: 'auto',
+                          height: 15,
+                          whiteSpace: 'nowrap',
+                        }}>
+                        {dinnerData?.membershipBenefitTime &&
+                          '저녁: ' + dinnerData?.membershipBenefitTime}
+                      </div>
+                    </div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {morningData?.supportPriceByDays &&
+                      morningData?.supportPriceByDays?.map(data => {
+                        return (
+                          <div
+                            key={el.id + data.serviceDay + data.supportPrice}
+                            style={{
+                              width: 'auto',
+                              height: 15,
+                              marginTop: 5,
+                              whiteSpace: 'nowrap',
+                            }}>
+                            {data?.serviceDay &&
+                              data?.serviceDay +
+                                ': ' +
+                                withCommas(data?.supportPrice)}
+                          </div>
+                        );
+                      })}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {lunchData?.supportPriceByDays &&
+                      lunchData?.supportPriceByDays?.map(data => {
+                        return (
+                          <div
+                            key={el.id + data.serviceDay + data.supportPrice}
+                            style={{
+                              width: 'auto',
+                              height: 15,
+                              marginTop: 5,
+                              whiteSpace: 'nowrap',
+                            }}>
+                            {data?.serviceDay &&
+                              data?.serviceDay +
+                                ': ' +
+                                withCommas(data?.supportPrice)}
+                          </div>
+                        );
+                      })}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {dinnerData?.supportPriceByDays &&
+                      dinnerData?.supportPriceByDays?.map(data => {
+                        return (
+                          <div
+                            key={el.id + data.serviceDay + data.supportPrice}
+                            style={{
+                              width: 'auto',
+                              height: 15,
+                              marginTop: 5,
+                              whiteSpace: 'nowrap',
+                            }}>
+                            {data?.serviceDay &&
+                              data?.serviceDay +
+                                ': ' +
+                                withCommas(data?.supportPrice)}
+                          </div>
+                        );
+                      })}
+                  </Table.Cell>
+
                   <Table.Cell>{diningType.join(',')}</Table.Cell>
-                  <Table.Cell>
-                    <div style={{width: 120}}>{el.supportDays}</div>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div style={{width: 120}}>{el.notSupportDays}</div>
-                  </Table.Cell>
+
                   <Table.Cell>
                     <div style={{width: 120}}>{el.serviceDays}</div>
                   </Table.Cell>
+
                   <Table.Cell textAlign="center">{el.managerId}</Table.Cell>
                   <Table.Cell>{el.managerName}</Table.Cell>
                   <Table.Cell textAlign="center">
@@ -276,18 +486,11 @@ const CorpTable = ({
                     </div>
                   </Table.Cell>
                   <Table.Cell textAlign="center">{membership}</Table.Cell>
-                  <Table.Cell textAlign="center">{el.membershipEndDate}</Table.Cell>
                   <Table.Cell textAlign="center">
-                    {withCommas(el.morningSupportPrice) || '-'}
+                    {el.membershipEndDate}
                   </Table.Cell>
-                  <Table.Cell textAlign="center">
-                    {withCommas(el.lunchSupportPrice) || '-'}
-                  </Table.Cell>
-                  <Table.Cell textAlign="center">
-                    {withCommas(el.dinnerSupportPrice) || '-'}
-                  </Table.Cell>
-
                   <Table.Cell>{withCommas(el.employeeCount)}</Table.Cell>
+                  <Table.Cell textAlign="center">{saladRequired}</Table.Cell>
                   <Table.Cell textAlign="center">{setting}</Table.Cell>
                   <Table.Cell textAlign="center">{garbage}</Table.Cell>
                   <Table.Cell textAlign="center">{hotStorage}</Table.Cell>
@@ -337,3 +540,4 @@ const PaginationWrap = styled.div`
   justify-content: flex-end;
   margin-bottom: 24px;
 `;
+

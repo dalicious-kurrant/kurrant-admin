@@ -36,7 +36,7 @@ const Company = () => {
   // console.log(corpList);
   useEffect(() => {
     setCorporation(corpList);
-    setCorporationExport(corpExportList?.data);
+    setCorporationExport(corpExportList?.data.filter(v=>v));
   }, [corpExportList?.data, corpList, setCorporation, setCorporationExport]);
 
   useEffect(() => {

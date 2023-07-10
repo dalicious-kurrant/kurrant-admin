@@ -46,7 +46,6 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
 
     await modifySpot(data);
     setOpen(false);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -75,12 +74,13 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
       trigger={<Button>Show Modal</Button>}>
       <Modal.Header style={{textAlign: 'left'}}>{title}</Modal.Header>
       <Modal.Content>
+        <div style={{fontSize: 12}}> * 필수 입력값 입니다.</div>
         <FormProvider {...form}>
           <Wrap>
             <div>
               <InputWrap>
                 <Label
-                  content="우편번호"
+                  content="*우편번호"
                   style={{
                     width: 100,
                     textAlign: 'center',
@@ -90,7 +90,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
               </InputWrap>
               <InputWrap>
                 <Label
-                  content="시/도"
+                  content="*시/도"
                   style={{
                     width: 100,
                     textAlign: 'center',
@@ -100,7 +100,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
               </InputWrap>
               <InputWrap>
                 <Label
-                  content="군/구"
+                  content="*군/구"
                   style={{
                     width: 100,
                     textAlign: 'center',
@@ -110,7 +110,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
               </InputWrap>
               <InputWrap>
                 <Label
-                  content="동/읍/리"
+                  content="*동/읍/리"
                   style={{
                     width: 100,
                     textAlign: 'center',
@@ -122,7 +122,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
             <div style={{marginLeft: 24}}>
               <InputWrap>
                 <Label
-                  content="신청 유저 수"
+                  content="*신청 유저 수"
                   style={{
                     width: 100,
                     textAlign: 'center',

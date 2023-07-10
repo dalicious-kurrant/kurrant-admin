@@ -6,6 +6,7 @@ import {useEffect, useRef, useState} from 'react';
 import withCommas from '../../utils/withCommas';
 import HashTag from '../../components/hashTag/HashTag';
 import {
+  useAddProductKeyword,
   useEditProductDetail,
   useGetDetailProductsList,
 } from '../../hooks/useProductsList';
@@ -13,6 +14,7 @@ import ItemDetailImage from './components/ItemDetailImage';
 import {useAtom} from 'jotai';
 import {productDataAtom} from 'utils/store';
 import {Button, Label} from 'semantic-ui-react';
+import ItemKeyword from './ItemKeyword/ItemKeyword';
 
 const ProductDetailPage = () => {
   const morningRef = useRef(null);
@@ -23,8 +25,20 @@ const ProductDetailPage = () => {
   const foodId = location.state.foodId;
   const makersId = location.state.makersId;
 
+  console.log(foodId);
+
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
+
+  const {mutateAsync: addKeyword} = useAddProductKeyword();
+
+  useEffect(() => {
+    addKeyword({
+      foodId: 1,
+      names: ['키워드1', '키워드2'],
+    });
+  }, [addKeyword]);
+
   const listData = detailData?.data;
   const [clicked, setClicked] = useState([]);
   const [dataList, setDataList] = useAtom(productDataAtom); // 이미지
@@ -396,6 +410,10 @@ const ProductDetailPage = () => {
               setSelectedFoodGroup={setSelectedFoodGroup}
             />
           </HashTagWrap>
+        </div>
+
+        <div>
+          <ItemKeyword foodId={foodId} />
         </div>
         <div>
           <TagTitle>이미지 등록 (최대 6장)</TagTitle>

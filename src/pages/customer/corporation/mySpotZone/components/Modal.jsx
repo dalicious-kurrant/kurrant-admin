@@ -1,17 +1,26 @@
 import Input from 'components/input/Input';
+import {useCreateMySpotAdmin, useModifyMySpotAdmin} from 'hooks/useMySpotAdmin';
 import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {Button, Form, Label, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import {formattedWeekDateZ} from 'utils/dateFormatter';
+import {
+  formattedDateReverseType,
+  formattedDateType,
+  formattedWeekDateZ,
+} from 'utils/dateFormatter';
 
 const ModalComponent = ({open, setOpen, data, title, button}) => {
   const form = useForm({
     mode: 'all',
   });
 
+  const {mutateAsync: createSpot} = useCreateMySpotAdmin();
+  const {mutateAsync: modifySpot} = useModifyMySpotAdmin();
+
   const {watch, setValue} = form;
+
   const spotId = watch('spotId');
   const name = watch('name');
   const zipcode = watch('zipcode');
@@ -24,48 +33,122 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
   const lunch = watch('lunch');
   const dinner = watch('dinner');
   const status = watch('status');
-
-  const addSpot = () => {
+  const openDate = watch('openDate');
+  const closeDate = watch('closeDate');
+  const diningType = watch('diningType');
+  console.log(
+    zipcode,
+    si,
+    gu,
+    dong,
+    user,
+    morning,
+    lunch,
+    dinner,
+    status,
+    openDate,
+    closeDate,
+    diningType,
+  );
+  const addSpot = async () => {
     data = {
-      si: si,
-      gu: gu,
-      dong: dong,
-      user: user,
-      zipcode: zipcode,
-      memo: memo,
+      name: name,
+      zipcodes: zipcode?.split(','),
+      city: si,
+      counties: gu?.split(','),
+      villages: dong?.split(','),
+      status:
+        status?.trim() === '오픈 대기' ? 0 : status?.trim() === '오픈' ? 1 : 2,
+      openDate: openDate,
+      closeDate: closeDate,
+      userCount: Number(user),
+      diningTypes: diningType
+        ?.split(',')
+        ?.map(v => formattedDateReverseType(v)),
+      breakfastDeliveryTime: morning?.split(','),
+      lunchDeliveryTime: lunch?.split(','),
+      dinnerDeliveryTime: dinner?.split(','),
+      memo: memo === undefined || memo === '' ? null : memo,
     };
+
+    await createSpot(data);
     setOpen(false);
     console.log(data);
+  };
+
+  const modifySpotButton = async () => {
+    data = {
+      id: Number(spotId),
+      name: name,
+      zipcodes: Array.isArray(zipcode) ? zipcode : zipcode?.split(','),
+      city: si,
+      counties: Array.isArray(gu) ? gu : gu?.split(','),
+      villages: Array.isArray(dong) ? dong : dong?.split(','),
+      status: Array.isArray(status)
+        ? status
+        : status?.trim() === '오픈 대기'
+        ? 0
+        : status?.trim() === '오픈'
+        ? 1
+        : 2,
+      openDate: openDate,
+      closeDate: closeDate,
+      userCount: Number(user),
+      diningTypes: Array.isArray(diningType)
+        ? diningType?.map(v => formattedDateReverseType(v))
+        : diningType?.split(',')?.map(v => formattedDateReverseType(v)),
+      breakfastDeliveryTime: Array.isArray(morning)
+        ? morning
+        : morning?.split(','),
+      lunchDeliveryTime: Array.isArray(lunch) ? lunch : lunch?.split(','),
+      dinnerDeliveryTime: Array.isArray(dinner) ? dinner : dinner?.split(','),
+      memo: memo === undefined || memo === '' ? null : memo,
+    };
+    //console.log(data, 'modifyData');
+    await modifySpot(data);
+    setOpen(false);
   };
 
   useEffect(() => {
     setValue('openDate', data?.openDate);
     setValue('closeDate', data?.closeDate);
-    setValue('spotId', data?.spotId);
+    setValue('spotId', data?.id);
     setValue('name', data?.name);
-    setValue('zipcode', data?.zipcode);
-    setValue('si', data?.si);
-    setValue('gu', data?.gu);
-    setValue('dong', data?.dong);
-    setValue('user', data?.user);
-    setValue('status', data?.status);
-    setValue('morning', data?.morning);
-    setValue('lunch', data?.lunch);
-    setValue('dinner', data?.dinner);
+    setValue('zipcode', data?.zipcodes);
+    setValue('si', data?.city);
+    setValue('gu', data?.counties);
+    setValue('dong', data?.villages);
+    setValue('user', data?.userCount);
+    setValue(
+      'status',
+      data?.status === 0
+        ? '오픈 대기'
+        : data?.status === 1
+        ? '오픈'
+        : data?.status === 2 && '정지',
+    );
+    setValue('morning', data?.breakfastDeliveryTime);
+    setValue('lunch', data?.lunchDeliveryTime);
+    setValue('dinner', data?.dinnerDeliveryTime);
+    setValue(
+      'diningType',
+      data?.diningType?.map(v => formattedDateType(v)),
+    );
   }, [
-    data?.closeDate,
-    data?.dinner,
-    data?.dong,
-    data?.gu,
-    data?.lunch,
-    data?.morning,
+    data?.breakfastDeliveryTime,
+    data?.city,
+    data?.counties,
+    data?.diningType,
+    data?.dinnerDeliveryTime,
+    data?.id,
+    data?.lunchDeliveryTime,
     data?.name,
-    data?.openDate,
-    data?.si,
-    data?.spotId,
+    data?.openCloseDate,
+    data?.openStartDate,
     data?.status,
-    data?.user,
-    data?.zipcode,
+    data?.userCount,
+    data?.villages,
+    data?.zipcodes,
     setValue,
   ]);
   return (
@@ -89,7 +172,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                     textAlign: 'center',
                   }}
                 />
-                <InputBox name="spotId" type="number" />
+                <InputBox name="spotId" type="number" readOnly />
               </InputWrap>
               <InputWrap>
                 <Label
@@ -113,7 +196,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
               </InputWrap>
               <InputWrap>
                 <Label
-                  content="군/구"
+                  content="시/군/구"
                   style={{
                     width: 100,
                     textAlign: 'center',
@@ -129,10 +212,24 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                     textAlign: 'center',
                   }}
                 />
-                <InputBox name="dong" width="120px" />
+                <InputBox name="dong" width="250px" />
+              </InputWrap>
+              <InputWrap>
+                <Label
+                  content="우편번호"
+                  style={{
+                    width: 100,
+                    textAlign: 'center',
+                  }}
+                />
+                <InputBox
+                  name="zipcode"
+                  width="250px"
+                  placeholder="30544,30522"
+                />
               </InputWrap>
             </div>
-            <div style={{marginLeft: 24}}>
+            <div style={{marginLeft: -100}}>
               <InputWrap>
                 <Label
                   content="상태"
@@ -157,7 +254,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                 />
                 <InputBox
                   name="openDate"
-                  placeholder="ex)20230606"
+                  placeholder="2023-06-06"
                   width="120px"
                 />
               </InputWrap>
@@ -171,22 +268,8 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                 />
                 <InputBox
                   name="closeDate"
-                  placeholder="ex)20230606"
+                  placeholder="2023-06-06"
                   width="120px"
-                />
-              </InputWrap>
-              <InputWrap>
-                <Label
-                  content="우편번호"
-                  style={{
-                    width: 100,
-                    textAlign: 'center',
-                  }}
-                />
-                <InputBox
-                  name="zipcode"
-                  width="350px"
-                  placeholder="ex)30544,30522"
                 />
               </InputWrap>
               <InputWrap>
@@ -202,9 +285,23 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
             </div>
             <div
               style={{
-                marginLeft: -214,
                 alignSelf: 'flex-start',
+                marginLeft: 24,
               }}>
+              <InputWrap>
+                <Label
+                  content="식사 타입"
+                  style={{
+                    width: 100,
+                    textAlign: 'center',
+                  }}
+                />
+                <InputBox
+                  name="diningType"
+                  width="250px"
+                  placeholder="아침,점심,저녁"
+                />
+              </InputWrap>
               <InputWrap>
                 <Label
                   content="아침 시간"
@@ -216,7 +313,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                 <InputBox
                   name="morning"
                   width="250px"
-                  placeholder="ex)05:00,06:00"
+                  placeholder="05:00,06:00"
                 />
               </InputWrap>
               <InputWrap>
@@ -230,7 +327,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                 <InputBox
                   name="lunch"
                   width="250px"
-                  placeholder="ex)05:00,06:00"
+                  placeholder="12:00,13:00"
                 />
               </InputWrap>
               <InputWrap>
@@ -244,7 +341,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
                 <InputBox
                   name="dinner"
                   width="250px"
-                  placeholder="ex)05:00,06:00"
+                  placeholder="18:00,19:00"
                 />
               </InputWrap>
             </div>
@@ -254,7 +351,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
               content="메모"
               style={{
                 textAlign: 'center',
-                marginTop: 48,
+                marginTop: 32,
               }}
             />
 
@@ -276,7 +373,7 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
           content={button}
           positive
           onClick={() => {
-            button === '추가' && addSpot();
+            button === '추가' ? addSpot() : modifySpotButton();
           }}
         />
       </Modal.Actions>

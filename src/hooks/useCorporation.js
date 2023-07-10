@@ -32,7 +32,8 @@ export function useUpdateSpotDetail() {
     },
     {
       onSuccess: res => {
-        queryClient.invalidateQueries(['corporationInfoList','corporationInfoDetail']);
+        queryClient.invalidateQueries('corporationInfoList');
+        queryClient.invalidateQueries('corporationInfoDetail');
       },
       onError: e => {
         alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());

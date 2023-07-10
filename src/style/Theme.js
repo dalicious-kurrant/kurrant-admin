@@ -31,6 +31,12 @@ export const blue = {
   600: '#109CF1',
 };
 
+// Pink
+export const pink = {
+  100: '#FFEEFD',
+  500: '#FF6DF0',
+};
+
 // Red
 export const red = {
   100: '#FFEAEA',
@@ -66,6 +72,7 @@ const colors = {
   blue,
   neutral,
   red,
+  pink,
   yellow,
   green,
   purple,

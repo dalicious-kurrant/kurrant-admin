@@ -402,12 +402,12 @@ const Delivery = () => {
                             </SpotName>
                           </Spot>
                         </Group>
-                        <DeliveryTime>도착:{group.deliveryTime}</DeliveryTime>
+                        <DeliveryTime>도착:{group?.deliveryTime}</DeliveryTime>
                       </GroupHeader>
                       <GroupAddress>
-                        <Address>배송지 : {group.address || '배송지'}</Address>
+                        <Address>배송지 : {group?.address || '배송지'}</Address>
                       </GroupAddress>
-                      {group.makers.map(makers => {
+                      {group.makersList.map(makers => {
                         return (
                           <MakersContainer
                             key={

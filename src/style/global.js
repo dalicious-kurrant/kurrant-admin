@@ -4,9 +4,9 @@ import reset from 'styled-reset';
 export const GlobalStyle = createGlobalStyle`
     ${reset};
 
-    .ui.celled.table tr th {
-        white-space: nowrap;
-    }
+.ui.celled.table tr th {
+    white-space: nowrap;
+}
 
 
 button {
@@ -105,7 +105,7 @@ time,
 mark,
 audio,
 video {
-  
+ 
   margin: 0;
   padding: 0;
   border: 0;
