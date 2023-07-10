@@ -40,7 +40,6 @@ const ItemKeywordInput = ({foodId}) => {
       </Wrap>
       <Button
         onClick={() => {
-          console.log('클릭');
           addKeywordMutate({
             foodId: foodId,
             names: names,
@@ -55,7 +54,7 @@ const ItemKeywordInput = ({foodId}) => {
           disabled
           value={
             keywordArr === undefined
-              ? undefined
+              ? ''
               : Array.isArray(keywordArr) && keywordArr.length > 0
               ? keywordArr.join(', ')
               : '리뷰 키워드가 등록되지 않았습니다.'
