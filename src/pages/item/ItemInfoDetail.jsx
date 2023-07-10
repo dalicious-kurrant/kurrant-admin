@@ -73,6 +73,11 @@ const ProductDetailPage = () => {
   const lunchEndTime = watch('lunchEnd');
   const dinnerEndTime = watch('dinnerEnd');
 
+  const calorie = watch('calorie');
+  const carbohydrate = watch('carbohydrate');
+  const protein = watch('protein');
+  const fat = watch('fat');
+
   const modifyButton = async () => {
     const formData = new FormData();
 
@@ -117,8 +122,14 @@ const ProductDetailPage = () => {
           : dinnerEndTime + '일전 ' + dinnerTime,
       images: dataList?.foodImages,
       description: text,
+
+      calorie: calorie,
+      carbohydrate: carbohydrate,
+      protein: protein,
+      fat: fat,
     };
     console.log(data, '0888');
+
     const json = JSON.stringify(data);
     const blob = new Blob([json], {type: 'application/json'});
     formData.append('contents', blob);
@@ -241,6 +252,11 @@ const ProductDetailPage = () => {
     setDinnerTime(
       listData?.dinnerLastOrderTime?.split('일전')[1]?.split(' ')[1],
     );
+
+    setValue('calorie', listData?.calorie);
+    setValue('carbohydrate', listData?.carbohydrate);
+    setValue('protein', listData?.protein);
+    setValue('fat', listData?.fat);
   }, [
     listData?.customPrice,
     listData?.foodName,
@@ -262,6 +278,10 @@ const ProductDetailPage = () => {
     listData?.morningLastOrderTime,
     listData?.lunchLastOrderTime,
     listData?.dinnerLastOrderTime,
+    listData?.calorie,
+    listData?.carbohydrate,
+    listData?.protein,
+    listData?.fat,
   ]);
 
   return (
@@ -392,6 +412,12 @@ const ProductDetailPage = () => {
                   </TimeWrap>
                 </EndTimeContents>
               </EndTimeWrap>
+              <DietRepoWrap>
+                <Input name="calorie" label="칼로리(kcal)" />
+                <Input name="carbohydrate" label="탄수화물(g)" />
+                <Input name="protein" label="단백질(g)" />
+                <Input name="fat" label="지방(g)" />
+              </DietRepoWrap>
             </div>
           </FormProvider>
         </InputWrap>
@@ -571,4 +597,10 @@ const ResetTime = styled.div`
 const TimeWrap = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const DietRepoWrap = styled.div`
+  display: flex;
+
+  margin-top: 24px;
 `;
