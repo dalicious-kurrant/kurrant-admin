@@ -11,10 +11,6 @@ const ItemKeywordInput = ({foodId}) => {
   const {reviewKeywordSearchQueryRefetch, keywordArr} =
     useGetItemKeyword(foodId);
 
-  // useEffect(() => {
-  //   reviewKeywordSearchQueryRefetch();
-  // }, []);
-
   const {addKeywordMutate} = useItemKeywordMutation(() => {
     reviewKeywordSearchQueryRefetch();
   });
@@ -26,11 +22,6 @@ const ItemKeywordInput = ({foodId}) => {
   const handleChange = e => {
     setInput(e.target.value);
   };
-
-  useEffect(() => {
-    console.log('키워드 배열');
-    console.log(keywordArr);
-  }, [keywordArr]);
 
   return (
     <Container>
@@ -44,7 +35,6 @@ const ItemKeywordInput = ({foodId}) => {
             foodId: foodId,
             names: names,
           });
-          // reviewKeywordSearchQueryRefetch();
         }}>
         키워드 계산하기
       </Button>
