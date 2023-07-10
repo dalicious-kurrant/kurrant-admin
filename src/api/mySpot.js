@@ -35,5 +35,9 @@ export const MySpotApis = {
       },
     }),
   createSpot: async data =>
-    await instance.post('application-forms/spots/my', data),
+    await instance.post('application-forms/create/zone', data),
+  renewSpot: async data =>
+    await instance.post('application-forms/spots/my/renew', data),
+  renewSpotLoad: async () =>
+    await instance.get('application-forms/spots/my/renew'),
 };

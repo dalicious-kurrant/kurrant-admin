@@ -59,8 +59,8 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
       villages: dong?.split(','),
       status:
         status?.trim() === '오픈 대기' ? 0 : status?.trim() === '오픈' ? 1 : 2,
-      openStartDate: openDate,
-      openCloseDate: closeDate,
+      openDate: openDate,
+      closeDate: closeDate,
       userCount: Number(user),
       diningTypes: diningType
         ?.split(',')
@@ -91,8 +91,8 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
         : status?.trim() === '오픈'
         ? 1
         : 2,
-      openStartDate: openDate,
-      openCloseDate: closeDate,
+      openDate: openDate,
+      closeDate: closeDate,
       userCount: Number(user),
       diningTypes: Array.isArray(diningType)
         ? diningType?.map(v => formattedDateReverseType(v))
@@ -110,8 +110,8 @@ const ModalComponent = ({open, setOpen, data, title, button}) => {
   };
 
   useEffect(() => {
-    setValue('openDate', data?.openStartDate);
-    setValue('closeDate', data?.openCloseDate);
+    setValue('openDate', data?.openDate);
+    setValue('closeDate', data?.closeDate);
     setValue('spotId', data?.id);
     setValue('name', data?.name);
     setValue('zipcode', data?.zipcodes);

@@ -11,6 +11,7 @@ export const BtnWrapper = styled.div`
 `;
 
 export const TableWrapper = styled.div`
+  font-family: 'Pretendard';
   width: 100%;
   min-height: 500px;
   overflow: auto;

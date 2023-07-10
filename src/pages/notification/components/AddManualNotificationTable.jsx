@@ -87,7 +87,7 @@ const AddManualNotificationTable = () => {
             {selectType === 2 && <Table.HeaderCell>상세스팟</Table.HeaderCell>}
             {selectType === 3 && <Table.HeaderCell>유저</Table.HeaderCell>}
             {selectType === 3 && <Table.HeaderCell>이메일</Table.HeaderCell>}
-            <Table.HeaderCell>메시지 (한글 35자)</Table.HeaderCell>
+            <Table.HeaderCell>메시지</Table.HeaderCell>
             <Table.HeaderCell>화면전환</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -174,7 +174,7 @@ const AddManualNotificationTable = () => {
             <Table.Cell>
               <TextArea
                 rows={3}
-                maxLength="35"
+                maxLength="1000"
                 style={{
                   width: '100%',
                   border: '1px solid #eee',

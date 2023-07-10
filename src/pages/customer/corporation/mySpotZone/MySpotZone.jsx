@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import Filter from './components/Filter';
 import {TableWrapper} from 'style/common.style';
-import {Pagination, Table} from 'semantic-ui-react';
+import {Button, Dropdown, Pagination, Table} from 'semantic-ui-react';
 import {useEffect, useState} from 'react';
 import ModalComponent from './components/Modal';
-import {useDeleteMySpotAdmin, useLoadMySpotAdmin} from 'hooks/useMySpotAdmin';
+import {
+  useChangeStstusMySpotAdmin,
+  useDeleteMySpotAdmin,
+  useLoadMySpotAdmin,
+} from 'hooks/useMySpotAdmin';
 import {useAtom} from 'jotai';
 import {
   MySpotCityAdminAtom,
@@ -16,9 +20,11 @@ import {
   adminCheckListAtom,
   spotPageAdminAtom,
 } from 'utils/store';
-import {formattedDateType} from 'utils/dateFormatter';
+import {formattedDateType, formattedWeekDateZ} from 'utils/dateFormatter';
 
 const MySpotZone = () => {
+  const day = new Date();
+  const days = formattedWeekDateZ(day);
   const [nowData, setNowData] = useState();
   const [page, setPage] = useAtom(spotPageAdminAtom);
   const [totalPage, setTotalPage] = useState(0);
@@ -30,7 +36,9 @@ const MySpotZone = () => {
   const [selectVillage] = useAtom(MySpotVillageAdminAtom);
   const [selectZipcode] = useAtom(MySpotZipcodeAdminAtom);
   const [selectStatus] = useAtom(MySpotStatusAdminAtom);
-
+  const [changeStatus, setChangeStatus] = useState();
+  const [changeDate, setChangeDate] = useState();
+  const {mutateAsync: changeStatusData} = useChangeStstusMySpotAdmin();
   const {data: mySpotAdminList, refetch} = useLoadMySpotAdmin(
     page,
     selectName,
@@ -40,7 +48,11 @@ const MySpotZone = () => {
     selectZipcode,
     selectStatus,
   );
-  console.log(mySpotAdminList);
+
+  const statusData = [
+    {key: 1, text: '오픈', value: 1},
+    {key: 2, text: '중지', value: 2},
+  ];
   const handleSingleCheck = (checked, id) => {
     if (checked) {
       setCheckItems(prev => [...prev, id]);
@@ -56,6 +68,32 @@ const MySpotZone = () => {
 
       setCheckItems(idArray);
     } else {
+      setCheckItems([]);
+    }
+  };
+
+  const getStartDate = e => {
+    setChangeDate(e.target.value);
+  };
+
+  const statusChangeButton = async () => {
+    const data = {
+      ids: checkItems,
+      status: changeStatus,
+      startDate: changeDate,
+    };
+
+    if (changeStatus === 1 && (changeDate === '' || changeDate === undefined)) {
+      alert(`"오픈" 으로 상태 변경 시${`\n`}"날짜" 를 필수로 선택해 주세요`);
+    } else if (
+      changeStatus === 2 &&
+      (changeDate === '' || changeDate === undefined)
+    ) {
+      alert(`"중지" 으로 상태 변경 시${`\n`}"날짜" 를 필수로 선택해 주세요`);
+    } else {
+      await changeStatusData(data);
+      alert(`정상적으로 변경 됐습니다.`);
+      setChangeStatus([]);
       setCheckItems([]);
     }
   };
@@ -81,6 +119,31 @@ const MySpotZone = () => {
   return (
     <Wrap>
       <Filter />
+      <ChangeStatusWrap>
+        <InputBlock>
+          <Dropdown
+            placeholder="상태 변경 결과"
+            fluid
+            selection
+            search
+            options={statusData}
+            value={changeStatus}
+            onChange={(e, data) => {
+              setChangeStatus(data.value);
+            }}
+          />
+        </InputBlock>
+        <DateInput
+          type="date"
+          //defaultValue={changeDate}
+          onChange={e => getStartDate(e)}
+        />
+        <Button
+          content="일괄 상태 변경"
+          color="green"
+          onClick={statusChangeButton}
+        />
+      </ChangeStatusWrap>
       <div style={{marginTop: 24}}>
         <TableWrapper>
           <Pagination
@@ -113,10 +176,10 @@ const MySpotZone = () => {
                 <Table.HeaderCell textAlign="center">우편번호</Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">상태</Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">
-                  오픈 시작날짜
+                  오픈 날짜
                 </Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">
-                  오픈 마감 날짜
+                  중지 날짜
                 </Table.HeaderCell>
                 <Table.HeaderCell textAlign="center">
                   식사 타입
@@ -152,7 +215,7 @@ const MySpotZone = () => {
                       ? '오픈 대기'
                       : el.status === 1
                       ? '오픈'
-                      : '정지';
+                      : '중지';
 
                   return (
                     <Table.Row
@@ -193,10 +256,10 @@ const MySpotZone = () => {
                         <InnerCell>{status}</InnerCell>
                       </Table.Cell>
                       <Table.Cell textAlign="center">
-                        <InnerCell>{el.openStartDate}</InnerCell>
+                        <InnerCell>{el.openDate}</InnerCell>
                       </Table.Cell>
                       <Table.Cell textAlign="center">
-                        <InnerCell>{el.openCloseDate}</InnerCell>
+                        <InnerCell>{el.closeDate}</InnerCell>
                       </Table.Cell>
                       <Table.Cell textAlign="center">
                         <InnerCell>{type.join(',')}</InnerCell>
@@ -251,4 +314,21 @@ const Wrap = styled.div`
 
 const InnerCell = styled.div`
   white-space: nowrap;
+`;
+const InputBlock = styled.div`
+  min-width: 180px;
+  font-size: 14px;
+  margin-right: 24px;
+`;
+const DateInput = styled.input`
+  padding: 4px;
+  width: 200px;
+  border-radius: 4px;
+  border: 1px solid ${({theme}) => theme.colors.grey[5]};
+  margin-right: 24px;
+`;
+
+const ChangeStatusWrap = styled.div`
+  display: flex;
+  margin-top: 12px;
 `;

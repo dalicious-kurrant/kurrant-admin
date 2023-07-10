@@ -37,6 +37,7 @@ const days = formattedWeekDateZ(day);
 export const startDateAtom = atomWithReset(days);
 export const endDateAtom = atomWithReset(days);
 export const groupOptionAtom = atomWithReset('');
+export const groupTypeOptionAtom = atomWithReset('');
 export const userOptionAtom = atomWithReset('');
 export const makersOptionAtom = atomWithReset('');
 export const spotOptionAtom = atomWithReset('');
@@ -48,6 +49,7 @@ export const spotListAtom = atomWithReset([]);
 export const userListAtom = atomWithReset([]);
 export const diningListAtom = atomWithReset([]);
 export const groupFilterAtom = atomWithReset('');
+export const groupTypeFilterAtom = atomWithReset('');
 
 // 기업정보
 export const corpNameOptionAtom = atomWithReset('');
@@ -96,6 +98,7 @@ export const corpDataAtom = atomWithReset();
 // 마이스팟
 export const indexAtom = atomWithReset();
 export const checkListAtom = atomWithReset([]);
+export const checkShareListAtom = atomWithReset([]);
 export const spotPageAtom = atomWithReset(1);
 
 export const MySpotCityAtom = atomWithReset([]);

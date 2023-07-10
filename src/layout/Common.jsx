@@ -49,7 +49,7 @@ import {
   useAddExelProductData,
   useEditProductStatus,
 } from '../hooks/useProductsList';
-import {scheduleFormatted2} from 'utils/statusFormatter';
+import {deliveryFeeOptionReverseFormatted, diningFormatted, diningReverseFormatted, groupTypeFormatted2, scheduleFormatted2} from 'utils/statusFormatter';
 import {
   formattedDate,
   formattedFullDate,
@@ -327,28 +327,75 @@ const Common = () => {
     }
 
     if (exelCorporation) {
+      const week = ['월', '화', '수', '목', '금', '토', '일'];
       exelCorporation.map((item, idx) => {
         if (idx !== 0) {
+          // console.log(item.dinnerSupportPrice);
+          const orderServiceDays = item.orderServiceDays && item.orderServiceDays.split('/');
+          const lastOrderTime = item.lastOrderTime && item.lastOrderTime.split('/');
+          const membershipBenefitTime = item.membershipBenefitTime && item.membershipBenefitTime.split('/');
+          const deliveryTime = item.deliveryTime && item.deliveryTime.split('/');
+          const morningSupportPrice = item.morningSupportPrice && item.morningSupportPrice.split(',');
+          const lunchSupportPrice = item.lunchSupportPrice && item.lunchSupportPrice.split(',');
+          const dinnerSupportPrice = item.dinnerSupportPrice && item.dinnerSupportPrice.split(',');
+          const mealInfos = orderServiceDays
+            ?.map((order, i) => {
+              if (order !== '') {
+                let supportPriceByDays = [];
+                if (i === 0) {
+                  supportPriceByDays = morningSupportPrice?.map((m, mi) => {
+                    return {
+                      serviceDay: week[mi],
+                      supportPrice: m,
+                    };
+                  });
+                }
+                if (i === 1) {
+                  supportPriceByDays = lunchSupportPrice?.map((m, mi) => {
+                    return {
+                      serviceDay: week[mi],
+                      supportPrice: m,
+                    };
+                  });
+                }
+                if (i === 2) {
+                  supportPriceByDays = dinnerSupportPrice?.map((m, mi) => {
+                    return {
+                      serviceDay: week[mi],
+                      supportPrice: m,
+                    };
+                  });
+                }
+                const pushData = {
+                  diningType: i + 1,
+                  deliveryTimes: deliveryTime[i],
+                  membershipBenefitTime: membershipBenefitTime[i],
+                  lastOrderTime: lastOrderTime[i],
+                  serviceDays: order,
+                  supportPriceByDays: supportPriceByDays,
+                };
+                return pushData;
+              }
+            })
+            .filter(meal => meal);
           const result = {
             id: item.id,
             code: item.code,
-            groupType: item.groupType,
+            groupType: groupTypeFormatted2(item.groupType),
             name: item.name,
+            isActive:item.isActive || false,
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
             location: item.location || null,
-            diningTypes: [...item.diningTypes.split(',')],
-            supportDays: item.supportDays,
-            notSupportDays: item.notSupportDays,
+            mealInfos: mealInfos,
+            deliveryFeeOption:deliveryFeeOptionReverseFormatted(item.deliveryFeeOption) || 0,
+            diningTypes: item.diningTypes.split(',').map((v)=>diningReverseFormatted(v)),
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
             managerPhone: item.managerPhone,
             isMembershipSupport: item.isMembershipSupport,
-            morningSupportPrice: item.morningSupportPrice,
-            lunchSupportPrice: item.lunchSupportPrice,
-            dinnerSupportPrice: item.dinnerSupportPrice,
             employeeCount: item.employeeCount,
             isSetting: item.isSetting,
             isGarbage: item.isGarbage,
@@ -356,15 +403,17 @@ const Common = () => {
             minimumSpend: item.minimumSpend,
             maximumSpend: item.maximumSpend,
           };
-
+          // console.log(result);
+          // console.log(JSON.stringify(result));
           reqArray.push(result);
         }
       });
-      //console.log(reqArray, '00');
-      console.log(reqArray);
+      // console.log(reqArray, '00');
+
       await corporationExel(reqArray);
       alert('저장 되었습니다.');
       return window.location.reload();
+      // return;
     }
     if (makersExelInfo) {
       makersExelInfo.map((item, idx) => {
@@ -377,12 +426,14 @@ const Common = () => {
               diningType: 1,
               lastOrderTime: item.morningLastOrderTime,
               capacity: item.morningCapa,
-              minTime: typeof item.morningMinTime === typeof new Date()
-              ? formattedTime(item.morningMinTime)
-              : item.morningMinTime,
-              maxTime: typeof item.morningMaxTime === typeof new Date()
-              ? formattedTime(item.morningMaxTime)
-              : item.morningMaxTime,
+              minTime:
+                typeof item.morningMinTime === typeof new Date()
+                  ? formattedTime(item.morningMinTime)
+                  : item.morningMinTime,
+              maxTime:
+                typeof item.morningMaxTime === typeof new Date()
+                  ? formattedTime(item.morningMaxTime)
+                  : item.morningMaxTime,
             });
           }
           if (item.lunchCapa) {
@@ -390,12 +441,14 @@ const Common = () => {
               diningType: 2,
               lastOrderTime: item.lunchLastOrderTime,
               capacity: item.lunchCapa,
-              minTime: typeof item.lunchMaxTime === typeof new Date()
-              ? formattedTime(item.lunchMaxTime)
-              : item.lunchMaxTime,
-              maxTime: typeof item.lunchMaxTime === typeof new Date()
-              ? formattedTime(item.lunchMaxTime)
-              : item.lunchMaxTime,
+              minTime:
+                typeof item.lunchMaxTime === typeof new Date()
+                  ? formattedTime(item.lunchMaxTime)
+                  : item.lunchMaxTime,
+              maxTime:
+                typeof item.lunchMaxTime === typeof new Date()
+                  ? formattedTime(item.lunchMaxTime)
+                  : item.lunchMaxTime,
             });
           }
           if (item.dinnerCapa) {
@@ -403,19 +456,26 @@ const Common = () => {
               diningType: 3,
               lastOrderTime: item.dinnerLastOrderTime,
               capacity: item.dinnerCapa,
-              minTime: typeof item.dinnerMinTime === typeof new Date()
-              ? formattedTime(item.dinnerMinTime)
-              : item.dinnerMinTime,
-              maxTime: typeof item.dinnerMaxTime === typeof new Date()
-              ? formattedTime(item.dinnerMaxTime)
-              : item.dinnerMaxTime,
+              minTime:
+                typeof item.dinnerMinTime === typeof new Date()
+                  ? formattedTime(item.dinnerMinTime)
+                  : item.dinnerMinTime,
+              maxTime:
+                typeof item.dinnerMaxTime === typeof new Date()
+                  ? formattedTime(item.dinnerMaxTime)
+                  : item.dinnerMaxTime,
             });
           }
-          
-          console.log(typeArr)
+
+          console.log(typeArr);
           const result = {
             id: item.id,
-            isActive: item.isActive === '활성여부' ? item.isActive : '활성' ?true: false ,
+            isActive:
+              item.isActive === '활성여부'
+                ? item.isActive
+                : '활성'
+                ? true
+                : false,
             code: item.code,
             name: item.name,
             companyName: item.companyName,
@@ -617,25 +677,29 @@ const Common = () => {
         }
 
         if (sheetName === '스팟 정보') {
-          setExelCorporation(json.map((v)=>{
-            if(v.isActive === "활성여부"){
-              return {
-                ...v,
-                isActive:v.isActive
-              };
+          const exelSpotData = json.map((v, i) => {
+            if (i === 0) {
+              return v;
             }
-            if(v.isActive === "활성"){
-              return { 
-                ...v,
-                isActive:true
-              };
-            }
+            const isMembershipSupport =
+              v.isMembershipSupport === '지원' ? true : false;
+            const isSetting = v.isSetting === '사용' ? true : false;
+            const isGarbage = v.isGarbage === '사용' ? true : false;
+            const isHotStorage = v.isHotStorage === '사용' ? true : false;
+            const isActive = v.isActive === '활성' ? true : false;
+
             return {
               ...v,
-              isActive:false
+              isActive: isActive,
+              isMembershipSupport: isMembershipSupport,
+              isSetting: isSetting,
+              isGarbage: isGarbage,
+              isHotStorage: isHotStorage,
             };
-          }));
-          console.log(json, 'json');
+          });
+          console.log(exelSpotData);
+          setExelCorporation(exelSpotData);
+          // console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
           console.log(json, 'json');
@@ -659,21 +723,21 @@ const Common = () => {
                   closeTime: v.closeTime && formattedTime(v.closeTime),
                 };
               }
-              if(v.isActive === "활성여부"){
+              if (v.isActive === '활성여부') {
                 return {
                   ...v,
-                  isActive:v.isActive
+                  isActive: v.isActive,
                 };
               }
-              if(v.isActive === "활성"){
+              if (v.isActive === '활성') {
                 return {
                   ...v,
-                  isActive:true
+                  isActive: true,
                 };
               }
               return {
                 ...v,
-                isActive:false
+                isActive: false,
               };
             }),
           );
@@ -780,7 +844,7 @@ const Common = () => {
       return completePlanExel(req);
     }
     if (corporationExport && corporationExport?.length > 0) {
-      // console.log(corporationExport);
+      console.log(corporationExport);
       return corporationInfoExel(corporationExport);
     }
     if (exelCorporation && exelCorporation.length > 0) {

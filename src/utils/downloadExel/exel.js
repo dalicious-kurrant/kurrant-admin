@@ -1,7 +1,7 @@
 import {formattedDate, formattedTime} from 'utils/dateFormatter';
 import * as XLSX from 'xlsx';
-import {scheduleFormatted} from '../statusFormatter';
-
+import {groupTypeFormatted, scheduleFormatted} from '../statusFormatter';
+const week = ['월', '화', '수', '목', '금', '토', '일'];
 export function planExel(plan) {
   const reqArrays = [];
   reqArrays.push([
@@ -335,20 +335,24 @@ export function corporationInfoExel(corporation) {
     'address1',
     'address2',
     'location',
+    'deliveryFeeOption',
+    'orderServiceDays',
+    'deliveryTime',
+    'lastOrderTime',
+    'membershipBenefitTime',
+    'morningSupportPrice',
+    'lunchSupportPrice',
+    'dinnerSupportPrice',
     'diningTypes',
-    'supportDays',
-    'notSupportDays',
     'serviceDays',
     'managerId',
     'managerName',
     'managerPhone',
     'isMembershipSupport',
     'membershipEndDate',
-    'morningSupportPrice',
-    'lunchSupportPrice',
-    'dinnerSupportPrice',
     'employeeCount',
     'isSetting',
+    'isSaladRequired',
     'isGarbage',
     'isHotStorage',
     'minimumSpend',
@@ -364,20 +368,24 @@ export function corporationInfoExel(corporation) {
     '기본주소',
     '상세주소',
     '위치',
+    '배송비 조건',
+    '주문요일',
+    '배송시간',
+    '주문마감시간',
+    '멤버십마감시간',
+    '아침 지원금',
+    '점심 지원금',
+    '저녁 지원금',
     '식사 타입',
-    '지원급 적용O',
-    '지원급 적용X',
     '식사 요일',
     '담당자 ID',
     '담당자',
     '담당자 전화번호',
     '기업멤버십 지원여부',
     '멤버십 종료 날짜',
-    '아침 지원금',
-    '점심 지원금',
-    '저녁 지원금',
     '사원수',
     '식사 세팅 지원 서비스',
+    '샐러드 필요 유무',
     '쓰레기 수거 서비스',
     '온장고 대여 서비스',
     '최소 구매 가능 금액',
@@ -385,6 +393,7 @@ export function corporationInfoExel(corporation) {
   ]);
 
   corporation?.map(el => {
+    console.log(el)
     const diningType = el.diningTypes.map(v =>
       v === 1 ? '아침' : v === 2 ? '점심' : '저녁',
     );
@@ -393,31 +402,134 @@ export function corporationInfoExel(corporation) {
     const isActive = el.isActive ? '활성' : '비활성';
     const setting = el.isSetting ? '사용' : '미사용';
     const garbage = el.isGarbage ? '사용' : '미사용';
+    const isSaladRequired = el.isSaladRequired ? '필요' : '불필요';
     const hotStorage = el.isHotStorage ? '사용' : '미사용';
+    const morningData = el.mealInfos.find(morning => morning.diningType === 1);
+    const lunchData = el.mealInfos.find(morning => morning.diningType === 2);
+    const dinnerData = el.mealInfos.find(morning => morning.diningType === 3);
+
+    const orderServiceDays =
+      (morningData?.serviceDays ? morningData?.serviceDays : '') +
+      '/' +
+      (lunchData?.serviceDays ? lunchData?.serviceDays : '') +
+      '/' +
+      (dinnerData?.serviceDays ? dinnerData?.serviceDays : '');
+
+    const deliveryTime =
+      (morningData?.deliveryTimes ? morningData?.deliveryTimes : '') +
+      '/' +
+      (lunchData?.deliveryTimes ? lunchData?.deliveryTimes : '') +
+      '/' +
+      (dinnerData?.deliveryTimes ? dinnerData?.deliveryTimes : '');
+    const lastOrderTime =
+      (morningData?.lastOrderTime ? morningData?.lastOrderTime : '') +
+      '/' +
+      (lunchData?.lastOrderTime ? lunchData?.lastOrderTime : '') +
+      '/' +
+      (dinnerData?.lastOrderTime ? dinnerData?.lastOrderTime : '');
+    const membershipBenefitTime =
+      (morningData?.membershipBenefitTime
+        ? morningData?.membershipBenefitTime
+        : '') +
+      '/' +
+      (lunchData?.membershipBenefitTime
+        ? lunchData?.membershipBenefitTime
+        : '') +
+      '/' +
+      (dinnerData?.membershipBenefitTime
+        ? dinnerData?.membershipBenefitTime
+        : '');
+
+    const weekDaySorter = {
+      월: 1,
+      화: 2,
+      수: 3,
+      목: 4,
+      금: 5,
+      토: 6,
+      일: 7,
+    };
+    const morning = morningData?.supportPriceByDays?.sort(
+      function sortByWeekDay(a, b) {
+        return weekDaySorter[a.serviceDay] - weekDaySorter[b.serviceDay];
+      },
+    );
+    const lunch = lunchData?.supportPriceByDays?.sort(function sortByWeekDay(
+      a,
+      b,
+    ) {
+      return weekDaySorter[a.serviceDay] - weekDaySorter[b.serviceDay];
+    });
+    const dinner = dinnerData?.supportPriceByDays?.sort(function sortByWeekDay(
+      a,
+      b,
+    ) {
+      return weekDaySorter[a.serviceDay] - weekDaySorter[b.serviceDay];
+    });
+    const morningSupportPrice = week
+      .map(w => {
+        if (morning) {
+          const data = morning?.findIndex(m => m.serviceDay === w);
+          if (data === -1) return '0';
+          else {
+            const das = morning?.find(f => f.serviceDay === w);
+            return das.supportPrice.toString();
+          }
+        }
+      })
+      .filter(s => s);
+    const lunchSupportPrice = week
+      .map(w => {
+        if (lunch) {
+          const data = lunch?.findIndex(m => m.serviceDay === w);
+          if (data === -1) return '0';
+          else {
+            const das = lunch?.find(f => f.serviceDay === w);
+            return das.supportPrice.toString();
+          }
+        }
+      })
+      .filter(s => s);
+    const dinnerSupportPrice = week
+      .map(w => {
+        if (dinner) {
+          const data = dinner?.findIndex(m => m.serviceDay === w);
+          if (data === -1) return '0';
+          else {
+            const das = dinner?.find(f => f.serviceDay === w);
+            return das.supportPrice.toString();
+          }
+        }
+      })
+      .filter(s => s);
     const reqArray = [];
     reqArray.push(el.id);
     reqArray.push(isActive);
-    reqArray.push(el.groupType);
+    reqArray.push(groupTypeFormatted(el.groupType));
     reqArray.push(el.code);
     reqArray.push(el.name);
     reqArray.push(el.zipCode);
     reqArray.push(el.address1);
     reqArray.push(el.address2);
     reqArray.push(el.location);
-    reqArray.push(diningType.join(','));    
-    reqArray.push(el.supportDays);
-    reqArray.push(el.notSupportDays);
+    reqArray.push(el.deliveryFeeOption);
+    reqArray.push(orderServiceDays);
+    reqArray.push(deliveryTime);
+    reqArray.push(lastOrderTime);
+    reqArray.push(membershipBenefitTime);
+    reqArray.push(morningSupportPrice.join(','));
+    reqArray.push(lunchSupportPrice.join(','));
+    reqArray.push(dinnerSupportPrice.join(','));
+    reqArray.push(diningType.join(','));
     reqArray.push(el.serviceDays);
     reqArray.push(el.managerId);
     reqArray.push(el.managerName);
     reqArray.push(el.managerPhone);
     reqArray.push(membership);
     reqArray.push(el.membershipEndDate);
-    reqArray.push(el.morningSupportPrice);
-    reqArray.push(el.lunchSupportPrice);
-    reqArray.push(el.dinnerSupportPrice);
     reqArray.push(el.employeeCount);
     reqArray.push(setting);
+    reqArray.push(isSaladRequired);
     reqArray.push(garbage);
     reqArray.push(hotStorage);
     reqArray.push(el.minimumSpend);
@@ -429,7 +541,7 @@ export function corporationInfoExel(corporation) {
   });
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
-
+  // console.log(reqArrays);
   XLSX.utils.book_append_sheet(workbook, worksheet, '스팟 정보');
   XLSX.writeFile(workbook, '스팟 정보.xlsx');
 }
