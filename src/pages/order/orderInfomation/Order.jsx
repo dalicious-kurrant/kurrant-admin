@@ -299,11 +299,9 @@ const Order = () => {
     if (checked) {
       const idArray = [];
       orderList?.data?.map(el =>
-        el.orderItemDailyFoodGroupList?.map(v =>
-          v.orderItemDailyFoods?.forEach(el =>
-            idArray.push(el.orderItemDailyFoodId),
+        el.orderItemDailyFoods?.forEach(v =>
+            idArray.push(v.orderItemDailyFoodId),
           ),
-        ),
       );
 
       setCheckItems(idArray);
