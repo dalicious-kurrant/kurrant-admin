@@ -13,9 +13,6 @@ const useGetItemKeyword = foodId => {
     async ({queryKey}) => {
       const response = await instance.get(`reviews/keyword/${queryKey[2]}`);
 
-      console.log('리스폰스 데이터 ');
-      console.log(response.data);
-
       setKeywordArr(response.data);
 
       return response.data;
