@@ -74,9 +74,7 @@ const Schedule = () => {
       </ContentsDetailLabelWrap>
     );
   };
-  useEffect(() => {
-    console.log(salesList);
-  }, [salesList]);
+  
   return (
     <Wrapper>
       <Header as="h2">기간별 판매 내역</Header>

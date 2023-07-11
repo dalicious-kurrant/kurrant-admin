@@ -195,9 +195,15 @@ const Common = () => {
           });
         });
       });
-      await completePostCalendar(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      try {
+        await completePostCalendar(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
     }
     if (exelCompletePlan) {
       const req = exelCompletePlan.map((makers, i) => {
@@ -221,10 +227,15 @@ const Common = () => {
           reqArray.push(result);
         }
       });
-
-      await completePostCalendar(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      try {
+        await completePostCalendar(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
     }
   };
 
@@ -321,9 +332,15 @@ const Common = () => {
           reqArray.push(result);
         }
       });
-      await productPost(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      try {
+        await productPost(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
     }
 
     if (exelCorporation) {
@@ -409,11 +426,15 @@ const Common = () => {
         }
       });
       // console.log(reqArray, '00');
-
-      await corporationExel(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
-      // return;
+      try {
+        await corporationExel(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+      
     }
     if (makersExelInfo) {
       makersExelInfo.map((item, idx) => {
@@ -467,7 +488,6 @@ const Common = () => {
             });
           }
 
-          console.log(typeArr);
           const result = {
             id: item.id,
             isActive:
@@ -511,17 +531,27 @@ const Common = () => {
         }
       });
       console.log(reqArray, '00');
-      await saveMakersInfo({saveMakersRequestDto: reqArray});
+      try {
+        await saveMakersInfo({saveMakersRequestDto: reqArray});
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
+    }
+    try {
+      await postPresetCalendar({
+        deadline: formattedFullDate(startDate, '-'),
+        excelDataList: [...reqArray],
+      });
       alert('저장 되었습니다.');
       return window.location.reload();
+    } catch (error) {
+      alert(`저장을 실패 했습니다.\n${error.toString()}`);
+      return window.location.reload();
     }
-
-    await postPresetCalendar({
-      deadline: formattedFullDate(startDate, '-'),
-      excelDataList: [...reqArray],
-    });
-    alert('저장 되었습니다.');
-    return window.location.reload();
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
@@ -550,7 +580,6 @@ const Common = () => {
       setCorporationExport();
       const reader = new FileReader();
       reader.onload = e => {
-        // console.log(e.target.result);
         const data = e.target.result;
         const workbook = XLSX.read(data, {
           type: 'binary',
@@ -561,8 +590,6 @@ const Common = () => {
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
 
-        console.log(sheetName);
-        // console.log(worksheet);
 
         if (sheetName === '메이커스 일정 관리') {
           setExelPlan(
@@ -593,16 +620,8 @@ const Common = () => {
                 breakfastDeliveryTime:
                   v.breakfastDeliveryTime &&
                   formattedTime(v.breakfastDeliveryTime),
-                // 주문마감시간 데이터 입력 형식이 바뀜
-                // breakfastLastOrderTime:
-                //   v.breakfastLastOrderTime &&
-                //   formattedTime(v.breakfastLastOrderTime),
-                // lunchLastOrderTime:
-                //   v.lunchLastOrderTime && formattedTime(v.lunchLastOrderTime),
                 dinnerDeliveryTime:
                   v.dinnerDeliveryTime && formattedTime(v.dinnerDeliveryTime),
-                // dinnerLastOrderTime:
-                //   v.dinnerLastOrderTime && formattedTime(v.dinnerLastOrderTime),
                 lunchDeliveryTime:
                   v.lunchDeliveryTime && formattedTime(v.lunchDeliveryTime),
                 createdDateTime:
@@ -614,7 +633,6 @@ const Common = () => {
           );
         }
         if (sheetName === '유저 정보') {
-          console.log(json);
           setExelUser(
             json.map((v, i) => {
               if (i === 0) {
@@ -697,12 +715,10 @@ const Common = () => {
               isHotStorage: isHotStorage,
             };
           });
-          console.log(exelSpotData);
           setExelCorporation(exelSpotData);
           // console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
-          console.log(json, 'json');
           setMakersExelInfo(
             json.map((v, i) => {
               if (
@@ -748,7 +764,6 @@ const Common = () => {
   };
   const handlerSaveExelUser = async () => {
     const result = exelUser.map((v, i) => {
-      console.log(v);
       if (i !== 0) {
         return {
           password: v.password || null,
