@@ -3,7 +3,7 @@ import Diet from '../pages/order/Diet';
 import Order from '../pages/order/orderInfomation/Order';
 import Makers from '../pages/makers/Makers';
 import Spot from '../pages/customer/Spot';
-import Customer from '../pages/customer/Customer/Customer';
+
 import Company from '../pages/customer/corporation/corporationInfo/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
@@ -14,7 +14,7 @@ import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
 import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
 import Schedule from '../pages/salesSchedule/Schedule';
 import CompletePlans from '../pages/makers/CompletePlans';
-import CustomerCustom from '../pages/customer/Customer/CustomerCustom';
+import CustomerCustom from 'pages/customer/Customer/CustomerCustom';
 import Group from '../pages/recommendation/group/Group';
 import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
@@ -28,6 +28,8 @@ import MakersCalc from 'pages/adjustment/MakersCalc';
 import ClientCalc from 'pages/adjustment/ClientCalc';
 import Main from 'pages/apply/spot/Main';
 import SpotInformation from 'pages/customer/corporation/SpotInformation';
+import RecommendationMakersPage from 'pages/recommendation/makers/RecommendationMakersPage';
+import FoodGroupPage from 'pages/shop/foodGroup/FoodGroupPage';
 
 export const MenuList = [
   {
@@ -121,6 +123,12 @@ export const MenuList = [
         url: '/info',
         component: <ItemInfo />,
       },
+      {
+        name: '상품 그룹',
+        url: '/foodGroup',
+        component: <FoodGroupPage />,
+      },
+
       // {
       //   name: '상품 상세 정보',
       //   url: '/info/:id',
@@ -237,9 +245,14 @@ export const MenuList = [
     ],
   },
   {
-    name: '추천시스템 (진행중)',
+    name: '추천시스템',
     url: '/recommendation',
     children: [
+      {
+        name: '고객사별 음식 추천 데이터 생성',
+        url: '/makers',
+        component: <RecommendationMakersPage />,
+      },
       {
         name: '그룹별 추천 메이커 및 음식 (진행중)',
         url: '/group',

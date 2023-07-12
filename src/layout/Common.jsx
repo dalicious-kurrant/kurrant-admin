@@ -49,7 +49,13 @@ import {
   useAddExelProductData,
   useEditProductStatus,
 } from '../hooks/useProductsList';
-import {deliveryFeeOptionReverseFormatted, diningFormatted, diningReverseFormatted, groupTypeFormatted2, scheduleFormatted2} from 'utils/statusFormatter';
+import {
+  deliveryFeeOptionReverseFormatted,
+  diningFormatted,
+  diningReverseFormatted,
+  groupTypeFormatted2,
+  scheduleFormatted2,
+} from 'utils/statusFormatter';
 import {
   formattedDate,
   formattedFullDate,
@@ -195,9 +201,15 @@ const Common = () => {
           });
         });
       });
-      await completePostCalendar(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      try {
+        await completePostCalendar(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
     }
     if (exelCompletePlan) {
       const req = exelCompletePlan.map((makers, i) => {
@@ -221,10 +233,15 @@ const Common = () => {
           reqArray.push(result);
         }
       });
-
-      await completePostCalendar(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      try {
+        await completePostCalendar(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
     }
   };
 
@@ -306,6 +323,8 @@ const Common = () => {
             foodId: item.foodId,
             makersId: item.makersId,
             makersName: item.makersName,
+            foodGroupId: item.foodGroupId,
+            foodGroup: item.foodGroup,
             foodName: item.foodName,
             foodStatus: item.foodStatus,
             supplyPrice: item.supplyPrice,
@@ -321,9 +340,15 @@ const Common = () => {
           reqArray.push(result);
         }
       });
-      await productPost(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
+      try {
+        await productPost(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
     }
 
     if (exelCorporation) {
@@ -331,13 +356,20 @@ const Common = () => {
       exelCorporation.map((item, idx) => {
         if (idx !== 0) {
           // console.log(item.dinnerSupportPrice);
-          const orderServiceDays = item.orderServiceDays && item.orderServiceDays.split('/');
-          const lastOrderTime = item.lastOrderTime && item.lastOrderTime.split('/');
-          const membershipBenefitTime = item.membershipBenefitTime && item.membershipBenefitTime.split('/');
-          const deliveryTime = item.deliveryTime && item.deliveryTime.split('/');
-          const morningSupportPrice = item.morningSupportPrice && item.morningSupportPrice.split(',');
-          const lunchSupportPrice = item.lunchSupportPrice && item.lunchSupportPrice.split(',');
-          const dinnerSupportPrice = item.dinnerSupportPrice && item.dinnerSupportPrice.split(',');
+          const orderServiceDays =
+            item.orderServiceDays && item.orderServiceDays.split('/');
+          const lastOrderTime =
+            item.lastOrderTime && item.lastOrderTime.split('/');
+          const membershipBenefitTime =
+            item.membershipBenefitTime && item.membershipBenefitTime.split('/');
+          const deliveryTime =
+            item.deliveryTime && item.deliveryTime.split('/');
+          const morningSupportPrice =
+            item.morningSupportPrice && item.morningSupportPrice.split(',');
+          const lunchSupportPrice =
+            item.lunchSupportPrice && item.lunchSupportPrice.split(',');
+          const dinnerSupportPrice =
+            item.dinnerSupportPrice && item.dinnerSupportPrice.split(',');
           const mealInfos = orderServiceDays
             ?.map((order, i) => {
               if (order !== '') {
@@ -383,14 +415,17 @@ const Common = () => {
             code: item.code,
             groupType: groupTypeFormatted2(item.groupType),
             name: item.name,
-            isActive:item.isActive || false,
+            isActive: item.isActive || false,
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
             location: item.location || null,
             mealInfos: mealInfos,
-            deliveryFeeOption:deliveryFeeOptionReverseFormatted(item.deliveryFeeOption) || 0,
-            diningTypes: item.diningTypes.split(',').map((v)=>diningReverseFormatted(v)),
+            deliveryFeeOption:
+              deliveryFeeOptionReverseFormatted(item.deliveryFeeOption) || 0,
+            diningTypes: item.diningTypes
+              .split(',')
+              .map(v => diningReverseFormatted(v)),
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
@@ -409,11 +444,15 @@ const Common = () => {
         }
       });
       // console.log(reqArray, '00');
-
-      await corporationExel(reqArray);
-      alert('저장 되었습니다.');
-      return window.location.reload();
-      // return;
+      try {
+        await corporationExel(reqArray);
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+      
     }
     if (makersExelInfo) {
       makersExelInfo.map((item, idx) => {
@@ -467,7 +506,6 @@ const Common = () => {
             });
           }
 
-          console.log(typeArr);
           const result = {
             id: item.id,
             isActive:
@@ -511,17 +549,27 @@ const Common = () => {
         }
       });
       console.log(reqArray, '00');
-      await saveMakersInfo({saveMakersRequestDto: reqArray});
+      try {
+        await saveMakersInfo({saveMakersRequestDto: reqArray});
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      }
+     
+    }
+    try {
+      await postPresetCalendar({
+        deadline: formattedFullDate(startDate, '-'),
+        excelDataList: [...reqArray],
+      });
       alert('저장 되었습니다.');
       return window.location.reload();
+    } catch (error) {
+      alert(`저장을 실패 했습니다.\n${error.toString()}`);
+      return window.location.reload();
     }
-
-    await postPresetCalendar({
-      deadline: formattedFullDate(startDate, '-'),
-      excelDataList: [...reqArray],
-    });
-    alert('저장 되었습니다.');
-    return window.location.reload();
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
@@ -550,7 +598,6 @@ const Common = () => {
       setCorporationExport();
       const reader = new FileReader();
       reader.onload = e => {
-        // console.log(e.target.result);
         const data = e.target.result;
         const workbook = XLSX.read(data, {
           type: 'binary',
@@ -561,8 +608,6 @@ const Common = () => {
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
 
-        console.log(sheetName);
-        // console.log(worksheet);
 
         if (sheetName === '메이커스 일정 관리') {
           setExelPlan(
@@ -593,16 +638,8 @@ const Common = () => {
                 breakfastDeliveryTime:
                   v.breakfastDeliveryTime &&
                   formattedTime(v.breakfastDeliveryTime),
-                // 주문마감시간 데이터 입력 형식이 바뀜
-                // breakfastLastOrderTime:
-                //   v.breakfastLastOrderTime &&
-                //   formattedTime(v.breakfastLastOrderTime),
-                // lunchLastOrderTime:
-                //   v.lunchLastOrderTime && formattedTime(v.lunchLastOrderTime),
                 dinnerDeliveryTime:
                   v.dinnerDeliveryTime && formattedTime(v.dinnerDeliveryTime),
-                // dinnerLastOrderTime:
-                //   v.dinnerLastOrderTime && formattedTime(v.dinnerLastOrderTime),
                 lunchDeliveryTime:
                   v.lunchDeliveryTime && formattedTime(v.lunchDeliveryTime),
                 createdDateTime:
@@ -614,7 +651,6 @@ const Common = () => {
           );
         }
         if (sheetName === '유저 정보') {
-          console.log(json);
           setExelUser(
             json.map((v, i) => {
               if (i === 0) {
@@ -697,12 +733,10 @@ const Common = () => {
               isHotStorage: isHotStorage,
             };
           });
-          console.log(exelSpotData);
           setExelCorporation(exelSpotData);
           // console.log(json, 'json');
         }
         if (sheetName === '메이커스 정보') {
-          console.log(json, 'json');
           setMakersExelInfo(
             json.map((v, i) => {
               if (
@@ -748,7 +782,6 @@ const Common = () => {
   };
   const handlerSaveExelUser = async () => {
     const result = exelUser.map((v, i) => {
-      console.log(v);
       if (i !== 0) {
         return {
           password: v.password || null,
@@ -782,7 +815,7 @@ const Common = () => {
         email: v.email,
         phone: v.phone || null,
         role: v.role || null,
-        status: v.status || null,
+        status: v.status === 0 ? 0 : v.status,
         groupName: v.groupName || null,
         point: v.point,
         marketingAgree: v.marketingAgree || null,
@@ -793,7 +826,9 @@ const Common = () => {
     const req = result.filter(element => {
       return element !== undefined && element !== null && element !== '';
     });
+
     await saveUserData(req);
+
     alert('저장 되었습니다123 .');
     return window.location.reload();
   };
@@ -888,7 +923,9 @@ const Common = () => {
     pathname !== '/calc/groupCalc/detail' &&
     pathname !== '/apply/spot' &&
     indexStatus !== 1 &&
-    pathname !== '/backlog';
+    pathname !== '/backlog' &&
+    pathname !== '/recommendation/makers' &&
+    pathname !== '/shop/foodGroup';
 
   return (
     <C.Wrapper>
@@ -917,10 +954,6 @@ const Common = () => {
               if (exelSpot && exelSpot.length) {
                 console.log('exelSpot 엑셀 스팟 저장');
 
-                // 디비 저장 여기임
-                // 여기서 값 정리를 다 해야됨
-
-                // 엑셀의 첫번재값을 지우기 (키값이니까)
                 let exelSpotFirstRowRemoved = [];
 
                 exelSpot.forEach((v, i) => {
@@ -929,8 +962,6 @@ const Common = () => {
                     exelSpotFirstRowRemoved.push(v);
                   }
                 });
-
-                // 키가 안들어있으면 키 채우고 값을 null 넣어주기
 
                 const injectNull = exelSpotFirstRowRemoved.map(v => {
                   Object.keys(SpotInfoTotalRequiredFields).forEach(k => {
@@ -944,8 +975,6 @@ const Common = () => {
 
                 saveSpotToDb(injectNull, sendExcelForceMutate, tableDeleteList);
               } else if (spotInfoData && spotInfoData.length) {
-                console.log('spotInfoData 스팟정보 데이터 저장');
-
                 // 상세스팟 아이디 자둥추가
 
                 const injectSpotId = [...spotInfoData].map(v => {

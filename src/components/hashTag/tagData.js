@@ -563,3 +563,18 @@ export const spicyTag = [
     spicy: '불닭볶음면 맵기',
   },
 ];
+
+// export const changeFoodGroupListToTagData = (foodGroupList) => {
+
+//   foodGroupList.map((v) => {
+
+//     return {
+
+//       id:
+//       spicy:
+
+//     }
+
+//   })
+
+// }

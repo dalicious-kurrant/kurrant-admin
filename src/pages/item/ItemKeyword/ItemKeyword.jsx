@@ -31,18 +31,25 @@ const ItemKeywordInput = ({foodId}) => {
       </Wrap>
       <Button
         onClick={() => {
-          console.log('클릭');
           addKeywordMutate({
             foodId: foodId,
             names: names,
           });
-          // reviewKeywordSearchQueryRefetch();
         }}>
         키워드 계산하기
       </Button>
       <Wrap>
         <Title>키워드 TOP8</Title>
-        <Input disabled value={keywordArr.join(', ')} />
+        <Input
+          disabled
+          value={
+            keywordArr === undefined
+              ? ''
+              : Array.isArray(keywordArr) && keywordArr.length > 0
+              ? keywordArr.join(', ')
+              : '리뷰 키워드가 등록되지 않았습니다.'
+          }
+        />
       </Wrap>
     </Container>
   );

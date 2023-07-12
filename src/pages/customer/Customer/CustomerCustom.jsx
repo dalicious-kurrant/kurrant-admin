@@ -6,7 +6,7 @@ import {
 } from 'common/Table/store';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
-import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
+
 import Register from 'common/CRUD/Register/Register';
 import {clickButtonBundle} from '../Logics/Logics';
 // import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';

@@ -4,9 +4,7 @@ import {Button} from 'semantic-ui-react';
 const CRUDBundle = ({
   handleBundleClick,
   showRegister,
-  // sendFinal,
-  sendDelete,
-  checkboxStatus,
+  buttonCloseList = [],
 }) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
@@ -19,46 +17,36 @@ const CRUDBundle = ({
     handleBundleClick(e.target.id);
   };
 
-  const handleSend = () => {
-    // sendFinal();
-  };
-
-  const handleDelete = () => {
-    sendDelete();
-  };
-
   return (
     <Container>
       <Wrap>
         <Button.Group>
-          <BtnWrap>
-            <Button id="register" color="green" inverted onClick={handleClick}>
-              추가 열기
-            </Button>
-          </BtnWrap>
-
-          <BtnWrap>
-            <Button id="edit" color="blue" inverted onClick={handleClick}>
-              수정 열기
-            </Button>
-          </BtnWrap>
-          <BtnWrap>
-            <Button id="delete" inverted color="red" onClick={handleDelete}>
-              삭제하기
-            </Button>
-          </BtnWrap>
+          {!buttonCloseList.includes('register') && (
+            <BtnWrap>
+              <Button
+                id="register"
+                color="green"
+                inverted
+                onClick={handleClick}>
+                추가 열기
+              </Button>
+            </BtnWrap>
+          )}
+          {!buttonCloseList.includes('edit') && (
+            <BtnWrap>
+              <Button id="edit" color="blue" inverted onClick={handleClick}>
+                수정 열기
+              </Button>
+            </BtnWrap>
+          )}
+          {!buttonCloseList.includes('delete') && (
+            <BtnWrap>
+              <Button id="delete" inverted color="red" onClick={handleClick}>
+                삭제하기
+              </Button>
+            </BtnWrap>
+          )}
         </Button.Group>
-        {/* <Wrap2>
-          <Button.Group>
-            <FinalSendButton
-              checkboxstatus={checkboxStatus}
-              onClick={handleSend}
-              // disabled={!Object.values(checkboxStatus).includes(true)}
-            >
-              최종적용하기
-            </FinalSendButton>
-          </Button.Group>
-        </Wrap2> */}
       </Wrap>
     </Container>
   );

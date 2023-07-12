@@ -20,7 +20,7 @@ import {
   SpotInfoFieldsToOpen,
   SpotInfoRegisterFieldsToOpen,
 } from './SpotInfoData';
-import {clickButtonBundle} from '../Logics/Logics';
+
 import {SpotInfoDataAtom, SpotInfoGroupIdNameAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 
@@ -76,6 +76,7 @@ const SpotInfo = () => {
       setDataToEdit,
       setRegisterStatus,
       setShowRegister,
+      deleteFinalMutate,
     );
   };
 
@@ -95,31 +96,6 @@ const SpotInfo = () => {
       setCheckboxStatus({});
     };
   }, []);
-
-  const handleDelete = () => {
-    console.log('delete');
-
-    // 삭제할 값들의 id골라내기
-
-    let deleteIdArray = [];
-    let spotInfoList = [...spotInfoData];
-
-    Object.entries(checkboxStatus).forEach(v => {
-      if (v[1] === true) {
-        // console.log(v[0]);
-
-        const deleteData = spotInfoList.find(val => val.id === parseInt(v[0]));
-        // console.log(deleteData);s
-        deleteIdArray.push(deleteData.spotId);
-      }
-    });
-
-    if (window.confirm(`${deleteIdArray.toString()}를 삭제하시겠습니까?`)) {
-      deleteFinalMutate(deleteIdArray);
-    } else {
-      return;
-    }
-  };
 
   useEffect(() => {
     // spotInfo 는 서버에서 받은groupId, groupName을 넣어줘야한다
@@ -220,7 +196,6 @@ const SpotInfo = () => {
             <CRUDBundle
               handleBundleClick={handleBundleClick}
               showRegister={showRegister}
-              sendDelete={handleDelete}
               checkboxStatus={checkboxStatus}
             />
 

@@ -3,7 +3,9 @@ import {useQuery} from 'react-query';
 import instance from 'shared/axios';
 
 const useGetItemKeyword = foodId => {
-  const [keywordArr, setKeywordArr] = useState([]);
+  const [keywordArr, setKeywordArr] = useState(undefined);
+
+  // console.log('키워도 조회 푸드아이디 ' + foodId);
 
   const {refetch: reviewKeywordSearchQueryRefetch} = useQuery(
     ['review', 'keywordSearch', foodId],
