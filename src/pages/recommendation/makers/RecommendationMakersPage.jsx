@@ -9,13 +9,10 @@ import useRecommendationMutation from './useRecommendationMutation';
 import RecommendationCreateModal from './Modal/RecommendationCreateModal';
 
 const RecommendationMakersPage = () => {
-  const [showCRUDBundle, setShowCRUDBundle] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-
   const [checkboxList, setCheckboxList] = useState([]);
 
-  const {getRecommendationMakersQueryRefetch, recommendationMakersData} =
-    useGetRecommendationMakersQuery();
+  const {recommendationMakersData} = useGetRecommendationMakersQuery();
 
   const {deleteRecommendationMutation} = useRecommendationMutation(
     () => {
@@ -50,7 +47,7 @@ const RecommendationMakersPage = () => {
       <div>
         <CRUDBundle
           handleBundleClick={handleBundleClick}
-          showCRUDBundle={showCRUDBundle}
+          showCRUDBundle={false}
           buttonCloseList={['edit']}
         />
       </div>

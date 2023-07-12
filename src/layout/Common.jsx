@@ -927,7 +927,8 @@ const Common = () => {
     indexStatus !== 1 &&
     pathname !== '/backlog' &&
     pathname !== '/recommendation/makers' &&
-    pathname !== '/shop/foodGroup';
+    pathname !== '/shop/foodGroup' &&
+    pathname !== '/others/customerTaste';
 
   return (
     <C.Wrapper>
