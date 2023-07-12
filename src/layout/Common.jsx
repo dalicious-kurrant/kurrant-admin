@@ -201,7 +201,6 @@ const Common = () => {
           });
         });
       });
-      console.log(reqArray, 'ss');
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -238,9 +237,8 @@ const Common = () => {
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        //alert(`저장을 실패 했습니다.\n${error.toString()}`);
-        //console.log(reqArray);
-        //return window.location.reload();
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
       }
     }
   };

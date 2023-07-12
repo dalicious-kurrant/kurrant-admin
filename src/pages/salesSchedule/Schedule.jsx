@@ -2,7 +2,10 @@ import {useEffect, useRef, useState} from 'react';
 import {Button, Header, Label, Table} from 'semantic-ui-react';
 import styled, {css, useTheme} from 'styled-components';
 import {PageWrapper, TableWrapper} from '../../style/common.style';
-import {formattedWeekDate, formattedWeekDateTime} from '../../utils/dateFormatter';
+import {
+  formattedWeekDate,
+  formattedWeekDateTime,
+} from '../../utils/dateFormatter';
 import Select from 'react-select';
 import DiningButton from './components/DiningButton';
 import {useGetMakersList} from '../../hooks/useOrderList';
@@ -209,8 +212,17 @@ const Schedule = () => {
             <MakersTable key={idx}>
               <ServiceDateContainer>
                 <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
-                <DeadLineBox status={new Date(el.lastOrderTime).getTime() <new Date().getTime()}>{new Date(el.lastOrderTime).getTime() <new Date().getTime() ? "주문마감":"주문진행중" }</DeadLineBox>
-                <DeadLineText>주문 마감 {formattedWeekDateTime(new Date(el.lastOrderTime))}</DeadLineText>
+                <DeadLineBox
+                  status={
+                    new Date(el.lastOrderTime).getTime() < new Date().getTime()
+                  }>
+                  {new Date(el.lastOrderTime).getTime() < new Date().getTime()
+                    ? '주문마감'
+                    : '주문진행중'}
+                </DeadLineBox>
+                <DeadLineText>
+                  주문 마감 {formattedWeekDateTime(new Date(el.lastOrderTime))}
+                </DeadLineText>
               </ServiceDateContainer>
               <DateLine />
               <DiningTypeWrap>
@@ -336,10 +348,11 @@ const SelectBox = styled(Select)`
 const ServiceDateContainer = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 const DeadLineBox = styled.div`
   background-color: #eee;
-  color:${({theme,status})=> status ? theme.colors.red[500] : theme.colors.blue[500] };
+  color: ${({theme, status}) =>
+    status ? theme.colors.red[500] : theme.colors.blue[500]};
   font-size: 13px;
   font-weight: 600;
   padding: 5px;
@@ -347,12 +360,12 @@ const DeadLineBox = styled.div`
   padding-right: 8px;
   border-radius: 10px;
   margin-left: 10px;
-`
+`;
 const DeadLineText = styled.div`
   font-size: 13px;
   font-weight: 600;
-margin-left: 10px;
-`
+  margin-left: 10px;
+`;
 const DateInput = styled.input`
   padding: 4px;
   width: 200px;
