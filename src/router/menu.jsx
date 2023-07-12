@@ -245,7 +245,7 @@ export const MenuList = [
     ],
   },
   {
-    name: '추천시스템 (진행중)',
+    name: '추천시스템',
     url: '/recommendation',
     children: [
       {
