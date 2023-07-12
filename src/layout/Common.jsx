@@ -49,7 +49,13 @@ import {
   useAddExelProductData,
   useEditProductStatus,
 } from '../hooks/useProductsList';
-import {deliveryFeeOptionReverseFormatted, diningFormatted, diningReverseFormatted, groupTypeFormatted2, scheduleFormatted2} from 'utils/statusFormatter';
+import {
+  deliveryFeeOptionReverseFormatted,
+  diningFormatted,
+  diningReverseFormatted,
+  groupTypeFormatted2,
+  scheduleFormatted2,
+} from 'utils/statusFormatter';
 import {
   formattedDate,
   formattedFullDate,
@@ -331,13 +337,20 @@ const Common = () => {
       exelCorporation.map((item, idx) => {
         if (idx !== 0) {
           // console.log(item.dinnerSupportPrice);
-          const orderServiceDays = item.orderServiceDays && item.orderServiceDays.split('/');
-          const lastOrderTime = item.lastOrderTime && item.lastOrderTime.split('/');
-          const membershipBenefitTime = item.membershipBenefitTime && item.membershipBenefitTime.split('/');
-          const deliveryTime = item.deliveryTime && item.deliveryTime.split('/');
-          const morningSupportPrice = item.morningSupportPrice && item.morningSupportPrice.split(',');
-          const lunchSupportPrice = item.lunchSupportPrice && item.lunchSupportPrice.split(',');
-          const dinnerSupportPrice = item.dinnerSupportPrice && item.dinnerSupportPrice.split(',');
+          const orderServiceDays =
+            item.orderServiceDays && item.orderServiceDays.split('/');
+          const lastOrderTime =
+            item.lastOrderTime && item.lastOrderTime.split('/');
+          const membershipBenefitTime =
+            item.membershipBenefitTime && item.membershipBenefitTime.split('/');
+          const deliveryTime =
+            item.deliveryTime && item.deliveryTime.split('/');
+          const morningSupportPrice =
+            item.morningSupportPrice && item.morningSupportPrice.split(',');
+          const lunchSupportPrice =
+            item.lunchSupportPrice && item.lunchSupportPrice.split(',');
+          const dinnerSupportPrice =
+            item.dinnerSupportPrice && item.dinnerSupportPrice.split(',');
           const mealInfos = orderServiceDays
             ?.map((order, i) => {
               if (order !== '') {
@@ -383,14 +396,17 @@ const Common = () => {
             code: item.code,
             groupType: groupTypeFormatted2(item.groupType),
             name: item.name,
-            isActive:item.isActive || false,
+            isActive: item.isActive || false,
             zipCode: item.zipCode,
             address1: item.address1,
             address2: item.address2,
             location: item.location || null,
             mealInfos: mealInfos,
-            deliveryFeeOption:deliveryFeeOptionReverseFormatted(item.deliveryFeeOption) || 0,
-            diningTypes: item.diningTypes.split(',').map((v)=>diningReverseFormatted(v)),
+            deliveryFeeOption:
+              deliveryFeeOptionReverseFormatted(item.deliveryFeeOption) || 0,
+            diningTypes: item.diningTypes
+              .split(',')
+              .map(v => diningReverseFormatted(v)),
             serviceDays: item.serviceDays,
             managerId: item.managerId,
             managerName: item.managerName,
@@ -782,7 +798,7 @@ const Common = () => {
         email: v.email,
         phone: v.phone || null,
         role: v.role || null,
-        status: v.status || null,
+        status: v.status === 0 ? 0 : v.status,
         groupName: v.groupName || null,
         point: v.point,
         marketingAgree: v.marketingAgree || null,
@@ -793,7 +809,9 @@ const Common = () => {
     const req = result.filter(element => {
       return element !== undefined && element !== null && element !== '';
     });
+
     await saveUserData(req);
+
     alert('저장 되었습니다123 .');
     return window.location.reload();
   };
