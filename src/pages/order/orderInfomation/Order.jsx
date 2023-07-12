@@ -118,7 +118,8 @@ const Order = () => {
   const [defaultOrderStatus, setDefaultOrderStatus] = useAtom(orderStatusAtom);
   const [, setOrderNumber] = useAtom(orderNumberAtom);
 
-  const {data: groupList, refetch:groupRefetch} = useGetGroupList(defaultGroupType);
+  const {data: groupList, refetch: groupRefetch} =
+    useGetGroupList(defaultGroupType);
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
   const {mutateAsync: cancelOrder} = useCancelOrder();
@@ -139,7 +140,7 @@ const Order = () => {
     },
   ];
   const groupArr = groupList?.data?.map(el => {
-    console.log(el)
+    // console.log(el)
     return {
       value: el.groupId,
       label: el.groupName,
@@ -424,8 +425,6 @@ const Order = () => {
     }
   };
 
-
-  
   useEffect(() => {
     refetch();
   }, [
@@ -443,9 +442,9 @@ const Order = () => {
   useEffect(() => {
     groupInfoRefetch();
   }, [groupInfoParam, groupInfoRefetch]);
-  useEffect(()=>{
+  useEffect(() => {
     groupRefetch();
-  },[defaultGroupType, groupRefetch])
+  }, [defaultGroupType, groupRefetch]);
   return (
     <PageWrapper>
       <label>서비스일 날짜</label>
@@ -612,7 +611,7 @@ const Order = () => {
             cursor: 'pointer',
             width: 160,
             justifyContent: 'space-between',
-            backgroundColor:'#c8c8c8',
+            backgroundColor: '#c8c8c8',
             padding: 5,
             paddingLeft: 10,
             paddingRight: 10,

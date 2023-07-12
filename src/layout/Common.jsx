@@ -815,7 +815,7 @@ const Common = () => {
         email: v.email,
         phone: v.phone || null,
         role: v.role || null,
-        status: v.status || null,
+        status: v.status === 0 ? 0 : v.status,
         groupName: v.groupName || null,
         point: v.point,
         marketingAgree: v.marketingAgree || null,
@@ -826,7 +826,9 @@ const Common = () => {
     const req = result.filter(element => {
       return element !== undefined && element !== null && element !== '';
     });
+
     await saveUserData(req);
+
     alert('저장 되었습니다123 .');
     return window.location.reload();
   };
