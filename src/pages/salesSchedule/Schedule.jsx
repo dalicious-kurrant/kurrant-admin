@@ -74,7 +74,7 @@ const Schedule = () => {
       </ContentsDetailLabelWrap>
     );
   };
-  
+
   return (
     <Wrapper>
       <Header as="h2">기간별 판매 내역</Header>
@@ -218,8 +218,8 @@ const Schedule = () => {
                         <TimeWrapContainer>
                           <TimeWrap>
                             <TimeBox>
-                              도착 완료 시간
-                              <TimeBoxTime>{v.deliveryTime}</TimeBoxTime>
+                              픽업 시간
+                              <TimeBoxTime>{v.pickUpTime}</TimeBoxTime>
                             </TimeBox>
                             <TimeBox>
                               총 배송 건수
@@ -255,10 +255,10 @@ const Schedule = () => {
                                       spot={
                                         spot.spotType
                                       }>{`배송 번호: ${spot.deliveryId} `}</TitleIdLabel>
-                                    {spot.pickUpTime &&
+                                    {spot.deliveryTime &&
                                       spotContentsText(
-                                        '예상 픽업',
-                                        spot.pickUpTime,
+                                        '도착 시간',
+                                        spot.deliveryTime,
                                       )}
                                     {spot.address1 &&
                                       spotContentsText('도로명', spot.address1)}
