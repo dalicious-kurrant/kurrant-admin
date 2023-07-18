@@ -209,7 +209,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
     if (exelCompletePlan) {
       const req = exelCompletePlan.map((makers, i) => {
@@ -241,7 +240,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
   };
 
@@ -348,7 +346,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
 
     if (exelCorporation) {
@@ -452,7 +449,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-      
     }
     if (makersExelInfo) {
       makersExelInfo.map((item, idx) => {
@@ -557,7 +553,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
     try {
       await postPresetCalendar({
@@ -607,7 +602,6 @@ const Common = () => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-
 
         if (sheetName === '메이커스 일정 관리') {
           setExelPlan(
