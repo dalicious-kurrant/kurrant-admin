@@ -52,7 +52,7 @@ const CompletePlans = () => {
   useEffect(() => {
     if (!exelPlan) {
       if (isSuccess) {
-        console.log(calendarData?.data);
+        //console.log(calendarData?.data);
         setPlan(calendarData?.data);
         setOption(
           filterList?.data?.makers?.map(v => {
