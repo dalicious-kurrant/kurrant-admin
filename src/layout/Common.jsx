@@ -201,6 +201,7 @@ const Common = () => {
           });
         });
       });
+      console.log(reqArray, 'ss');
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -209,7 +210,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
     if (exelCompletePlan) {
       const req = exelCompletePlan.map((makers, i) => {
@@ -219,11 +219,11 @@ const Common = () => {
             diningType: makers.diningType,
             groupName: makers.groupName,
             groupCapacity: makers.groupCapacity,
-            deliveryTime: makers.deliveryTime,
+            deliveryTime: makers.deliveryTime.split(','),
             makersName: makers.makersName,
             makersCapacity: makers.makersCapacity,
             makersCount: makers.makersCount,
-            makersPickupTime: makers.makersPickupTime,
+            makersPickupTime: makers.makersPickupTime.split(','),
             foodName: makers.foodName,
             foodStatus: makers.dailyFoodStatus,
             dailyFoodId: makers.dailyFoodId || null,
@@ -239,9 +239,9 @@ const Common = () => {
         return window.location.reload();
       } catch (error) {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        console.log(reqArray);
         return window.location.reload();
       }
-     
     }
   };
 
@@ -348,7 +348,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
 
     if (exelCorporation) {
@@ -452,7 +451,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-      
     }
     if (makersExelInfo) {
       makersExelInfo.map((item, idx) => {
@@ -557,7 +555,6 @@ const Common = () => {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
         return window.location.reload();
       }
-     
     }
     try {
       await postPresetCalendar({
@@ -607,7 +604,6 @@ const Common = () => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
-
 
         if (sheetName === '메이커스 일정 관리') {
           setExelPlan(
@@ -702,8 +698,8 @@ const Common = () => {
                 return {
                   ...v,
                   serviceDate: formattedWeekDate(v.serviceDate),
-                  makersPickupTime: formattedTime(v.makersPickupTime),
-                  deliveryTime: formattedTime(v.deliveryTime),
+                  makersPickupTime: v.makersPickupTime,
+                  deliveryTime: v.deliveryTime,
                 };
               }
 
