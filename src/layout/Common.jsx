@@ -684,9 +684,9 @@ const Common = () => {
           setExelProduct(json);
         }
         if (sheetName === '식단 현황') {
-          console.log(json);
           setExelCompletePlan(
             json.map((v, i) => {
+              console.log(typeof v.deliveryTime);
               if (i === 0) {
                 return v;
               }
@@ -698,8 +698,14 @@ const Common = () => {
                 return {
                   ...v,
                   serviceDate: formattedWeekDate(v.serviceDate),
-                  makersPickupTime: v.makersPickupTime,
-                  deliveryTime: v.deliveryTime,
+                  makersPickupTime:
+                    typeof v.makersPickupTime === 'object'
+                      ? formattedTime(v.makersPickupTime)
+                      : v.makersPickupTime,
+                  deliveryTime:
+                    typeof v.deliveryTime === 'object'
+                      ? formattedTime(v.deliveryTime)
+                      : v.deliveryTime,
                 };
               }
 
