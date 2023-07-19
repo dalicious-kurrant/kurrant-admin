@@ -684,9 +684,9 @@ const Common = () => {
           setExelProduct(json);
         }
         if (sheetName === '식단 현황') {
-          console.log(json);
           setExelCompletePlan(
             json.map((v, i) => {
+              console.log(v);
               if (i === 0) {
                 return v;
               }
