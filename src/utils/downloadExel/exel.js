@@ -108,11 +108,11 @@ export function completePlanExel(plan) {
         reqArray.push(makers.diningType);
         reqArray.push(makers.groupName);
         reqArray.push(makers.groupCapacity);
-        reqArray.push(makers.deliveryTime);
+        reqArray.push(makers.deliveryTime.join(','));
         reqArray.push(client.makersName);
         reqArray.push(client.makersCapacity);
         reqArray.push(client.makersCount);
-        reqArray.push(client.makersPickupTime);
+        reqArray.push(client.makersPickupTime.join(','));
         reqArray.push(food.foodName);
         reqArray.push(food.dailyFoodStatus);
         reqArray.push(food.foodCapacity);

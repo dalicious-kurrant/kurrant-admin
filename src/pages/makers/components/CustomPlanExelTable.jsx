@@ -17,6 +17,7 @@ const PlanExelTable = () => {
   useEffect(() => {
     if (exelPlan) setKey(Object.keys(exelPlan[0]));
   }, [exelPlan]);
+  console.log('sksks');
   return (
     <TableWrapper>
       <Table celled>
