@@ -148,7 +148,7 @@ const MakersCalcDetail = () => {
               <div>{withCommas(list?.foodsPrice)}</div>
             </Box>
             <Box style={{display: 'flex', justifyContent: 'space-between'}}>
-              <Title>수수료({list?.commission}%)</Title>
+              <Title>물류비({list?.commission}%)</Title>
               <div>{withCommas(list?.commissionPrice)}</div>
             </Box>
 

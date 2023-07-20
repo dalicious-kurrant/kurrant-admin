@@ -1,256 +1,22 @@
 import React, {useEffect} from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {useState} from 'react';
 import PublicSelectDatePicker from 'components/PublicSelectDatePicker';
-import {Dropdown, Label} from 'semantic-ui-react';
+import {Button, Dropdown, Label} from 'semantic-ui-react';
 import {useQuery} from 'react-query';
 import axios from 'axios';
 import {formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
 import useTitle from 'hooks/useTitle';
+import { getAccessToken } from 'utils/checkDashToken';
+import instance from 'shared/axiosDash';
+import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
+import DashLoginPage from './dashLogin/Login'
 
-const optionsClient = [
-  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
-  {key: '이너스', text: '이너스', value: '이너스'},
-  {key: '달리셔스1', text: '달리셔스1', value: '달리셔스1'},
-  {key: '달리셔스2', text: '달리셔스2', value: '달리셔스2'},
-];
 
-const deliveryInfo = [
-  {
-    serviceDate: '2023-03-13',
-    group: [
-      {
-        groupId: 1,
-        groupName: '달리셔스',
-        spotName: '3층',
-        address: '여기',
-        spotId: 1,
-        deliveryTime: '12:00',
-        makers: [
-          {
-            makersId: 1,
-            makersName: '수미찬',
-            pickupTime: '11:10',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-          {
-            makersId: 2,
-            makersName: '모모유부',
-            pickupTime: '11:30',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        groupId: 1,
-        groupName: '달리셔스',
-        spotName: '4층',
-        spotId: 1,
-        deliveryTime: '12:00',
-        makers: [
-          {
-            makersId: 1,
-            makersName: '수미찬',
-            pickupTime: '11:10',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-          {
-            makersId: 2,
-            makersName: '모모유부',
-            pickupTime: '11:30',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    serviceDate: '2023-03-14',
-    group: [
-      {
-        groupId: 1,
-        groupName: '달리셔스',
-        deliveryTime: '12:00',
-        makers: [
-          {
-            makersId: 1,
-            makersName: '수미찬',
-            pickupTime: '11:10',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-          {
-            makersId: 2,
-            makersName: '모모유부',
-            pickupTime: '11:30',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        groupId: 2,
-        groupName: '뷰티컬렉션',
-        deliveryTime: '12:00',
-        makers: [
-          {
-            makersId: 1,
-            makersName: '수미찬',
-            pickupTime: '11:10',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-          {
-            makersId: 2,
-            makersName: '모모유부',
-            pickupTime: '11:30',
-            foods: [
-              {
-                foodName: '김치찌개',
-                foodCount: 3,
-              },
-              {
-                foodName: '된장찌개',
-                foodCount: 12,
-              },
-              {
-                foodName: '부침개',
-                foodCount: 3,
-              },
-              {
-                foodName: '오리샐러드',
-                foodCount: 1,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
-const baseURL =
-  process.env.REACT_APP_NODE_ENV === 'prod'
-    ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
-    : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
+
 const Delivery = () => {
   useTitle('배송정보 페이지');
   const curr = new Date();
@@ -265,8 +31,11 @@ const Delivery = () => {
       curr.getTime() + curr.getTimezoneOffset() * 60 * 1000 + KR_TIME_DIFF,
     ),
   );
+  const [open,setOpen] = useState(false);
   const [selectClient, setSelectClient] = useState([]);
   const [selectSpot, setSelectSpot] = useState([]);
+  const token =getAccessToken();
+    
   const {
     data: deliveryInfo,
     refetch: deliveryRefetch,
@@ -280,8 +49,9 @@ const Delivery = () => {
     if (selectSpot.length > 0) {
       spotIds = `&spotIds=${selectSpot.join(',')}`;
     }
-    return await axios.get(
-      `${baseURL}/delivery?startDate=${formattedWeekDateZ(
+    
+    return await instance.get(
+      `delivery?startDate=${formattedWeekDateZ(
         startDate,
       )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}${spotIds}`,
     );
@@ -291,14 +61,14 @@ const Delivery = () => {
   const [spotInfoList, setSpotInfoList] = useState([]);
   useEffect(() => {
     if (deliveryInfo) {
-      setDeliveryInfoList(deliveryInfo?.data?.data?.deliveryInfoList);
+      setDeliveryInfoList(deliveryInfo?.data?.deliveryInfoList);
       setGroupInfoList(
-        deliveryInfo?.data?.data?.groupInfoList?.map(v => {
+        deliveryInfo?.data?.groupInfoList?.map(v => {
           return {key: v.groupId, text: v.groupName, value: v.groupId};
         }),
       );
       setSpotInfoList(
-        deliveryInfo?.data?.data?.spotInfoList?.map(v => {
+        deliveryInfo?.data?.spotInfoList?.map(v => {
           return {
             key: v.spotId,
             text: v.spotId + '-' + v.spotName,
@@ -315,27 +85,17 @@ const Delivery = () => {
   }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
 
   return (
-    <Container>
-      <HeadTitle>배송정보</HeadTitle>
-      <DateSelectBox>
-        <DatePicker
-          selected={startDate}
-          onChange={date => {
-            setStartDate(date);
-          }}
-          dateFormat="yyyy-MM-dd"
-          customInput={<PublicSelectDatePicker />}
-        />
-        ~
-        <DatePicker
-          selected={endDate}
-          onChange={date => {
-            setEndDate(date);
-          }}
-          dateFormat="yyyy-MM-dd"
-          customInput={<PublicSelectDatePicker />}
-        />
-      </DateSelectBox>
+    <Container open={open}>
+    <Wrap open={open}>
+      <HeaderContainer>
+        <HeadTitle>배송정보</HeadTitle>
+        {!token ? <Button type='button' color='olive' onClick={()=>setOpen(true)} >로그인</Button>:<Button type='button' color='google plus' onClick={()=>{
+          localStorage.removeItem('dash-token')
+          window.location.reload();
+        }} >로그아웃</Button>}
+      </HeaderContainer>
+        <DateRangePicker  endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
+    
       <FilterBox>
         <DropBox>
           <Label>스팟</Label>
@@ -373,7 +133,8 @@ const Delivery = () => {
         <LoadingPage>로딩중...</LoadingPage>
       ) : (
         <DeliveryInfoBox>
-          {deliveryInfoList.map((date, i) => {
+          {deliveryInfoList?.length > 0 && deliveryInfoList.map(date => {
+            console.log(date)
             return (
               <DateContainer key={date.serviceDate + i}>
                 <DateBox>{date.serviceDate}</DateBox>
@@ -466,41 +227,50 @@ const Delivery = () => {
           })}
         </DeliveryInfoBox>
       )}
-    </Container>
+      
+    </Wrap>
+    {open &&<LoginContainer>
+      <DashLoginPage setOpen={setOpen}/>
+    </LoginContainer>}
+  </Container>
   );
 };
 
 export default Delivery;
-const Container = styled.div`
+const Wrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px;
   max-width: 1200px;
+  padding: 20px;
+  ${({open})=>{
+    if(open){
+      return css`
+        height: 100vh;
+        overflow: hidden;
+      `
+    }
+  }}
+`;
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
   margin: 0 auto;
 `;
 const HeadTitle = styled.div`
   font-size: 30px;
-  margin-bottom: 50px;
 `;
-
-const DateSelectBox = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  @media (min-width: 576px) {
-    width: 100%;
-  }
-  /* Tablet */
-  @media (min-width: 768px) {
-    width: 80%;
-  }
-  @media (min-width: 968px) {
-    width: 50%;
-  }
-`;
-const FilterBox = styled.div`
   width: 100%;
+  justify-content: space-between;
+  margin-bottom: 50px;
+`
+const LoginContainer = styled.div`
+  position: absolute;
+`
+
+const FilterBox = styled.div`
   gap: 10px;
   display: flex;
   flex-direction: row;
@@ -517,7 +287,6 @@ const DropBox = styled.div`
 
 const DeliveryInfoBox = styled.div`
   display: flex;
-
   flex-direction: column;
 `;
 const LoadingPage = styled.div`
