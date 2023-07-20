@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {useState} from 'react';
@@ -85,8 +85,8 @@ const Delivery = () => {
   }, [startDate, endDate, selectClient, selectSpot, deliveryRefetch]);
 
   return (
-    <Container>
-    <Wrap>
+    <Container open={open}>
+    <Wrap open={open}>
       <HeaderContainer>
         <HeadTitle>배송정보</HeadTitle>
         {!token ? <Button type='button' color='olive' onClick={()=>setOpen(true)} >로그인</Button>:<Button type='button' color='google plus' onClick={()=>{
@@ -233,13 +233,21 @@ export default Delivery;
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 1200px;
   padding: 20px;
+  ${({open})=>{
+    if(open){
+      return css`
+        height: 100vh;
+        overflow: hidden;
+      `
+    }
+  }}
 `;
 const Container = styled.div`
   display: flex;
   height: 100vh;
   flex-direction: column;
-  max-width: 1200px;
   margin: 0 auto;
 `;
 const HeadTitle = styled.div`
