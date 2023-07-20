@@ -136,7 +136,7 @@ const Delivery = () => {
           {deliveryInfoList?.length > 0 && deliveryInfoList.map(date => {
             console.log(date)
             return (
-              <DateContainer key={date.serviceDate}>
+              <DateContainer key={date.serviceDate + i}>
                 <DateBox>{date.serviceDate}</DateBox>
                 {date.group.map(group => {
                   return (
@@ -163,7 +163,7 @@ const Delivery = () => {
                             </SpotName>
                           </Spot>
                         </Group>
-                        <DeliveryTime>도착:{group?.deliveryTime}</DeliveryTime>
+                        <DeliveryTime>도착:{date?.deliveryTime}</DeliveryTime>
                       </GroupHeader>
                       <GroupAddress>
                         <Address>배송지 : {group?.address || '배송지'}</Address>
@@ -184,7 +184,14 @@ const Delivery = () => {
                                 <MakersName>{makers.makersName}</MakersName>
                                 <MakersAddress>{makers.address}</MakersAddress>
                               </MakersFront>
-                              <PickupTime>픽업:{makers.pickupTime}</PickupTime>
+                              <PickupWrap>
+                                <PickupTime>
+                                  픽업:{makers.pickupTime}
+                                </PickupTime>
+                                <PickupTime>
+                                  총 수량 : {makers.totalCount}
+                                </PickupTime>
+                              </PickupWrap>
                             </MakersHeader>
                             {makers?.foods?.map(food => {
                               return (
@@ -302,7 +309,7 @@ const MakersContainer = styled.div`
   flex-direction: column;
   margin-top: 5px;
   margin-bottom: 5px;
-  padding-left: 30px;
+  padding-left: 20px;
 `;
 const GroupHeader = styled.div`
   display: flex;
@@ -355,7 +362,7 @@ const FoodHeader = styled.div`
 const MakersHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  //align-items: center;
   font-weight: 600;
   border-bottom: 1px solid black;
   padding-top: 5px;
@@ -390,6 +397,7 @@ const MakersAddress = styled.div`
   font-size: 13px;
   font-weight: 400;
   padding: 5px;
+  white-space: break-spaces;
 `;
 const FoodName = styled.div`
   font-size: 15px;
@@ -408,4 +416,12 @@ const DateBox = styled.div`
   padding: 2px;
   padding-top: 10px;
   padding-bottom: 10px;
+`;
+
+const PickupWrap = styled.div`
+  width: 80px;
+  white-space: nowrap;
+  text-align: end;
+  align-items: flex-start;
+  padding-top: 5px;
 `;

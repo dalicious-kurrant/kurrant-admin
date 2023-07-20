@@ -65,10 +65,9 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
         <Table.Body>
           {testData.length > 0 &&
             testData?.map((v, i) => {
-              console.log(v);
+              //console.log(v);
               return v?.makersSchedules.map((s, si) => {
                 return s?.foodSchedules.map((d, di) => {
-                  console.log(d.dailyFoodStatus);
                   return (
                     <Table.Row key={`${d.foodName + di}`}>
                       <Table.Cell padding="0px" textAlign="center"></Table.Cell>
@@ -95,7 +94,11 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                       )}
                       {di === 0 && si === 0 && (
                         <Table.Cell rowSpan={count[i]}>
-                          <FlexBox>{v.deliveryTime}</FlexBox>
+                          {v.deliveryTime.map((el, idx) => (
+                            <FlexBox key={el + idx} style={{padding: 4}}>
+                              {el}
+                            </FlexBox>
+                          ))}
                         </Table.Cell>
                       )}
                       {di === 0 && (
@@ -115,7 +118,11 @@ const CustomPlanTable = ({count, testData, setTestData}) => {
                       )}
                       {di === 0 && (
                         <Table.Cell rowSpan={s.foodSchedules.length}>
-                          <FlexBox>{s.makersPickupTime}</FlexBox>
+                          {s.makersPickupTime.map((el, idx) => (
+                            <FlexBox key={el + idx} style={{padding: 4}}>
+                              {el}
+                            </FlexBox>
+                          ))}
                         </Table.Cell>
                       )}
 

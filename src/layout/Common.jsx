@@ -201,6 +201,7 @@ const Common = () => {
           });
         });
       });
+      console.log(reqArray, 'ss');
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -218,11 +219,11 @@ const Common = () => {
             diningType: makers.diningType,
             groupName: makers.groupName,
             groupCapacity: makers.groupCapacity,
-            deliveryTime: makers.deliveryTime,
+            deliveryTime: makers.deliveryTime.split(','),
             makersName: makers.makersName,
             makersCapacity: makers.makersCapacity,
             makersCount: makers.makersCount,
-            makersPickupTime: makers.makersPickupTime,
+            makersPickupTime: makers.makersPickupTime.split(','),
             foodName: makers.foodName,
             foodStatus: makers.dailyFoodStatus,
             dailyFoodId: makers.dailyFoodId || null,
@@ -238,6 +239,7 @@ const Common = () => {
         return window.location.reload();
       } catch (error) {
         alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        console.log(reqArray);
         return window.location.reload();
       }
     }
@@ -682,9 +684,9 @@ const Common = () => {
           setExelProduct(json);
         }
         if (sheetName === '식단 현황') {
-          console.log(json);
           setExelCompletePlan(
             json.map((v, i) => {
+              console.log(typeof v.deliveryTime);
               if (i === 0) {
                 return v;
               }
@@ -696,8 +698,14 @@ const Common = () => {
                 return {
                   ...v,
                   serviceDate: formattedWeekDate(v.serviceDate),
-                  makersPickupTime: formattedTime(v.makersPickupTime),
-                  deliveryTime: formattedTime(v.deliveryTime),
+                  makersPickupTime:
+                    typeof v.makersPickupTime === 'object'
+                      ? formattedTime(v.makersPickupTime)
+                      : v.makersPickupTime,
+                  deliveryTime:
+                    typeof v.deliveryTime === 'object'
+                      ? formattedTime(v.deliveryTime)
+                      : v.deliveryTime,
                 };
               }
 
