@@ -147,7 +147,6 @@ const Delivery = () => {
       })
       setSpotCompleteList(todayDeliveryData.map((v,i) => {
         return v.group.map((g)=>{
-          console.log(g)
           return {key :g.spotId+i, spotId: g.spotId, deliveryStatus: g.deliveryStatus, deliveryTime:v.deliveryTime, closeableTime:g.closeableTime}
         }); 
       }).flat());
@@ -176,7 +175,6 @@ const Delivery = () => {
       {token && <DeliveryComplateText>오늘 배송완료</DeliveryComplateText>}
       {token && <DeliveryComplate>
         {spotCompleteList?.length> 0 && spotCompleteList.map((spot)=>{
-          console.log(spot)
           return <CompleteButtonBox key={spot.key}><Button  color={spot.deliveryStatus === 2? "red": spot.deliveryStatus === 1? 'grey':"twitter"} onClick={()=>{
             setSelectedSpot({
               spotId:spot.spotId,
@@ -237,7 +235,6 @@ const Delivery = () => {
       ) : (
         <DeliveryInfoBox>
           {deliveryInfoList?.length > 0 && deliveryInfoList.map((date,i) => {
-            console.log(date)
             return (
               <DateContainer key={date.serviceDate + i}>
                 <DateBox>{date.serviceDate}</DateBox>
