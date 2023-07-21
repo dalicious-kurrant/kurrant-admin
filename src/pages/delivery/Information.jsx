@@ -17,17 +17,12 @@ function Information() {
   const [endDate, setEndDate] = useState(
     new Date(new Date().setDate(new Date().getDate() + 7)),
   );
-  const [dataStartDate, setDataStartDate] = useState(new Date());
-  const [dataEndDate, setDataEndDate] = useState(
-    new Date(new Date().setDate(new Date().getDate() + 7)),
-  );
 
-  const [selectClient, setSelectClient] = useState([]);
   const [groupInfoList, setGroupInfoList] = useState([]);
   const [deliveryData, setDeliveryData] = useState();
   const [updateDeliveryData, setUpdateDeliveryData] = useState([]);
     
-  const {data: getDriverDelivery, refetch:refetchDriverDelivery} = useGetDriverDelivery(formattedDateZ(startDate,"-"),formattedDateZ(endDate,"-"));
+  const {data: getDriverDelivery, isFetching,refetch:refetchDriverDelivery} = useGetDriverDelivery(formattedDateZ(startDate,"-"),formattedDateZ(endDate,"-"));
   const {data: getDriverList} = useGetDriver();
   const {mutateAsync :updateDriverDelivery} = useUpdateDriverDelivery();
 
@@ -48,8 +43,13 @@ function Information() {
         driver: save.driver,
       };
     });
-    console.log(saveData)
-    await updateDriverDelivery(saveData)
+    try {
+      await updateDriverDelivery(saveData)
+      refetchDriverDelivery();
+    } catch (error) {
+      alert(error.toString());
+    }
+   
     
   };
   useEffect(() => {
@@ -62,11 +62,8 @@ function Information() {
     }
   }, [getDriverList?.data]);
   useEffect(()=>{
-    console.log(deliveryData)
-    if(getDriverDelivery?.data){
-      setDeliveryData(getDriverDelivery?.data)
-    }
-  },[getDriverDelivery?.data])
+    setDeliveryData(getDriverDelivery?.data)
+  },[ getDriverDelivery?.data,isFetching])
   return (
     <Wrap>
       <CheckDeliveryInfoDate>
@@ -121,7 +118,7 @@ function Information() {
                 const maxObjArr = getId?.length > 0  ? getId.reduce((prev, value) => {
                   return Number(prev.id.split("_")[1]) >= Number(value.id.split("_")[1]) ? prev : value;
                 }) : getNotTempId.reduce((prev, value) => {
-                  return Number(prev.id.split("_")[1]) >= Number(value.id.split("_")[1]) ? prev : value;
+                  return Number(prev.id) >= Number(value.id) ? prev : value;
                 });
                 
                 const nextId = getId?.length > 0 ? maxObjArr.id.split("_")[0]+"_"+(Number(maxObjArr.id.split("_")[1])+1) : Number(maxObjArr.id)+1

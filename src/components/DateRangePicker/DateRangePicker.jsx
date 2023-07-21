@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {DateInput} from 'semantic-ui-calendar-react';
 import 'semantic-ui-css/semantic.min.css';
 import styled from 'styled-components';
+import { formattedDateZ } from 'utils/dateFormatter';
 
 const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
   const handleDateChange = (_event, {name, value}) => {
@@ -17,7 +18,7 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
       <DateInput
         name="startDate"
         placeholder="시작일"
-        value={startDate}
+        value={formattedDateZ(startDate,"-")}
         iconPosition="left"
         onChange={handleDateChange}
         closable
@@ -29,7 +30,7 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
       <DateInput
         name="endDate"
         placeholder="종료일"
-        value={endDate}
+        value={formattedDateZ(endDate,"-")}
         iconPosition="left"
         onChange={handleDateChange}
         closable

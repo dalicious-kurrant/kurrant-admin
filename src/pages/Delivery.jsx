@@ -6,19 +6,22 @@ import DatePicker from 'react-datepicker';
 import {useState} from 'react';
 import PublicSelectDatePicker from 'components/PublicSelectDatePicker';
 import {Button, Dropdown, Label} from 'semantic-ui-react';
-import {useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import axios from 'axios';
-import {formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
+import {formattedTime, formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
 import useTitle from 'hooks/useTitle';
 import { getAccessToken } from 'utils/checkDashToken';
 import instance from 'shared/axiosDash';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 import DashLoginPage from './dashLogin/Login'
+import DashAlertModal from 'components/dashAlertModal/DashAlertModal';
+import jwtUtils from 'utils/jwtUtill';
 
 
 
 const Delivery = () => {
   useTitle('배송정보 페이지');
+  const queryClient = useQueryClient();
   const curr = new Date();
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const [startDate, setStartDate] = useState(
@@ -32,6 +35,7 @@ const Delivery = () => {
     ),
   );
   const [open,setOpen] = useState(false);
+  const [name,setName] = useState(false);
   const [selectClient, setSelectClient] = useState([]);
   const [selectSpot, setSelectSpot] = useState([]);
   const token =getAccessToken();
@@ -51,14 +55,74 @@ const Delivery = () => {
     }
     
     return await instance.get(
-      `delivery?startDate=${formattedWeekDateZ(
+      `delivery/schedules?startDate=${formattedWeekDateZ(
         startDate,
       )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}${spotIds}`,
     );
   });
+  const {mutateAsync :updateStatus} =  useMutation(
+    (data) => instance.post('delivery/status/complete',data),
+    {
+      onSuccess: res => {
+        queryClient.invalidateQueries(['deliveryInfo']);
+      },
+      onError: e => {
+        alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());
+      },
+    },
+  );
+  const {mutateAsync :updateCancelStatus} =  useMutation(
+    (data) => instance.post('delivery/status/cancel',data),
+    {
+      onSuccess: res => {
+        queryClient.invalidateQueries(['deliveryInfo']);
+      },
+      onError: e => {
+        alert('잘못된 데이터가 있습니다. 다시 시도해주세요', e.toString());
+      },
+    },
+  );
   const [deliveryInfoList, setDeliveryInfoList] = useState([]);
   const [groupInfoList, setGroupInfoList] = useState([]);
+  const [selectedSpot, setSelectedSpot] = useState({});
   const [spotInfoList, setSpotInfoList] = useState([]);
+  const [spotCompleteList, setSpotCompleteList] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalCancelOpen, setModalCancelOpen] = useState(false);
+  const completeButton = async () => {
+    try {
+      await updateStatus(selectedSpot)
+      closeModal();
+    } catch (error) {
+      alert(error.toString());
+      closeModal();
+    }
+   
+  };
+  const cancelButton = async () => {
+    try {
+      await updateCancelStatus(selectedSpot)
+      closeCancelModal();
+    } catch (error) {
+      alert(error.toString());
+      closeCancelModal();
+    }
+   
+  };
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const openCancelModal = () => {
+    setModalCancelOpen(true);
+  };
+
+  const closeCancelModal = () => {
+    setModalCancelOpen(false);
+  };
   useEffect(() => {
     if (deliveryInfo) {
       setDeliveryInfoList(deliveryInfo?.data?.deliveryInfoList);
@@ -76,8 +140,20 @@ const Delivery = () => {
           };
         }),
       );
+      const todayDeliveryData = deliveryInfo?.data?.deliveryInfoList?.filter((v,i) => {
+        return formattedWeekDateZ(new Date()).toString()=== v.serviceDate.toString()
+      })
+      setSpotCompleteList(todayDeliveryData.map((v,i) => {
+        return v.group.map((g)=>{
+          console.log(g)
+          return {key :g.spotId+i, spotId: g.spotId, deliveryStatus: g.deliveryStatus, deliveryTime:v.deliveryTime, closeableTime:g.closeableTime}
+        }); 
+      }).flat());
     }
   }, [deliveryInfo]);
+  useEffect(()=>{
+    if(token) setName(jwtUtils.getName(token))
+  },[token])
   useEffect(() => {
     setDeliveryInfoList([]);
 
@@ -89,13 +165,38 @@ const Delivery = () => {
     <Wrap open={open}>
       <HeaderContainer>
         <HeadTitle>배송정보</HeadTitle>
-        {!token ? <Button type='button' color='olive' onClick={()=>setOpen(true)} >로그인</Button>:<Button type='button' color='google plus' onClick={()=>{
+        {!token ? <Button type='button' color='olive' onClick={()=>setOpen(true)} >로그인</Button>:
+        <div>{name}님 안녕하세요 <Button type='button' color='google plus' onClick={()=>{
           localStorage.removeItem('dash-token')
           window.location.reload();
-        }} >로그아웃</Button>}
+        }} >로그아웃</Button></div>}
       </HeaderContainer>
-        <DateRangePicker  endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
-    
+      {token && <DeliveryComplateText>오늘 배송완료</DeliveryComplateText>}
+      {token && <DeliveryComplate>
+        {spotCompleteList?.length> 0 && spotCompleteList.map((spot)=>{
+          console.log(spot)
+          return <CompleteButtonBox key={spot.key}><Button  color={spot.deliveryStatus === 2? "red": spot.deliveryStatus === 1? 'grey':"twitter"} onClick={()=>{
+            setSelectedSpot({
+              spotId:spot.spotId,
+              deliveryTime:spot.deliveryTime
+            })
+            if(spot.deliveryStatus=== 0){
+              
+              openModal();
+            }
+            if(spot.deliveryStatus=== 2){
+              
+              openCancelModal();
+            }
+            if(spot.deliveryStatus=== 1){
+              alert("배송이 완료된 스팟은 취소할 수 없습니다.")
+            }
+          }}>{spot.spotId} ({spot.deliveryTime})</Button>
+          {spot.closeableTime &&<CompleteText>{formattedTime(new Date(spot.closeableTime))}에 완료됩니다.</CompleteText>}
+          </CompleteButtonBox>
+        })}
+      </DeliveryComplate>}
+      <DateRangePicker  endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
       <FilterBox>
         <DropBox>
           <Label>스팟</Label>
@@ -133,7 +234,7 @@ const Delivery = () => {
         <LoadingPage>로딩중...</LoadingPage>
       ) : (
         <DeliveryInfoBox>
-          {deliveryInfoList?.length > 0 && deliveryInfoList.map(date => {
+          {deliveryInfoList?.length > 0 && deliveryInfoList.map((date,i) => {
             console.log(date)
             return (
               <DateContainer key={date.serviceDate + i}>
@@ -168,12 +269,14 @@ const Delivery = () => {
                       <GroupAddress>
                         <Address>배송지 : {group?.address || '배송지'}</Address>
                       </GroupAddress>
-                      {group.makersList.map(makers => {
+                      {group.makersList.map((makers,i) => {
                         return (
                           <MakersContainer
                             key={
                               '메이커스' +
                               date.serviceDate +
+                              i+
+                              date.deliveryTime +
                               group.groupId +
                               makers.makersId +
                               makers.pickupTime +
@@ -193,12 +296,14 @@ const Delivery = () => {
                                 </PickupTime>
                               </PickupWrap>
                             </MakersHeader>
-                            {makers?.foods?.map(food => {
+                            {makers?.foods?.map((food,i) => {
                               return (
                                 <FoodsContainer
                                   key={
                                     '푸드' +
+                                    i+
                                     date.serviceDate +
+                                    date.deliveryTime+
                                     group.groupId +
                                     makers.makersId +
                                     makers.pickupTime +
@@ -232,6 +337,25 @@ const Delivery = () => {
     {open &&<LoginContainer>
       <DashLoginPage setOpen={setOpen}/>
     </LoginContainer>}
+    <DashAlertModal
+        open={modalOpen}
+        message={'배송완료'}
+        setAlertModalOpen={closeModal}
+        action={completeButton}
+        actionMessage={'확인'}
+        cancelMessage={'취소'}
+        label={`스팟 ${selectedSpot.spotId}의 배송을 완료 하겠습니까?`}
+      />
+    <DashAlertModal
+        open={modalCancelOpen}
+        message={'배송완료 취소'}
+        setAlertModalOpen={closeCancelModal}
+        action={cancelButton}
+        actionColor={'red'}
+        actionMessage={'확인'}
+        cancelMessage={'취소'}
+        label={`스팟 ${selectedSpot.spotId}의 배송을 취소 하겠습니까?`}
+      />
   </Container>
   );
 };
@@ -241,6 +365,8 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
   padding: 20px;
   ${({open})=>{
     if(open){
@@ -264,7 +390,17 @@ const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
+`
+const DeliveryComplate = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 30px;
+`
+const DeliveryComplateText = styled.div`
+  font-size: 18px;
 `
 const LoginContainer = styled.div`
   position: absolute;
@@ -344,6 +480,19 @@ const SpotId = styled.div`
   color: blue;
   font-weight: 600;
 `;
+const CompleteButtonBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 65px;
+`;
+const CompleteText = styled.div`
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 3px;
+  color: red;
+`
 const GroupAddress = styled.div`
   display: flex;
   justify-content: space-between;

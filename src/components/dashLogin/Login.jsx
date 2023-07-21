@@ -3,8 +3,9 @@ import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import instance from '../../shared/axios';
+import jwtUtils from 'utils/jwtUtill';
 
-const Login = ({setOpen}) => {
+const Login = () => {
   const navigate = useNavigate();
 
   const [loginCheck, setLoginCheck] = useState(false);
@@ -32,7 +33,9 @@ const Login = ({setOpen}) => {
       console.log(res);
       if (res.statusCode === 200) {
         const accessToken = res.data.accessToken;
+        const name = jwtUtils.getName(accessToken)
         localStorage.setItem('dash-token', accessToken);
+        localStorage.setItem('dash-name', name);
         window.location.reload();
       }
     } catch (err) {

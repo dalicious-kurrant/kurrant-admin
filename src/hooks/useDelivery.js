@@ -19,6 +19,7 @@ export function useUpdateDriverDelivery() {
   const queryClient = useQueryClient();
   return useMutation(data => deliveryApi.updateDriverDelivery(data), {
     onSuccess: () => {
+      console.log("test")
       queryClient.invalidateQueries('driverdelivery');
     },
     onError: err => {

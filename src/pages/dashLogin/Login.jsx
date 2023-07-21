@@ -16,7 +16,7 @@ const LoginPage = ({setOpen}) => {
           />
         </CloseBox>
         <LoginHeader />
-        <Login setOpen={setOpen}/>
+        <Login/>
       </Wrap>
     </Container>
   );
