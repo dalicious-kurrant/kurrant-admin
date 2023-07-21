@@ -59,6 +59,8 @@ const Delivery = () => {
         startDate,
       )}&endDate=${formattedWeekDateZ(endDate)}${groupIds}${spotIds}`,
     );
+  },{
+    retry:false
   });
   const {mutateAsync :updateStatus} =  useMutation(
     (data) => instance.post('delivery/status/complete',data),
