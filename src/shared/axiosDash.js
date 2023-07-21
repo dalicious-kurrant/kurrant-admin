@@ -10,6 +10,7 @@ const baseURL =
 const instance = axios.create({baseURL});
 
 const setToken = config => {
+  console.log(token)
   config.headers['Authorization'] = `Bearer ${token}`;
   return config;
 };
