@@ -5,6 +5,7 @@ import Layout from '../layout/Layout';
 import {MenuList} from './menu';
 import LoginPage from '../pages/login/Login';
 import ChainLoginPage from '../pages/chainLogin/Login';
+import DashLoginPage from '../pages/dashLogin/Login';
 import Success from '../pages/Success';
 import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import OrderDetail from '../pages/order/orderInfomation/OrderDetail';
@@ -17,6 +18,7 @@ import ClientCalcDetail from 'pages/adjustment/components/ClientCalcDetail';
 import BackLog from 'pages/backlog/Backlog';
 import PrivateRoute from './PrivateRoute';
 import ChainDelivery from 'pages/ChainDelivery';
+import DashPrivateRoute from './DashPrivateRoute';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
@@ -25,7 +27,10 @@ const MainRouter = () => {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/success" element={<Success />} />
-        <Route path="/dash" element={<Delivery />} />
+        <Route path="/dash" element={<DashPrivateRoute />} >
+          <Route path="/dash" element={<Delivery />} />
+        </Route>
+        {/* <Route path="/dash/login" element={<DashLoginPage />} /> */}
         <Route path="/chain/login" element={<ChainLoginPage />} />
         <Route path="/chain" element={<PrivateRoute />} >
           <Route path="/chain/delivery" element={<ChainDelivery />} />

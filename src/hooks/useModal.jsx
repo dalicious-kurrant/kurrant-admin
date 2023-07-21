@@ -28,7 +28,6 @@ export const ModalProvider = ({children}) => {
     }),
     [active, chkData],
   );
-  console.log(chkData);
   return (
     <ModalContext.Provider value={alertModalValue}>
       {children}

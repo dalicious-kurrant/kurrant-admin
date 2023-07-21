@@ -686,7 +686,6 @@ const Common = () => {
         if (sheetName === '식단 현황') {
           setExelCompletePlan(
             json.map((v, i) => {
-              console.log(typeof v.deliveryTime);
               if (i === 0) {
                 return v;
               }
