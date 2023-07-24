@@ -178,6 +178,9 @@ const CustomerTable = ({
                 일반기업_이메일
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
+                구글_이메일
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
                 카카오_이메일
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
@@ -302,6 +305,9 @@ const CustomerTable = ({
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.generalEmail || '-'}</FlexBox>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <FlexBox>{row.googleEmail || '-'}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.kakaoEmail || '-'}</FlexBox>
