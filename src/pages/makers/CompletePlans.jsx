@@ -182,6 +182,7 @@ const CompletePlans = () => {
               <Dropdown
                 placeholder="메이커스"
                 fluid
+                search
                 multiple
                 selection
                 options={options}
@@ -196,6 +197,7 @@ const CompletePlans = () => {
               <Dropdown
                 placeholder="고객사"
                 fluid
+                search
                 multiple
                 selection
                 options={optionsClient}
