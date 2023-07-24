@@ -10,7 +10,7 @@ import {useMutation, useQuery, useQueryClient} from 'react-query';
 import axios from 'axios';
 import {formattedTime, formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
 import useTitle from 'hooks/useTitle';
-import { getAccessToken } from 'utils/checkDashToken';
+import { getAccessToken, getAccessTokenName } from 'utils/checkDashToken';
 import instance from 'shared/axiosDash';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 import DashLoginPage from './dashLogin/Login'
@@ -35,10 +35,11 @@ const Delivery = () => {
     ),
   );
   const [open,setOpen] = useState(false);
-  const [name,setName] = useState(false);
+  // const [name,setName] = useState(false);
   const [selectClient, setSelectClient] = useState([]);
   const [selectSpot, setSelectSpot] = useState([]);
   const token =getAccessToken();
+  const name =getAccessTokenName();
     
   const {
     data: deliveryInfo,
@@ -126,6 +127,7 @@ const Delivery = () => {
     setModalCancelOpen(false);
   };
   useEffect(() => {
+    console.log(deliveryInfo)
     if (deliveryInfo) {
       setDeliveryInfoList(deliveryInfo?.data?.deliveryInfoList);
       setGroupInfoList(
@@ -143,18 +145,20 @@ const Delivery = () => {
         }),
       );
       const todayDeliveryData = deliveryInfo?.data?.deliveryInfoList?.filter((v,i) => {
+        console.log(formattedWeekDateZ(new Date()).toString(),v.serviceDate.toString())
         return formattedWeekDateZ(new Date()).toString()=== v.serviceDate.toString()
       })
-      setSpotCompleteList(todayDeliveryData.map((v,i) => {
-        return v.group.map((g)=>{
-          return {key :g.spotId+i, spotId: g.spotId, deliveryStatus: g.deliveryStatus, deliveryTime:v.deliveryTime, closeableTime:g.closeableTime}
-        }); 
-      }).flat());
+      if(todayDeliveryData)
+        setSpotCompleteList(todayDeliveryData.map((v,i) => {
+          return v.group.map((g)=>{
+            return {key :g.spotId+i, spotId: g.spotId, deliveryStatus: g.deliveryStatus, deliveryTime:v.deliveryTime, closeableTime:g.closeableTime}
+          }); 
+        }).flat());
     }
   }, [deliveryInfo]);
-  useEffect(()=>{
-    if(token) setName(jwtUtils.getName(token))
-  },[token])
+  // useEffect(()=>{
+  //   if(token) setName()
+  // },[token])
   useEffect(() => {
     setDeliveryInfoList([]);
 
@@ -172,7 +176,7 @@ const Delivery = () => {
           window.location.reload();
         }} >로그아웃</Button></div>}
       </HeaderContainer>
-      {token && <DeliveryComplateText>오늘 배송완료</DeliveryComplateText>}
+      {token && spotCompleteList?.length> 0 && <DeliveryComplateText>오늘 배송 목록</DeliveryComplateText>}
       {token && <DeliveryComplate>
         {spotCompleteList?.length> 0 && spotCompleteList.map((spot)=>{
           return <CompleteButtonBox key={spot.key}><Button  color={spot.deliveryStatus === 2? "red": spot.deliveryStatus === 1? 'grey':"twitter"} onClick={()=>{
@@ -234,7 +238,7 @@ const Delivery = () => {
         <LoadingPage>로딩중...</LoadingPage>
       ) : (
         <DeliveryInfoBox>
-          {deliveryInfoList?.length > 0 && deliveryInfoList.map((date,i) => {
+          {deliveryInfoList?.length > 0 ? deliveryInfoList.map((date,i) => {
             return (
               <DateContainer key={date.serviceDate + i}>
                 <DateBox>{date.serviceDate}</DateBox>
@@ -328,7 +332,7 @@ const Delivery = () => {
                 })}
               </DateContainer>
             );
-          })}
+          }):<LoadingPage>오늘 배송 목록이 없습니다.</LoadingPage>}
         </DeliveryInfoBox>
       )}
       

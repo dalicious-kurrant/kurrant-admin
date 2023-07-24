@@ -33,7 +33,8 @@ const Login = () => {
       console.log(res);
       if (res.statusCode === 200) {
         const accessToken = res.data.accessToken;
-        const name = jwtUtils.getName(accessToken)
+        const name2 = jwtUtils.getName(accessToken)
+        const name = res.data.name
         localStorage.setItem('dash-token', accessToken);
         localStorage.setItem('dash-name', name);
         window.location.reload();
