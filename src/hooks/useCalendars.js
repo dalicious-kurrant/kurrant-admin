@@ -14,9 +14,14 @@ export function useCompleteCalendar() {
   });
 }
 export function usePostCompleteCalendar() {
-  return useMutation(data => {
-    return calendarApis.completePostDailyFood(data);
-  });
+  return useMutation(
+    data => {
+      return calendarApis.completePostDailyFood(data);
+    },
+    {
+      onError: err => alert(err.response.data.message),
+    },
+  );
 }
 
 export function useGetCompleteCalendar(
