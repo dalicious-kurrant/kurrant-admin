@@ -20,7 +20,7 @@ function CostomerEditModal({
   testData,
   setTestData,
 }) {
-  // console.log(nowData);
+  //console.log(nowData);
   // console.log(nowData.userOrderAlarm);
   const onSubmit = () => {
     setTestData(
@@ -43,13 +43,13 @@ function CostomerEditModal({
         <Modal.Content>
           <Modal.Description>
             <LineBox>
-            <FlexBox>
-              <Label>이메일</Label>
-              <Label color="blue" size="large">
-                {nowData.email}
-              </Label>
-            </FlexBox>
-            <Form.Field>
+              <FlexBox>
+                <Label>이메일</Label>
+                <Label color="blue" size="large">
+                  {nowData.email}
+                </Label>
+              </FlexBox>
+              <Form.Field>
                 <FlexBox width={500}>
                   <Label>결제 비밀번호</Label>
                   <Input
@@ -64,7 +64,7 @@ function CostomerEditModal({
                   />
                 </FlexBox>
               </Form.Field>
-              </LineBox>
+            </LineBox>
             <LineBox>
               <Form.Field>
                 <FlexBox>
@@ -99,7 +99,7 @@ function CostomerEditModal({
             </LineBox>
             <LineBox>
               <Form.Field>
-                <FlexBox>
+                <FlexBox width={200}>
                   <Label>이름</Label>
                   <Input
                     placeholder="이름"
@@ -108,6 +108,21 @@ function CostomerEditModal({
                       setNowData({
                         ...nowData,
                         userName: data.value ? data.value : '이름없음',
+                      });
+                    }}
+                  />
+                </FlexBox>
+              </Form.Field>
+              <Form.Field>
+                <FlexBox width={200}>
+                  <Label>닉네임</Label>
+                  <Input
+                    placeholder="닉네임"
+                    defaultValue={nowData.nickname}
+                    onChange={(e, data) => {
+                      setNowData({
+                        ...nowData,
+                        nickname: data.value ? data.value : null,
                       });
                     }}
                   />

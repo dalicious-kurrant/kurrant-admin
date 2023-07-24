@@ -238,9 +238,9 @@ const Common = () => {
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        alert(`저장을 실패 했습니다.\n${error.toString()}`);
-        console.log(reqArray);
-        return window.location.reload();
+        //alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        //console.log(reqArray);
+        //return window.location.reload();
       }
     }
   };
@@ -649,6 +649,7 @@ const Common = () => {
         if (sheetName === '유저 정보') {
           setExelUser(
             json.map((v, i) => {
+              console.log(v, '1');
               if (i === 0) {
                 return v;
               }
@@ -788,6 +789,7 @@ const Common = () => {
           password: v.password || null,
           paymentPassword: v.paymentPassword || null,
           name: v.userName,
+          nickname: v.nickname,
           email: v.email,
           phone: v.phone || null,
           role: v.role || null,
@@ -813,10 +815,11 @@ const Common = () => {
         password: v.password || null,
         paymentPassword: v.paymentPassword || null,
         name: v.userName,
+        nickname: v.nickname,
         email: v.email,
         phone: v.phone || null,
         role: v.role || null,
-        status: v.status === 0 ? 0 : v.status,
+        status: v.status,
         groupName: v.groupName || null,
         point: v.point,
         marketingAgree: v.marketingAgree || null,
