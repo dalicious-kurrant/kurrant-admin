@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
-import {formattedDate, formattedDateZ} from 'utils/dateFormatter';
+import { formattedDateZ} from 'utils/dateFormatter';
 
 function Information() {
   const [startDate, setStartDate] = useState(new Date());
@@ -35,17 +35,18 @@ function Information() {
     const saveData = updateDeliveryData.map(save => {
       return {
         id: save.id,
-        deliveryDate: save.deliveryDate, // 예시: 새로운 데이터의 날짜
-        diningType: save.diningType, // 예시: 새로운 데이터의 식사 유형
-        deliveryTime: save.deliveryTime, // 예시: 새로운 데이터의 배송 시간
-        groupName: save.groupName, // 예시: 새로운 데이터의 장소 이름
-        makersNames: save.makersNames, // 예시: 새로운 데이터의 만든 사람 목록
+        deliveryDate: save.deliveryDate,
+        diningType: save.diningType,
+        deliveryTime: save.deliveryTime,
+        groupName: save.groupName,
+        makersNames: save.makersNames,
         driver: save.driver,
       };
     });
     try {
       await updateDriverDelivery(saveData)
       refetchDriverDelivery();
+      alert("저장 되었습니다.")
     } catch (error) {
       alert(error.toString());
     }
@@ -105,8 +106,8 @@ function Information() {
               <TableHeaderCell textAlign="center">삭제</TableHeaderCell>
             </Table.Row>
           </TableHeader>
-          <Table.Body>
-            {deliveryData?.length>0 && deliveryData.map((v, i) => {
+          {deliveryData?.length>0 &&<Table.Body>
+            {deliveryData.map((v, i) => {
               const handleButtonClick = index => {
                 const getId = deliveryData.filter((data)=>{
                   return (v.id.includes('temp') && data.id?.length > 0 && data.id.includes(v.id.split("_")[0])) || false
@@ -238,9 +239,12 @@ function Information() {
                 </Table.Row>
               );
             })}
-          </Table.Body>
+          </Table.Body>}
         </Table>
+
+        {!(deliveryData?.length > 0) &&<NoDataText>조회된 데이터가 없습니다.</NoDataText>} 
       </TableWrapper>
+      
     </Wrap>
   );
 }
@@ -277,3 +281,10 @@ const AddInput = styled.input`
   flex: 1;
   width: 100%;
 `;
+const NoDataText = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  color: ${({theme})=> theme.colors.grey[5]};
+`
