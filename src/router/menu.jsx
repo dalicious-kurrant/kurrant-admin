@@ -175,7 +175,7 @@ export const MenuList = [
         url: '/makers',
       },
       {
-        name: '스팟 신청 (진행중)',
+        name: '스팟 신청',
         url: '/spot',
         component: <Main />,
       },
