@@ -176,8 +176,8 @@ const Delivery = () => {
           window.location.reload();
         }} >로그아웃</Button></div>}
       </HeaderContainer>
-      {token && spotCompleteList?.length> 0 && <DeliveryComplateText>오늘 배송 목록</DeliveryComplateText>}
-      {token && <DeliveryComplate>
+      {jwtUtils.isAuth(token) && spotCompleteList?.length> 0 && <DeliveryComplateText>오늘 배송 목록</DeliveryComplateText>}
+      {jwtUtils.isAuth(token) && <DeliveryComplate>
         {spotCompleteList?.length> 0 && spotCompleteList.map((spot)=>{
           return <CompleteButtonBox key={spot.key}><Button  color={spot.deliveryStatus === 2? "red": spot.deliveryStatus === 1? 'grey':"twitter"} onClick={()=>{
             setSelectedSpot({
@@ -397,6 +397,7 @@ const HeaderContainer = styled.div`
 `
 const DeliveryComplate = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   justify-content: flex-start;
   gap: 10px;

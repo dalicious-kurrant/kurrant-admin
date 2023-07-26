@@ -46,6 +46,7 @@ export default DateRangePicker;
 
 const RangeDatePickerWrap = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 `;
