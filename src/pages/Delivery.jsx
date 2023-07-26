@@ -170,11 +170,13 @@ const Delivery = () => {
     <Wrap open={open}>
       <HeaderContainer>
         <HeadTitle>배송정보</HeadTitle>
-        {!token ? <Button type='button' color='olive' onClick={()=>setOpen(true)} >로그인</Button>:
-        <div>{name}님 안녕하세요 <Button type='button' color='google plus' onClick={()=>{
+        <LoginBox>
+        {!jwtUtils.isAuth(token) ? <Button type='button' color='olive' onClick={()=>setOpen(true)} >로그인</Button>:
+        <div style={{display:'flex', alignItems:'center'}}>{name}님 안녕하세요 <Button type='button' color='google plus' onClick={()=>{
           localStorage.removeItem('dash-token')
           window.location.reload();
         }} >로그아웃</Button></div>}
+        </LoginBox>
       </HeaderContainer>
       {jwtUtils.isAuth(token) && spotCompleteList?.length> 0 && <DeliveryComplateText>오늘 배송 목록</DeliveryComplateText>}
       {jwtUtils.isAuth(token) && <DeliveryComplate>
@@ -394,6 +396,9 @@ const HeaderContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   margin-bottom: 10px;
+`
+const LoginBox = styled.div`
+  
 `
 const DeliveryComplate = styled.div`
   display: flex;

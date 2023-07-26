@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import {Button, Header, Label, Table} from 'semantic-ui-react';
 import styled, {css, useTheme} from 'styled-components';
 import {PageWrapper, TableWrapper} from '../../style/common.style';
-import {formattedWeekDate} from '../../utils/dateFormatter';
+import {formattedWeekDate, formattedWeekDateTime} from '../../utils/dateFormatter';
 import Select from 'react-select';
 import DiningButton from './components/DiningButton';
 import {useGetMakersList} from '../../hooks/useOrderList';
@@ -207,7 +207,11 @@ const Schedule = () => {
         {salesList?.data?.deliveryGroupsByDates.map((el, idx) => {
           return (
             <MakersTable key={idx}>
-              <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
+              <ServiceDateContainer>
+                <BoldText>{el.serviceDate + `\u00A0` + el.diningType}</BoldText>
+                <DeadLineBox status={new Date(el.lastOrderTime).getTime() <new Date().getTime()}>{new Date(el.lastOrderTime).getTime() <new Date().getTime() ? "주문마감":"주문진행중" }</DeadLineBox>
+                <DeadLineText>주문 마감 {formattedWeekDateTime(new Date(el.lastOrderTime))}</DeadLineText>
+              </ServiceDateContainer>
               <DateLine />
               <DiningTypeWrap>
                 <MealDetailWrap>
@@ -329,7 +333,26 @@ const Wrapper = styled.div`
 const SelectBox = styled(Select)`
   width: 250px;
 `;
-
+const ServiceDateContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+const DeadLineBox = styled.div`
+  background-color: #eee;
+  color:${({theme,status})=> status ? theme.colors.red[500] : theme.colors.blue[500] };
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 10px;
+  margin-left: 10px;
+`
+const DeadLineText = styled.div`
+  font-size: 13px;
+  font-weight: 600;
+margin-left: 10px;
+`
 const DateInput = styled.input`
   padding: 4px;
   width: 200px;
