@@ -28,7 +28,15 @@ export function formattedTimer(remainSeconds) {
   const formattedSeconds = seconds.toString().padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 }
-
+export function formattedWeekDateTime(data, delimiter = '-') {
+  const dateTime = transDateType(data);
+  const year = dateTime.getFullYear();
+  const month = leftPad(dateTime.getMonth() + 1);
+  const day = leftPad(dateTime.getDate());
+  const hour = leftPad(dateTime.getHours());
+  const minute = leftPad(dateTime.getMinutes());
+  return `${day}일 ${[hour,minute].join(':')}`;
+}
 export function formattedTime(data) {
   if (typeof data !== typeof new Date()) {
     const isDate = new Date();
