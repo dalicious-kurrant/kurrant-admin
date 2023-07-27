@@ -16,6 +16,7 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
   return (
     <RangeDatePickerWrap>
       <DateInput
+        style={{fontSize:window.innerWidth < 768 ? 12 : 15}}
         name="startDate"
         placeholder="시작일"
         value={formattedDateZ(startDate,"-")}
@@ -28,6 +29,7 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
       />
       <span>-</span>
       <DateInput
+        style={{fontSize:window.innerWidth < 768 ? 12 : 15}}
         name="endDate"
         placeholder="종료일"
         value={formattedDateZ(endDate,"-")}

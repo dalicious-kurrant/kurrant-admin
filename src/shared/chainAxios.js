@@ -5,7 +5,9 @@ const token = localStorage.getItem('chain-token');
 const baseURL =
   process.env.REACT_APP_NODE_ENV === 'prod'
     ? process.env.REACT_APP_BASE_URL + '/' + process.env.REACT_APP_API_VERSION
-    : process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
+    : process.env.REACT_APP_NODE_ENV === 'rel' 
+    ?process.env.REACT_APP_RELEASE_URL + '/' + process.env.REACT_APP_API_VERSION 
+    :process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 
 const chainInstance = axios.create({baseURL});
 

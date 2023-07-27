@@ -205,10 +205,10 @@ const Delivery = () => {
       <DateRangePicker  endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
       <FilterBox>
         <DropBox>
-          <Label>스팟</Label>
+          <Label style={{fontSize:window.innerWidth < 768 ? 11 : 15}}>스팟</Label>
           <Dropdown
+           style={{fontSize:window.innerWidth < 768 ? 11 : 15}}
             placeholder="스팟"
-            fluid
             multiple
             selection
             search
@@ -221,10 +221,10 @@ const Delivery = () => {
           />
         </DropBox>
         <DropBox>
-          <Label>상세 스팟</Label>
+          <Label style={{fontSize:window.innerWidth < 768 ? 11 : 15}}>상세 스팟</Label>
           <Dropdown
+           style={{fontSize:window.innerWidth < 768 ? 11 : 15}}
             placeholder="상세 스팟"
-            fluid
             multiple
             selection
             search
@@ -418,16 +418,16 @@ const LoginContainer = styled.div`
 const FilterBox = styled.div`
   gap: 10px;
   display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-direction: row;
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
 `;
 const DropBox = styled.div`
-  min-width: 250px;
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   max-width: 350px;
-  padding-top: 10px;
-  padding-bottom: 10px;
 `;
 
 const DeliveryInfoBox = styled.div`
