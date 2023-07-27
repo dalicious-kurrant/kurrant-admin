@@ -32,6 +32,7 @@ import RecommendationMakersPage from 'pages/recommendation/makers/Recommendation
 import FoodGroupPage from 'pages/shop/foodGroup/FoodGroupPage';
 import Worker from 'pages/delivery/Worker';
 import Information from 'pages/delivery/Information';
+import CustomerTastePage from 'pages/customerTaste/CustomerTastePage';
 
 export const MenuList = [
   {
@@ -285,6 +286,17 @@ export const MenuList = [
         name: '모델 학습 (진행중)',
         url: '/learning',
         component: <Learning />,
+      },
+    ],
+  },
+  {
+    name: '기타 설정 데이터',
+    url: '/others',
+    children: [
+      {
+        name: '식사 취향 테스트 데이터',
+        url: '/customerTaste',
+        component: <CustomerTastePage />,
       },
     ],
   },

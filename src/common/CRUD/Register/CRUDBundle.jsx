@@ -5,6 +5,7 @@ const CRUDBundle = ({
   handleBundleClick,
   showRegister,
   buttonCloseList = [],
+  deleteName = '삭제하기',
 }) => {
   const handleClick = e => {
     if (e.target.id === 'register' || e.target.id === 'edit') {
@@ -42,7 +43,7 @@ const CRUDBundle = ({
           {!buttonCloseList.includes('delete') && (
             <BtnWrap>
               <Button id="delete" inverted color="red" onClick={handleClick}>
-                삭제하기
+                {deleteName}
               </Button>
             </BtnWrap>
           )}
