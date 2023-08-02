@@ -82,7 +82,7 @@ const ItemInfo = () => {
 
         <ItemInfoTable
           isShow={product}
-          data={productList?.data?.items}
+          data={product}
           setData={setProduct}
           checked={checkId}
           checkItems={checkItems}
