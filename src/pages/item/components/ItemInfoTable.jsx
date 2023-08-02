@@ -154,6 +154,7 @@ const ItemInfoTable = ({
                       options={statusValue}
                       value={defaultValue}
                       onChange={e => {
+                        console.log(e.value)
                         setData({
                           ...data,
                           foodList: data.foodList.map(v => {
@@ -168,7 +169,7 @@ const ItemInfoTable = ({
                         const find = statusOption.findIndex(
                           v => v.foodId === el.foodId,
                         );
-                        console.log(find);
+                        console.log(find,"find");
                         // find에 같은 id가 있으면 새로운 value로 변경
                         if (find !== -1) {
                           statusOption[find] = {
