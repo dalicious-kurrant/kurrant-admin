@@ -371,7 +371,7 @@ const Common = () => {
             ?.map((order, i) => {
               if (order !== '') {
                 let supportPriceByDays = [];
-                if (i === 0&& morningSupportPrice?.length> 0) {
+                if (i === 0 && morningSupportPrice?.length > 0) {
                   supportPriceByDays = morningSupportPrice?.map((m, mi) => {
                     return {
                       serviceDay: week[mi],
@@ -379,7 +379,7 @@ const Common = () => {
                     };
                   });
                 }
-                if (i === 1&& lunchSupportPrice?.length> 0) {
+                if (i === 1 && lunchSupportPrice?.length > 0) {
                   supportPriceByDays = lunchSupportPrice?.map((m, mi) => {
                     return {
                       serviceDay: week[mi],
@@ -387,7 +387,7 @@ const Common = () => {
                     };
                   });
                 }
-                if (i === 2 && dinnerSupportPrice?.length> 0) {
+                if (i === 2 && dinnerSupportPrice?.length > 0) {
                   supportPriceByDays = dinnerSupportPrice?.map((m, mi) => {
                     return {
                       serviceDay: week[mi],
