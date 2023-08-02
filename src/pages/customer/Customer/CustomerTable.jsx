@@ -158,6 +158,7 @@ const CustomerTable = ({
               <Table.HeaderCell textAlign="center">
                 사용자 명(필수)
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">닉네임</Table.HeaderCell>
               <Table.HeaderCell>유저 타입</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">폰 번호</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">스팟이름</Table.HeaderCell>
@@ -238,8 +239,12 @@ const CustomerTable = ({
                     <Table.Cell>
                       <FlexPwdBox>{row.password}</FlexPwdBox>
                     </Table.Cell>
+
                     <Table.Cell>
                       <FlexBox>{row.userName}</FlexBox>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <FlexBox>{row.nickname}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.role}</FlexBox>

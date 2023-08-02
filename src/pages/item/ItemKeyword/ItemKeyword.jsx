@@ -4,6 +4,7 @@ import useGetItemKeyword from './useGetItemKeyword';
 import useItemKeywordMutation from './useItemKeywordMutation';
 
 const ItemKeywordInput = ({foodId}) => {
+  console.log(foodId);
   const [input, setInput] = useState('');
 
   const [names, setNames] = useState([]);

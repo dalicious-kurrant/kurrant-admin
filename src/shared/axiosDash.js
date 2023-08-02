@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('chain-token');
+const token = localStorage.getItem('dash-token');
 
 const baseURL =
   process.env.REACT_APP_NODE_ENV === 'prod'
@@ -9,18 +9,19 @@ const baseURL =
     ?process.env.REACT_APP_RELEASE_URL + '/' + process.env.REACT_APP_API_VERSION 
     :process.env.REACT_APP_LOCAL_URL + '/' + process.env.REACT_APP_API_VERSION;
 
-const chainInstance = axios.create({baseURL});
+const instance = axios.create({baseURL});
 
-// const setToken = config => {
-//   config.headers['Authorization'] = `Bearer ${token}`;
-//   return config;
-// };
+const setToken = config => {
+  console.log(token)
+  config.headers['Authorization'] = `Bearer ${token}`;
+  return config;
+};
 
-// if (token) {
-//   chainInstance.interceptors.request.use(setToken);
-// }
+if (token) {
+  instance.interceptors.request.use(setToken);
+}
 
-chainInstance.interceptors.response.use(
+instance.interceptors.response.use(
   response => {
     return response.data;
   },
@@ -28,13 +29,10 @@ chainInstance.interceptors.response.use(
     const {response} = error;
 
     if (response.status === 403) {
-      // localStorage.removeItem('chain-token');
-
-      // alert('로그인이 만료되어 로그아웃 됩니다.');
-      // window.location.replace('/chain/delivery');
+      // localStorage.removeItem('dash-token');
     }
     return Promise.reject(error);
   },
 );
 
-export default chainInstance;
+export default instance;

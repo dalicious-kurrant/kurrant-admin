@@ -201,7 +201,6 @@ const Common = () => {
           });
         });
       });
-      console.log(reqArray, 'ss');
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -238,9 +237,8 @@ const Common = () => {
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        //alert(`저장을 실패 했습니다.\n${error.toString()}`);
-        //console.log(reqArray);
-        //return window.location.reload();
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
       }
     }
   };
@@ -649,6 +647,7 @@ const Common = () => {
         if (sheetName === '유저 정보') {
           setExelUser(
             json.map((v, i) => {
+              console.log(v, '1');
               if (i === 0) {
                 return v;
               }
@@ -686,7 +685,6 @@ const Common = () => {
         if (sheetName === '식단 현황') {
           setExelCompletePlan(
             json.map((v, i) => {
-              console.log(typeof v.deliveryTime);
               if (i === 0) {
                 return v;
               }
@@ -789,6 +787,7 @@ const Common = () => {
           password: v.password || null,
           paymentPassword: v.paymentPassword || null,
           name: v.userName,
+          nickname: v.nickname,
           email: v.email,
           phone: v.phone || null,
           role: v.role || null,
@@ -814,10 +813,11 @@ const Common = () => {
         password: v.password || null,
         paymentPassword: v.paymentPassword || null,
         name: v.userName,
+        nickname: v.nickname,
         email: v.email,
         phone: v.phone || null,
         role: v.role || null,
-        status: v.status === 0 ? 0 : v.status,
+        status: v.status,
         groupName: v.groupName || null,
         point: v.point,
         marketingAgree: v.marketingAgree || null,
@@ -927,7 +927,8 @@ const Common = () => {
     indexStatus !== 1 &&
     pathname !== '/backlog' &&
     pathname !== '/recommendation/makers' &&
-    pathname !== '/shop/foodGroup';
+    pathname !== '/shop/foodGroup' &&
+    pathname !== '/others/customerTaste';
 
   return (
     <C.Wrapper>

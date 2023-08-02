@@ -213,6 +213,7 @@ export function userExel(user) {
     'paymentPassword',
     'password',
     'userName',
+    'nickname',
     'role',
     'phone',
     'groupName',
@@ -238,6 +239,7 @@ export function userExel(user) {
     '결제 비밀번호',
     '비밀번호',
     '사용자 명',
+    '닉네임',
     '유저 타입',
     '폰 번호',
     '그룹이름',
@@ -259,12 +261,14 @@ export function userExel(user) {
   ]);
 
   user?.map(el => {
+    console.log(user, '122');
     const reqArray = [];
     reqArray.push(el.status);
     reqArray.push(el.email);
     reqArray.push(el.paymentPassword);
     reqArray.push(el.password);
     reqArray.push(el.userName);
+    reqArray.push(el.nickname);
     reqArray.push(el.role);
     reqArray.push(el.phone);
     reqArray.push(el.groupName);

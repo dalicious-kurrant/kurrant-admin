@@ -24,6 +24,9 @@ const OrderDetail = () => {
               <Table.HeaderCell textAlign="center">
                 추가 총 결제 금액
               </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                사용 총 포인트
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -42,6 +45,9 @@ const OrderDetail = () => {
               </Table.Cell>
               <Table.Cell textAlign="right">
                 {withCommas(orderDetail?.data?.totalPrice) || 0}원
+              </Table.Cell>
+              <Table.Cell textAlign="right">
+                {withCommas(orderDetail?.data?.point) || 0}원
               </Table.Cell>
             </TableRow>
           </Table.Body>
@@ -73,7 +79,7 @@ const OrderDetail = () => {
           <Table.Body>
             {orderDetail?.data.orderItemDailyFoodGroups.map((el, index) => {
               return el.orderItemDailyFoods.map((v, idx) => {
-                // console.log(v);
+                console.log(orderDetail);
                 return (
                   <TableRow key={idx}>
                     {idx === 0 && (
@@ -149,6 +155,7 @@ const OrderDetail = () => {
                         </div>
                       </Table.Cell>
                     )}
+
                     {idx === 0 && (
                       <Table.Cell
                         rowSpan={el.orderItemDailyFoods.length}

@@ -17,12 +17,12 @@ const PlanExelTable = () => {
   useEffect(() => {
     if (exelPlan) setKey(Object.keys(exelPlan[0]));
   }, [exelPlan]);
-  console.log('sksks');
+
   return (
     <TableWrapper>
       <Table celled>
         {exelPlan.map((p, i) => {
-          console.log(p);
+          // console.log(p);
           const HeaderData = Object.values(p);
           if (i === 0) {
             return (

@@ -30,6 +30,9 @@ import Main from 'pages/apply/spot/Main';
 import SpotInformation from 'pages/customer/corporation/SpotInformation';
 import RecommendationMakersPage from 'pages/recommendation/makers/RecommendationMakersPage';
 import FoodGroupPage from 'pages/shop/foodGroup/FoodGroupPage';
+import Worker from 'pages/delivery/Worker';
+import Information from 'pages/delivery/Information';
+import CustomerTastePage from 'pages/customerTaste/CustomerTastePage';
 
 export const MenuList = [
   {
@@ -50,6 +53,22 @@ export const MenuList = [
         name: '주문 추가',
         url: '/additionalOrder',
         component: <AdditionalOrder />,
+      },
+    ],
+  },
+  {
+    name: '배송',
+    url: '/delivery',
+    children: [
+      {
+        name: '배송기사 정보',
+        url: '/worker',
+        component: <Worker />,
+      },
+      {
+        name: '배송기사 배송정보',
+        url: '/information',
+        component: <Information />,
       },
     ],
   },
@@ -157,7 +176,7 @@ export const MenuList = [
         url: '/makers',
       },
       {
-        name: '스팟 신청 (진행중)',
+        name: '스팟 신청',
         url: '/spot',
         component: <Main />,
       },
@@ -249,7 +268,7 @@ export const MenuList = [
     url: '/recommendation',
     children: [
       {
-        name: '고객사별 음식 추천 데이터 생성',
+        name: '고객사별 음식 추천',
         url: '/makers',
         component: <RecommendationMakersPage />,
       },
@@ -267,6 +286,17 @@ export const MenuList = [
         name: '모델 학습 (진행중)',
         url: '/learning',
         component: <Learning />,
+      },
+    ],
+  },
+  {
+    name: '기타 설정 데이터',
+    url: '/others',
+    children: [
+      {
+        name: '식사 취향 테스트 데이터',
+        url: '/customerTaste',
+        component: <CustomerTastePage />,
       },
     ],
   },
