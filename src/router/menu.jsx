@@ -30,6 +30,10 @@ import Main from 'pages/apply/spot/Main';
 import SpotInformation from 'pages/customer/corporation/SpotInformation';
 import RecommendationMakersPage from 'pages/recommendation/makers/RecommendationMakersPage';
 import FoodGroupPage from 'pages/shop/foodGroup/FoodGroupPage';
+import Announcement from 'pages/announcement/Announcement';
+import Notice from 'pages/makers/MakersNotice';
+import MakersNotice from 'pages/makers/MakersNotice';
+import CompanyNotice from 'pages/customer/notice/CompanyNotice';
 
 export const MenuList = [
   {
@@ -84,6 +88,11 @@ export const MenuList = [
         url: '/apartment',
         component: <Apartment />,
       },
+      {
+        name: '고객사 공지사항 (진행중)',
+        url: '/notice',
+        component: <CompanyNotice />,
+      },
     ],
   },
   {
@@ -111,6 +120,11 @@ export const MenuList = [
         name: '메이커스 일정 요청',
         url: '/plans',
         component: <Plans />,
+      },
+      {
+        name: '메이커스 공지사항 (진행중)',
+        url: '/notice',
+        component: <MakersNotice />,
       },
     ],
   },
@@ -187,6 +201,7 @@ export const MenuList = [
       {
         name: '공지사항 (진행중)',
         url: '/notice',
+        component: <Announcement />,
       },
       {
         name: '푸쉬알림',

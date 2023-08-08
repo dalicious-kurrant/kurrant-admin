@@ -120,3 +120,25 @@ export const MySpotCountyAdminAtom = atomWithReset([]);
 export const MySpotVillageAdminAtom = atomWithReset([]);
 export const MySpotZipcodeAdminAtom = atomWithReset([]);
 export const MySpotStatusAdminAtom = atomWithReset([]);
+
+// 공지사항
+
+export const noticeTypeFilterAtom = atomWithReset(null);
+export const noticeStatusFilterAtom = atomWithReset(null);
+export const noticeSpotFilterAtom = atomWithReset([]);
+export const noticePushFilterAtom = atomWithReset(null);
+export const noticePageAtom = atomWithReset(1);
+
+// 메이커스 공지사항
+export const noticeMakersTypeFilterAtom = atomWithReset(null);
+export const noticeMakersStatusFilterAtom = atomWithReset(null);
+export const noticeMakersFilterAtom = atomWithReset(null);
+export const noticeMakersPushFilterAtom = atomWithReset(null);
+export const noticeMakersPageAtom = atomWithReset(1);
+
+// 고객사 공지사항
+export const noticeCompanyTypeFilterAtom = atomWithReset(null);
+export const noticeCompanyStatusFilterAtom = atomWithReset(null);
+export const noticeCompanySpotFilterAtom = atomWithReset([]);
+export const noticeCompanyPushFilterAtom = atomWithReset(null);
+export const noticeCompanyPageAtom = atomWithReset(1);

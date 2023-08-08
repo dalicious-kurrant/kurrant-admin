@@ -17,6 +17,10 @@ import ClientCalcDetail from 'pages/adjustment/components/ClientCalcDetail';
 import BackLog from 'pages/backlog/Backlog';
 import PrivateRoute from './PrivateRoute';
 import ChainDelivery from 'pages/ChainDelivery';
+
+import AppNoticeWrite from 'pages/announcement/components/AppNoticeWrite';
+import MakersNoticeWrite from 'pages/makers/components/notice/MakersNoticeWirte';
+import CompanyNoticeWrite from 'pages/customer/notice/components/CompanyNoticeWirte';
 const MainRouter = () => {
   const token = localStorage.getItem('token');
   return (
@@ -27,7 +31,7 @@ const MainRouter = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/dash" element={<Delivery />} />
         <Route path="/chain/login" element={<ChainLoginPage />} />
-        <Route path="/chain" element={<PrivateRoute />} >
+        <Route path="/chain" element={<PrivateRoute />}>
           <Route path="/chain/delivery" element={<ChainDelivery />} />
         </Route>
         <Route path="/download" element={<Download />} />
@@ -35,9 +39,18 @@ const MainRouter = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/main" element={<Home />} />
             <Route path="/test" element={<Test />} />
-            <Route path="/shop/info/:id" element={ <ItemInfoDetail />} />
-            <Route path="/backlog" element={ <BackLog />} />
+            <Route path="/shop/info/:id" element={<ItemInfoDetail />} />
+            <Route path="/backlog" element={<BackLog />} />
             <Route path="/order/info/detail/:code" element={<OrderDetail />} />
+            <Route path="/board/notice/write" element={<AppNoticeWrite />} />
+            <Route
+              path="/makers/notice/write"
+              element={<MakersNoticeWrite />}
+            />
+            <Route
+              path="/customer/notice/write"
+              element={<CompanyNoticeWrite />}
+            />
             <Route
               path="calc/makersCalc/detail"
               element={<MakersCalcDetail />}
@@ -47,7 +60,7 @@ const MainRouter = () => {
               element={<ClientCalcDetail />}
             />
             {MenuList.map(v => (
-              <Route key={v.url} path={v.url}>              
+              <Route key={v.url} path={v.url}>
                 {v.children?.map(b => (
                   <Route
                     key={b.url}

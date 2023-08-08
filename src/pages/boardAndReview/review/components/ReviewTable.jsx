@@ -37,25 +37,33 @@ const ReviewTable = ({testData}) => {
         <Table celled selectable>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>서비스 날짜</Table.HeaderCell>
-              <Table.HeaderCell>상품번호</Table.HeaderCell>
-              <Table.HeaderCell>상품명</Table.HeaderCell>
-              <Table.HeaderCell>점수</Table.HeaderCell>
-              <Table.HeaderCell>작성자</Table.HeaderCell>
-              <Table.HeaderCell>작성날짜</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                서비스 날짜
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">상품번호</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">상품명</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">점수</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">회사명</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">작성자</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">작성날짜</Table.HeaderCell>
               <Table.HeaderCell width={10} textAlign="center">
                 내용
               </Table.HeaderCell>
-              <Table.HeaderCell>사장님 답글 여부</Table.HeaderCell>
-              <Table.HeaderCell>운영자 답글 여부</Table.HeaderCell>
-              <Table.HeaderCell>신고</Table.HeaderCell>
-              <Table.HeaderCell>삭제여부</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                사장님 답글 여부
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                운영자 답글 여부
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">신고</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">삭제여부</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
             {testData?.length > 0 &&
               testData?.map((row, i) => {
+                console.log(row);
                 return (
                   <Table.Row
                     style={{
@@ -86,6 +94,9 @@ const ReviewTable = ({testData}) => {
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.satisfaction}</FlexBox>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <FlexBox>{row.group}</FlexBox>
                     </Table.Cell>
                     <Table.Cell>
                       <FlexBox>{row.writer}</FlexBox>
