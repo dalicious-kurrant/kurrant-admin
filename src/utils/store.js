@@ -142,3 +142,5 @@ export const noticeCompanyStatusFilterAtom = atomWithReset(null);
 export const noticeCompanySpotFilterAtom = atomWithReset([]);
 export const noticeCompanyPushFilterAtom = atomWithReset(null);
 export const noticeCompanyPageAtom = atomWithReset(1);
+
+export const userPageAtom = atomWithReset(0);

@@ -4,6 +4,7 @@ import {useEffect} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
 import {shiftUserType, sliceStringDataByKey} from './CustomerLogics';
+import {userPageAtom} from 'utils/store';
 
 const useCustomerQuery = (
   uniqueQueryKey,
@@ -20,6 +21,7 @@ const useCustomerQuery = (
   // enable : useQuery를 껏다켰다 할 수 있음
 
   const [, setData] = useAtom(atom);
+  const [, setTotalPage] = useAtom(userPageAtom);
   const queryClient = useQueryClient();
   const {
     data,
@@ -32,7 +34,7 @@ const useCustomerQuery = (
     token
       ? async ({queryKey}) => {
           const response = await instance.get(`${url}`);
-
+          setTotalPage(response.data.total);
           return response.data;
         }
       : async ({queryKey}) => {
@@ -88,7 +90,7 @@ const useCustomerQuery = (
   useEffect(() => {
     if (data) {
       // const dataYo = sliceStringDataByKey(shiftUserType(data), 'password', 5);
-      const dataYo = shiftUserType(data);
+      const dataYo = shiftUserType(data?.items);
 
       if (dataYo) {
         setData(dataYo);
@@ -96,7 +98,7 @@ const useCustomerQuery = (
         setData([]);
       }
     }
-  }, [data, setData]);
+  }, [data, data?.itmes, setData]);
 
   useEffect(() => {
     userListRefetch();
