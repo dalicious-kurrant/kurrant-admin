@@ -18,9 +18,11 @@ import RadioGroup from './components/Radio/RadioGroup';
 import Radio from './components/Radio/Radio';
 import KeyDetector from 'common/KeyDetector/KeyDetector';
 
+const limitInit = 50;
+
 const ReviewPage = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(50);
+  const [limit, setLimit] = useState(limitInit);
 
   // 필터 값들 모으기
 
@@ -52,7 +54,7 @@ const ReviewPage = () => {
     setIsReport(event.target.value);
   };
 
-  const [url, setUrl] = useState('reviews/all?limit=50&page=1');
+  const [url, setUrl] = useState(`reviews/all?limit=${limitInit}&page=1`);
 
   useEffect(() => {
     setUrl(
@@ -97,9 +99,9 @@ const ReviewPage = () => {
     url,
   );
 
-  // useEffect(() => {
-  //   reviewQueryRefetch();
-  // }, [url]);
+  useEffect(() => {
+    reviewQueryRefetch();
+  }, [url]);
 
   // 메이커스 드랍박스 채우기
 
