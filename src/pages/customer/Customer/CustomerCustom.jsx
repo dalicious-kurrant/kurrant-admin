@@ -1,39 +1,20 @@
 import useMutate from 'common/CRUD/useMutate';
-import {
-  TableCheckboxStatusAtom,
-  TableDeleteListAtom,
-  userCheckAtom,
-} from 'common/Table/store';
+import {TableCheckboxStatusAtom, userCheckAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
-
 import Register from 'common/CRUD/Register/Register';
-import {clickButtonBundle} from '../Logics/Logics';
-// import {CustomerFieldsData, CustomerFieldsToOpen} from './CustomerInfoData';
 import {PageWrapper, TableWrapper} from '../../../style/common.style';
-
 import {CustomerDataAtom} from './store';
-
-import {useMutation, useQueryClient} from 'react-query';
-
-import instance from 'shared/axios';
-
 import {
   exelUserAtom,
   groupIdAtom,
-  uerIdAtom,
   userIdAtom,
+  userPageAtom,
   userStateAtom,
 } from 'utils/store';
-import {Button, Table} from 'semantic-ui-react';
+import {Button, Pagination, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
-import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
-
 import useCustomerQuery from './useCustomerQuery';
-
-import {sendFinal} from './CustomerLogics';
-
-// import useCustomerData from './useCustomerData';
 import {
   CustomerFieldsDataForRegister,
   CustomerFieldsToOpen,
@@ -54,7 +35,8 @@ const CustomerCustom = () => {
   const [userOption] = useAtom(userStateAtom);
   const [nameOption] = useAtom(userIdAtom);
   const [spotOption] = useAtom(groupIdAtom);
-
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useAtom(userPageAtom);
   const userStatus = userOption && `&userStatus=${userOption}`;
   const groupId = spotOption && `&group=${spotOption}`;
   const userId = nameOption && `&userId=${nameOption}`;
@@ -71,13 +53,21 @@ const CustomerCustom = () => {
   const {} = useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
-    `users/all?${params.userStatus}${params.groupId}${params.userId}`,
+    `users/all?${params.userStatus}${params.groupId}${params.userId}&page=${page}&limit=100`,
     token,
   );
 
   const handleClose = () => {
     setShowRegister(false);
   };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   useEffect(() => {
     if (exelUser) setKey(Object.keys(exelUser[0]));
   }, [exelUser]);
@@ -87,8 +77,6 @@ const CustomerCustom = () => {
       setCheckboxStatus({});
     };
   }, []);
-
-  useEffect(() => {}, [userOption, nameOption, spotOption]);
 
   return (
     <>
@@ -224,16 +212,25 @@ const CustomerCustom = () => {
           )}
 
           <TableWrapper>
-            {
-              <CostomerTable
-                testData={customerData}
-                setTestData={setCustomerData}
-                userCheck={userCheck}
-                setUserCheck={setUserCheck}
-                allChk={allChk}
-                setAllChk={setAllChk}
+            <CostomerTable
+              testData={customerData}
+              setTestData={setCustomerData}
+              userCheck={userCheck}
+              setUserCheck={setUserCheck}
+              allChk={allChk}
+              setAllChk={setAllChk}
+            />
+            <PaginationWrap>
+              <Pagination
+                defaultActivePage={page}
+                totalPages={totalPage}
+                boundaryRange={1}
+                onPageChange={(e, data) => {
+                  setPage(data.activePage);
+                }}
+                onClick={scrollToTop}
               />
-            }
+            </PaginationWrap>
           </TableWrapper>
         </PageWrapper>
       )}
@@ -251,4 +248,10 @@ const ButtonBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+`;
+
+const PaginationWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
 `;
