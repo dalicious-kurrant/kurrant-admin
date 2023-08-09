@@ -88,7 +88,6 @@ const MySpotZone = () => {
     await renewSpot(renewData?.data);
   };
 
-  useEffect(() => {}, []);
   useEffect(() => {
     if (mySpotData) {
       setTotalPage(mySpotData?.data?.total);

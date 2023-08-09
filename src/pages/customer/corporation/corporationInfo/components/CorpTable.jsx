@@ -113,11 +113,17 @@ const CorpTable = ({
   }, [clickId, refetchDetail]);
   useEffect(() => {
     if (clickId) {
+      const data = defaultPrepaid.map((v)=>{
+        const match = corpDetail?.data?.prepaidCategoryList && corpDetail?.data?.prepaidCategoryList?.length > 0 &&corpDetail?.data?.prepaidCategoryList.find((s)=> s.code === v.code);
+        if(match){
+          return match
+        }
+        return v
+      })
+      console.log(data)
       setClickData({
         ...corpDetail?.data,
-        prepaidCategoryList: corpDetail?.data.prepaidCategoryList
-          ? corpDetail?.data.prepaidCategoryList
-          : defaultPrepaid,
+        prepaidCategoryList: data
       });
       setShowOpenModal(true);
       setClickId();
