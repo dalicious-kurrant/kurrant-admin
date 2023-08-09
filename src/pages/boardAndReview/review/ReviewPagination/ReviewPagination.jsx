@@ -15,6 +15,9 @@ const ReviewPagination = ({
   totalPage, // lastPage 제일 마지막 페이지
   selectOptionArray,
 }) => {
+  const isLast =
+    Math.floor((page - 1) / 10) === Math.floor((totalPage - 1) / 10);
+
   const handleNumberButtonClick = e => {
     e.preventDefault();
     const id = e.target.id;
@@ -56,6 +59,7 @@ const ReviewPagination = ({
       <ButtonWrap>
         <Button
           id="first"
+          isFirst={(page - 1) / 10 < 1}
           onClick={e => {
             handleButtonClick(e);
           }}>
@@ -63,6 +67,7 @@ const ReviewPagination = ({
         </Button>
         <Button
           id="move-back"
+          isFirst={(page - 1) / 10 < 1}
           onClick={e => {
             handleButtonClick(e);
           }}>
@@ -87,6 +92,7 @@ const ReviewPagination = ({
 
         <Button
           id="move-forward"
+          isLast={isLast}
           onClick={e => {
             handleButtonClick(e);
           }}>
@@ -95,6 +101,7 @@ const ReviewPagination = ({
 
         <Button
           id="last"
+          isLast={isLast}
           onClick={e => {
             handleButtonClick(e);
           }}>
@@ -132,6 +139,7 @@ const ButtonWrap = styled.div`
   }
 `;
 const Button = styled.button`
+  opacity: ${({isLast, isFirst}) => (isLast || isFirst ? 0.25 : 1)};
   font-size: 24px;
 `;
 
