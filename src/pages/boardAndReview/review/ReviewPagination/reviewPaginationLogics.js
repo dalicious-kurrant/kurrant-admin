@@ -1,12 +1,14 @@
 export const makePaginationPagesArray = (page, totalPage) => {
   if (page < 1) {
     console.log(`페이지값이 1보다 작아요 . ${page}`);
+    return;
   }
 
   if (page > totalPage) {
     console.log(
       '현재페이지가 총 페이지수를 넘어버리고 있습니다 값을 확인해 주세요',
     );
+    return;
   }
 
   // 10으로 나눌떄 몫을 받아서 만들면되겠다
@@ -20,30 +22,34 @@ export const makePaginationPagesArray = (page, totalPage) => {
   // 10 -> 9 -> 0
   // 1 -> 0 -> 0
 
-  // 나머지
-  // 10일때 10으로 카운트 되어야 함
-  // ones가 10으로 카운트
-  // page가 10의 배수일떄 + 1?
-
-  // 나머지는 0부터 9
-
-  const ones = page % 10;
-
   // 마지막이 121 이면  Math.floor(그수/10) 가 같을 때
   // Math.floor((page-1)/10) === Math.floor((totalPage-1)/10)
   let yo = [];
 
+  if (totalPage === 10) return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   if (Math.floor((page - 1) / 10) !== Math.floor((totalPage - 1) / 10)) {
-    // 112 랑 121
+    // 예) (112, 121)
 
     for (let i = 1; i < 11; i++) {
       yo.push(tens * 10 + i);
     }
   } else {
-    // 121 랑 124
+    // 예)  (121, 124), (121, 130), (2, 10)
 
-    for (let i = 1; i <= totalPage % 10; i++) {
-      yo.push(tens * 10 + i);
+    if (totalPage % 10 === 0) {
+      // (121, 130), (2,10)일때랑
+      // totalPage의 1의 자리가 0일때
+      for (let i = 1; i <= (totalPage - 1) % 10; i++) {
+        yo.push(tens * 10 + i);
+      }
+      yo.push(totalPage);
+    } else {
+      // (121, 131)이랑 구분
+      // totalPage의 1의 자리가 0이 아닐때
+      for (let i = 1; i <= totalPage % 10; i++) {
+        yo.push(tens * 10 + i);
+      }
     }
   }
 
