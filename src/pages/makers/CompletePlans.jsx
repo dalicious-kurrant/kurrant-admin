@@ -1,6 +1,6 @@
 import useModal from '../../hooks/useModal';
 import React, {useEffect, useState} from 'react';
-import {Dropdown, Label, Pagination} from 'semantic-ui-react';
+import {Button, Dropdown, Label, Pagination} from 'semantic-ui-react';
 import {PageWrapper} from '../../style/common.style';
 import {completePlanAtom, exelCompletePlanAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
@@ -13,6 +13,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import SelectDatePicker from './components/SelectDatePicker';
 import {useGetCompleteCalendar, useGetFilter} from 'hooks/useCalendars';
 import CustomPlanTable from './components/CustomPlanTable';
+import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
+import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
 
 // 메이커스 정보 페이지
 const CompletePlans = () => {
@@ -40,6 +42,7 @@ const CompletePlans = () => {
     data: calendarData,
     isSuccess,
     refetch: calendarRefetch,
+    isFetching
   } = useGetCompleteCalendar(
     formattedWeekDate(accessStartDate),
     formattedWeekDate(accessEndDate),
@@ -85,16 +88,16 @@ const CompletePlans = () => {
       );
     }
   }, [exelPlan, plan]);
-  useEffect(() => {
-    calendarRefetch();
-  }, [
-    page,
-    selectMakers,
-    accessStartDate,
-    accessEndDate,
-    selectClient,
-    calendarRefetch,
-  ]);
+  // useEffect(() => {
+  //   calendarRefetch();
+  // }, [
+  //   page,
+  //   selectMakers,
+  //   accessStartDate,
+  //   accessEndDate,
+  //   selectClient,
+  //   calendarRefetch,
+  // ]);
   return (
     <PageWrapper>
       <Wrapper>
@@ -102,6 +105,10 @@ const CompletePlans = () => {
           <DeadLineWrapper>
             <Label color="blue">날짜선택</Label>
             <RecoDatePickerContainer>
+             <DateRangePicker  endDate={formattedWeekDateZ(accessEndDate)} setEndDate={setAccessEndDate} startDate={formattedWeekDateZ(accessStartDate)} setStartDate={setAccessStartDate}/>
+             <Button color='green' onClick={()=>calendarRefetch()}>조회</Button>
+             </RecoDatePickerContainer>
+            {/* <RecoDatePickerContainer>
               <RecoDatePickerBox>
                 <DatePicker
                   selected={new Date(formattedWeekDateZ(accessStartDate))}
@@ -123,7 +130,7 @@ const CompletePlans = () => {
                   customInput={<SelectDatePicker />}
                 />
               </RecoDatePickerBox>
-            </RecoDatePickerContainer>
+            </RecoDatePickerContainer> */}
           </DeadLineWrapper>
         )}
       </Wrapper>
@@ -236,7 +243,9 @@ const CompletePlans = () => {
           )}
         </FilterContainer>
       )}
-      {exelPlan && <CustomPlanExelTable />}
+      {isFetching ? <ActivityIndicator /> :
+      <div>
+        {exelPlan && <CustomPlanExelTable />}
       {plan && (
         <>
           <CustomPlanTable
@@ -246,6 +255,9 @@ const CompletePlans = () => {
           />
         </>
       )}
+        </div>}
+      
+      
     </PageWrapper>
   );
 };
