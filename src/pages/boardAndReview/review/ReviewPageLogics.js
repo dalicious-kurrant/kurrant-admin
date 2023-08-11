@@ -1,4 +1,4 @@
-import {formattedDateForRecommendation} from 'utils/dateFormatter';
+import {formattedDateForRecommendation, formattedDateZ} from 'utils/dateFormatter';
 
 export const fillMakersDropboxObject = makersListFromServer => {
   // value와 label형태로 만들기
@@ -56,11 +56,11 @@ export const buildCustomUrl = (
   // 2. date류 2
 
   if (startDate) {
-    basicUrl.push(`&startDate=${formattedDateForRecommendation(startDate)}`);
+    basicUrl.push(`&startDate=${formattedDateZ(startDate,'-')}`);
   }
 
   if (endDate) {
-    basicUrl.push(`&endDate=${formattedDateForRecommendation(endDate)}`);
+    basicUrl.push(`&endDate=${formattedDateZ(endDate,'-')}`);
   }
 
   // 3. boolean애들 3

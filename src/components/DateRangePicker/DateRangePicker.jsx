@@ -8,8 +8,14 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
   const handleDateChange = (_event, {name, value}) => {
     if (name === 'startDate') {
       setStartDate(value);
+      if(endDate === null){
+        setEndDate(value);
+      }
     } else if (name === 'endDate') {
       setEndDate(value);
+      if(startDate === null){
+        setStartDate(value);
+      }
     }
   };
 
@@ -19,7 +25,7 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
         style={{fontSize:window.innerWidth < 768 ? 12 : 15}}
         name="startDate"
         placeholder="시작일"
-        value={formattedDateZ(startDate,"-")}
+        value={startDate ? formattedDateZ(startDate,"-") : startDate}
         iconPosition="left"
         onChange={handleDateChange}
         closable
@@ -32,7 +38,7 @@ const DateRangePicker = ({startDate, endDate, setStartDate, setEndDate}) => {
         style={{fontSize:window.innerWidth < 768 ? 12 : 15}}
         name="endDate"
         placeholder="종료일"
-        value={formattedDateZ(endDate,"-")}
+        value={endDate ? formattedDateZ(endDate,"-"): null}
         iconPosition="left"
         onChange={handleDateChange}
         closable
