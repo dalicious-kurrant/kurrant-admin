@@ -122,7 +122,7 @@ const Order = () => {
     useGetGroupList(defaultGroupType);
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
-  const {mutateAsync: cancelOrder} = useCancelOrder();
+  const {mutateAsync: cancelOrder, isLoading:cancleLoading} = useCancelOrder();
   const {mutateAsync: statusChange} = useEditOrderStatus();
 
   const groupTypeArr = [
@@ -318,7 +318,6 @@ const Order = () => {
     }
   };
   const handleColumnCheck = (id, checked) => {
-    console.log(checked);
     if (checked) {
       setCheckColumnItems([...checkColumnItems, id]);
     } else {
@@ -327,9 +326,18 @@ const Order = () => {
   };
 
   const cancelButton = async () => {
-    await cancelOrder({idList: checkItems});
-    closeModal();
-    queryClient.invalidateQueries('orderList');
+    console.log(cancleLoading)
+    if(cancleLoading) return;
+     try {
+      
+      await cancelOrder({idList: checkItems});
+      closeModal();
+      queryClient.invalidateQueries('orderList');
+      setCheckItems([]);
+     } catch (error) {
+      alert("주문 취소가 실패 했습니다.")
+     }
+   
   };
 
   const excelButton = async () => {
@@ -934,6 +942,7 @@ const Order = () => {
         open={modalOpen}
         message={'선택한 주문을 취소하시겠습니까?'}
         setAlertModalOpen={closeModal}
+        actionDisabled={cancleLoading}
         action={cancelButton}
         actionMessage={'예'}
         cancelMessage={'아니오'}
