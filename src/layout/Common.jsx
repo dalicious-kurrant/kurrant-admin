@@ -928,6 +928,12 @@ const Common = () => {
     pathname !== '/backlog' &&
     pathname !== '/recommendation/makers' &&
     pathname !== '/shop/foodGroup' &&
+    pathname !== '/board/notice' &&
+    pathname !== '/board/notice/write' &&
+    pathname !== '/makers/notice' &&
+    pathname !== '/makers/notice/write' &&
+    pathname !== '/customer/notice' &&
+    pathname !== '/customer/notice/write' &&
     pathname !== '/others/customerTaste';
 
   return (

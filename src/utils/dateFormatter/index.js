@@ -80,8 +80,9 @@ export function formattedDate(data, delimiter = '.') {
   return [year, month, day].join(delimiter);
 }
 export function formattedDateZ(data, delimiter = '.') {
-  const dateTime = transTimeType(data);
-  const year = dateTime.getFullYear();
+  const dateTime = transDateType(data);
+  console.log(dateTime)
+  const year = dateTime.getUTCFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
   if (delimiter === '년월일') {
