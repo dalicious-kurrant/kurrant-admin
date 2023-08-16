@@ -1,24 +1,22 @@
-import {Editor} from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
-import {useEffect, useRef} from 'react';
-import {Button} from 'semantic-ui-react';
-import '@toast-ui/editor/dist/i18n/ko-kr';
-// Toast ColorSyntax 플러그인
-//import 'tui-color-picker/dist/tui-color-picker.css';
-import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-
+import {useEffect, useRef, useState} from 'react';
+import {Editor} from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import {EditorState, convertToRaw, ContentState} from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
 import {noticeApis} from 'api/notice';
+import styled from 'styled-components';
+import {Button} from 'semantic-ui-react';
+import {useNavigate} from 'react-router-dom';
+import draftToHtml from 'draftjs-to-html';
 import {FormProvider, useForm} from 'react-hook-form';
 import Input from 'components/input/Input';
-import styled from 'styled-components';
-
-import {useNavigate} from 'react-router-dom';
 
 const EditorBox = ({editData, addButton = () => {}}) => {
   const editorRef = useRef();
-
   const navigate = useNavigate();
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
   const goBack = () => {
     navigate(-1);
   };
@@ -30,7 +28,7 @@ const EditorBox = ({editData, addButton = () => {}}) => {
 
   const title = watch('title');
 
-  const onUploadImage = async (blob, callback) => {
+  const uploadImageCallBack = async blob => {
     const formData = new FormData();
     formData.append('file', blob);
 
@@ -39,14 +37,31 @@ const EditorBox = ({editData, addButton = () => {}}) => {
     };
 
     const url = await noticeApis.uploadImage(formData, config);
+    return {data: {link: url.data.location}};
+  };
 
-    callback(url.data.location, blob.name);
+  const onEditorStateChange = newEditorState => {
+    setEditorState(newEditorState);
+  };
+
+  // 작성 내용 보기
+  const getContent = () => {
+    console.log(title);
+    console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   };
 
   useEffect(() => {
     if (editData) {
-      const htmlString = editData.content;
-      editorRef.current?.getInstance().setHTML(htmlString);
+      const blocksFromHtml = htmlToDraft(editData.content);
+      const {contentBlocks, entityMap} = blocksFromHtml;
+
+      const contentState = ContentState.createFromBlockArray(
+        contentBlocks,
+        entityMap,
+      );
+
+      const editorState = EditorState.createWithContent(contentState);
+      setEditorState(editorState);
       setValue('title', editData.title);
     }
   }, [editData, setValue]);
@@ -59,22 +74,34 @@ const EditorBox = ({editData, addButton = () => {}}) => {
       <EditorWrap>
         <Editor
           ref={editorRef}
-          previewStyle="vertical"
-          height="600px"
-          plugins={[colorSyntax]}
-          initialEditType="wysiwyg"
-          useCommandShortcut={false}
-          language="ko-KR"
-          hooks={{
-            addImageBlobHook: onUploadImage,
+          editorStyle={{
+            height: 600,
+            border: '0.5px solid rgba(0,0,0,.25)',
+            borderRadius: 4,
           }}
+          localization={{
+            locale: 'ko',
+          }}
+          editorState={editorState}
+          toolbarClassName="toolbarClassName"
+          wrapperClassName="wrapperClassName"
+          editorClassName="editorClassName"
+          toolbar={{
+            image: {
+              uploadCallback: uploadImageCallBack,
+            },
+          }}
+          onEditorStateChange={onEditorStateChange}
         />
       </EditorWrap>
       <ButtonWrap>
         <Button
           content={editData ? '수정' : '작성'}
           onClick={() =>
-            addButton(title, editorRef.current?.getInstance().getHTML())
+            addButton(
+              title,
+              draftToHtml(convertToRaw(editorState.getCurrentContent())),
+            )
           }
           color="green"
         />
@@ -85,13 +112,11 @@ const EditorBox = ({editData, addButton = () => {}}) => {
 };
 
 export default EditorBox;
-
 const ButtonWrap = styled.div`
   justify-content: center;
   display: flex;
   margin-top: 48px;
 `;
-
 const EditorWrap = styled.div`
   z-index: 1;
   position: relative;
