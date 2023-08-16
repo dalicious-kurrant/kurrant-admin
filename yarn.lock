@@ -9767,7 +9767,7 @@
   dependencies:
     "tslib" "^1.8.1"
 
-"tui-color-picker@^2.2.6", "tui-color-picker@^2.2.8":
+"tui-color-picker@^2.2.6":
   "integrity" "sha512-q5sE9NQ5NR9lYpilYjcI7Sdv0KCogo+W8fZY+AYTj/HYg+9fscYy3UuJ6UQiV1bF+ARCLwFRWC8UcOt9kuUctQ=="
   "resolved" "https://registry.npmjs.org/tui-color-picker/-/tui-color-picker-2.2.8.tgz"
   "version" "2.2.8"

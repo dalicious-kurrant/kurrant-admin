@@ -3,6 +3,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import {useEffect, useRef} from 'react';
 import {Button} from 'semantic-ui-react';
 import '@toast-ui/editor/dist/i18n/ko-kr';
+// Toast ColorSyntax 플러그인
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
