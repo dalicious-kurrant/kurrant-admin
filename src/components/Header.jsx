@@ -163,49 +163,55 @@ const Header = ({openMenu, setOpenMenu}) => {
             <MenuLogout>
               <MenuBox inverted>
                 <Menu.Item active onClick={() => navi('/main')} icon="home" />
-                {MenuList.map((v, i) => (
-                  <DropDownMenu
+                {MenuList.map((v, i) => {
+                  return  <DropDownMenu
+                  style={{
+                    backgroundColor: '#1b1c1d',
+                    color: '#fff',
+                    fontSize: 15,
+                    fontWeight: 700,
+                  }}
+                  key={`${v.name}`}
+                  item
+                  text={v.name?.includes('(진행중)')
+                  ? v.name?.replace('(진행중)', '')
+                  : v.name}
+                  icon={null}
+                  isready={v.name?.includes('(진행중)').toString()}
+                  openOnFocus={false}
+                  open={openMenu}
+                  onClick={e => {
+                    e.preventDefault();
+                    setOpenMenu(!openMenu);
+                  }}>
+                  <Dropdown.Menu
                     style={{
+                      borderLeft: '1px solid white',
+                      boxShadow: 'none',
+                      fontSize: 12,
+                      maxWidth: 150,
+                      whiteSpace: 'pre-wrap',
                       backgroundColor: '#1b1c1d',
                       color: '#fff',
-                      fontSize: 15,
-                      fontWeight: 700,
-                    }}
-                    key={`${v.name}`}
-                    item
-                    text={v.name}
-                    icon={null}
-                    name={i}
-                    openOnFocus={false}
-                    open={openMenu}
-                    onClick={e => {
-                      e.preventDefault();
-                      setOpenMenu(!openMenu);
                     }}>
-                    <Dropdown.Menu
-                      style={{
-                        borderLeft: '1px solid white',
-                        boxShadow: 'none',
-                        fontSize: 12,
-                        maxWidth: 150,
-                        whiteSpace: 'pre-wrap',
-                        backgroundColor: '#1b1c1d',
-                        color: '#fff',
-                      }}>
-                      {v.children?.map(b => (
-                        <Dropdown.Item
-                          key={`${b.name}`}
-                          onClick={() => {
-                            resetJotai();
-                            setOpenMenu(!openMenu);
-                            navi(`${v.url}${b.url}`);
-                          }}>
-                          <FontBox>{b.name}</FontBox>
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </DropDownMenu>
-                ))}
+                    {v.children?.map(b => (
+                      <Dropdown.Item
+                        key={`${b.name}`}
+                        onClick={() => {
+                          resetJotai();
+                          setOpenMenu(!openMenu);
+                          navi(`${v.url}${b.url}`);
+                        }}>
+                        <FontBox isReady={b.name?.includes('(진행중)')}>
+                          {b.name?.includes('(진행중)')
+                            ? b.name?.replace('(진행중)', '')
+                            : b.name}
+                        </FontBox>
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </DropDownMenu>
+                  })}
               </MenuBox>
               <Log onClick={() => navi('/backlog')}>로그</Log>
               <Logout onClick={logOutButton}>로그아웃</Logout>
@@ -237,15 +243,14 @@ const Log = styled.div`
   color: #fff;
 `;
 const FontBox = styled.div`
-  color: #ccc;
+  color: ${({isReady}) => (isReady ? '#ff3333' : '#ccc')};
   white-space: nowrap;
 `;
 const DropDownMenu = styled(Dropdown)`
   .text {
-    /* color: ${({name}) => (name === 4 || name === 5 ? 'red' : 'white')}; */
-    color: ${({name}) => (name === 4 ? 'red' : 'white')};
+    color: ${({isready}) => (isready==="true" ? '#ff3333' : '#ccc')};
   }
-  min-width: 160px;
+  min-width: 130px;
   white-space: nowrap;
 
   background-color: #1b1c1d;

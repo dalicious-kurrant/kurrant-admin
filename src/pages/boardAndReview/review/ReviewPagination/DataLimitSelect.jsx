@@ -11,8 +11,6 @@ const DataLimitSelect = ({currentValue, setLimit, options, setPage}) => {
 
   return (
     <Form>
-      {/* <Label>데이터 수</Label> */}
-
       <Select onChange={handleChange} value={currentValue}>
         {options.map((val, index) => {
           return (

@@ -1,11 +1,11 @@
 import {PageWrapper} from 'style/common.style';
-import {Button} from 'semantic-ui-react';
+import {Button, Dropdown, Label, Pagination} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
 import ReviewTable from './components/ReviewTable';
 import Select from 'react-select';
-
+import * as XLSX from 'xlsx';
 import useReviewQuery from './useReviewQuery';
 
 import {buildCustomUrl, fillMakersDropboxObject} from './ReviewPageLogics';
@@ -17,15 +17,39 @@ import RadioInput from './components/Radio/RadioInput';
 import RadioGroup from './components/Radio/RadioGroup';
 import Radio from './components/Radio/Radio';
 import KeyDetector from 'common/KeyDetector/KeyDetector';
+import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 
+const limitInit = 50;
+const selectOptionArray = [
+  {
+    key: 50,
+    text: '50',
+    value: 50,
+  },
+  {
+    key: 100,
+    text: '100',
+    value: 100,
+  },
+  {
+    key: 200,
+    text: '200',
+    value: 200,
+  },
+  {
+    key: 500,
+    text: '500',
+    value: 500,
+  },
+];
 const ReviewPage = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(50);
+  const [limit, setLimit] = useState(limitInit);
 
   // 필터 값들 모으기
 
   // 1. 날짜
-
+  const [screenWidth , setScreenWidth] = useState(window.innerWidth)
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -52,7 +76,7 @@ const ReviewPage = () => {
     setIsReport(event.target.value);
   };
 
-  const [url, setUrl] = useState('reviews/all?limit=50&page=1');
+  const [url, setUrl] = useState(`reviews/all?limit=${limitInit}&page=1`);
 
   useEffect(() => {
     setUrl(
@@ -96,10 +120,48 @@ const ReviewPage = () => {
 
     url,
   );
+  const TableHeaderData = [
+    {id: 0, text: '주문일자'},
+    {id: 1, text: '이름'},
+    {id: 2, text: '소속회사'},
+    {id: 3, text: '주문한 음식'},
+    {id: 4, text: '메이커스이름'},
+    {id: 5, text: '평점'},
+    {id: 6, text: '리뷰내용'},
+  ];
+  const excelButton = async () => {
+    const reqArrays = [];
+    reqArrays.push([
+      'serviceDate',
+      'writer',
+      'group',
+      'itemName',
+      'makersName',
+      'satisfaction',
+      'content',
+    ]);
+    reqArrays.push(TableHeaderData.map(v => v.text));
+    reviewList?.map(el => {
+      const reqArray = [];
+      reqArray.push(el.serviceDate);
+      reqArray.push(el.writer);
+      reqArray.push(el.group);
+      reqArray.push(el.itemName);
+      reqArray.push(el.makersName);
+      reqArray.push(el.satisfaction);
+      reqArray.push(el.content);
+      reqArrays.push(reqArray);
+      return reqArrays;
+    });
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
 
-  // useEffect(() => {
-  //   reviewQueryRefetch();
-  // }, [url]);
+    XLSX.utils.book_append_sheet(workbook, worksheet, '리뷰');
+    XLSX.writeFile(workbook, '리뷰 리스트.xlsx');
+  };
+  useEffect(() => {
+    reviewQueryRefetch();
+  }, [url]);
 
   // 메이커스 드랍박스 채우기
 
@@ -127,6 +189,17 @@ const ReviewPage = () => {
   // console.log(reviewList);
   // }, [reviewList]);
 
+const handleResize = () => {
+  setScreenWidth(window.innerWidth);
+};
+
+useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+        // cleanup
+        window.removeEventListener("resize", handleResize);
+    };
+}, []);
   return (
     <PageWrapper>
       <Wrap1>
@@ -134,7 +207,8 @@ const ReviewPage = () => {
           <DateWrapper>
             <DeadLineWrapper>
               <RecoDatePickerContainer>
-                <RecoDatePickerBox>
+                <DateRangePicker endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
+                {/* <RecoDatePickerBox>
                   <DatePicker
                     selected={startDate}
                     onChange={date => {
@@ -154,7 +228,7 @@ const ReviewPage = () => {
                     dateFormat="yyyy-MM-dd"
                     customInput={<ReviewSelectDatePicker />}
                   />
-                </RecoDatePickerBox>
+                </RecoDatePickerBox> */}
               </RecoDatePickerContainer>
             </DeadLineWrapper>
           </DateWrapper>
@@ -283,17 +357,44 @@ const ReviewPage = () => {
             </CheckboxSmallWrap>
           </CheckboxWrap>
         </Wrap3>
+        <Wrap3 style={{marginLeft:50}}>
+          <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
+        </Wrap3>
       </Wrap1>
 
       {status == 'success' && reviewList && reviewList.length > 0 ? (
-        <ReviewPagination
+        <PaginationContainer screenWidth={screenWidth}>
+          {/* <ReviewPagination
           page={page}
           setPage={setPage}
           limit={limit}
           setLimit={setLimit}
           totalPage={totalPage}
           selectOptionArray={[50, 100, 200, 500]}
-        />
+        /> */}
+          <PaginationBox>
+          <Pagination
+            defaultActivePage={1}
+            onPageChange={(e, data) => {
+              setPage(data.activePage);
+            }}
+            totalPages={totalPage}
+          />
+          </PaginationBox>
+          <LimitBox>
+            <Dropdown
+              placeholder="개수"
+              compact
+              defaultValue={50}
+              selection
+              options={selectOptionArray}
+              onChange={(e, data) => {
+                setLimit(data.value);
+              }}
+            />
+            <Label size="large">개 씩 보이게 하기 </Label>
+          </LimitBox>
+        </PaginationContainer>
       ) : (
         <Div></Div>
       )}
@@ -308,7 +409,30 @@ export default ReviewPage;
 const DateWrapper = styled.div`
   margin-bottom: 10px;
 `;
+const PaginationContainer = styled.div`
+  width: ${({screenWidth})=> `${screenWidth-80}px`};
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 24px;
+  display: flex;
+`;
+const PaginationBox = styled.div`
+  display: flex;
+  width: 100%;
+  padding-left: 300px;
+  justify-content: center;
+`;
 
+const LimitBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 300px;
+  align-items: center;
+`;
+// const Label = styled.label`
+//   font-size: 22px;
+// `;
 const Wrap1 = styled.div`
   display: flex;
   /* border: 1px solid black; */

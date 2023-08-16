@@ -4,6 +4,7 @@ const AlertModal = ({
   open,
   message,
   setAlertModalOpen,
+  actionDisabled=false,
   actionMessage,
   action,
   agreeMessage,
@@ -26,7 +27,7 @@ const AlertModal = ({
                     <CancelButton onClick={setAlertModalOpen}>
                       {cancelMessage}
                     </CancelButton>
-                    <ActionButton onClick={action}>
+                    <ActionButton status={actionDisabled} disabled={actionDisabled} onClick={action}>
                       {actionMessage}
                     </ActionButton>
                   </ButtonWrap>
@@ -134,7 +135,7 @@ const Label = styled.span`
 const CancelButton = styled(Button)``;
 
 const ActionButton = styled(Button)`
-  background-color: #db2828;
+  background-color: ${({status})=> !status ? '#db2828' : '#ccc'};
   border: none;
   color: white;
   margin-left: 10px;

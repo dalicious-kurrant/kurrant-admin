@@ -122,7 +122,7 @@ const Order = () => {
     useGetGroupList(defaultGroupType);
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
-  const {mutateAsync: cancelOrder} = useCancelOrder();
+  const {mutateAsync: cancelOrder, isLoading:cancleLoading} = useCancelOrder();
   const {mutateAsync: statusChange} = useEditOrderStatus();
 
   const groupTypeArr = [
@@ -301,8 +301,8 @@ const Order = () => {
       const idArray = [];
       orderList?.data?.map(el =>
         el.orderItemDailyFoods?.forEach(v =>
-            idArray.push(v.orderItemDailyFoodId),
-          ),
+          idArray.push(v.orderItemDailyFoodId),
+        ),
       );
 
       setCheckItems(idArray);
@@ -318,7 +318,6 @@ const Order = () => {
     }
   };
   const handleColumnCheck = (id, checked) => {
-    console.log(checked);
     if (checked) {
       setCheckColumnItems([...checkColumnItems, id]);
     } else {
@@ -327,9 +326,18 @@ const Order = () => {
   };
 
   const cancelButton = async () => {
-    await cancelOrder({idList: checkItems});
-    closeModal();
-    queryClient.invalidateQueries('orderList');
+    console.log(cancleLoading)
+    if(cancleLoading) return;
+     try {
+      
+      await cancelOrder({idList: checkItems});
+      closeModal();
+      queryClient.invalidateQueries('orderList');
+      setCheckItems([]);
+     } catch (error) {
+      alert("주문 취소가 실패 했습니다.")
+     }
+   
   };
 
   const excelButton = async () => {
@@ -359,32 +367,32 @@ const Order = () => {
     ]);
     reqArrays.push(TableHeaderData.map(v => v.text));
     orderList?.data.map(el => {
-        return el.orderItemDailyFoods?.map(item => {
-          const reqArray = [];
-          reqArray.push(el.serviceDate);
-          reqArray.push(el.orderDateTime.split('T')[0]);
-          reqArray.push(el.orderDateTime.split('T')[1].split('.')[0]);
-          reqArray.push(el.groupName);
-          reqArray.push(el.spotName);
-          reqArray.push(el.userName);
-          reqArray.push(el.userEmail);
-          reqArray.push(el.phone);
-          reqArray.push(el.diningType);
-          reqArray.push(item.deliveryTime);
-          reqArray.push(item.orderStatus);
-          reqArray.push(item.makers);
-          reqArray.push(item.foodName);
-          reqArray.push(item.count);
-          reqArray.push(item.supplyPrice ?? 0);
-          reqArray.push(item.price);
-          reqArray.push(el.totalPrice);
-          reqArray.push(el.supportPrice);
-          reqArray.push(el.payPrice);
-          reqArray.push(el.deliveryPrice);
-          reqArray.push(el.orderCode);
-          reqArrays.push(reqArray);
-          return reqArrays;
-        });
+      return el.orderItemDailyFoods?.map(item => {
+        const reqArray = [];
+        reqArray.push(el.serviceDate);
+        reqArray.push(el.orderDateTime.split('T')[0]);
+        reqArray.push(el.orderDateTime.split('T')[1].split('.')[0]);
+        reqArray.push(el.groupName);
+        reqArray.push(el.spotName);
+        reqArray.push(el.userName);
+        reqArray.push(el.userEmail);
+        reqArray.push(el.phone);
+        reqArray.push(el.diningType);
+        reqArray.push(item.deliveryTime);
+        reqArray.push(item.orderStatus);
+        reqArray.push(item.makers);
+        reqArray.push(item.foodName);
+        reqArray.push(item.count);
+        reqArray.push(item.supplyPrice ?? 0);
+        reqArray.push(item.price);
+        reqArray.push(el.totalPrice);
+        reqArray.push(el.supportPrice);
+        reqArray.push(el.payPrice);
+        reqArray.push(el.deliveryPrice);
+        reqArray.push(el.orderCode);
+        reqArrays.push(reqArray);
+        return reqArrays;
+      });
     });
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.aoa_to_sheet(reqArrays);
@@ -407,9 +415,9 @@ const Order = () => {
     const idArray = [];
     orderList?.data?.map(el =>
       el.orderItemDailyFoods?.map(s => {
-          if (selectClient.includes(orderStatusFomatted(s.orderStatus)))
-            idArray.push(s.orderItemDailyFoodId);
-        }),
+        if (selectClient.includes(orderStatusFomatted(s.orderStatus)))
+          idArray.push(s.orderItemDailyFoodId);
+      }),
     );
     const data = {
       status: 10,
@@ -731,6 +739,7 @@ const Order = () => {
             <Table.Body>
               {orderList?.data?.map(v => {
                 return v.orderItemDailyFoods?.map((item, idx) => {
+                  console.log(v.orderItemDailyFoods);
                   return (
                     <TableRow
                       onClick={() => goToPage(v.orderCode)}
@@ -897,6 +906,7 @@ const Order = () => {
                           </div>
                         </Table.Cell>
                       )}
+
                       {idx === 0 && checkColumnItems?.includes(19) && (
                         <Table.Cell
                           rowSpan={v.orderItemDailyFoods.length}
@@ -932,6 +942,7 @@ const Order = () => {
         open={modalOpen}
         message={'선택한 주문을 취소하시겠습니까?'}
         setAlertModalOpen={closeModal}
+        actionDisabled={cancleLoading}
         action={cancelButton}
         actionMessage={'예'}
         cancelMessage={'아니오'}

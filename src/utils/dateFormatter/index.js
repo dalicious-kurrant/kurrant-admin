@@ -28,7 +28,15 @@ export function formattedTimer(remainSeconds) {
   const formattedSeconds = seconds.toString().padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 }
-
+export function formattedWeekDateTime(data, delimiter = '-') {
+  const dateTime = transDateType(data);
+  const year = dateTime.getFullYear();
+  const month = leftPad(dateTime.getMonth() + 1);
+  const day = leftPad(dateTime.getDate());
+  const hour = leftPad(dateTime.getHours());
+  const minute = leftPad(dateTime.getMinutes());
+  return `${day}일 ${[hour,minute].join(':')}`;
+}
 export function formattedTime(data) {
   if (typeof data !== typeof new Date()) {
     const isDate = new Date();
@@ -61,6 +69,20 @@ export function formattedMealTime(data) {
 export function formattedDate(data, delimiter = '.') {
   const dateTime = transDateType(data);
   const year = dateTime.getFullYear();
+  const month = leftPad(dateTime.getMonth() + 1);
+  const day = leftPad(dateTime.getDate());
+  if (delimiter === '년월일') {
+    return `${year}년 ${month}월 ${day}일`;
+  }
+  if (delimiter === '/') {
+    return `${year}/${month}/${day}`;
+  }
+  return [year, month, day].join(delimiter);
+}
+export function formattedDateZ(data, delimiter = '.') {
+  const dateTime = transDateType(data);
+  console.log(dateTime)
+  const year = dateTime.getUTCFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
   if (delimiter === '년월일') {
