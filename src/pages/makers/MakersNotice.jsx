@@ -121,21 +121,13 @@ const MakersNotice = () => {
                         <TextoverView>{el.title}</TextoverView>
                       </div>
                     </Table.Cell>
-                    {/* <Table.Cell width={1}>
-                      <TextoverView
-                        dangerouslySetInnerHTML={{
-                          __html: el.content,
-                        }}></TextoverView>
-                    </Table.Cell> */}
+
                     <Table.Cell textAlign="center" width={2}>
-                      <TextoverView style={{width: 150}}>
-                        {el.makersName}
-                      </TextoverView>
+                      {el.makersName}
                     </Table.Cell>
                     <Table.Cell textAlign="center" width={2}>
                       {el.createDate}
                     </Table.Cell>
-
                     <Table.Cell
                       textAlign="center"
                       width={2}

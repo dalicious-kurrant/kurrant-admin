@@ -20,10 +20,11 @@ const NoticeFilter = () => {
 
   const typeArray = [
     {key: 0, text: '전체 공지', value: 0},
-    {key: 1, text: '메이커스 공지', value: 4},
-    {key: 2, text: '정보 변경 승인', value: 6},
-    {key: 3, text: '가격 변경 승인', value: 7},
-    {key: 4, text: '정산 완료', value: 8},
+    {key: 1, text: '이벤트', value: 3},
+    {key: 2, text: '메이커스 공지', value: 4},
+    {key: 3, text: '정보 변경 승인', value: 6},
+    {key: 4, text: '가격 변경 승인', value: 7},
+    {key: 5, text: '정산 완료', value: 8},
   ];
 
   const statusArray = [

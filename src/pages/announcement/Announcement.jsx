@@ -22,7 +22,6 @@ const Announcement = () => {
   const [selectStatus, setSelectStatus] = useAtom(noticeStatusFilterAtom);
   const [selectSpots, setSelectSpots] = useAtom(noticeSpotFilterAtom);
   const [selectPush, setSelectPush] = useAtom(noticePushFilterAtom);
-  const [success, setSuccess] = useState(true);
 
   const [page, setPage] = useAtom(noticePageAtom);
   const [totalPage, setTotalPage] = useState(0);

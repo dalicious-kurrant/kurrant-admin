@@ -2,9 +2,7 @@ import {useEffect, useState} from 'react';
 import {Button, Pagination, Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
-
 import {useNavigate} from 'react-router-dom';
-
 import {useAtom} from 'jotai';
 import {
   noticeCompanyPageAtom,
@@ -17,29 +15,6 @@ import NoticeFilter from './components/NoticeFilter';
 import {useAlramTalk, useClientNoticeLoad} from 'hooks/uesNotice';
 import {clientboardTypeFomatted, statusFomatted} from 'utils/noticeType';
 
-const dummy = [
-  {
-    id: 1,
-    status: '활성',
-    type: '스팟공지',
-    title: '[공지]메뉴 취소메뉴 취소메뉴 취소메뉴 취소',
-    contents:
-      '<p><img src="https://kurrant-v1-develop.s3.ap-northeast-2.amazonaws.com/board/0001690514566529/%E1%84%89%E1%85%A1%E1%84%8C%E1%85%B5%E1%86%AB.jpeg" alt="사진.jpeg" contenteditable="false"><br></p><p>안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇㅇ</p><p>안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇ</p><p>안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇ</p><p>안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇ</p><p>안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇ</p><p>안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇ</p>',
-    spots: '모모유부',
-    createDate: '2023-07-26',
-    alram: true,
-  },
-  {
-    id: 2,
-    status: '활성',
-    type: '전체공지',
-    title: '[공지]메뉴 취소',
-    contents: '안녕하세여 달리셔스 ㅇㅇㅇㅇㅇㅇㅇ',
-    spots: '후레시빌',
-    createDate: '2023-07-26',
-    alram: false,
-  },
-];
 const CompanyNotice = () => {
   const [selectType, setSelectType] = useAtom(noticeCompanyTypeFilterAtom);
   const [selectStatus, setSelectStatus] = useAtom(

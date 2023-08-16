@@ -17,10 +17,11 @@ const DropdownBox = ({
 
   const typeArray = [
     {key: 0, text: '전체 공지', value: 0},
-    {key: 1, text: '고객 공지', value: 5},
-    {key: 2, text: '정보 변경 승인', value: 6},
-    {key: 3, text: '가격 변경 승인', value: 7},
-    {key: 4, text: '정산완료', value: 8},
+    {key: 1, text: '이벤트', value: 3},
+    {key: 2, text: '고객사 공지', value: 5},
+    {key: 3, text: '정보 변경 승인', value: 6},
+    {key: 4, text: '가격 변경 승인', value: 7},
+    {key: 5, text: '정산완료', value: 8},
   ];
 
   const statusArray = [
@@ -55,6 +56,15 @@ const DropdownBox = ({
     <DropdownWrap>
       <DropdownDiv>
         <Dropdown
+          placeholder="상태"
+          options={statusArray || []}
+          selection
+          value={selectStatus}
+          onChange={(e, data) => setSelectStatus(data.value)}
+        />
+      </DropdownDiv>
+      <DropdownDiv>
+        <Dropdown
           placeholder="타입"
           options={typeArray || []}
           selection
@@ -62,15 +72,6 @@ const DropdownBox = ({
           onChange={(e, data) => {
             setSelectType(data.value);
           }}
-        />
-      </DropdownDiv>
-      <DropdownDiv>
-        <Dropdown
-          placeholder="상태"
-          options={statusArray || []}
-          selection
-          value={selectStatus}
-          onChange={(e, data) => setSelectStatus(data.value)}
         />
       </DropdownDiv>
       <DropdownDiv>

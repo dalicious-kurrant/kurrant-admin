@@ -28,6 +28,8 @@ export function makersboardTypeFomatted(data) {
   switch (data) {
     case 0:
       return '전체 공지';
+    case 3:
+      return '이벤트 공지';
     case 4:
       return '메이커스 공지';
     case 6:
@@ -45,8 +47,10 @@ export function clientboardTypeFomatted(data) {
   switch (data) {
     case 0:
       return '전체 공지';
+    case 3:
+      return '이벤트 공지';
     case 5:
-      return '고객 공지';
+      return '고객사 공지';
     case 6:
       return '정보 변경 승인';
     case 7:
