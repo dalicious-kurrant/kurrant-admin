@@ -63,6 +63,7 @@ const ReviewTable = ({testData}) => {
           <Table.Body>
             {testData?.length > 0 &&
               testData?.map((row, i) => {
+                console.log(row);
                 return (
                   <Table.Row
                     style={{

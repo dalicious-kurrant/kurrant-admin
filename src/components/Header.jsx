@@ -30,6 +30,21 @@ import {
   selectClientClientAtom,
   selectStatusClientAtom,
   corpDataAtom,
+  noticeTypeFilterAtom,
+  noticeStatusFilterAtom,
+  noticeSpotFilterAtom,
+  noticePushFilterAtom,
+  noticePageAtom,
+  noticeCompanyTypeFilterAtom,
+  noticeCompanyStatusFilterAtom,
+  noticeCompanySpotFilterAtom,
+  noticeCompanyPushFilterAtom,
+  noticeCompanyPageAtom,
+  noticeMakersTypeFilterAtom,
+  noticeMakersStatusFilterAtom,
+  noticeMakersFilterAtom,
+  noticeMakersPushFilterAtom,
+  noticeMakersPageAtom,
 } from 'utils/store';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
@@ -73,6 +88,24 @@ const Header = ({openMenu, setOpenMenu}) => {
   const resetAtom26 = useResetAtom(selectStatusClientAtom);
   const resetAtom27 = useResetAtom(corpDataAtom);
 
+  const resetAtom28 = useResetAtom(noticeTypeFilterAtom);
+  const resetAtom29 = useResetAtom(noticeStatusFilterAtom);
+  const resetAtom30 = useResetAtom(noticeSpotFilterAtom);
+  const resetAtom31 = useResetAtom(noticePushFilterAtom);
+  const resetAtom32 = useResetAtom(noticePageAtom);
+
+  const resetAtom33 = useResetAtom(noticeCompanyTypeFilterAtom);
+  const resetAtom34 = useResetAtom(noticeCompanyStatusFilterAtom);
+  const resetAtom35 = useResetAtom(noticeCompanySpotFilterAtom);
+  const resetAtom36 = useResetAtom(noticeCompanyPushFilterAtom);
+  const resetAtom37 = useResetAtom(noticeCompanyPageAtom);
+
+  const resetAtom38 = useResetAtom(noticeMakersTypeFilterAtom);
+  const resetAtom39 = useResetAtom(noticeMakersStatusFilterAtom);
+  const resetAtom40 = useResetAtom(noticeMakersFilterAtom);
+  const resetAtom41 = useResetAtom(noticeMakersPushFilterAtom);
+  const resetAtom42 = useResetAtom(noticeMakersPageAtom);
+
   const logOutButton = () => {
     localStorage.removeItem('token');
     window.location.replace('/');
@@ -106,6 +139,21 @@ const Header = ({openMenu, setOpenMenu}) => {
     resetAtom25();
     resetAtom26();
     resetAtom27();
+    resetAtom28();
+    resetAtom29();
+    resetAtom30();
+    resetAtom31();
+    resetAtom32();
+    resetAtom33();
+    resetAtom34();
+    resetAtom35();
+    resetAtom36();
+    resetAtom37();
+    resetAtom38();
+    resetAtom39();
+    resetAtom40();
+    resetAtom41();
+    resetAtom42();
   };
   return (
     <H.Wrapper>
