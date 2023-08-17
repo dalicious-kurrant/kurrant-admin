@@ -53,8 +53,12 @@ const CompanyNotice = () => {
     setSelectPush(null);
   };
 
-  const sendTalkClick = async id => {
-    await sendAlram({id: id});
+  const sendTalkClick = async (id, status) => {
+    if (status) {
+      await sendAlram({id: id});
+    } else {
+      alert(`상태값을 '활성' 으로 변경해주세요`);
+    }
   };
 
   useEffect(() => {
@@ -144,7 +148,7 @@ const CompanyNotice = () => {
                         e.stopPropagation();
                       }}>
                       <Button
-                        onClick={() => sendTalkClick(el.id)}
+                        onClick={() => sendTalkClick(el.id, el.isStatus)}
                         disabled={el.isAlarmTalk}
                         content={el.isAlarmTalk ? '전송 완료' : '전송'}
                         size="tiny"

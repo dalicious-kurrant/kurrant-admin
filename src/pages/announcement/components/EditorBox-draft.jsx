@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {Editor} from 'react-draft-wysiwyg';
-
+import 'semantic-ui-css/semantic.min.css';
 import {EditorState, convertToRaw, ContentState} from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import {noticeApis} from 'api/notice';
