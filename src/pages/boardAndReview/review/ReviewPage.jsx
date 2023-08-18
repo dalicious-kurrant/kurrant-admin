@@ -79,6 +79,8 @@ const ReviewPage = () => {
   const [url, setUrl] = useState(`reviews/all?limit=${limitInit}&page=1`);
 
   useEffect(() => {
+    // isMakersComment, 가 바뀔떄는 page가 1로 돌아가야 됨
+
     setUrl(
       buildCustomUrl(
         limit,
@@ -98,15 +100,32 @@ const ReviewPage = () => {
     limit,
     orderItemNameAndCode,
     writer,
-    isMakersComment,
-    isAdminComment,
-    isReport,
+
     makersId,
     startDate,
     endDate,
     url,
     setUrl,
   ]);
+
+  useEffect(() => {
+    setPage(1);
+
+    setUrl(
+      buildCustomUrl(
+        limit,
+        1,
+        orderItemNameAndCode,
+        writer,
+        isMakersComment,
+        isAdminComment,
+        isReport,
+        makersId,
+        startDate,
+        endDate,
+      ),
+    );
+  }, [isMakersComment, isAdminComment, isReport]);
 
   const {
     reviewList,
