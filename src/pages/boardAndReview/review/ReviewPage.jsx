@@ -49,7 +49,7 @@ const ReviewPage = () => {
   // 필터 값들 모으기
 
   // 1. 날짜
-  const [screenWidth , setScreenWidth] = useState(window.innerWidth)
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -208,17 +208,17 @@ const ReviewPage = () => {
   // console.log(reviewList);
   // }, [reviewList]);
 
-const handleResize = () => {
-  setScreenWidth(window.innerWidth);
-};
+  const handleResize = () => {
+    setScreenWidth(window.innerWidth);
+  };
 
-useEffect(() => {
-    window.addEventListener("resize", handleResize);
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
     return () => {
-        // cleanup
-        window.removeEventListener("resize", handleResize);
+      // cleanup
+      window.removeEventListener('resize', handleResize);
     };
-}, []);
+  }, []);
   return (
     <PageWrapper>
       <Wrap1>
@@ -226,7 +226,12 @@ useEffect(() => {
           <DateWrapper>
             <DeadLineWrapper>
               <RecoDatePickerContainer>
-                <DateRangePicker endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
+                <DateRangePicker
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                />
                 {/* <RecoDatePickerBox>
                   <DatePicker
                     selected={startDate}
@@ -376,7 +381,7 @@ useEffect(() => {
             </CheckboxSmallWrap>
           </CheckboxWrap>
         </Wrap3>
-        <Wrap3 style={{marginLeft:50}}>
+        <Wrap3 style={{marginLeft: 50}}>
           <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
         </Wrap3>
       </Wrap1>
@@ -392,13 +397,14 @@ useEffect(() => {
           selectOptionArray={[50, 100, 200, 500]}
         /> */}
           <PaginationBox>
-          <Pagination
-            defaultActivePage={1}
-            onPageChange={(e, data) => {
-              setPage(data.activePage);
-            }}
-            totalPages={totalPage}
-          />
+            <Pagination
+              defaultActivePage={1}
+              activePage={page}
+              onPageChange={(e, data) => {
+                setPage(data.activePage);
+              }}
+              totalPages={totalPage}
+            />
           </PaginationBox>
           <LimitBox>
             <Dropdown
@@ -429,7 +435,7 @@ const DateWrapper = styled.div`
   margin-bottom: 10px;
 `;
 const PaginationContainer = styled.div`
-  width: ${({screenWidth})=> `${screenWidth-80}px`};
+  width: ${({screenWidth}) => `${screenWidth - 80}px`};
   justify-content: center;
   align-items: center;
   margin-top: 50px;
