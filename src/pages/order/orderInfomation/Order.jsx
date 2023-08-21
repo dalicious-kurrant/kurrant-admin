@@ -98,7 +98,7 @@ const Order = () => {
   const [orderStatusOption, setOrderStatusOption] = useAtom(orderStatusAtom);
   const [grouptInfoId, setGroupInfoId] = useAtom(groupInfoAtom);
   const [spotList, setSpotList] = useAtom(spotListAtom);
-  const [userList, setUserList] = useAtom(userListAtom);
+  // const [userList, setUserList] = useAtom(userListAtom);
   const [diningType, setDiningType] = useAtom(diningListAtom);
   const [checkItems, setCheckItems] = useState([]);
   const [checkColumnItems, setCheckColumnItems] = useState(
@@ -146,22 +146,13 @@ const Order = () => {
       label: el.groupName,
     };
   });
-
-  const allUserArr = allUserList?.data?.users?.map(el => {
+  const allUserArr = allUserList?.data?.map(el => {
     return {
-      value: el.userId,
-      label: el.userName,
+      value: el.id,
+      label: el.name+`(${el.id})`,
     };
   });
 
-  const userArr =
-    userList &&
-    userList.map(el => {
-      return {
-        value: el.userId,
-        label: el.userName,
-      };
-    });
 
   const spotArr =
     spotList &&
@@ -238,6 +229,7 @@ const Order = () => {
     diningTypeOption.value,
     orderStatusOption.value,
   );
+
 
   const getStartDate = e => {
     setStartDate(e.target.value);
@@ -537,7 +529,7 @@ const Order = () => {
           <span>유저</span>
           <SelectBox
             ref={userRef}
-            options={userArr.length === 0 ? allUserArr : userArr}
+            options={allUserArr}
             placeholder="유저"
             defaultValue={defaultUser}
             onChange={e => {
@@ -739,7 +731,6 @@ const Order = () => {
             <Table.Body>
               {orderList?.data?.map(v => {
                 return v.orderItemDailyFoods?.map((item, idx) => {
-                  console.log(v.orderItemDailyFoods);
                   return (
                     <TableRow
                       onClick={() => goToPage(v.orderCode)}

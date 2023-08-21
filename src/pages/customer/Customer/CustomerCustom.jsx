@@ -218,12 +218,13 @@ const CustomerCustom = () => {
               userCheck={userCheck}
               setUserCheck={setUserCheck}
               allChk={allChk}
+              setPage={setPage}
               setAllChk={setAllChk}
             />
             <PaginationWrap>
               <Pagination
-                defaultActivePage={page}
                 totalPages={totalPage}
+                activePage={page}
                 boundaryRange={1}
                 onPageChange={(e, data) => {
                   setPage(data.activePage);

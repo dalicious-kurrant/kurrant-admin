@@ -11,7 +11,7 @@ export function useGetGroupList(spotType) {
 
 export function useGetGroupInfoList(groupId) {
   const [spotList, setSpotList] = useAtom(spotListAtom);
-  const [userList, setUserList] = useAtom(userListAtom);
+  // const [userList, setUserList] = useAtom(userListAtom);
   const [diningType, setDiningType] = useAtom(diningListAtom);
   return useQuery(
     'groupInfoList',
@@ -20,7 +20,7 @@ export function useGetGroupInfoList(groupId) {
     },
     {
       onSuccess: res => {
-        setUserList(res.data.users);
+        // setUserList(res.data.users);
         setSpotList(res.data.spots);
         setDiningType(res.data.diningTypes);
       },
@@ -59,6 +59,11 @@ export function useGetOrderList(
 export function useGetMakersList() {
   return useQuery('makersList', () => {
     return orderApis.makersList();
+  });
+}
+export function useGetGroupAllList() {
+  return useQuery('groupAllList', () => {
+    return orderApis.groupAllList();
   });
 }
 

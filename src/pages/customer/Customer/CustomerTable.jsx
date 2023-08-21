@@ -14,6 +14,7 @@ import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
 import {groupIdAtom, uerIdAtom, userIdAtom, userStateAtom} from 'utils/store';
 import CustomerPoint from './CustomerPoint';
+import { useAllUserList, useGetGroupAllList, useGetMakersList } from 'hooks/useOrderList';
 
 const CustomerTable = ({
   testData,
@@ -21,6 +22,7 @@ const CustomerTable = ({
   userCheck,
   setUserCheck,
   allChk,
+  setPage,
   setAllChk,
 }) => {
   const [pointOpenModal, setPointOpenModal] = useState(false);
@@ -31,6 +33,8 @@ const CustomerTable = ({
   const [nameOption, setNameOption] = useAtom(userIdAtom);
   const [spotOption, setSpotOption] = useAtom(groupIdAtom);
   const [option, setOption] = useState(testData);
+  const {data: allUserList} = useAllUserList();
+  const {data: groupAllList} = useGetGroupAllList();
   const {data: spotList} = useGetSpotList();
 
   const showEditOpen = id => {
@@ -46,10 +50,10 @@ const CustomerTable = ({
     {value: 2, label: '탈퇴 요청'},
   ];
 
-  const userNameArr = testData?.map(el => {
+  const userNameArr = allUserList?.data?.map(el => {
     return {
       value: el.id,
-      label: el.userName,
+      label: el.name,
     };
   });
 
@@ -57,7 +61,7 @@ const CustomerTable = ({
     return acc.find(x => x.groupId === v.groupId) ? acc : [...acc, v];
   }, []);
 
-  const spotArr = set?.map(el => {
+  const spotArr = groupAllList?.data?.groups?.map(el => {
     return {
       value: el.groupId,
       label: el.groupName,
@@ -90,6 +94,7 @@ const CustomerTable = ({
           options={userNameArr}
           onChange={e => {
             //userNameFilter(e.value);
+            setPage(1)
             setNameOption(e.value);
           }}
         />
@@ -98,6 +103,7 @@ const CustomerTable = ({
           options={spotArr}
           onChange={e => {
             //spotFilter(e.label);
+            setPage(1)
             setSpotOption(e.value);
           }}
         />
