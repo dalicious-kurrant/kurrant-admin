@@ -19,6 +19,7 @@ import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
 // 메이커스 정보 페이지
 const CompletePlans = () => {
   const {onActive} = useModal();
+  const [shouldFetchData, setShouldFetchData] = useState(false);
   const [exelPlan, setExelPlan] = useAtom(exelCompletePlanAtom);
   const [plan, setPlan] = useAtom(completePlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
@@ -42,7 +43,7 @@ const CompletePlans = () => {
     data: calendarData,
     isSuccess,
     refetch: calendarRefetch,
-    isFetching
+    isFetching,
   } = useGetCompleteCalendar(
     formattedWeekDate(accessStartDate),
     formattedWeekDate(accessEndDate),
@@ -50,8 +51,13 @@ const CompletePlans = () => {
     page,
     selectMakers,
     selectClient,
+    shouldFetchData,
   );
   const {data: filterList} = useGetFilter();
+  const handleFetchData = () => {
+    calendarRefetch();
+    setShouldFetchData(true);
+  };
   useEffect(() => {
     if (!exelPlan) {
       if (isSuccess) {
@@ -101,13 +107,20 @@ const CompletePlans = () => {
   return (
     <PageWrapper>
       <Wrapper>
-        {plan && (
+        {!exelPlan && (
           <DeadLineWrapper>
             <Label color="blue">날짜선택</Label>
             <RecoDatePickerContainer>
-             <DateRangePicker  endDate={formattedWeekDateZ(accessEndDate)} setEndDate={setAccessEndDate} startDate={formattedWeekDateZ(accessStartDate)} setStartDate={setAccessStartDate}/>
-             <Button color='green' onClick={()=>calendarRefetch()}>조회</Button>
-             </RecoDatePickerContainer>
+              <DateRangePicker
+                endDate={formattedWeekDateZ(accessEndDate)}
+                setEndDate={setAccessEndDate}
+                startDate={formattedWeekDateZ(accessStartDate)}
+                setStartDate={setAccessStartDate}
+              />
+              <Button color="green" onClick={handleFetchData}>
+                조회
+              </Button>
+            </RecoDatePickerContainer>
             {/* <RecoDatePickerContainer>
               <RecoDatePickerBox>
                 <DatePicker
@@ -181,7 +194,7 @@ const CompletePlans = () => {
           </AccessBox>
         </BtnWrapper>
       </ContentWrapper> */}
-      {plan && (
+      {!exelPlan && (
         <FilterContainer>
           <FilterBox>
             <DropBox>
@@ -243,21 +256,22 @@ const CompletePlans = () => {
           )}
         </FilterContainer>
       )}
-      {isFetching ? <ActivityIndicator /> :
-      <div>
-        {exelPlan && <CustomPlanExelTable />}
-      {plan && (
-        <>
-          <CustomPlanTable
-            count={count}
-            testData={plan}
-            setTestData={setPlan}
-          />
-        </>
+      {isFetching ? (
+        <ActivityIndicator />
+      ) : (
+        <div>
+          {exelPlan && <CustomPlanExelTable />}
+          {plan && (
+            <>
+              <CustomPlanTable
+                count={count}
+                testData={plan}
+                setTestData={setPlan}
+              />
+            </>
+          )}
+        </div>
       )}
-        </div>}
-      
-      
     </PageWrapper>
   );
 };

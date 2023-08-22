@@ -31,17 +31,24 @@ export function useGetCompleteCalendar(
   page,
   makersId,
   groupId,
+  shouldFetchData,
 ) {
-  return useQuery('calendarCompleteList', () => {
-    return calendarApis.getCompleteDailyFood(
-      startDate,
-      endDate,
-      size,
-      page,
-      makersId,
-      groupId,
-    );
-  });
+  return useQuery(
+    'calendarCompleteList',
+    () => {
+      return calendarApis.getCompleteDailyFood(
+        startDate,
+        endDate,
+        size,
+        page,
+        makersId,
+        groupId,
+      );
+    },
+    {
+      enabled: shouldFetchData,
+    },
+  );
 }
 export function useGetCalendar(size, page, makersId, groupId, status) {
   return useQuery('calendarList', () => {
