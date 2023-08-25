@@ -1097,6 +1097,7 @@ function CorpEditModal({
                                       }
                                       onChange={(e, data) => {
                                         const priceData = [];
+                                        console.log(Number(data.value))
                                         priceData.push({serviceDay: v?.trim(), supportPrice: data.value? Number(data.value) : 0});
                                         const updateData = nowData.mealInfos.map(info => {
                                           if (info.diningType === 2) {
