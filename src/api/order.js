@@ -9,6 +9,7 @@ export const orderApis = {
   groupInfoList: async groupId =>
     await instance.get(`orders/groupInfo${groupId}`),
   makersList: async () => await instance.get('orders/makers'),
+  groupAllList: async () => await instance.get('dailyFoods/groupsAndMakers'),
   orderList: async (
     startDate,
     endDate,
@@ -32,7 +33,7 @@ export const orderApis = {
   orderDetail: async orderCode => await instance.get(`orders/${orderCode}`),
   orderCancel: async data =>
     await instance.post('orders/orderItems/cancel', data),
-  allUserList: async () => await instance.get('orders/groupInfo'),
+  allUserList: async () => await instance.get('users'),
   editOrderStatus: async data =>
     await instance.post('orders/orderItems/status', data),
 };
