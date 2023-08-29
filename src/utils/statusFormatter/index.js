@@ -387,3 +387,18 @@ export const foodCompleteStatusData = [
     value: 6,
   },
 ];
+export function formattedBoardOptionStatus(data) {
+  if (data.length === 1 && data[0] === 0) {
+    return '[공지] ';
+  } else if (
+    data.length === 2 &&
+    (data[0] === 1 || data[0] === 2) &&
+    (data[1] === 1 || data[1] === 2)
+  ) {
+    return '[이벤트] ';
+  } else if (data.length === 1 && data[0] === 2) {
+    return '[이벤트] ';
+  } else {
+    return '';
+  }
+}

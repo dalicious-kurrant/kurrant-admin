@@ -11,7 +11,7 @@ const AppNoticeWrite = () => {
   const [selectType, setSelectType] = useState();
   const [selectStatus, setSelectStatus] = useState();
   const [selectSpots, setSelectSpots] = useState([]);
-
+  const [checkValue, setCheckValue] = useState([]);
   const {mutateAsync: addNotice} = useAppNoticePost();
   const {mutateAsync: modifyNotice} = useAppNoticeModify();
 
@@ -26,6 +26,7 @@ const AppNoticeWrite = () => {
       groupIds: selectSpots,
       boardType: selectType,
       isStatus: selectStatus,
+      boardOption: checkValue,
     };
 
     if (route.state) {
@@ -33,7 +34,7 @@ const AppNoticeWrite = () => {
         data: data,
         id: route.state.id,
       };
-      console.log(modiData);
+      // console.log(modiData);
       await modifyNotice(modiData);
     } else {
       await addNotice(data);
@@ -51,8 +52,16 @@ const AppNoticeWrite = () => {
         setSelectStatus={setSelectStatus}
         selectSpots={selectSpots}
         setSelectSpots={setSelectSpots}
+        checkValue={checkValue}
+        setCheckValue={setCheckValue}
       />
-      <EditorBox editData={route.state} addButton={addNoticeHandle} />
+      <EditorBox
+        editData={route.state}
+        addButton={addNoticeHandle}
+        selectType={selectType}
+        selectSpots={selectSpots}
+        from={'app'}
+      />
     </PageWrapper>
   );
 };

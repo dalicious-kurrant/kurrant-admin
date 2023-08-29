@@ -10,6 +10,7 @@ export const noticeApis = {
     selectStatus,
     selectSpots,
     selectPush,
+    checkBoxValue,
   ) =>
     await instance.get(`board/app?limit=15&page=${page}`, {
       params: {
@@ -17,6 +18,8 @@ export const noticeApis = {
         boardType: selectType,
         groupIds: selectSpots.length === 0 ? null : selectSpots.join(','),
         isPushAlarm: selectPush,
+        isPopup: checkBoxValue.includes(1) ? true : null,
+        isEvent: checkBoxValue.includes(2) ? true : null,
       },
     }),
   appNoticeModify: async data =>

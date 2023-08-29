@@ -128,6 +128,7 @@ export const noticeStatusFilterAtom = atomWithReset(null);
 export const noticeSpotFilterAtom = atomWithReset([]);
 export const noticePushFilterAtom = atomWithReset(null);
 export const noticePageAtom = atomWithReset(1);
+export const checkValueAtom = atomWithReset([]);
 
 // 메이커스 공지사항
 export const noticeMakersTypeFilterAtom = atomWithReset(null);
