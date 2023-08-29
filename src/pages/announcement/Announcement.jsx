@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import NoticeFilter from './components/NoticeFilter';
 import {useAtom} from 'jotai';
 import {
+  checkValueAtom,
   noticePageAtom,
   noticePushFilterAtom,
   noticeSpotFilterAtom,
@@ -16,13 +17,14 @@ import {
 } from 'utils/store';
 import {useAppNoticeLoad, useAppNoticePushAlram} from 'hooks/uesNotice';
 import {boardTypeFomatted, statusFomatted} from 'utils/noticeType';
+import {formattedBoardOptionStatus} from 'utils/statusFormatter';
 
 const Announcement = () => {
   const [selectType, setSelectType] = useAtom(noticeTypeFilterAtom);
   const [selectStatus, setSelectStatus] = useAtom(noticeStatusFilterAtom);
   const [selectSpots, setSelectSpots] = useAtom(noticeSpotFilterAtom);
   const [selectPush, setSelectPush] = useAtom(noticePushFilterAtom);
-
+  const [checkBoxValue, checkboxValue] = useAtom(checkValueAtom);
   const [page, setPage] = useAtom(noticePageAtom);
   const [totalPage, setTotalPage] = useState(0);
   const {data: appNoticeList, refetch} = useAppNoticeLoad(
@@ -31,6 +33,7 @@ const Announcement = () => {
     selectStatus,
     selectSpots,
     selectPush,
+    checkBoxValue,
   );
   const {mutateAsync: pushAlram} = useAppNoticePushAlram();
 
@@ -51,6 +54,7 @@ const Announcement = () => {
     setSelectStatus(null);
     setSelectSpots([]);
     setSelectPush(null);
+    checkboxValue([]);
   };
 
   const sendAlram = async (id, status) => {
@@ -69,7 +73,15 @@ const Announcement = () => {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch, selectType, selectStatus, selectSpots, selectPush]);
+  }, [
+    page,
+    refetch,
+    selectType,
+    selectStatus,
+    selectSpots,
+    selectPush,
+    checkBoxValue,
+  ]);
   return (
     <PageWrapper>
       <TopWrap>
@@ -122,7 +134,8 @@ const Announcement = () => {
                     <Table.Cell width={5} textAlign="center">
                       <div style={{display: 'flex', justifyContent: 'center'}}>
                         <TextoverView style={{width: 200}}>
-                          {el.title}
+                          {formattedBoardOptionStatus(el.boardOption) +
+                            el.title}
                         </TextoverView>
                       </div>
                     </Table.Cell>
@@ -185,7 +198,6 @@ export default Announcement;
 
 const ButtonWrap = styled.div`
   display: flex;
-  margin-bottom: 24px;
 `;
 
 const TextoverView = styled.div`
@@ -199,6 +211,7 @@ const TextoverView = styled.div`
 
 const TopWrap = styled.div`
   display: flex;
+  margin-bottom: 24px;
 `;
 
 const PaginationWrap = styled.div`

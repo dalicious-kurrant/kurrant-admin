@@ -1,6 +1,6 @@
 import {Editor} from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Button} from 'semantic-ui-react';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 // Toast ColorSyntax 플러그인
@@ -15,10 +15,16 @@ import styled from 'styled-components';
 
 import {useNavigate} from 'react-router-dom';
 
-const EditorBoxToast = ({editData, addButton = () => {}}) => {
+const EditorBoxToast = ({
+  editData,
+  addButton = () => {},
+  selectType,
+  selectSpots,
+  from,
+}) => {
   const editorRef = useRef();
-
   const navigate = useNavigate();
+  const [spotNullCheck, setSpotNullCheck] = useState(true);
   const goBack = () => {
     navigate(-1);
   };
@@ -51,6 +57,16 @@ const EditorBoxToast = ({editData, addButton = () => {}}) => {
     }
   }, [editData, setValue]);
 
+  useEffect(() => {
+    if (from === 'app') {
+      if (selectType === 1 && selectSpots?.length === 0) {
+        setSpotNullCheck(true);
+      } else {
+        setSpotNullCheck(false);
+      }
+    }
+  }, [from, selectSpots?.length, selectType, spotNullCheck]);
+
   return (
     <div>
       <FormProvider {...form}>
@@ -72,6 +88,7 @@ const EditorBoxToast = ({editData, addButton = () => {}}) => {
       </EditorWrap>
       <ButtonWrap>
         <Button
+          disabled={from === 'app' && spotNullCheck}
           content={editData ? '수정' : '작성'}
           onClick={() =>
             addButton(title, editorRef.current?.getInstance().getHTML())
