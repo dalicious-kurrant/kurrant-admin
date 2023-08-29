@@ -108,7 +108,7 @@ export const MenuList = [
         component: <Apartment />,
       },
       {
-        name: '고객사 공지사항 (진행중)',
+        name: '고객사 공지사항',
         url: '/notice',
         component: <CompanyNotice />,
       },
@@ -141,7 +141,7 @@ export const MenuList = [
         component: <Plans />,
       },
       {
-        name: '메이커스 공지사항 (진행중)',
+        name: '메이커스 공지사항',
         url: '/notice',
         component: <MakersNotice />,
       },
@@ -218,7 +218,7 @@ export const MenuList = [
         url: '/contents',
       },
       {
-        name: '공지사항 (진행중)',
+        name: '공지사항',
         url: '/notice',
         component: <Announcement />,
       },
