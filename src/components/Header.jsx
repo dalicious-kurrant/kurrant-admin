@@ -45,6 +45,7 @@ import {
   noticeMakersFilterAtom,
   noticeMakersPushFilterAtom,
   noticeMakersPageAtom,
+  checkValueAtom,
 } from 'utils/store';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
@@ -105,6 +106,7 @@ const Header = ({openMenu, setOpenMenu}) => {
   const resetAtom40 = useResetAtom(noticeMakersFilterAtom);
   const resetAtom41 = useResetAtom(noticeMakersPushFilterAtom);
   const resetAtom42 = useResetAtom(noticeMakersPageAtom);
+  const resetAtom43 = useResetAtom(checkValueAtom);
 
   const logOutButton = () => {
     localStorage.removeItem('token');
@@ -154,6 +156,7 @@ const Header = ({openMenu, setOpenMenu}) => {
     resetAtom40();
     resetAtom41();
     resetAtom42();
+    resetAtom43();
   };
   return (
     <H.Wrapper>
@@ -164,54 +167,58 @@ const Header = ({openMenu, setOpenMenu}) => {
               <MenuBox inverted>
                 <Menu.Item active onClick={() => navi('/main')} icon="home" />
                 {MenuList.map((v, i) => {
-                  return  <DropDownMenu
-                  style={{
-                    backgroundColor: '#1b1c1d',
-                    color: '#fff',
-                    fontSize: 15,
-                    fontWeight: 700,
-                  }}
-                  key={`${v.name}`}
-                  item
-                  text={v.name?.includes('(진행중)')
-                  ? v.name?.replace('(진행중)', '')
-                  : v.name}
-                  icon={null}
-                  isready={v.name?.includes('(진행중)').toString()}
-                  openOnFocus={false}
-                  open={openMenu}
-                  onClick={e => {
-                    e.preventDefault();
-                    setOpenMenu(!openMenu);
-                  }}>
-                  <Dropdown.Menu
-                    style={{
-                      borderLeft: '1px solid white',
-                      boxShadow: 'none',
-                      fontSize: 12,
-                      maxWidth: 150,
-                      whiteSpace: 'pre-wrap',
-                      backgroundColor: '#1b1c1d',
-                      color: '#fff',
-                    }}>
-                    {v.children?.map(b => (
-                      <Dropdown.Item
-                        key={`${b.name}`}
-                        onClick={() => {
-                          resetJotai();
-                          setOpenMenu(!openMenu);
-                          navi(`${v.url}${b.url}`);
+                  return (
+                    <DropDownMenu
+                      style={{
+                        backgroundColor: '#1b1c1d',
+                        color: '#fff',
+                        fontSize: 15,
+                        fontWeight: 700,
+                      }}
+                      key={`${v.name}`}
+                      item
+                      text={
+                        v.name?.includes('(진행중)')
+                          ? v.name?.replace('(진행중)', '')
+                          : v.name
+                      }
+                      icon={null}
+                      isready={v.name?.includes('(진행중)').toString()}
+                      openOnFocus={false}
+                      open={openMenu}
+                      onClick={e => {
+                        e.preventDefault();
+                        setOpenMenu(!openMenu);
+                      }}>
+                      <Dropdown.Menu
+                        style={{
+                          borderLeft: '1px solid white',
+                          boxShadow: 'none',
+                          fontSize: 12,
+                          maxWidth: 150,
+                          whiteSpace: 'pre-wrap',
+                          backgroundColor: '#1b1c1d',
+                          color: '#fff',
                         }}>
-                        <FontBox isReady={b.name?.includes('(진행중)')}>
-                          {b.name?.includes('(진행중)')
-                            ? b.name?.replace('(진행중)', '')
-                            : b.name}
-                        </FontBox>
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </DropDownMenu>
-                  })}
+                        {v.children?.map(b => (
+                          <Dropdown.Item
+                            key={`${b.name}`}
+                            onClick={() => {
+                              resetJotai();
+                              setOpenMenu(!openMenu);
+                              navi(`${v.url}${b.url}`);
+                            }}>
+                            <FontBox isReady={b.name?.includes('(진행중)')}>
+                              {b.name?.includes('(진행중)')
+                                ? b.name?.replace('(진행중)', '')
+                                : b.name}
+                            </FontBox>
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </DropDownMenu>
+                  );
+                })}
               </MenuBox>
               <Log onClick={() => navi('/backlog')}>로그</Log>
               <Logout onClick={logOutButton}>로그아웃</Logout>
@@ -248,7 +255,7 @@ const FontBox = styled.div`
 `;
 const DropDownMenu = styled(Dropdown)`
   .text {
-    color: ${({isready}) => (isready==="true" ? '#ff3333' : '#ccc')};
+    color: ${({isready}) => (isready === 'true' ? '#ff3333' : '#ccc')};
   }
   min-width: 130px;
   white-space: nowrap;
