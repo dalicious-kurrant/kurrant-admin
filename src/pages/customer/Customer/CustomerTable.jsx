@@ -14,7 +14,7 @@ import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
 import {groupIdAtom, uerIdAtom, userIdAtom, userStateAtom} from 'utils/store';
 import CustomerPoint from './CustomerPoint';
-import { useAllUserList, useGetGroupAllList, useGetMakersList } from 'hooks/useOrderList';
+import { useAllUserExport, useAllUserList, useGetGroupAllList, useGetMakersList } from 'hooks/useOrderList';
 
 const CustomerTable = ({
   testData,
@@ -34,6 +34,7 @@ const CustomerTable = ({
   const [spotOption, setSpotOption] = useAtom(groupIdAtom);
   const [option, setOption] = useState(testData);
   const {data: allUserList} = useAllUserList();
+  const { refetch:refetchExport ,isFetching:loadingExport} = useAllUserExport();
   const {data: groupAllList} = useGetGroupAllList();
   const {data: spotList} = useGetSpotList();
 
@@ -43,7 +44,9 @@ const CustomerTable = ({
     setClickData(...data);
     setShowOpenModal(true);
   };
-
+  const handleAllUserExport = async()=>{
+    refetchExport();
+  }
   const userArr = [
     {value: 0, label: '탈퇴'},
     {value: 1, label: '활성'},
@@ -118,6 +121,12 @@ const CustomerTable = ({
           onClick={() => {
             pointModal();
           }}
+        />
+        <Button
+          content="전체 유저 내보내기"
+          color={loadingExport ? "grey" : "linkedin"}
+          disabled={loadingExport}
+          onClick={handleAllUserExport}
         />
       </SelectWrap>
       <TableWrapper>
