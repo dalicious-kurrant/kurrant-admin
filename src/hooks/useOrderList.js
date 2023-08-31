@@ -2,6 +2,7 @@ import {useAtom} from 'jotai';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {diningListAtom, spotListAtom, userListAtom} from 'utils/store';
 import {orderApis} from '../api/order';
+import { userExel } from 'utils/downloadExel/exel';
 
 export function useGetGroupList(spotType) {
   return useQuery('groupList', () => {
@@ -84,6 +85,17 @@ export function useCancelOrder() {
 export function useAllUserList() {
   return useQuery('allUserList', () => {
     return orderApis.allUserList();
+  });
+}
+export function useAllUserExport() {
+  return useQuery('allUserExport', () => {
+    return orderApis.allUserExport();
+  },{
+    onSuccess:(v)=>{
+      console.log(v)
+      userExel(v.data)
+    },
+   enabled:false 
   });
 }
 

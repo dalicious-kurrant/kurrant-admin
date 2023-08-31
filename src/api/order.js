@@ -34,6 +34,7 @@ export const orderApis = {
   orderCancel: async data =>
     await instance.post('orders/orderItems/cancel', data),
   allUserList: async () => await instance.get('users'),
+  allUserExport: async () => await instance.get('users/excel'),
   editOrderStatus: async data =>
     await instance.post('orders/orderItems/status', data),
 };
