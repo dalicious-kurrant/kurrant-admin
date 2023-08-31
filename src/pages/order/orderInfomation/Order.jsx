@@ -34,6 +34,7 @@ import {
   diningListAtom,
   diningTypeOptionAtom,
   endDateAtom,
+  endOrderDateAtom,
   groupFilterAtom,
   groupInfoAtom,
   groupOptionAtom,
@@ -45,10 +46,12 @@ import {
   spotListAtom,
   spotOptionAtom,
   startDateAtom,
+  startOrderDateAtom,
   userListAtom,
   userOptionAtom,
 } from 'utils/store';
 import {orderStatusFomatted, scheduleFormatted} from 'utils/statusFormatter';
+import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 
 const TableHeaderData = [
   {id: 0, text: '날짜'},
@@ -89,6 +92,8 @@ const Order = () => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useAtom(startDateAtom);
   const [endDate, setEndDate] = useAtom(endDateAtom);
+  const [startOrderDate, setStartOrderDate] = useAtom(startOrderDateAtom);
+  const [endOrderDate, setEndOrderDate] = useAtom(endOrderDateAtom);
   const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
   const [groupTypeOption, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
   const [userOption, setUserOption] = useAtom(userOptionAtom);
@@ -449,17 +454,8 @@ const Order = () => {
     <PageWrapper>
       <label>서비스일 날짜</label>
       <div style={{display: 'flex'}}>
-        <DateInput
-          type="date"
-          defaultValue={startDate}
-          onChange={e => getStartDate(e)}
-        />
-        <DateSpan>-</DateSpan>
-        <DateInput
-          type="date"
-          defaultValue={endDate}
-          onChange={e => getEndDate(e)}
-        />
+      <DateRangePicker  startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
+       
         <ResetButton>
           <Button
             color="black"
@@ -470,6 +466,12 @@ const Order = () => {
           <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
         </ResetButton>
       </div>
+      {/* 
+      주문 날짜 필터
+      <div style={{ marginTop:24}}>
+      <label>주문 날짜</label>
+        <DateRangePicker  startDate={startOrderDate} endDate={endOrderDate} setStartDate={setStartOrderDate} setEndDate={setEndOrderDate}/>
+      </div> */}
 
       <SelectBoxWrapper>
         <SelectBoxWrap>
