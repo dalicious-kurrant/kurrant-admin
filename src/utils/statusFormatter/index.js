@@ -402,3 +402,31 @@ export function formattedBoardOptionStatus(data) {
     return '';
   }
 }
+
+export const registerMakersStatusData = [
+  {
+    key: '스팟 개설 신청',
+    text: '스팟 개설 신청',
+    value: 0,
+  },
+  {
+    key: '운영 사항 협의',
+    text: '운영 사항 협의',
+    value: 1,
+  },
+  {
+    key: '스팟 개설 완료',
+    text: '스팟 개설 완료',
+    value: 2,
+  },
+  {
+    key: '미승인',
+    text: '미승인',
+    value: 3,
+  },
+  {
+    key: '보류',
+    text: '보류',
+    value: 4,
+  },
+];
