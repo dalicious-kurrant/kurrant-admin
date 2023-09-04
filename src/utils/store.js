@@ -101,6 +101,7 @@ export const corpDataAtom = atomWithReset();
 export const indexAtom = atomWithReset();
 export const checkListAtom = atomWithReset([]);
 export const checkShareListAtom = atomWithReset([]);
+export const checkPrivateListAtom = atomWithReset([]);
 export const spotPageAtom = atomWithReset(1);
 
 export const MySpotCityAtom = atomWithReset([]);
