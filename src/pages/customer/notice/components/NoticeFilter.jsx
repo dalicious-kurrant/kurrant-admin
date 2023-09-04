@@ -1,5 +1,4 @@
 import {useCompanyList} from 'hooks/useCompany';
-import {useGetMakersList} from 'hooks/useOrderList';
 import {useAtom} from 'jotai';
 
 import {Dropdown} from 'semantic-ui-react';

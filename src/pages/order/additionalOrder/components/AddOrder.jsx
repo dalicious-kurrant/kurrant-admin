@@ -1,8 +1,7 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect,  useState} from 'react';
 import {Button, Dropdown, Table} from 'semantic-ui-react';
-import {PageWrapper, TableWrapper} from 'style/common.style';
+import {TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
-import {formattedWeekDateZ} from 'utils/dateFormatter';
 import Select from 'react-select';
 import {Controller, FormProvider, useForm} from 'react-hook-form';
 import Input from 'components/input/Input';
@@ -24,13 +23,12 @@ import withCommas from 'utils/withCommas';
 import {useGetGroupList} from 'hooks/useOrderList';
 
 const AddOrder = () => {
-  const groupRef = useRef(null);
   const [groupOption, setGroupOption] = useAtom(extraOrderGroupOptionAtom);
   const [startDate, setStartDate] = useAtom(extraOrderStartDateAtom);
   const [endDate, setEndDate] = useAtom(extraOrderEndDateAtom);
   const [extraListData, setExtraListData] = useAtom(extraListDataAtom);
   const [spotOption, setSpotOption] = useState();
-  const [detailSpotOption, setDetailSpotOption] = useState();
+  const [, setDetailSpotOption] = useState();
   const {data: extraFoodList, refetch} = useGetExtraFoodList(
     startDate,
     endDate,
@@ -48,7 +46,7 @@ const AddOrder = () => {
   const form = useForm({
     mode: 'all',
   });
-  const {watch, setValue, control} = form;
+  const {watch,  control} = form;
 
   const inputWatch = watch();
 
@@ -100,13 +98,14 @@ const AddOrder = () => {
   useEffect(() => {
     let retArray = [];
     extraFoodList?.data.map(v => {
-      v.dailyFoods.map(daily => {
+      return v.dailyFoods.map(daily => {
         retArray.push({
           serviceDate: v.serviceDate,
           diningType: v.diningType,
           foodId: daily.foodId,
           price: daily.price,
         });
+        return undefined
       });
     });
 
@@ -285,7 +284,6 @@ const AddOrder = () => {
                       };
                     });
 
-                    const usageValue = inputWatch[v.foodId];
                     const countValue =
                       inputWatch[`${v.foodId}${el.serviceDate}count`];
 

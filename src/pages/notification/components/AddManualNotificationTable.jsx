@@ -1,20 +1,15 @@
 import {
-  useGetManualNotificationGroup,
   useGetManualNotificationSpot,
   useGetManualNotificationType,
-  useGetManualNotificationUser,
 } from 'hooks/useNotification';
 import {useAtom} from 'jotai';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   Button,
   Dropdown,
-  Input,
   Table,
-  TableHeader,
   TextArea,
 } from 'semantic-ui-react';
-import {TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import {notificationAtom} from '../store';
 
@@ -44,7 +39,7 @@ const AddManualNotificationTable = () => {
   const [selectType, setSelectType] = useState(0);
   const [optionsGroup, setOptionsGroup] = useState([]);
   const [selectGroup, setSelectGroup] = useState([]);
-  const [optionsPage, setOptionsPage] = useState(pageOption);
+  const [optionsPage, ] = useState(pageOption);
   const [selectPage, setSelectPage] = useState('Home');
   const [message, setMessage] = useState();
   const [notificationData, setNotificationData] = useAtom(notificationAtom);

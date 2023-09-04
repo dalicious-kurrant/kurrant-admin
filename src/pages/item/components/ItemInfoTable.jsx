@@ -1,6 +1,6 @@
 import {useAtom} from 'jotai';
 import {useNavigate} from 'react-router-dom';
-import {Button, Table} from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
 import styled, {css} from 'styled-components';
 import {
   makersNameAtom,
@@ -9,8 +9,6 @@ import {
 } from 'utils/store';
 import withCommas from '../../../utils/withCommas';
 import Select from 'react-select';
-import {useState} from 'react';
-import {PageWrapper} from 'style/common.style';
 import {foodStatusFomatted} from 'utils/statusFormatter';
 
 const ItemInfoTable = ({
@@ -23,7 +21,7 @@ const ItemInfoTable = ({
 }) => {
   const navigate = useNavigate();
   const [, setId] = useAtom(shopInfoDetailIdAtom);
-  const [option, setOption] = useAtom(makersNameAtom);
+  const [, setOption] = useAtom(makersNameAtom);
   const [statusOption, setStatusOption] = useAtom(statusOptionAtom);
 
   const goToPage = (foodId, makersId) => {

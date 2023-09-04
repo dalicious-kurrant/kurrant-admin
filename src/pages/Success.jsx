@@ -1,13 +1,10 @@
-import {orderApis} from 'api/order';
-import {successApi} from 'api/success';
-import axios from 'axios';
 import React, {useEffect} from 'react';
-import {useParams, useSearchParams} from 'react-router-dom';
+import {useSearchParams} from 'react-router-dom';
 import instanceOrder from 'shared/axiosSuccess';
 import {PageWrapper} from '../style/common.style';
 
 const Success = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, ] = useSearchParams();
 
   useEffect(() => {
     const token = searchParams.get('token');

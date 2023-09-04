@@ -1,17 +1,17 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, Form, Modal} from 'semantic-ui-react';
+import {Button, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
 import Input from '../../../components/input/Input';
 import {useUserPoint} from 'hooks/usePoint';
 
 const CustomerPoint = ({open, setOpen, userCheck}) => {
   const {mutateAsync: userPoint} = useUserPoint();
-  const [addState, setAddState] = useState();
-  const [minusState, setMinusState] = useState();
+  const [addState, ] = useState();
+  const [minusState, ] = useState();
   console.log(addState, minusState);
   const form = useForm({
-    mode: 'all',
+    mode: 'all', 
   });
   const {watch} = form;
 

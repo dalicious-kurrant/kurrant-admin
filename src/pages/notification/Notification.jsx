@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useState} from 'react';
 import {Button} from 'semantic-ui-react';
 import styled from 'styled-components';
 import AutoNotificationTable from './components/AutoNotificationTable';

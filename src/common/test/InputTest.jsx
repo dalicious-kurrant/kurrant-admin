@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import {FormProvider, useForm} from 'react-hook-form';
 
-const Test = ({}) => {
+const Test = () => {
   const mockData = {
     foodName: '짜장면',
     foodPrice: '20000원',
@@ -18,19 +18,10 @@ const Test = ({}) => {
     mode: 'all',
   });
   const {
-    formState: {errors},
-    watch,
     setValue,
     handleSubmit,
   } = form;
 
-  const foodName = watch('foodName');
-  const foodPrice = watch('foodPrice');
-  const discountRate = watch('discountRate');
-  const discountPrice = watch('discountPrice');
-  const periodDiscountRate = watch('periodDiscountRate');
-  const periodDiscountPrice = watch('periodDiscountPrice');
-  const customPrice = watch('customPrice');
 
   // useEffect(() => {
   //   console.log(foodName);

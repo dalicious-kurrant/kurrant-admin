@@ -1,4 +1,3 @@
-import IssueModal from 'pages/adjustment/components/IssueModal';
 import {useEffect, useState} from 'react';
 import {Button, Pagination, Table} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from 'style/common.style';

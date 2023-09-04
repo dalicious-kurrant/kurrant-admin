@@ -3,11 +3,9 @@ import styled from 'styled-components';
 
 // import {TableWrapper} from '../../../style/common.style';
 
-import Select from 'react-select';
 import {TableWrapper} from 'style/common.style';
 
-import {useEffect, useState} from 'react';
-import reportWebVitals from 'reportWebVitals';
+import {useEffect} from 'react';
 import CustomInputTableCell from './component/CustomTableCellInput';
 // import RecommendationEditModal from '../Modal/RecommendationEditModal';
 // import FoodGroupEditModal from '../Modal/FoodGroupEditModal';
@@ -77,9 +75,11 @@ const CustomerTasteTable = ({
         case 3:
           setInputValue4(v.foodIds.split(', '));
           break;
+        default:
+          break;
       }
     });
-  }, [data]);
+  }, [data, setInputValue1, setInputValue2, setInputValue3, setInputValue4]);
 
   // useEffect(() => {
   //   console.log('inputValue 1 ');
@@ -167,31 +167,12 @@ const CustomerTasteTable = ({
           <Table.Body>
             {[...new Array(4)].map((row, i) => (
               <Table.Row
-                // style={{
-                //   cursor: 'pointer',
-                // }}
                 key={i}
                 onClick={e => {
                   e.stopPropagation();
-                  // setSelectedId(row);
-                  // setShowModal(true);
-                  // setClickedData(row);
-                  //   showEditOpen(row.id);
-                  // console.log(i);₩₩....
                 }}
                 active={false}>
-                {/* <Table.Cell
-  textAlign="center"
-  onClick={e => e.stopPropagation()}>
-  <input
-    checked={checkboxList.includes(i) ? true : false}
-    type="checkbox"
-    // onClick={e => checked(e, el.foodId)}
-    onChange={e => {
-      handleSingleCheck(e.target.checked, i);
-    }}
-  />
-</Table.Cell> */}
+              
                 <Table.Cell>
                   <FlexBox>{i + 1}</FlexBox>
                 </Table.Cell>
@@ -235,95 +216,3 @@ const FlexBox = styled.div`
   align-items: center;
   white-space: nowrap;
 `;
-
-const IsDeleteFlexBox = styled(FlexBox)`
-  color: red;
-`;
-
-const Content = styled.div`
-  max-width: 400px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
-
-const FlexPwdBox = styled.div`
-  width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-const DropdownBox = styled.div`
-  width: 150px;
-`;
-
-const SelectWrap = styled.div`
-  display: flex;
-  margin-bottom: 24px;
-`;
-
-const SelectBox = styled(Select)`
-  width: 250px;
-  margin-right: 50px;
-`;
-
-const CellInput = styled.input`
-  /* outline: none; */
-  border: none;
-
-  width: 30px;
-  font-weight: 500;
-  text-align: center;
-  font-size: 16px;
-  padding-top: 3px;
-  /* vertical-align: middle; */
-  /* line-height: 2px; */
-`;
-
-// {Array.isArray(data) &&
-//   data?.length > 0 &&
-//   data?.map((row, i) => {
-//     return (
-//       <Table.Row
-//         key={row.pageNum}
-//         onClick={e => {
-//           e.stopPropagation();
-//         }}
-//         active={false}>
-//         {/* <Table.Cell
-//           textAlign="center"
-//           onClick={e => e.stopPropagation()}>
-//           <input
-//             checked={checkboxList.includes(i) ? true : false}
-//             type="checkbox"
-//             // onClick={e => checked(e, el.foodId)}
-//             onChange={e => {
-//               handleSingleCheck(e.target.checked, i);
-//             }}
-//           />
-//         </Table.Cell> */}
-//         <Table.Cell>
-//           <FlexBox>{i + 1}</FlexBox>
-//         </Table.Cell>
-
-//         {[...new Array(21)].map((v1, i1) => (
-//           <CustomInputTableCell
-//             i={i}
-//             key={`${i}_${i1}`}
-//             idNum={i1}
-//             inputValues={[
-//               inputValue1,
-//               inputValue2,
-//               inputValue3,
-//               inputValue4,
-//             ]}
-//             setInputValues={[
-//               setInputValue1,
-//               setInputValue2,
-//               setInputValue3,
-//               setInputValue4,
-//             ]}
-//           />
-//         ))}
-//       </Table.Row>
-//     );
-//   })}

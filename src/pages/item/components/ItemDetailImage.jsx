@@ -1,9 +1,8 @@
-import {useImageUpload} from 'hooks/useProductsList';
 import {useRef, useState} from 'react';
 import {Button, Label} from 'semantic-ui-react';
 import styled from 'styled-components';
 
-const ItemDetailImage = ({sendForm, setSendForm, length}) => {
+const ItemDetailImage = ({sendForm, setSendForm, length, type="file" ,id='inputTag'}) => {
   const [showImages, setShowImages] = useState([]); // 미리보기
   const [imgData, setImgData] = useState([]); // formData
   // console.log(showImages);
@@ -31,6 +30,7 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
 
   const updateContent = async e => {
     const files = e.target.files;
+    console.log([...sendForm, ...files])
     setSendForm([...sendForm, ...files]);
   };
 
@@ -44,12 +44,12 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
   return (
     <Wrapper>
       <div style={{marginBottom: 24}}>
-        <UploadButton htmlFor="inputTag">이미지 업로드</UploadButton>
+        <UploadButton htmlFor={id}>이미지 업로드</UploadButton>
       </div>
       <Label content="추가 이미지" color="blue" />
       <Input
-        id="inputTag"
-        type="file"
+        id={id}
+        type={type}
         accept="image/*"
         multiple="multiple"
         ref={imgRef}
@@ -60,7 +60,7 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
         onClick={e => {
           if (showImages.length + (length && length) > 5) {
             e.preventDefault();
-            alert('사진은 최대 6장만 가능합니다.');
+            alert('사진은 최대1장만 가능합니다.');
           }
         }}
       />

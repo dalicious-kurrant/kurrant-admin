@@ -1,8 +1,6 @@
 import {useCompanyList} from 'hooks/useCompany';
 import {useAtom} from 'jotai';
-import {useState} from 'react';
 import {Checkbox, Dropdown} from 'semantic-ui-react';
-import {PageWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import {
   checkValueAtom,

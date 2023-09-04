@@ -1,6 +1,5 @@
 import {atomWithReset} from 'jotai/utils';
 import {
-  formattedWeekDate,
   formattedWeekDateZ,
   formattedYearMonthDate,
 } from './dateFormatter';

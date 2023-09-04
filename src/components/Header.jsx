@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MenuList} from '../router/menu';
 import {Segment, Menu, Dropdown} from 'semantic-ui-react';
@@ -7,9 +7,6 @@ import styled, {css} from 'styled-components';
 import {useResetAtom} from 'jotai/utils';
 import {
   exelCorporationAtom,
-  exelPlanAtom,
-  exelProductAtom,
-  exelSpotAtom,
   exelUserAtom,
   makersExelInfoAtom,
   planAtom,

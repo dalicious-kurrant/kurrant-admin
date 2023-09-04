@@ -2,7 +2,6 @@ import DeleteModal from '../components/modal/DeleteModal';
 import React, {createContext, useContext, useMemo, useState} from 'react';
 
 const ModalContext = createContext({
-  // eslint-disable-next-line
   onActive: () => {},
   active: false,
 });

@@ -17,37 +17,7 @@ import {
   preNumberFormatted,
 } from 'utils/statusFormatter';
 import withCommas from 'utils/withCommas';
-const data = [
-  {
-    diningType: 2,
-    deliveryTimes: '12:00,12:30,13:00,13:30',
-    membershipBenefitTime: '0일전 10:00',
-    lastOrderTime: '0일전 10:00',
-    serviceDays: '월, 화, 수, 목, 금',
-    supportPriceByDays: [
-      {
-        serviceDay: '금',
-        supportPrice: 10000,
-      },
-      {
-        serviceDay: '목',
-        supportPrice: 10000,
-      },
-      {
-        serviceDay: '수',
-        supportPrice: 10000,
-      },
-      {
-        serviceDay: '월',
-        supportPrice: 10000,
-      },
-      {
-        serviceDay: '화',
-        supportPrice: 10000,
-      },
-    ],
-  },
-];
+
 function CorpEditModal({
   open,
   setOpen,
@@ -59,7 +29,6 @@ function CorpEditModal({
   setTestData,
 }) {
   const {mutateAsync: updateSpotDetail} = useUpdateSpotDetail();
-  const week = ['월', '화', '수', '목', '금', '토', '일'];
   const updateMealinfoData = (nullData,diningData,mealInfos)=>{
     if(diningData === null){
       return setNowData({...nowData,mealInfos:[...nowData.mealInfos,nullData]})
@@ -1248,10 +1217,7 @@ function CorpEditModal({
                                     style={{width: 50}}
                                     value={withCommas(v.count||0)}
                                     onChange={(e, data) => {
-                                      const priceData =
-                                        nowData.categoryPrices.find(f => {
-                                          return f.code === v.code;
-                                        });
+                                      
                                       setNowData({
                                         ...nowData,
                                         prepaidCategoryList:
@@ -1356,11 +1322,7 @@ const LabelCheckBox = styled.div`
   width: 120px;
   display: flex;
 `;
-const FlexBox2 = styled.div`
-  display: flex;
-  gap: 10px;
-  width: ${({width}) => (width ? `${width}px` : '100px')};
-`;
+
 const LineBox = styled.div`
   display: flex;
   font-size: 12px;

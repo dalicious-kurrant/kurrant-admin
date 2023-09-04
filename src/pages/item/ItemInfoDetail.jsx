@@ -43,6 +43,7 @@ const ProductDetailPage = () => {
   const [clicked, setClicked] = useState([]);
   const [dataList, setDataList] = useAtom(productDataAtom); // 이미지
   const [sendForm, setSendForm] = useState([]);
+  const [sendIntroForm, setSendIntroForm] = useState([]);
   const [text, setText] = useState('');
   const [morningTime, setMorningTime] = useState();
   const [lunchTime, setLunchTime] = useState();
@@ -54,7 +55,6 @@ const ProductDetailPage = () => {
     mode: 'all',
   });
   const {
-    formState: {errors},
     watch,
     setValue,
   } = form;
@@ -83,9 +83,15 @@ const ProductDetailPage = () => {
   const modifyButton = async () => {
     const formData = new FormData();
 
-    if (sendForm) {
+    if (sendForm?.length> 0) {
       for (let i = 0; i < sendForm.length; i++) {
         formData.append('files', sendForm[i]);
+      }
+    }
+    if (sendIntroForm?.length> 0) {
+      for (let i = 0; i < sendIntroForm.length; i++) {
+        console.log(sendIntroForm[i])
+        formData.append('introFiles', sendIntroForm[i]);
       }
     }
 
@@ -124,7 +130,8 @@ const ProductDetailPage = () => {
         dinnerTime === undefined
           ? null
           : dinnerEndTime + '일전 ' + dinnerTime,
-      images: dataList?.foodImages,
+        foodImages: dataList?.foodImages,
+      introImages: dataList?.introImages,
       description: text,
 
       calorie: calorie,
@@ -151,6 +158,13 @@ const ProductDetailPage = () => {
     setDataList(prev => ({
       ...prev,
       foodImages: [...newImageURL],
+    }));
+  };
+  const deleteIntroImage = dataUrl => {
+    const newImageURL = dataList.introImages.filter(el => el !== dataUrl);
+    setDataList(prev => ({
+      ...prev,
+      introImages: [...newImageURL],
     }));
   };
 
@@ -467,6 +481,34 @@ const ProductDetailPage = () => {
             setSendForm={setSendForm}
             sendForm={sendForm}
             length={dataList?.foodImages.length}
+          />
+        </div>
+        <div>
+          <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
+          <Label content="기존 이미지" color="blue" />
+          <ImageWrap>
+            {dataList &&
+              dataList?.introImages.map((el, i) => {
+                return (
+                  <ImageBox key={el + i}>
+                    <img src={el} alt="기존이미지" />
+
+                    <DeleteButton
+                      circular
+                      icon="delete"
+                      onClick={() => {
+                        deleteIntroImage(el);
+                      }}
+                    />
+                  </ImageBox>
+                );
+              })}
+          </ImageWrap>
+          <ItemDetailImage
+            id={'inputIntroTag'}
+            setSendForm={setSendIntroForm}
+            sendForm={sendIntroForm}
+            length={dataList?.introImages.length}
           />
         </div>
         <div>

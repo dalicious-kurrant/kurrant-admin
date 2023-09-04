@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Outlet, useLocation} from 'react-router-dom';
-import {Breadcrumb, Button} from 'semantic-ui-react';
+import {Breadcrumb} from 'semantic-ui-react';
 import Header from '../components/Header';
 import Common from './Common';
 import {MenuList} from 'router/menu';

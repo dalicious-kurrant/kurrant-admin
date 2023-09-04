@@ -228,13 +228,6 @@ const Statement = styled.div`
   display: flex;
 `;
 
-const TotalPriceWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const TotalWrap = styled.div``;
-
 const ButtonWrap = styled.div`
   display: flex;
   justify-content: flex-end;

@@ -2,9 +2,7 @@ import styled from 'styled-components';
 
 import CheckIcon from 'assets/svg/CheckIcon.svg';
 import Image from './Image';
-import {useState} from 'react';
 import {splitNumberAndUnit} from 'utils/valueHandlingLogics';
-import {useEffect} from 'react';
 
 const TableCheckbox = ({
   width,
@@ -56,7 +54,7 @@ const Container = styled.button`
 
   border-radius: ${({width, height}) => {
     const {number: widthValue, unit} = splitNumberAndUnit(width);
-    const {number: heightValue, _} = splitNumberAndUnit(height);
+    const {number: heightValue} = splitNumberAndUnit(height);
 
     return `${(widthValue + heightValue) / 8}${unit}`;
   }};

@@ -46,10 +46,10 @@ export function useEditEvent() {
 }
 
 export function useUserPoint() {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   return useMutation(data => pointApis.userPoint(data), {
     onSuccess: () => {
-      //queryClient.invalidateQueries('eventPolicy');
+      // queryClient.invalidateQueries('eventPolicy');
     },
   });
 }

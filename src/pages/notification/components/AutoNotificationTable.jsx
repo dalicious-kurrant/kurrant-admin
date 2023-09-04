@@ -9,7 +9,6 @@ import {
   Button,
   Dropdown,
   Table,
-  TableHeader,
   TextArea,
 } from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';

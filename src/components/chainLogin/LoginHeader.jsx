@@ -40,6 +40,3 @@ const TitleBoldSpan = styled.span`
     return props.theme.colors.black;
   }}; */
 `;
-const TitleMediumSpan = styled.span`
-  font-weight: 300;
-`;

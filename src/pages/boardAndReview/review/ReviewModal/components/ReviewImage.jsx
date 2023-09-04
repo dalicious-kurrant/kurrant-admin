@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 
 const ReviewImage = ({url, setShowImageModal}) => {
-  const [onHover, setOnHover] = useState(false);
+  const [, setOnHover] = useState(false);
   const divRef = useRef(null);
 
   const [isHorizontal, setIsHorizontal] = useState(false);

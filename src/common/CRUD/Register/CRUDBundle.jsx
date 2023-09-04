@@ -69,20 +69,9 @@ const Wrap = styled.div`
   flex-direction: column;
 `;
 
-const Wrap2 = styled.div`
-  margin: 0.2rem;
-`;
+
 
 const BtnWrap = styled.div`
   margin: 0.4rem 0.2rem;
 `;
 
-const FinalSendButton = styled(Button)`
-  /* opacity: ${({checkboxstatus}) => {
-    if (!Object.values(checkboxstatus).includes(true)) {
-      return 0.5;
-    } else {
-      return 1;
-    }
-  }}; */
-`;

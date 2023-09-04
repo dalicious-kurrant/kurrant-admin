@@ -48,7 +48,6 @@ const Input = forwardRef(
     // Hook
     const {
       control,
-      watch,
       formState: {errors},
     } = useFormContext();
 

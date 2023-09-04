@@ -1,11 +1,10 @@
 import {useGetExtraHistory, useRefundExtraOrder} from 'hooks/useExtraOrder';
 import {useGetGroupList} from 'hooks/useOrderList';
 import {useAtom} from 'jotai';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {Button, Dropdown, Table} from 'semantic-ui-react';
-import {PageWrapper, TableWrapper} from 'style/common.style';
+import {TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
-import {formattedWeekDateZ} from 'utils/dateFormatter';
 import {
   extraHistoryEndDateAtom,
   extraHistoryStartDateAtom,

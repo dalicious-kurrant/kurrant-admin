@@ -1,10 +1,9 @@
-import useModal from '../../hooks/useModal';
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Button, Dropdown, Label, Pagination, Table} from 'semantic-ui-react';
-import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
+import {Button, Dropdown, Label, Pagination} from 'semantic-ui-react';
+import {BtnWrapper, PageWrapper} from '../../style/common.style';
 import {
   exelPlanAtom,
-  exelStaticAtom,
   planAtom,
   planExportAtom,
   recommandPlanAtom,
@@ -13,7 +12,6 @@ import {useAtom} from 'jotai';
 import styled from 'styled-components';
 import {
   formattedDate,
-  formattedDateAndTime,
   formattedFullDate,
   formattedTime,
   formattedWeekDate,
@@ -30,18 +28,9 @@ import {
   useGetExportCalendar,
   useGetRecommandCalendar,
   usePostCalendar,
-  usePostPresetCalendar,
 } from 'hooks/useCalendars';
 import {scheduleFormatted2} from 'utils/statusFormatter';
-import {QueryClient} from 'react-query';
-const options = [
-  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
-  {key: '커런트', text: '커런트', value: '커런트'},
-];
-const optionsClient = [
-  {key: '달리셔스', text: '달리셔스', value: '달리셔스'},
-  {key: '이너스', text: '이너스', value: '이너스'},
-];
+
 const optionsDiningStatus = [
   {key: '요청', text: '요청', value: 0},
   {key: '승인', text: '승인', value: 1},
@@ -50,11 +39,9 @@ const optionsDiningStatus = [
 
 // 메이커스 정보 페이지
 const Plans = () => {
-  const {onActive} = useModal();
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
-  const [exelStatic, setStaticPlan] = useAtom(exelStaticAtom);
   const [plan, setPlan] = useAtom(planAtom);
-  const [planExport, setPlanExport] = useAtom(planExportAtom);
+  const [, setPlanExport] = useAtom(planExportAtom);
   const pageRef = useRef(null);
   const [reCommandPlan, setReCommandPlan] = useAtom(recommandPlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
@@ -130,27 +117,6 @@ const Plans = () => {
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
-      const req = plan.map(makers => {
-        return makers.clientSchedule.map(client => {
-          return client.foodSchedule.map(food => {
-            const result = {
-              makersName: makers.makersName,
-              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
-              serviceDate: makers.serviceDate,
-              diningType: makers.diningType,
-              makersCapacity: makers.makersCapacity,
-              pickupTime: client.pickupTime,
-              groupName: client.clientName,
-              groupCapacity: client.clientCapacity,
-              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
-              foodName: food.foodName,
-              foodStatus: food.foodStatus,
-              foodCapacity: food.foodCapacity,
-            };
-            reqArray.push(result);
-          });
-        });
-      });
     }
     if (reCommandPlan) {
       console.log(reCommandPlan);
@@ -172,6 +138,7 @@ const Plans = () => {
               foodCapacity: food.foodCapacity,
             };
             reqArray.push(result);
+            return result
           });
         });
       });
@@ -193,8 +160,10 @@ const Plans = () => {
             foodStatus: makers.foodStatus,
             foodCapacity: makers.foodCapacity,
           };
-          reqArray.push(result);
+          reqArray.push(result);          
+          return result;
         }
+        return undefined
       });
     }
     await postCalendar({
@@ -244,10 +213,10 @@ const Plans = () => {
   useEffect(() => {
     if (plan && !exelPlan && !reCommandPlan) {
       setCount(
-        plan.map((v, i) => {
+        plan.map((v) => {
           let num = 0;
-          v.clientSchedule.map((s, si) => {
-            return s.foodSchedule.map((d, di) => {
+          v.clientSchedule.map((s) => {
+            return s.foodSchedule.map(() => {
               return num++;
             });
           });
@@ -257,10 +226,10 @@ const Plans = () => {
     }
     if (!exelPlan && !plan && reCommandPlan) {
       setCount(
-        reCommandPlan.map((v, i) => {
+        reCommandPlan.map((v) => {
           let num = 0;
-          v.clientSchedule.map((s, si) => {
-            return s.foodSchedule.map((d, di) => {
+          v.clientSchedule.map((s) => {
+            return s.foodSchedule.map(() => {
               return num++;
             });
           });

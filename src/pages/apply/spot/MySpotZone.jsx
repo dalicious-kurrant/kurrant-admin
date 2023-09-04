@@ -1,4 +1,4 @@
-import {PageWrapper} from 'style/common.style';
+/* eslint-disable react-hooks/exhaustive-deps */
 import Filter from './components/Filter';
 import {Button, Pagination, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
