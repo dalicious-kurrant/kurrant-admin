@@ -60,7 +60,7 @@ const ProductDetailPage = () => {
   } = form;
 
   // const foodName = watch('foodName');
-  const foodPrice = watch('foodPrice');
+  const defaultPrice = watch('defaultPrice');
   const supplyPrice = watch('supplyPrice');
   const discountRate = watch('discountRate');
   // const discountPrice = watch('discountPrice');
@@ -97,7 +97,7 @@ const ProductDetailPage = () => {
 
     const data = {
       foodId: listData?.foodId,
-      defaultPrice: Number(foodPrice.replace(',', '')),
+      defaultPrice: Number(defaultPrice.replace(',', '')),
       supplyPrice: Number(supplyPrice.replace(',', '')),
       foodGroup: selectedFoodGroup.name,
       foodGroupId: selectedFoodGroup.id,
@@ -187,7 +187,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     setValue('foodName', listData?.foodName);
-    setValue('foodPrice', withCommas(listData?.foodPrice));
+    setValue('defaultPrice', withCommas(listData?.defaultPrice));
     setValue(
       'supplyPrice',
       withCommas(listData?.supplyPrice === 0 ? '0' : listData?.supplyPrice),
@@ -278,7 +278,7 @@ const ProductDetailPage = () => {
   }, [
     listData?.customPrice,
     listData?.foodName,
-    listData?.foodPrice,
+    listData?.defaultPrice,
     listData?.makersDiscountPrice,
     listData?.makersDiscountRate,
     listData?.periodDiscountPrice,
@@ -314,7 +314,7 @@ const ProductDetailPage = () => {
               <PriceWrap>
                 <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="supplyPrice" label="공급가" />
-                <Input name="foodPrice" label="매장가" />
+                <Input name="defaultPrice" label="매장가" />
                 <Input name="membershipRate" label="멤버십 할인율" />
                 <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="discountRate" label="매장 할인율" />
