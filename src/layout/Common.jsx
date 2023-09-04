@@ -51,7 +51,6 @@ import {
 } from '../hooks/useProductsList';
 import {
   deliveryFeeOptionReverseFormatted,
-  diningFormatted,
   diningReverseFormatted,
   groupTypeFormatted2,
   scheduleFormatted2,
@@ -129,27 +128,27 @@ const Common = () => {
   const [planExport, setPlanExport] = useAtom(planExportAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
 
-  const [startDate, setStartDate] = useAtom(deadlineAtom);
+  const [startDate, ] = useAtom(deadlineAtom);
   const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
   const {mutateAsync: saveUserData} = useSaveUserData();
 
   // 스팟
   const [indexStatus] = useAtom(indexAtom);
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
-  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
+  const [spotInfoData, ] = useAtom(SpotInfoDataAtom);
   const [spot, setSpot] = useAtom(spotAtom);
 
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
   const [user, setUser] = useAtom(CustomerDataAtom);
   const [, setExelStaticPlan] = useAtom(exelStaticAtom);
-  const [product, setProduct] = useAtom(productAtom);
+  const [, setProduct] = useAtom(productAtom);
   const [exportProduct, setExportProduct] = useAtom(exportProductAtom);
   const [completePlan, setCompletePlan] = useAtom(completePlanAtom);
   const [exelCompletePlan, setExelCompletePlan] = useAtom(exelCompletePlanAtom);
   const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
   const [id] = useAtom(shopInfoDetailIdAtom);
   const [orderNumber] = useAtom(orderNumberAtom);
-  const [corporation, setCorporation] = useAtom(corporationAtom);
+  const [, setCorporation] = useAtom(corporationAtom);
   const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
   const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
   const [makersExelInfo, setMakersExelInfo] = useAtom(makersExelInfoAtom);
@@ -165,7 +164,7 @@ const Common = () => {
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
 
   const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
-  const [tableDeleteList, setTableDeleteList] = useAtom(TableDeleteListAtom);
+  const [tableDeleteList, ] = useAtom(TableDeleteListAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -178,29 +177,6 @@ const Common = () => {
   const completePost = async () => {
     const reqArray = [];
     if (completePlan) {
-      const req = completePlan.map(makers => {
-        return makers.makersSchedules.map(client => {
-          return client.foodSchedules.map(food => {
-            const result = {
-              serviceDate: makers.serviceDate,
-              diningType: makers.diningType,
-              groupName: makers.groupName,
-              groupCapacity: makers.groupCapacity,
-              deliveryTime: makers.deliveryTime,
-              makersName: client.makersName,
-              makersCapacity: client.makersCapacity,
-              makersCount: client.makersCount,
-              makersPickupTime: client.makersPickupTime,
-              foodName: food.foodName,
-              foodStatus: food.dailyFoodStatus,
-              dailyFoodId: food.dailyFoodId || null,
-              foodCapacity: food.foodCapacity,
-              foodCount: food.foodCount,
-            };
-            reqArray.push(result);
-          });
-        });
-      });
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -211,27 +187,6 @@ const Common = () => {
       }
     }
     if (exelCompletePlan) {
-      const req = exelCompletePlan.map((makers, i) => {
-        if (i !== 0) {
-          const result = {
-            serviceDate: formattedDate(makers.serviceDate, '-'),
-            diningType: makers.diningType,
-            groupName: makers.groupName,
-            groupCapacity: makers.groupCapacity,
-            deliveryTime: makers.deliveryTime.split(','),
-            makersName: makers.makersName,
-            makersCapacity: makers.makersCapacity,
-            makersCount: makers.makersCount,
-            makersPickupTime: makers.makersPickupTime.split(','),
-            foodName: makers.foodName,
-            foodStatus: makers.dailyFoodStatus,
-            dailyFoodId: makers.dailyFoodId || null,
-            foodCapacity: makers.foodCapacity,
-            foodCount: makers.foodCount,
-          };
-          reqArray.push(result);
-        }
-      });
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -246,27 +201,6 @@ const Common = () => {
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
-      const req = plan.map(makers => {
-        return makers.clientSchedule.map(client => {
-          return client.foodSchedule.map(food => {
-            const result = {
-              makersName: makers.makersName,
-              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
-              serviceDate: makers.serviceDate,
-              diningType: makers.diningType,
-              makersCapacity: makers.makersCapacity,
-              pickupTime: client.pickupTime,
-              groupName: client.clientName,
-              groupCapacity: client.clientCapacity,
-              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
-              foodName: food.foodName,
-              foodStatus: food.foodStatus,
-              foodCapacity: food.foodCapacity,
-            };
-            reqArray.push(result);
-          });
-        });
-      });
     }
 
     if (reCommandPlan) {
@@ -288,6 +222,7 @@ const Common = () => {
               foodCapacity: food.foodCapacity,
             };
             reqArray.push(result);
+            return undefined
           });
         });
       });
@@ -311,11 +246,11 @@ const Common = () => {
           };
           reqArray.push(result);
         }
+        return undefined
       });
     }
     if (exelProduct) {
       exelProduct.map((item, idx) => {
-        console.log(item, '000');
         if (idx !== 0) {
           const result = {
             foodId: item.foodId,
@@ -337,6 +272,7 @@ const Common = () => {
 
           reqArray.push(result);
         }
+        return undefined
       });
       try {
         await productPost(reqArray);
@@ -405,6 +341,7 @@ const Common = () => {
                 };
                 return pushData;
               }
+              return undefined
             })
             .filter(meal => meal);
           const result = {
@@ -439,6 +376,7 @@ const Common = () => {
           // console.log(JSON.stringify(result));
           reqArray.push(result);
         }
+        return undefined
       });
       // console.log(reqArray, '00');
       try {
@@ -543,6 +481,7 @@ const Common = () => {
 
           reqArray.push(result);
         }
+        return undefined
       });
       console.log(reqArray, '00');
       try {
@@ -799,6 +738,7 @@ const Common = () => {
           orderAlarm: v.orderAlarm || null,
         };
       }
+      return undefined
     });
     const req = result.filter(element => {
       return element !== undefined && element !== null && element !== '';
@@ -808,7 +748,7 @@ const Common = () => {
     return window.location.reload();
   };
   const handlerSaveUser = async () => {
-    const result = user.map((v, i) => {
+    const result = user.map((v) => {
       return {
         password: v.password || null,
         paymentPassword: v.paymentPassword || null,

@@ -121,7 +121,7 @@ const useSpotInfoQuery = (
 
   useEffect(() => {
     setData(data);
-  }, [data]);
+  }, [data, setData]);
 
   return {
     status,

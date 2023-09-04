@@ -1,4 +1,3 @@
-import {formattedDate, formattedTime} from 'utils/dateFormatter';
 import * as XLSX from 'xlsx';
 import {groupTypeFormatted, scheduleFormatted} from '../statusFormatter';
 const week = ['월', '화', '수', '목', '금', '토', '일'];
@@ -486,6 +485,7 @@ export function corporationInfoExel(corporation) {
             return das.supportPrice.toString();
           }
         }
+        return undefined
       })
       .filter(s => s);
     const lunchSupportPrice = week
@@ -498,6 +498,7 @@ export function corporationInfoExel(corporation) {
             return das.supportPrice.toString();
           }
         }
+        return undefined
       })
       .filter(s => s);
     const dinnerSupportPrice = week
@@ -510,6 +511,7 @@ export function corporationInfoExel(corporation) {
             return das.supportPrice.toString();
           }
         }
+        return undefined
       })
       .filter(s => s);
     const reqArray = [];

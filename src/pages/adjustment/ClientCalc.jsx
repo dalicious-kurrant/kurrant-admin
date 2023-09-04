@@ -26,8 +26,8 @@ const ClientCalc = () => {
   const navigate = useNavigate();
 
   const {mutateAsync: updateStatus} = useUpdateSpotsAdjustStatus();
-  const [startMonth, setStartMonth] = useAtom(startMonthClientAtom);
-  const [endMonth, setEndMonth] = useAtom(endMonthClientAtom);
+  const [startMonth, ] = useAtom(startMonthClientAtom);
+  const [endMonth, ] = useAtom(endMonthClientAtom);
   const [selectClient] = useAtom(selectClientClientAtom);
   const [selectStatus] = useAtom(selectStatusClientAtom);
   const [selectModify] = useAtom(selectModifyClientAtom);
@@ -206,10 +206,6 @@ const InputImage = styled.img`
   cursor: pointer;
 `;
 
-const InputBlock = styled.div`
-  max-width: 180px;
-  font-size: 14px;
-`;
 
 const TotalTite = styled.div`
   font-weight: 600;

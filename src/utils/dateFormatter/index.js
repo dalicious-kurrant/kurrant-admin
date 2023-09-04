@@ -30,8 +30,6 @@ export function formattedTimer(remainSeconds) {
 }
 export function formattedWeekDateTime(data, delimiter = '-') {
   const dateTime = transDateType(data);
-  const year = dateTime.getFullYear();
-  const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
   const hour = leftPad(dateTime.getHours());
   const minute = leftPad(dateTime.getMinutes());
@@ -44,7 +42,6 @@ export function formattedTime(data) {
     isDate.setHours(hhmm[0]);
     isDate.setMinutes(hhmm[1]);
     const dateTime = transTimeType(isDate);
-    const day = leftPad(dateTime.getDate());
     const hour = leftPad(dateTime.getHours());
     const minute = leftPad(dateTime.getMinutes());
     return `${hour}:${minute}`;
@@ -175,7 +172,7 @@ export function formattedApplicationDate(data) {
   const year = dateTime.getFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
-  return `${[year, month, day]}`.replace(/[^0-9 ^\-]/g, '');
+  return `${[year, month, day]}`.replace(/[^0-9 ^-]/g, '');
 }
 export function formattedSameDate(startData, endDate) {
   const dateTime1 = transDateType(

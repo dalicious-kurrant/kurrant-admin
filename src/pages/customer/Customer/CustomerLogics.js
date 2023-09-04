@@ -1,5 +1,4 @@
 import {
-  extractOnlyTruesNumberArray,
   removeParentKeyInCheckbox,
 } from 'common/Table/Logics';
 import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
@@ -75,6 +74,7 @@ export const sendFinal = (
       if (selectedData.includes(value.id.toString())) {
         finalLaunch.push(value);
       }
+      return undefined
     });
 
     const newData = finalLaunch.map(value => {

@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import {Checkbox, Dropdown} from 'semantic-ui-react';
 import {useCompanyList} from 'hooks/useCompany';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 
 const DropdownBox = ({
   selectType,

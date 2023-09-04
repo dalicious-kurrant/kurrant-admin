@@ -1,7 +1,7 @@
-import {useEffect, useRef, useState} from 'react';
-import {Button, Header, Label, Table} from 'semantic-ui-react';
-import styled, {css, useTheme} from 'styled-components';
-import {PageWrapper, TableWrapper} from '../../style/common.style';
+import {useRef, useState} from 'react';
+import {Button, Header, Table} from 'semantic-ui-react';
+import styled, {css} from 'styled-components';
+import {TableWrapper} from '../../style/common.style';
 import {
   formattedWeekDate,
   formattedWeekDateTime,
@@ -21,7 +21,6 @@ const Schedule = () => {
   const [endDate, setEndDate] = useState(days);
   const [diningSelect, setDiningSelect] = useState([0, 1, 2]);
   const [makersOption, setMakersOption] = useState('');
-  const themeApp = useTheme();
   const {data: makersList} = useGetMakersList();
 
   const types =
@@ -259,7 +258,6 @@ const Schedule = () => {
 
                         <MealDetailTimeWrap>
                           {v.foodBySpots.map((spot, i) => {
-                            let foodTotalCount = 0;
                             return (
                               <TableWrap key={i}>
                                 <TableBox>

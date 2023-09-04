@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import {Dropdown} from 'semantic-ui-react';
 import {useGetMakersList} from 'hooks/useOrderList';

@@ -5,7 +5,6 @@ import Layout from '../layout/Layout';
 import {MenuList} from './menu';
 import LoginPage from '../pages/login/Login';
 import ChainLoginPage from '../pages/chainLogin/Login';
-import DashLoginPage from '../pages/dashLogin/Login';
 import Success from '../pages/Success';
 import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import OrderDetail from '../pages/order/orderInfomation/OrderDetail';

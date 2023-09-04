@@ -1,47 +1,43 @@
-import {useEffect, useState} from 'react';
-import {Button, Dropdown, Form, Table} from 'semantic-ui-react';
+import {useState} from 'react';
+import {Dropdown, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {FormProvider, useForm} from 'react-hook-form';
 import ExcelIcon from '../../asset/icons/excel.svg';
 import PDFIcon from '../../asset/icons/pdfIcon.svg';
 import AddMakersAdjust from './components/AddMakersAdjust';
 import {Link} from 'react-router-dom';
-import EditSpotModal from './components/EditSpotModal';
 import {
   adjustReverseStatusFomatted,
-  adjustStatusFomatted,
-  adjustTextStatusFomatted,
 } from 'utils/statusFormatter';
 import {
   useDeleteMakersAdjust,
   useMakersAdjustList,
-  useMakersList,
   useUpdateMakersAdjustStatus,
 } from 'hooks/useAdjustment';
 import EditMakersModal from './components/EditMakersModal';
 import {useConfirm} from 'hooks/useConfirm';
-const test = [
-  {
-    id: 0,
-    year: 2023,
-    month: 7,
-    makersName: '모모유부 역삼점',
-    accountHolder: '장경태',
-    nameOfBank: '신한',
-    accountNumber: '110-334-529061',
-    paycheckStatus: 0,
-  },
-  {
-    id: 1,
-    year: 2023,
-    month: 7,
-    makersName: '모모유부 강남점',
-    accountHolder: '장경태',
-    nameOfBank: '신한',
-    accountNumber: '110-334-529061',
-    paycheckStatus: 0,
-  },
-];
+// const test = [
+//   {
+//     id: 0,
+//     year: 2023,
+//     month: 7,
+//     makersName: '모모유부 역삼점',
+//     accountHolder: '장경태',
+//     nameOfBank: '신한',
+//     accountNumber: '110-334-529061',
+//     paycheckStatus: 0,
+//   },
+//   {
+//     id: 1,
+//     year: 2023,
+//     month: 7,
+//     makersName: '모모유부 강남점',
+//     accountHolder: '장경태',
+//     nameOfBank: '신한',
+//     accountNumber: '110-334-529061',
+//     paycheckStatus: 0,
+//   },
+// ];
 const statusData = [
   {key: 0, text: '정산 신청 완료', value: 0},
   {key: 1, text: '거래명세서 확정 대기', value: 1},
@@ -59,9 +55,8 @@ const MakersAdjustment = () => {
   const {mutateAsync: updateStatus} = useUpdateMakersAdjustStatus();
   const {mutateAsync: deleteAdjustMakers} = useDeleteMakersAdjust();
 
-  const [selectStatus, setSelectStatus] = useState();
   const [showOpenModal, setShowOpenModal] = useState(false);
-  const [editId, setEditId] = useState();
+  const [, setEditId] = useState();
   const [clickData, setClickData] = useState();
   const showEditOpen = id => {
     setEditId(id);

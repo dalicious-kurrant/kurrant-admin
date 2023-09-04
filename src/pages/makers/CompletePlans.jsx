@@ -1,16 +1,14 @@
-import useModal from '../../hooks/useModal';
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, Label, Pagination} from 'semantic-ui-react';
 import {PageWrapper} from '../../style/common.style';
 import {completePlanAtom, exelCompletePlanAtom} from '../../utils/store';
 import {useAtom} from 'jotai';
 import styled from 'styled-components';
-import {formattedWeekDate, formattedWeekDateZ} from '../../utils/dateFormatter';
+import {formattedWeekDate} from '../../utils/dateFormatter';
 import CustomPlanExelTable from './components/CustomPlanExelTable';
-import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import SelectDatePicker from './components/SelectDatePicker';
 import {useGetCompleteCalendar, useGetFilter} from 'hooks/useCalendars';
 import CustomPlanTable from './components/CustomPlanTable';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
@@ -18,13 +16,12 @@ import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
 
 // 메이커스 정보 페이지
 const CompletePlans = () => {
-  const {onActive} = useModal();
   const [shouldFetchData, setShouldFetchData] = useState(false);
-  const [exelPlan, setExelPlan] = useAtom(exelCompletePlanAtom);
+  const [exelPlan, ] = useAtom(exelCompletePlanAtom);
   const [plan, setPlan] = useAtom(completePlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
-  const [totalPage, setTotalPage] = useState(0);
+  const [totalPage, ] = useState(0);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const curr = new Date();
@@ -112,9 +109,9 @@ const CompletePlans = () => {
             <Label color="blue">날짜선택</Label>
             <RecoDatePickerContainer>
               <DateRangePicker
-                endDate={formattedWeekDateZ(accessEndDate)}
+                endDate={accessEndDate}
                 setEndDate={setAccessEndDate}
-                startDate={formattedWeekDateZ(accessStartDate)}
+                startDate={accessStartDate}
                 setStartDate={setAccessStartDate}
               />
               <Button color="green" onClick={handleFetchData}>
@@ -293,13 +290,7 @@ const DeadLineWrapper = styled.div`
   align-items: flex-start;
   flex-direction: column;
 `;
-const RecoDatePickerBox = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: space-between;
-  width: 100px;
-`;
+
 const RecoDatePickerContainer = styled.div`
   display: flex;
   justify-content: center;

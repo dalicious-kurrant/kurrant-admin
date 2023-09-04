@@ -1,6 +1,6 @@
 import {useAtom} from 'jotai';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import {diningListAtom, spotListAtom, userListAtom} from 'utils/store';
+import {diningListAtom, spotListAtom} from 'utils/store';
 import {orderApis} from '../api/order';
 import { userExel } from 'utils/downloadExel/exel';
 
@@ -11,9 +11,9 @@ export function useGetGroupList(spotType) {
 }
 
 export function useGetGroupInfoList(groupId) {
-  const [spotList, setSpotList] = useAtom(spotListAtom);
+  const [, setSpotList] = useAtom(spotListAtom);
   // const [userList, setUserList] = useAtom(userListAtom);
-  const [diningType, setDiningType] = useAtom(diningListAtom);
+  const [, setDiningType] = useAtom(diningListAtom);
   return useQuery(
     'groupInfoList',
     () => {

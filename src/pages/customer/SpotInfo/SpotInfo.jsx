@@ -1,10 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 import Register from 'common/CRUD/Register/Register';
-import useMutate from 'common/CRUD/useMutate';
 import {
-  dataHasNoIdAtom,
   TableCheckboxStatusAtom,
-  TableDeleteListAtom,
 } from 'common/Table/store';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
@@ -24,25 +22,20 @@ import {
 import {SpotInfoDataAtom, SpotInfoGroupIdNameAtom} from './store';
 import {Button, Checkbox, Table} from 'semantic-ui-react';
 
-import {formattedTime, formattedWeekDate} from 'utils/dateFormatter';
 import styled from 'styled-components';
 import useSpotInfoQuery from './useSpotInfoQuery';
 import {
   clickSpotInfoButtonBundle,
-  handleSpotInfoDelete,
-  sendFinal,
 } from './SpotInfoLogics';
-import {useMutation, useQueryClient} from 'react-query';
-import instance from 'shared/axios';
 import TableCustom from 'common/Table/TableCustom';
 import useSpotInfoMutate from './useSpotInfoMutate';
 
 const SpotInfo = () => {
   const {onActive, chkData, setChkData} = useModal();
-  const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
+  const [exelSpot, ] = useAtom(exelSpotAtom);
   const [key, setKey] = useState();
 
-  const [spotInfoData, setSpotInfoData] = useAtom(SpotInfoDataAtom);
+  const [spotInfoData, ] = useAtom(SpotInfoDataAtom);
   const [showRegister, setShowRegister] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
 
@@ -57,7 +50,7 @@ const SpotInfo = () => {
 
   const {submitMutate, editMutate} = useSpotInfoMutate(SpotInfoDataAtom);
 
-  const {status, isLoading, sendFinalMutate, deleteFinalMutate} =
+  const {deleteFinalMutate} =
     useSpotInfoQuery(
       ['getSpotInfoJSON'],
       [SpotInfoDataAtom, spotAtom],

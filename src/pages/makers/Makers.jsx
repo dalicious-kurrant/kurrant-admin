@@ -1,16 +1,15 @@
 import {useGetMakersInformation} from '../../hooks/useMakers';
 import {useAtom} from 'jotai';
 import React, {useEffect} from 'react';
-import {Table} from 'semantic-ui-react';
 import {makersExelInfoAtom, makersInfoAtom} from 'utils/store';
-import {BtnWrapper, PageWrapper, TableWrapper} from '../../style/common.style';
+import {BtnWrapper, PageWrapper} from '../../style/common.style';
 import MakersExelTable from './components/MakersExelTable';
 import MakersTable from './components/MakersTable';
 
 // 메이커스 정보 페이지
 const Makers = () => {
   const [makersInformation, setMakersInformation] = useAtom(makersInfoAtom);
-  const [makersExelInfo, setMakersExelInfo] = useAtom(makersExelInfoAtom);
+  const [makersExelInfo, ] = useAtom(makersExelInfoAtom);
   const {data: makersInfoList} = useGetMakersInformation();
 
   useEffect(() => {

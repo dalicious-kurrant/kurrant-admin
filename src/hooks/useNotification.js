@@ -1,5 +1,4 @@
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import {orderApis} from '../api/order';
 import {notificationApis} from 'api/notification';
 
 export function useGetManualNotificationType() {

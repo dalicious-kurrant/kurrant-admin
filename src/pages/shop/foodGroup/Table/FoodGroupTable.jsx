@@ -3,10 +3,9 @@ import styled from 'styled-components';
 
 // import {TableWrapper} from '../../../style/common.style';
 
-import Select from 'react-select';
 import {TableWrapper} from 'style/common.style';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import FoodGroupEditModal from '../Modal/FoodGroupEditModal';
 // import FoodGroupEditModal from '../Modal/FoodGroupEditModal';
 
@@ -68,7 +67,7 @@ const FoodGroupTable = ({data, checkboxList, setCheckboxList}) => {
 
           <Table.Body>
             {data?.length > 0 &&
-              data?.map((row, i) => {
+              data?.map((row) => {
                 return (
                   <Table.Row
                     style={{
@@ -156,9 +155,6 @@ const FlexBox = styled.div`
   white-space: nowrap;
 `;
 
-const IsDeleteFlexBox = styled(FlexBox)`
-  color: red;
-`;
 
 const Content = styled.div`
   max-width: 400px;
@@ -167,21 +163,5 @@ const Content = styled.div`
   text-overflow: ellipsis;
 `;
 
-const FlexPwdBox = styled.div`
-  width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-const DropdownBox = styled.div`
-  width: 150px;
-`;
 
-const SelectWrap = styled.div`
-  display: flex;
-  margin-bottom: 24px;
-`;
 
-const SelectBox = styled(Select)`
-  width: 250px;
-  margin-right: 50px;
-`;

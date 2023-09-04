@@ -6,9 +6,6 @@ const useReviewTableModal = (uniqueQueryKey, enable = true) => {
   const [reviewDetail, setReviewDetail] = useState(undefined);
 
   const {
-    data,
-    status,
-    isLoading,
     refetch: reviewDetailRefetch,
   } = useQuery(
     uniqueQueryKey,

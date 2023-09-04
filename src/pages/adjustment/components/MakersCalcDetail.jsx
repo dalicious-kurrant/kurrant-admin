@@ -11,7 +11,7 @@ import withCommas from 'utils/withCommas';
 import OrderData from './OrderData';
 import DefaultTable from './DefaultTable';
 import logo from '../../../asset/image/logo.png';
-import {useEffect, useInsertionEffect, useState} from 'react';
+import {useState} from 'react';
 import IssueModal from './IssueModal';
 import MakersDetailTable from './MakersDetailTable';
 

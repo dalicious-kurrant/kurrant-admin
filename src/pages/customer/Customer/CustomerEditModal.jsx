@@ -1,8 +1,6 @@
-import {useAtom} from 'jotai';
-import React, {useEffect, useState} from 'react';
+import React, {} from 'react';
 import {
   Button,
-  Header,
   Form,
   Modal,
   Input,
@@ -10,7 +8,6 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
-import {CustomerDataAtom} from './store';
 
 function CostomerEditModal({
   open,

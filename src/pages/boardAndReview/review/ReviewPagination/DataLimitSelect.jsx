@@ -38,6 +38,3 @@ const Option = styled.option`
 const Label = styled.label`
   font-size: 22px;
 `;
-const PlaceholderOption = styled(Option)`
-  color: ${props => props.theme.colors.Gray05};
-`;

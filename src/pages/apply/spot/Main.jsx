@@ -1,5 +1,3 @@
-import {useMakersAdjustListDetail} from 'hooks/useAdjustment';
-import {useLocation} from 'react-router-dom';
 import {Button} from 'semantic-ui-react';
 import {PageWrapper} from 'style/common.style';
 import styled from 'styled-components';

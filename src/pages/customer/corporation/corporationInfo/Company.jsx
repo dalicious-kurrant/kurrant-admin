@@ -1,6 +1,5 @@
 import {
   useGetCorporationInfo,
-  useGetCorporationInfoDetail,
   useGetExportCorporationInfo,
 } from 'hooks/useCorporation';
 import {useAtom} from 'jotai';
@@ -20,10 +19,10 @@ const Company = () => {
   const [page, setPage] = useState(1);
   const [nameOption, setNameOption] = useAtom(corpNameOptionAtom);
   const [corporation, setCorporation] = useAtom(corporationAtom);
-  const [corporationExport, setCorporationExport] = useAtom(
+  const [, setCorporationExport] = useAtom(
     corporationExportAtom,
   );
-  const [exelCorporation, setExelCorporation] = useAtom(exelCorporationAtom);
+  const [exelCorporation] = useAtom(exelCorporationAtom);
 
   const name = nameOption && `&groupId=${nameOption}`;
   const {

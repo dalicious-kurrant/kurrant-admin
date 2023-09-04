@@ -6,7 +6,6 @@ import {useEffect, useState} from 'react';
 import ModalComponent from './components/Modal';
 import {
   useChangeStstusMySpotAdmin,
-  useDeleteMySpotAdmin,
   useLoadMySpotAdmin,
 } from 'hooks/useMySpotAdmin';
 import {useAtom} from 'jotai';
@@ -20,11 +19,9 @@ import {
   adminCheckListAtom,
   spotPageAdminAtom,
 } from 'utils/store';
-import {formattedDateType, formattedWeekDateZ} from 'utils/dateFormatter';
+import {formattedDateType} from 'utils/dateFormatter';
 
 const MySpotZone = () => {
-  const day = new Date();
-  const days = formattedWeekDateZ(day);
   const [nowData, setNowData] = useState();
   const [page, setPage] = useAtom(spotPageAdminAtom);
   const [totalPage, setTotalPage] = useState(0);

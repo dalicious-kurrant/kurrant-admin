@@ -1,5 +1,5 @@
 import {adjustApis} from 'api/adjustment';
-import {QueryClient, useMutation, useQuery, useQueryClient} from 'react-query';
+import { useMutation, useQuery, useQueryClient} from 'react-query';
 
 export function useSaveMakersAdjust() {
   const queryClient = useQueryClient();

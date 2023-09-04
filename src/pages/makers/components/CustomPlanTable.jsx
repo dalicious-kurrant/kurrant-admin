@@ -4,7 +4,6 @@ import {TableWrapper} from '../../../style/common.style';
 import {
   diningFormatted,
   foodCompleteStatusData,
-  foodStatusData,
 } from '../../../utils/statusFormatter';
 
 const CustomPlanTable = ({count, testData, setTestData}) => {

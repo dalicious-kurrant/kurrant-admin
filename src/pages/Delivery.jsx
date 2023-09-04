@@ -2,13 +2,10 @@ import React, {useEffect} from 'react';
 
 import styled, { css } from 'styled-components';
 import 'react-datepicker/dist/react-datepicker.css';
-import DatePicker from 'react-datepicker';
 import {useState} from 'react';
-import PublicSelectDatePicker from 'components/PublicSelectDatePicker';
 import {Button, Dropdown, Label} from 'semantic-ui-react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import axios from 'axios';
-import {formattedTime, formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
+import {formattedTime, formattedWeekDateZ} from 'utils/dateFormatter';
 import useTitle from 'hooks/useTitle';
 import { getAccessToken, getAccessTokenName } from 'utils/checkDashToken';
 import instance from 'shared/axiosDash';

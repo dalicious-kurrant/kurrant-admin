@@ -1,14 +1,11 @@
 import {useUpdateSpotsAdjust} from 'hooks/useAdjustment';
-import {useAtom} from 'jotai';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Button,
-  Header,
   Form,
   Modal,
   Input,
   Label,
-  Checkbox,
   Dropdown,
 } from 'semantic-ui-react';
 import styled from 'styled-components';

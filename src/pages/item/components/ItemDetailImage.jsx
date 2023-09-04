@@ -1,9 +1,8 @@
-import {useImageUpload} from 'hooks/useProductsList';
 import {useRef, useState} from 'react';
 import {Button, Label} from 'semantic-ui-react';
 import styled from 'styled-components';
 
-const ItemDetailImage = ({sendForm, setSendForm, length}) => {
+const ItemDetailImage = ({sendForm, setSendForm, length, maxLength =6,type="file" ,id='inputTag'}) => {
   const [showImages, setShowImages] = useState([]); // 미리보기
   const [imgData, setImgData] = useState([]); // formData
   // console.log(showImages);
@@ -31,6 +30,7 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
 
   const updateContent = async e => {
     const files = e.target.files;
+    console.log([...sendForm, ...files])
     setSendForm([...sendForm, ...files]);
   };
 
@@ -44,13 +44,13 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
   return (
     <Wrapper>
       <div style={{marginBottom: 24}}>
-        <UploadButton htmlFor="inputTag">이미지 업로드</UploadButton>
+        <UploadButton htmlFor={id}>이미지 업로드</UploadButton>
       </div>
       <Label content="추가 이미지" color="blue" />
       <Input
-        id="inputTag"
-        type="file"
-        accept="image/*"
+        id={id}
+        type={type}
+        accept="image/jpeg, image/png"
         multiple="multiple"
         ref={imgRef}
         onChange={e => {
@@ -58,9 +58,9 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
           updateContent(e);
         }}
         onClick={e => {
-          if (showImages.length + (length && length) > 5) {
+          if (showImages.length + (length && length) > maxLength-1) {
             e.preventDefault();
-            alert('사진은 최대 6장만 가능합니다.');
+            alert(`사진은 최대${maxLength}장만 가능합니다.`);
           }
         }}
       />
@@ -68,9 +68,12 @@ const ItemDetailImage = ({sendForm, setSendForm, length}) => {
         {showImages.map((el, i) => {
           return (
             <ImageBox key={el + i}>
-              <ImgWrap>
+              {id ==='inputTag' && <ImgWrap>
                 <img src={el} alt="이미지" />
-              </ImgWrap>
+              </ImgWrap>}
+             {id==='inputIntroTag' &&<ImgIntroWrap>
+                <img src={el} alt="이미지" />
+              </ImgIntroWrap>}
               <DeleteButton
                 circular
                 icon="delete"
@@ -106,7 +109,15 @@ const ImgWrap = styled.div`
     margin-bottom: 10px;
   }
 `;
-
+const ImgIntroWrap = styled.div`
+  img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+`;
 const Input = styled.input`
   display: none;
 `;

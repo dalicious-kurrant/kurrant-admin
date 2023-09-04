@@ -30,7 +30,7 @@ export const checkedValue = (checkboxStatus, dataList) => {
   });
 
   [...dataList].forEach(value => {
-    if (value.id.toString() == checkedId) {
+    if (value.id.toString() === checkedId) {
       returnValue = value;
     }
   });
