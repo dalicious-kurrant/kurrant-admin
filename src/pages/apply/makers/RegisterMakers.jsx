@@ -116,41 +116,49 @@ const RegisterMakers = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {list?.map((el, idx) => {
-            return (
-              <Table.Row key={idx}>
-                <Table.Cell textAlign="center">
-                  <input
-                    type="checkbox"
-                    checked={checkItems.includes(el.id) ? true : false}
-                    onChange={e => handleSingleCheck(e.target.checked, el.id)}
-                  />
-                </Table.Cell>
-                <Table.Cell textAlign="center" width={2}>
-                  <Dropdown
-                    placeholder="상태"
-                    fluid
-                    selection
-                    value={el.progressStatus}
-                    options={registerMakersStatusData}
-                    onChange={(e, data) => {
-                      modifyStatusButton(el.id, data.value);
-                    }}
-                  />
-                </Table.Cell>
-                <Table.Cell textAlign="center">{el.makersName}</Table.Cell>
-                <Table.Cell textAlign="center" width={4}>
-                  {el.address}
-                </Table.Cell>
-                <Table.Cell textAlign="center">{el.mainProduct}</Table.Cell>
-                <Table.Cell textAlign="center" width={2}>
-                  {el.name}
-                </Table.Cell>
-                <Table.Cell textAlign="center">{el.phone}</Table.Cell>
-                <Table.Cell textAlign="center">{el.memo}</Table.Cell>
-              </Table.Row>
-            );
-          })}
+          {list?.length !== 0 ? (
+            list?.map((el, idx) => {
+              return (
+                <Table.Row key={idx}>
+                  <Table.Cell textAlign="center">
+                    <input
+                      type="checkbox"
+                      checked={checkItems.includes(el.id) ? true : false}
+                      onChange={e => handleSingleCheck(e.target.checked, el.id)}
+                    />
+                  </Table.Cell>
+                  <Table.Cell textAlign="center" width={2}>
+                    <Dropdown
+                      placeholder="상태"
+                      fluid
+                      selection
+                      value={el.progressStatus}
+                      options={registerMakersStatusData}
+                      onChange={(e, data) => {
+                        modifyStatusButton(el.id, data.value);
+                      }}
+                    />
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{el.makersName}</Table.Cell>
+                  <Table.Cell textAlign="center" width={4}>
+                    {el.address}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{el.mainProduct}</Table.Cell>
+                  <Table.Cell textAlign="center" width={2}>
+                    {el.name}
+                  </Table.Cell>
+                  <Table.Cell textAlign="center">{el.phone}</Table.Cell>
+                  <Table.Cell textAlign="center">{el.memo}</Table.Cell>
+                </Table.Row>
+              );
+            })
+          ) : (
+            <Table.Row>
+              <Table.Cell colspan={8} textAlign="center">
+                내용이 없습니다.
+              </Table.Cell>
+            </Table.Row>
+          )}
         </Table.Body>
       </Table>
       {showOpenModal && (
