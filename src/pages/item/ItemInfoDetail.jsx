@@ -455,6 +455,7 @@ const ProductDetailPage = () => {
         <div>
           <ItemKeyword foodId={foodId} />
         </div>
+        <div style={{display:'flex', justifyContent:'space-between'}}>
         <div>
           <TagTitle>이미지 등록 (최대 6장)</TagTitle>
           <Label content="기존 이미지" color="blue" />
@@ -486,7 +487,7 @@ const ProductDetailPage = () => {
         <div>
           <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
           <Label content="기존 이미지" color="blue" />
-          <ImageWrap>
+          <ImageIntroWrap>
             {dataList &&
               dataList?.introImages.map((el, i) => {
                 return (
@@ -503,13 +504,15 @@ const ProductDetailPage = () => {
                   </ImageBox>
                 );
               })}
-          </ImageWrap>
+          </ImageIntroWrap>
           <ItemDetailImage
             id={'inputIntroTag'}
             setSendForm={setSendIntroForm}
             sendForm={sendIntroForm}
             length={dataList?.introImages.length}
+            maxLength={1}
           />
+        </div>
         </div>
         <div>
           <TagTitle>메뉴 설명</TagTitle>
@@ -577,6 +580,19 @@ const ImageWrap = styled.div`
     width: 300px;
     height: 300px;
     object-fit: cover;
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+`;
+const ImageIntroWrap = styled.div`
+  display: flex;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
     position: relative;
     margin-right: 10px;
     margin-bottom: 10px;

@@ -21,7 +21,7 @@ const ImageUploader = ({selectedImages, setSelectedImages,setNowData}) => {
   const openFileDialog = () => {
     const inputElement = document.createElement('input');
     inputElement.type = 'file';
-    inputElement.accept = 'image/*';
+    inputElement.accept = 'image/jpeg, image/png';
     inputElement.multiple = true;
     inputElement.addEventListener('change', handleImageChange);
     inputElement.click();
