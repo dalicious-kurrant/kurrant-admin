@@ -874,7 +874,8 @@ const Common = () => {
     pathname !== '/makers/notice/write' &&
     pathname !== '/customer/notice' &&
     pathname !== '/customer/notice/write' &&
-    pathname !== '/others/customerTaste';
+    pathname !== '/others/customerTaste' &&
+    pathname !== '/apply/makers';
 
   return (
     <C.Wrapper>

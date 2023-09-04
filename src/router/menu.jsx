@@ -29,6 +29,7 @@ import CompanyNotice from 'pages/customer/notice/CompanyNotice';
 import Worker from 'pages/delivery/Worker';
 import Information from 'pages/delivery/Information';
 import CustomerTastePage from 'pages/customerTaste/CustomerTastePage';
+import RegisterMakers from 'pages/apply/makers/RegisterMakers';
 
 export const MenuList = [
   {
@@ -174,12 +175,13 @@ export const MenuList = [
     ],
   },
   {
-    name: '신청 (진행중)',
+    name: '신청',
     url: '/apply',
     children: [
       {
-        name: '메이커스 신청 (진행중)',
+        name: '메이커스 신청',
         url: '/makers',
+        component: <RegisterMakers />,
       },
       {
         name: '스팟 신청',

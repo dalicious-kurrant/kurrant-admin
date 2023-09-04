@@ -48,7 +48,7 @@ const EventPoint = () => {
   const accountLimit = watch('accountLimit');
   const rewardPoint = watch('rewardPoint');
   const noticeId = watch('noticeId');
-  console.log(noticeId);
+
   const handleSingleCheck = (checked, id, data) => {
     const arr = [data];
 
