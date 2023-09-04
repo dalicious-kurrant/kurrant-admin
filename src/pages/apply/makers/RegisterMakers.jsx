@@ -154,7 +154,7 @@ const RegisterMakers = () => {
             })
           ) : (
             <Table.Row>
-              <Table.Cell colspan={8} textAlign="center">
+              <Table.Cell colSpan={8} textAlign="center">
                 내용이 없습니다.
               </Table.Cell>
             </Table.Row>
