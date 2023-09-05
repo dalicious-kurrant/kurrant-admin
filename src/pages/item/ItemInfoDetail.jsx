@@ -25,11 +25,11 @@ const ProductDetailPage = () => {
   const foodId = location.state.foodId;
   const makersId = location.state.makersId;
 
-  console.log(foodId);
+  // console.log(foodId);
 
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
-
+  console.log(detailData);
   const {mutateAsync: addKeyword} = useAddProductKeyword();
 
   useEffect(() => {
