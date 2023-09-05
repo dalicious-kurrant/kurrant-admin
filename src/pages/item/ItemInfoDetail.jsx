@@ -54,13 +54,10 @@ const ProductDetailPage = () => {
   const form = useForm({
     mode: 'all',
   });
-  const {
-    watch,
-    setValue,
-  } = form;
+  const {watch, setValue} = form;
 
   // const foodName = watch('foodName');
-  const defaultPrice = watch('defaultPrice');
+  const foodPrice = watch('foodPrice');
   const supplyPrice = watch('supplyPrice');
   const discountRate = watch('discountRate');
   // const discountPrice = watch('discountPrice');
@@ -83,21 +80,21 @@ const ProductDetailPage = () => {
   const modifyButton = async () => {
     const formData = new FormData();
 
-    if (sendForm?.length> 0) {
+    if (sendForm?.length > 0) {
       for (let i = 0; i < sendForm.length; i++) {
         formData.append('files', sendForm[i]);
       }
     }
-    if (sendIntroForm?.length> 0) {
+    if (sendIntroForm?.length > 0) {
       for (let i = 0; i < sendIntroForm.length; i++) {
-        console.log(sendIntroForm[i])
+        console.log(sendIntroForm[i]);
         formData.append('introFiles', sendIntroForm[i]);
       }
     }
 
     const data = {
       foodId: listData?.foodId,
-      defaultPrice: Number(defaultPrice.replace(',', '')),
+      foodPrice: Number(foodPrice.replace(',', '')),
       supplyPrice: Number(supplyPrice.replace(',', '')),
       foodGroup: selectedFoodGroup.name,
       foodGroupId: selectedFoodGroup.id,
@@ -130,7 +127,7 @@ const ProductDetailPage = () => {
         dinnerTime === undefined
           ? null
           : dinnerEndTime + '일전 ' + dinnerTime,
-        foodImages: dataList?.foodImages,
+      foodImages: dataList?.foodImages,
       introImages: dataList?.introImages,
       description: text,
 
@@ -187,7 +184,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     setValue('foodName', listData?.foodName);
-    setValue('defaultPrice', withCommas(listData?.defaultPrice));
+    setValue('foodPrice', withCommas(listData?.foodPrice));
     setValue(
       'supplyPrice',
       withCommas(listData?.supplyPrice === 0 ? '0' : listData?.supplyPrice),
@@ -278,7 +275,7 @@ const ProductDetailPage = () => {
   }, [
     listData?.customPrice,
     listData?.foodName,
-    listData?.defaultPrice,
+    listData?.foodPrice,
     listData?.makersDiscountPrice,
     listData?.makersDiscountRate,
     listData?.periodDiscountPrice,
@@ -314,7 +311,7 @@ const ProductDetailPage = () => {
               <PriceWrap>
                 <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="supplyPrice" label="공급가" />
-                <Input name="defaultPrice" label="매장가" />
+                <Input name="foodPrice" label="매장가" />
                 <Input name="membershipRate" label="멤버십 할인율" />
                 <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="discountRate" label="매장 할인율" />
@@ -455,64 +452,64 @@ const ProductDetailPage = () => {
         <div>
           <ItemKeyword foodId={foodId} />
         </div>
-        <div style={{display:'flex', justifyContent:'space-between'}}>
-        <div>
-          <TagTitle>이미지 등록 (최대 6장)</TagTitle>
-          <Label content="기존 이미지" color="blue" />
-          <ImageWrap>
-            {dataList &&
-              dataList?.foodImages.map((el, i) => {
-                return (
-                  <ImageBox key={el + i}>
-                    <img src={el} alt="기존이미지" />
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div>
+            <TagTitle>이미지 등록 (최대 6장)</TagTitle>
+            <Label content="기존 이미지" color="blue" />
+            <ImageWrap>
+              {dataList &&
+                dataList?.foodImages.map((el, i) => {
+                  return (
+                    <ImageBox key={el + i}>
+                      <img src={el} alt="기존이미지" />
 
-                    <DeleteButton
-                      circular
-                      icon="delete"
-                      onClick={() => {
-                        deleteImage(el);
-                      }}
-                    />
-                  </ImageBox>
-                );
-              })}
-          </ImageWrap>
+                      <DeleteButton
+                        circular
+                        icon="delete"
+                        onClick={() => {
+                          deleteImage(el);
+                        }}
+                      />
+                    </ImageBox>
+                  );
+                })}
+            </ImageWrap>
 
-          <ItemDetailImage
-            setSendForm={setSendForm}
-            sendForm={sendForm}
-            length={dataList?.foodImages.length}
-          />
-        </div>
-        <div>
-          <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
-          <Label content="기존 이미지" color="blue" />
-          <ImageIntroWrap>
-            {dataList &&
-              dataList?.introImages.map((el, i) => {
-                return (
-                  <ImageBox key={el + i}>
-                    <img src={el} alt="기존이미지" />
+            <ItemDetailImage
+              setSendForm={setSendForm}
+              sendForm={sendForm}
+              length={dataList?.foodImages.length}
+            />
+          </div>
+          <div>
+            <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
+            <Label content="기존 이미지" color="blue" />
+            <ImageIntroWrap>
+              {dataList &&
+                dataList?.introImages.map((el, i) => {
+                  return (
+                    <ImageBox key={el + i}>
+                      <img src={el} alt="기존이미지" />
 
-                    <DeleteButton
-                      circular
-                      icon="delete"
-                      onClick={() => {
-                        deleteIntroImage(el);
-                      }}
-                    />
-                  </ImageBox>
-                );
-              })}
-          </ImageIntroWrap>
-          <ItemDetailImage
-            id={'inputIntroTag'}
-            setSendForm={setSendIntroForm}
-            sendForm={sendIntroForm}
-            length={dataList?.introImages.length}
-            maxLength={1}
-          />
-        </div>
+                      <DeleteButton
+                        circular
+                        icon="delete"
+                        onClick={() => {
+                          deleteIntroImage(el);
+                        }}
+                      />
+                    </ImageBox>
+                  );
+                })}
+            </ImageIntroWrap>
+            <ItemDetailImage
+              id={'inputIntroTag'}
+              setSendForm={setSendIntroForm}
+              sendForm={sendIntroForm}
+              length={dataList?.introImages.length}
+              maxLength={1}
+            />
+          </div>
         </div>
         <div>
           <TagTitle>메뉴 설명</TagTitle>
