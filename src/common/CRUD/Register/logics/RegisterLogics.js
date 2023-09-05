@@ -2,6 +2,7 @@ export const makeInitialInput = data => {
   let initialInput = {};
   Object.keys(data).map(value => {
     initialInput[value] = '';
+    return undefined
   });
 
   return initialInput;

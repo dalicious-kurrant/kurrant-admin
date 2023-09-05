@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
-import {bizNoFormatter} from 'utils/bizNumberFormatter';
 import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
 import {formattedPercent} from '../../../utils/numberFormatter';
 

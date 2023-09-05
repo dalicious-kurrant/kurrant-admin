@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect} from 'react';
 import {useState} from 'react';
 
 import styled from 'styled-components';
-import useLocationHooks from './hooks/useLocationHooks';
 import {
   handleSubmitLogic,
   makeInitialInput,
@@ -188,10 +188,6 @@ const InputWrap = styled.div`
   white-space: nowrap;
 `;
 
-const SubmitButton = styled.button`
-  font-size: 1.2rem;
-  margin: 1rem 0;
-`;
 
 const BtnWrap = styled.div`
   margin-top: 1rem;

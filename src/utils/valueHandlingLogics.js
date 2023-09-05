@@ -5,7 +5,7 @@ export const handleFalsyValueToString = value => {
     return value;
   } else if (typeof value === 'undefined') {
     return 'undefined';
-  } else if (typeof value === 'null') {
+  } else if (value === null) {
     return 'null';
   } else if (value === false) {
     return 'false';
@@ -23,7 +23,7 @@ export const handleFalsyValueToHyphen = value => {
     return value;
   } else if (typeof value === 'undefined') {
     return '-';
-  } else if (typeof value === 'null') {
+  } else if (value === null) {
     return '-';
   } else if (value === false) {
     return 'false';
@@ -56,7 +56,7 @@ export const handleFalsyValueToBlank = value => {
     return parseInt(value);
   } else if (typeof value === 'undefined') {
     return '';
-  } else if (typeof value === 'null') {
+  } else if (value === null) {
     return '';
   } else if (value === false) {
     return '';

@@ -1,9 +1,7 @@
 import {useUpdateMakersDetail} from 'hooks/useMakers';
-import {useAtom} from 'jotai';
-import React, {useEffect, useState} from 'react';
+import React, {} from 'react';
 import {
   Button,
-  Header,
   Form,
   Modal,
   Input,
@@ -13,85 +11,39 @@ import {
   Table,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
-import {
-  diningReverseFormatted,
-  preNumberFormatted,
-} from 'utils/statusFormatter';
-import withCommas from 'utils/withCommas';
+import ImageUploader from './ImageUploader';
 
 function MakersEditModal({
   open,
   setOpen,
   nowData,
   setNowData,
-  testData,
-  setTestData,
+  selectedImages,
+  setSelectedImages,
 }) {
   const {mutateAsync: updateMakers} = useUpdateMakersDetail();
+  const morningDining = nowData.diningTypes.find((dining)=>dining.diningType === 1)
+  const lunchDining = nowData.diningTypes.find((dining)=>dining.diningType === 2)
+  const dinnerDining = nowData.diningTypes.find((dining)=>dining.diningType === 3)
   const onSubmit = async () => {
-    const dining = nowData.diningTypes.map((v, i) => {
-      const dinigTypeNumber = diningReverseFormatted(v);
-      return {
-        diningType: dinigTypeNumber,
-        lastOrderTime:
-          dinigTypeNumber === 1
-            ? nowData.morningLastOrderTime
-            : dinigTypeNumber === 2
-            ? nowData.lunchLastOrderTime
-            : nowData.dinnerLastOrderTime,
-        capacity:
-          dinigTypeNumber === 1
-            ? Number(nowData.morningCapacity) || 0
-            : dinigTypeNumber === 2
-            ? Number(nowData.lunchCapacity) || 0
-            : Number(nowData.dinnerCapacity) || 0,
-        minTime:
-          dinigTypeNumber === 1
-            ? nowData.morningMinTime
-            : dinigTypeNumber === 2
-            ? nowData.lunchMinTime
-            : nowData.dinnerMinTime,
-        maxTime:
-          dinigTypeNumber === 1
-            ? nowData.morningMaxTime
-            : dinigTypeNumber === 2
-            ? nowData.lunchMaxTime
-            : nowData.dinnerMaxTime,
-      };
-    });
-    const req = {
-      id: nowData.id,
-      code: nowData.code,
-      name: nowData.name,
-      companyName: nowData.companyName,
-      ceo: nowData.ceo,
-      ceoPhone: nowData.ceoPhone,
-      managerName: nowData.managerName,
-      managerPhone: nowData.managerPhone,
-      dailyCapacity: nowData.dailyCapacity,
-      serviceType: nowData.serviceType,
-      serviceForm: nowData.serviceForm,
-      isParentCompany: nowData.isParentCompany,
-      parentCompanyId: nowData.parentCompanyId,
-      zipCode: nowData.zipCode,
-      address1: nowData.address1,
-      address2: nowData.address2,
-      location: nowData.location,
-      companyRegistrationNumber: nowData.companyRegistrationNumber,
-      contractStartDate: nowData.contractStartDate,
-      contractEndDate: nowData.contractEndDate,
-      isNutritionInformation: nowData.isNutritionInformation,
-      openTime: nowData.openTime,
-      closeTime: nowData.closeTime,
-      fee: nowData.fee,
-      bank: nowData.bank,
-      depositHolder: nowData.depositHolder,
-      accountNumber: nowData.accountNumber,
-      diningTypes: dining,
-      memo: nowData.memo,
+    const req = new FormData(); 
+    if (selectedImages?.length > 0) {
+      for (let i = 0; i < selectedImages?.length; i++) {
+        console.log(typeof selectedImages[i],selectedImages[i])
+        if(typeof selectedImages[i] === 'object')
+          req.append('files', selectedImages[i]);
+      }
+    }
+    console.log(nowData)
+    const json = JSON.stringify(nowData);
+    const blob = new Blob([json], {type: 'application/json'});
+    req.append('updateMakersReqDto', blob);
+
+    const config = {
+      headers: {'Content-Type': 'multipart/form-data'},
     };
     try {
-      await updateMakers(req);
+      await updateMakers(req,config);
       setOpen(false);
     } catch (error) {
       alert(error.toString());
@@ -562,13 +514,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.morningLastOrderTime}
+                          defaultValue={morningDining.lastOrderTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              morningLastOrderTime: data.value
-                                ? data.value
-                                : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===1 ){
+                                  return {...dining,lastOrderTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -576,13 +531,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.lunchLastOrderTime}
+                          defaultValue={lunchDining.lastOrderTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              lunchLastOrderTime: data.value
-                                ? data.value
-                                : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===2 ){
+                                  return {...dining,lastOrderTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -590,13 +548,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.dinnerLastOrderTime}
+                          defaultValue={dinnerDining.lastOrderTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              dinnerLastOrderTime: data.value
-                                ? data.value
-                                : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===3 ){
+                                  return {...dining,lastOrderTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -607,11 +568,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.morningCapacity}
+                          defaultValue={morningDining.capacity}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              morningCapacity: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===1 ){
+                                  return {...dining,capacity:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -619,11 +585,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.lunchCapacity}
+                          defaultValue={lunchDining.capacity}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              lunchCapacity: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===2 ){
+                                  return {...dining,capacity:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -631,11 +602,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.dinnerCapacity}
+                          defaultValue={dinnerDining.capacity}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              dinnerCapacity: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===3 ){
+                                  return {...dining,capacity:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -646,11 +622,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.morningMinTime}
+                          defaultValue={morningDining.minTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              morningMinTime: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===1 ){
+                                  return {...dining,minTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -658,11 +639,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.lunchMinTime}
+                          defaultValue={lunchDining.minTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              lunchMinTime: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===2 ){
+                                  return {...dining,minTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -670,11 +656,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.dinnerMinTime}
+                          defaultValue={dinnerDining.minTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              dinnerMinTime: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===3 ){
+                                  return {...dining,minTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -685,11 +676,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.morningMaxTime}
+                          defaultValue={morningDining.maxTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              morningMaxTime: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===1 ){
+                                  return {...dining,maxTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -697,11 +693,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.lunchMaxTime}
+                          defaultValue={lunchDining.maxTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              lunchMaxTime: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===2 ){
+                                  return {...dining,maxTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -709,11 +710,16 @@ function MakersEditModal({
                       <Table.Cell textAlign="center">
                         <Input
                           style={{width: 90}}
-                          defaultValue={nowData.dinnerMaxTime}
+                          defaultValue={dinnerDining.maxTime}
                           onChange={(e, data) => {
                             setNowData({
                               ...nowData,
-                              dinnerMaxTime: data.value ? data.value : null,
+                              diningTypes: nowData.diningTypes.map((dining)=>{
+                                if(dining.diningType ===3 ){
+                                  return {...dining,maxTime:data?.value}
+                                }
+                                return dining
+                              })
                             });
                           }}
                         />
@@ -742,10 +748,15 @@ function MakersEditModal({
                       }}
                     />
                   </FlexBox>
+                  
                 </Form.Field>
+              
               </div>
+             
             </div>
           </Modal.Description>
+          {/* <ImageUploader selectedImages={selectedImages} setSelectedImages={setSelectedImages} setNowData={setNowData}/> */}
+          {/* <MakersImageModal imageSrc={["https://admin.dalicious.co/img/makersintroimg.png","https://admin.dalicious.co/img/kurrantmembership.png","https://admin.dalicious.co/img/makersintroimg.png","https://admin.dalicious.co/img/kurrantmembership.png","https://admin.dalicious.co/img/makersintroimg.png","https://admin.dalicious.co/img/kurrantmembership.png"]} /> */}
         </Modal.Content>
         <Modal.Actions>
           <Button color="black" onClick={() => setOpen(false)}>

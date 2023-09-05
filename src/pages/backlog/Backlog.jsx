@@ -1,11 +1,10 @@
 import {useBackLog} from 'hooks/useBackLog';
-import {View, useEffect, useState, useRef} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import {
   Dropdown,
   Label,
   Pagination,
   Table,
-  TableHeader,
 } from 'semantic-ui-react';
 import {PageWrapper} from 'style/common.style';
 import styled from 'styled-components';
@@ -281,18 +280,7 @@ const LogMessage2 = styled.div`
   padding-bottom: 5px;
   font-weight: ${({count}) => count > 1 && 600};
 `;
-const PaginationWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 24px;
-`;
-const DatePickerBox = styled.div`
-  display: flex;
-  cursor: pointer;
-  align-items: flex-start;
-  width: 200px;
-  flex-direction: column;
-`;
+
 const RecoDatePickerBox = styled.div`
   display: flex;
   align-items: center;

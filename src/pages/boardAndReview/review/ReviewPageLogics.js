@@ -1,4 +1,4 @@
-import {formattedDateForRecommendation, formattedDateZ} from 'utils/dateFormatter';
+import { formattedDateZ} from 'utils/dateFormatter';
 
 export const fillMakersDropboxObject = makersListFromServer => {
   // value와 label형태로 만들기

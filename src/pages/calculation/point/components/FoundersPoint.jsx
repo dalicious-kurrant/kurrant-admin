@@ -1,4 +1,4 @@
-import {useGetFoundersPointPolicy, useGetPointPolicy} from 'hooks/usePoint';
+import {useGetFoundersPointPolicy} from 'hooks/usePoint';
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import styled from 'styled-components';

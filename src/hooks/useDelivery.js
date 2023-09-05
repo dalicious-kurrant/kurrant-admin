@@ -1,5 +1,4 @@
 import {deliveryApi} from 'api/delivery';
-import {makersApis} from 'api/makers';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 
 export function useGetDriver() {

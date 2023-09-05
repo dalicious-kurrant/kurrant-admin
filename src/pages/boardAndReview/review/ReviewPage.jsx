@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {PageWrapper} from 'style/common.style';
 import {Button, Dropdown, Label, Pagination} from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import ReviewTable from './components/ReviewTable';
 import Select from 'react-select';
 import * as XLSX from 'xlsx';
@@ -11,10 +11,6 @@ import useReviewQuery from './useReviewQuery';
 import {buildCustomUrl, fillMakersDropboxObject} from './ReviewPageLogics';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import ReviewSelectDatePicker from './components/ReviewSelectDatePicker';
-import ReviewPagination from './ReviewPagination/ReviewPagination';
-import RadioInput from './components/Radio/RadioInput';
-import RadioGroup from './components/Radio/RadioGroup';
 import Radio from './components/Radio/Radio';
 import KeyDetector from 'common/KeyDetector/KeyDetector';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
@@ -100,7 +96,6 @@ const ReviewPage = () => {
     limit,
     orderItemNameAndCode,
     writer,
-
     makersId,
     startDate,
     endDate,
@@ -385,8 +380,8 @@ const ReviewPage = () => {
           <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
         </Wrap3>
       </Wrap1>
-
-      {status == 'success' && reviewList && reviewList.length > 0 ? (
+                
+      {status === 'success' && reviewList && reviewList.length > 0 ? (
         <PaginationContainer screenWidth={screenWidth}>
           {/* <ReviewPagination
           page={page}
@@ -455,12 +450,9 @@ const LimitBox = styled.div`
   width: 300px;
   align-items: center;
 `;
-// const Label = styled.label`
-//   font-size: 22px;
-// `;
+
 const Wrap1 = styled.div`
   display: flex;
-  /* border: 1px solid black; */
 `;
 const Wrap2 = styled.div`
   display: flex;
@@ -484,14 +476,6 @@ const RecoDatePickerContainer = styled.div`
   align-items: center;
   gap: 10px;
   margin-right: 20px;
-`;
-const RecoDatePickerBox = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: space-between;
-  width: 100px;
-  margin-top: 10px;
 `;
 
 const FilterButton = styled(Button)`
@@ -536,11 +520,7 @@ const NoRespondText = styled.span`
   font-size: 20px;
 `;
 
-const DateDatePicker = styled(DatePicker)``;
 
-const DefaultDateText = styled.span`
-  color: #6b6b6b; /* Customize the color of the default text */
-`;
 
 const Div = styled.div`
   flex: 1;

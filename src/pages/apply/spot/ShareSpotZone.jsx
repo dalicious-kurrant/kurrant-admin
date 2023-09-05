@@ -1,10 +1,7 @@
-import {PageWrapper} from 'style/common.style';
-import Filter from './components/Filter';
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Button, Pagination, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
-import ModalComponent from './components/Modal';
-import {useCreateMySpot, useGetMySpotList} from 'hooks/useMySpot';
 import * as XLSX from 'xlsx';
 import {useAtom} from 'jotai';
 import {
@@ -12,7 +9,6 @@ import {
   MySpotCountyAtom,
   MySpotVillageAtom,
   MySpotZipcodeAtom,
-  checkListAtom,
   checkShareListAtom,
   maxUserAtom,
   minUserAtom,
@@ -32,6 +28,7 @@ const TableHeaderData = [
 const ShareSpotZone = () => {
   const [checkItems, setCheckItems] = useAtom(checkShareListAtom);
   const [page, setPage] = useAtom(spotPageAtom);
+  
   const [totalPage, setTotalPage] = useState(0);
 
   const {data: shareSpotData, refetch: spotListRefetch} =
@@ -149,6 +146,7 @@ const ShareSpotZone = () => {
                 </Table.Cell>
               </Table.Row>
             ) : (
+
               shareSpotData?.data?.items.map((el, idx) => {
                 return (
                   <Table.Row key={el.id}>

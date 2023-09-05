@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import {FormProvider, useForm} from 'react-hook-form';
 import ExcelIcon from '../../asset/icons/excel.svg';
 import PDFIcon from '../../asset/icons/pdfIcon.svg';
-import FileIcon from '../../asset/icons/fileIcon.svg';
 import {Link} from 'react-router-dom';
 import AddSpotAdjust from './components/AddSpotAdjust';
 import {
@@ -32,9 +31,8 @@ const SpotAdjustment = () => {
     () => {},
   );
   const {mutateAsync: deleteAdjustSpot} = useDeleteSpotsAdjust();
-  const [selectStatus, setSelectStatus] = useState();
   const [showOpenModal, setShowOpenModal] = useState(false);
-  const [editId, setEditId] = useState();
+  const [, setEditId] = useState();
   const [clickData, setClickData] = useState();
   const showEditOpen = id => {
     setEditId(id);

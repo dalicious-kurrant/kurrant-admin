@@ -1,14 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Input from 'components/input/Input';
 import {useCreateMySpotAdmin, useModifyMySpotAdmin} from 'hooks/useMySpotAdmin';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, Form, Label, Modal} from 'semantic-ui-react';
+import {Button, Label, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import {
   formattedDateReverseType,
   formattedDateType,
-  formattedWeekDateZ,
 } from 'utils/dateFormatter';
 
 const ModalComponent = ({open, setOpen, data, title, button}) => {
@@ -387,13 +387,6 @@ export default ModalComponent;
 const InputWrap = styled.div`
   display: flex;
   align-items: flex-end;
-`;
-
-const Title = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-right: 12px;
 `;
 
 const InputBox = styled(Input)`

@@ -1,6 +1,4 @@
-import {useEffect} from 'react';
 import styled from 'styled-components';
-import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 const NumberInput = ({
   fieldsToOpen,

@@ -43,6 +43,7 @@ const ProductDetailPage = () => {
   const [clicked, setClicked] = useState([]);
   const [dataList, setDataList] = useAtom(productDataAtom); // 이미지
   const [sendForm, setSendForm] = useState([]);
+  const [sendIntroForm, setSendIntroForm] = useState([]);
   const [text, setText] = useState('');
   const [morningTime, setMorningTime] = useState();
   const [lunchTime, setLunchTime] = useState();
@@ -54,13 +55,12 @@ const ProductDetailPage = () => {
     mode: 'all',
   });
   const {
-    formState: {errors},
     watch,
     setValue,
   } = form;
 
   // const foodName = watch('foodName');
-  const foodPrice = watch('foodPrice');
+  const defaultPrice = watch('defaultPrice');
   const supplyPrice = watch('supplyPrice');
   const discountRate = watch('discountRate');
   // const discountPrice = watch('discountPrice');
@@ -83,15 +83,21 @@ const ProductDetailPage = () => {
   const modifyButton = async () => {
     const formData = new FormData();
 
-    if (sendForm) {
+    if (sendForm?.length> 0) {
       for (let i = 0; i < sendForm.length; i++) {
         formData.append('files', sendForm[i]);
+      }
+    }
+    if (sendIntroForm?.length> 0) {
+      for (let i = 0; i < sendIntroForm.length; i++) {
+        console.log(sendIntroForm[i])
+        formData.append('introFiles', sendIntroForm[i]);
       }
     }
 
     const data = {
       foodId: listData?.foodId,
-      defaultPrice: Number(foodPrice.replace(',', '')),
+      defaultPrice: Number(defaultPrice.replace(',', '')),
       supplyPrice: Number(supplyPrice.replace(',', '')),
       foodGroup: selectedFoodGroup.name,
       foodGroupId: selectedFoodGroup.id,
@@ -124,7 +130,8 @@ const ProductDetailPage = () => {
         dinnerTime === undefined
           ? null
           : dinnerEndTime + '일전 ' + dinnerTime,
-      images: dataList?.foodImages,
+        foodImages: dataList?.foodImages,
+      introImages: dataList?.introImages,
       description: text,
 
       calorie: calorie,
@@ -153,6 +160,13 @@ const ProductDetailPage = () => {
       foodImages: [...newImageURL],
     }));
   };
+  const deleteIntroImage = dataUrl => {
+    const newImageURL = dataList.introImages.filter(el => el !== dataUrl);
+    setDataList(prev => ({
+      ...prev,
+      introImages: [...newImageURL],
+    }));
+  };
 
   const dscOnChange = e => {
     setText(e.target.value);
@@ -173,7 +187,7 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     setValue('foodName', listData?.foodName);
-    setValue('foodPrice', withCommas(listData?.foodPrice));
+    setValue('defaultPrice', withCommas(listData?.defaultPrice));
     setValue(
       'supplyPrice',
       withCommas(listData?.supplyPrice === 0 ? '0' : listData?.supplyPrice),
@@ -264,7 +278,7 @@ const ProductDetailPage = () => {
   }, [
     listData?.customPrice,
     listData?.foodName,
-    listData?.foodPrice,
+    listData?.defaultPrice,
     listData?.makersDiscountPrice,
     listData?.makersDiscountRate,
     listData?.periodDiscountPrice,
@@ -300,7 +314,7 @@ const ProductDetailPage = () => {
               <PriceWrap>
                 <Input name="foodName" label="메뉴명" width="250px" readOnly />
                 <Input name="supplyPrice" label="공급가" />
-                <Input name="foodPrice" label="매장가" />
+                <Input name="defaultPrice" label="매장가" />
                 <Input name="membershipRate" label="멤버십 할인율" />
                 <Input name="membershipPrice" label="멤버십 할인가" readOnly />
                 <Input name="discountRate" label="매장 할인율" />
@@ -441,6 +455,7 @@ const ProductDetailPage = () => {
         <div>
           <ItemKeyword foodId={foodId} />
         </div>
+        <div style={{display:'flex', justifyContent:'space-between'}}>
         <div>
           <TagTitle>이미지 등록 (최대 6장)</TagTitle>
           <Label content="기존 이미지" color="blue" />
@@ -468,6 +483,36 @@ const ProductDetailPage = () => {
             sendForm={sendForm}
             length={dataList?.foodImages.length}
           />
+        </div>
+        <div>
+          <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
+          <Label content="기존 이미지" color="blue" />
+          <ImageIntroWrap>
+            {dataList &&
+              dataList?.introImages.map((el, i) => {
+                return (
+                  <ImageBox key={el + i}>
+                    <img src={el} alt="기존이미지" />
+
+                    <DeleteButton
+                      circular
+                      icon="delete"
+                      onClick={() => {
+                        deleteIntroImage(el);
+                      }}
+                    />
+                  </ImageBox>
+                );
+              })}
+          </ImageIntroWrap>
+          <ItemDetailImage
+            id={'inputIntroTag'}
+            setSendForm={setSendIntroForm}
+            sendForm={sendIntroForm}
+            length={dataList?.introImages.length}
+            maxLength={1}
+          />
+        </div>
         </div>
         <div>
           <TagTitle>메뉴 설명</TagTitle>
@@ -535,6 +580,19 @@ const ImageWrap = styled.div`
     width: 300px;
     height: 300px;
     object-fit: cover;
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+`;
+const ImageIntroWrap = styled.div`
+  display: flex;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
     position: relative;
     margin-right: 10px;
     margin-bottom: 10px;

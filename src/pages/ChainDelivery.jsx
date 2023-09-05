@@ -54,7 +54,6 @@ const ChainDelivery = () => {
   const {
     data: deliveryInfo,
     refetch: deliveryRefetch,
-    isFetching: deliveryLoading,
   } = useQuery(
     ['chainDelivery'],
     () => {
@@ -207,6 +206,7 @@ const ChainDelivery = () => {
         ) {
           return v;
         }
+        return undefined
       })
       .filter(v => v);
     setDeliveryInfoList(data);
@@ -476,131 +476,4 @@ const DeliveryInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: auto;
-`;
-const LoadingPage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
-const DateContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 50px;
-`;
-const MakersFront = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const MakersContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding-left: 30px;
-`;
-const GroupHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #cdcdcd;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 5px;
-`;
-const Group = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: flex-start;
-`;
-const Spot = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  padding-left: 5px;
-  padding-bottom: 1px;
-  gap: 15px;
-`;
-const SpotName = styled.div`
-  font-size: 14px;
-  color: #141414;
-  font-weight: 600;
-`;
-const SpotId = styled.div`
-  font-size: 14px;
-  color: blue;
-  font-weight: 600;
-`;
-const GroupAddress = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #141414;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 5px;
-`;
-const FoodHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 5px;
-`;
-const MakersHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  border-bottom: 1px solid black;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 5px;
-`;
-const GroupContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const FoodsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const GroupName = styled.div`
-  font-size: 15px;
-  padding: 2px;
-  padding-left: 5px;
-  color: #141414;
-  font-weight: 600;
-`;
-const Address = styled.div`
-  font-size: 15px;
-  padding: 5px;
-  font-weight: 600;
-`;
-const MakersName = styled.div`
-  font-size: 15px;
-  padding: 5px;
-`;
-const MakersAddress = styled.div`
-  font-size: 13px;
-  font-weight: 400;
-  padding: 5px;
-`;
-const FoodName = styled.div`
-  font-size: 15px;
-  padding: 5px;
-`;
-const DeliveryTime = styled.div`
-  font-size: 15px;
-`;
-const PickupTime = styled.div`
-  font-size: 15px;
-`;
-const DateBox = styled.div`
-  font-size: 18px;
-  width: 100%;
-  background-color: aliceblue;
-  padding: 2px;
-  padding-top: 10px;
-  padding-bottom: 10px;
 `;

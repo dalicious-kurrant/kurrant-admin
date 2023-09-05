@@ -1,18 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Dropdown, Label, Progress, Table} from 'semantic-ui-react';
+import {Button, Dropdown, Label, Table} from 'semantic-ui-react';
 import {
   PageWrapper,
-  BtnWrapper,
   TableWrapper,
 } from '../../../style/common.style';
 import Select from 'react-select';
 import styled, {css} from 'styled-components';
 
 import * as XLSX from 'xlsx';
-import {
-  formattedFullDate,
-  formattedWeekDate,
-} from '../../../utils/dateFormatter';
 
 import {
   useAllUserList,
@@ -23,10 +18,9 @@ import {
   useGetMakersList,
   useGetOrderList,
 } from '../../../hooks/useOrderList';
-import {orderApis} from '../../../api/order';
 import withCommas from '../../../utils/withCommas';
 import {useNavigate} from 'react-router-dom';
-import {useQuery, useQueryClient} from 'react-query';
+import {useQueryClient} from 'react-query';
 import Modal from '../../../components/alertModal/AlertModal';
 import {ReactComponent as ArrowDown} from '../../../assets/svg/ArrowDown.svg';
 import {useAtom} from 'jotai';
@@ -34,7 +28,6 @@ import {
   diningListAtom,
   diningTypeOptionAtom,
   endDateAtom,
-  endOrderDateAtom,
   groupFilterAtom,
   groupInfoAtom,
   groupOptionAtom,
@@ -46,11 +39,9 @@ import {
   spotListAtom,
   spotOptionAtom,
   startDateAtom,
-  startOrderDateAtom,
-  userListAtom,
   userOptionAtom,
 } from 'utils/store';
-import {orderStatusFomatted, scheduleFormatted} from 'utils/statusFormatter';
+import {orderStatusFomatted} from 'utils/statusFormatter';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 
 const TableHeaderData = [
@@ -92,19 +83,17 @@ const Order = () => {
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useAtom(startDateAtom);
   const [endDate, setEndDate] = useAtom(endDateAtom);
-  const [startOrderDate, setStartOrderDate] = useAtom(startOrderDateAtom);
-  const [endOrderDate, setEndOrderDate] = useAtom(endOrderDateAtom);
   const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
-  const [groupTypeOption, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
+  const [, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
   const [userOption, setUserOption] = useAtom(userOptionAtom);
   const [makersOption, setMakersOption] = useAtom(makersOptionAtom);
   const [spotOption, setSpotOption] = useAtom(spotOptionAtom);
   const [diningTypeOption, setDiningTypeOption] = useAtom(diningTypeOptionAtom);
   const [orderStatusOption, setOrderStatusOption] = useAtom(orderStatusAtom);
   const [grouptInfoId, setGroupInfoId] = useAtom(groupInfoAtom);
-  const [spotList, setSpotList] = useAtom(spotListAtom);
+  const [spotList] = useAtom(spotListAtom);
   // const [userList, setUserList] = useAtom(userListAtom);
-  const [diningType, setDiningType] = useAtom(diningListAtom);
+  const [diningType] = useAtom(diningListAtom);
   const [checkItems, setCheckItems] = useState([]);
   const [checkColumnItems, setCheckColumnItems] = useState(
     TableHeaderData.map(header => header.id),
@@ -236,12 +225,7 @@ const Order = () => {
   );
 
 
-  const getStartDate = e => {
-    setStartDate(e.target.value);
-  };
-  const getEndDate = e => {
-    setEndDate(e.target.value);
-  };
+
 
   const openModal = () => {
     setModalOpen(true);
@@ -414,6 +398,7 @@ const Order = () => {
       el.orderItemDailyFoods?.map(s => {
         if (selectClient.includes(orderStatusFomatted(s.orderStatus)))
           idArray.push(s.orderItemDailyFoodId);
+        return undefined
       }),
     );
     const data = {
@@ -726,6 +711,7 @@ const Order = () => {
                         {data.text}
                       </Table.HeaderCell>
                     );
+                  return undefined
                 })}
               </Table.Row>
             </Table.Header>
@@ -963,13 +949,7 @@ const SelectBox = styled(Select)`
   flex: 1;
 `;
 
-const DateInput = styled.input`
-  padding: 4px;
-  width: 200px;
-  border-radius: 4px;
-  border: 1px solid ${({theme}) => theme.colors.grey[5]};
-  margin-top: 4px;
-`;
+
 
 const TableRow = styled(Table.Row)`
   :hover {
@@ -984,9 +964,6 @@ const ResetButton = styled.div`
   gap: 20px;
 `;
 
-const DateSpan = styled.span`
-  margin: 0px 4px;
-`;
 
 const OrderCancel = styled.span`
   color: ${({theme}) => theme.colors.red[500]};

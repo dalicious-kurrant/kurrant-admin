@@ -1,9 +1,8 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, Form, Modal} from 'semantic-ui-react';
+import {Button, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
 import Input from '../../../components/input/Input';
-import {useUserPoint} from 'hooks/usePoint';
 import {formattedWeekDateZ} from 'utils/dateFormatter';
 
 const IssueModal = ({open, setOpen, setModifyData}) => {

@@ -19,9 +19,12 @@ export function useSaveMakersInformation() {
     },
   });
 }
+
+
+
 export function useUpdateMakersDetail() {
   const queryClient = useQueryClient();
-  return useMutation(data => makersApis.updateMakersInfo(data), {
+  return useMutation((formData, config) => makersApis.updateMakersInfo(formData,config), {
     onSuccess: () => {
       queryClient.invalidateQueries('makersInformation');
     },

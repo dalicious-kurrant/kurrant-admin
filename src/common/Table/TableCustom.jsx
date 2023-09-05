@@ -4,13 +4,12 @@ import TableCheckbox from 'common/TableCheckbox';
 import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import Theme from 'style/Theme';
 import styled from 'styled-components';
 
 import MemoInput from './MemoInput/MemoInput';
-import {TableCheckboxStatusAtom, TableDeleteListAtom} from './store';
+import {TableCheckboxStatusAtom} from './store';
 
-import {Button, Label, Table, Dropdown, DropBox} from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
 import {handleFalsyValueToHyphen} from 'utils/valueHandlingLogics';
 
 // import putId from './'
@@ -46,7 +45,7 @@ const TableCustom = ({
     setCheckboxStatus({
       ...object1,
     });
-  }, [dataInput]);
+  }, [dataInput, setCheckboxStatus]);
 
   const onCheckCheckbox = value => {
     if (value === 'parent') {
@@ -68,18 +67,7 @@ const TableCustom = ({
     }
   };
 
-  const onDeleteCancelClick = e => {
-    // const deleteTargetId = e.target.id.toString();
-    // const yes = [...tableDeleteList];
-    // let array1 = [];
-    // yes.forEach(v => {
-    //   if (v.toString() == deleteTargetId) {
-    //   } else {
-    //     array1.push(v);
-    //   }
-    // });
-    // array1
-  };
+
 
   // useEffect(() => {
   //   console.log(dataInput);

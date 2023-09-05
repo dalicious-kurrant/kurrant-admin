@@ -1,20 +1,17 @@
 import {useState} from 'react';
-import {Button, Checkbox, Dropdown, Table} from 'semantic-ui-react';
+import {Button, Checkbox, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
 import {TableWrapper} from '../../../style/common.style';
 import {
-  foodStatusData,
-  scheduleFormatted,
   userStatusFormatted,
 } from '../../../utils/statusFormatter';
 import CostomerEditModal from './CustomerEditModal';
 import Select from 'react-select';
-import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
-import {groupIdAtom, uerIdAtom, userIdAtom, userStateAtom} from 'utils/store';
+import {groupIdAtom, userIdAtom, userStateAtom} from 'utils/store';
 import CustomerPoint from './CustomerPoint';
-import { useAllUserExport, useAllUserList, useGetGroupAllList, useGetMakersList } from 'hooks/useOrderList';
+import { useAllUserExport, useAllUserList, useGetGroupAllList } from 'hooks/useOrderList';
 
 const CustomerTable = ({
   testData,
@@ -27,16 +24,15 @@ const CustomerTable = ({
 }) => {
   const [pointOpenModal, setPointOpenModal] = useState(false);
   const [showOpenModal, setShowOpenModal] = useState(false);
-  const [editId, setEditId] = useState();
+  const [, setEditId] = useState();
   const [clickData, setClickData] = useState();
-  const [userOption, setUserOption] = useAtom(userStateAtom);
-  const [nameOption, setNameOption] = useAtom(userIdAtom);
-  const [spotOption, setSpotOption] = useAtom(groupIdAtom);
-  const [option, setOption] = useState(testData);
+  const [, setUserOption] = useAtom(userStateAtom);
+  const [, setNameOption] = useAtom(userIdAtom);
+  const [, setSpotOption] = useAtom(groupIdAtom);
   const {data: allUserList} = useAllUserList();
   const { refetch:refetchExport ,isFetching:loadingExport} = useAllUserExport();
   const {data: groupAllList} = useGetGroupAllList();
-  const {data: spotList} = useGetSpotList();
+  // const {data: spotList} = useGetSpotList();
 
   const showEditOpen = id => {
     setEditId(id);
@@ -60,9 +56,7 @@ const CustomerTable = ({
     };
   });
 
-  const set = spotList?.data?.reduce((acc, v) => {
-    return acc.find(x => x.groupId === v.groupId) ? acc : [...acc, v];
-  }, []);
+
 
   const spotArr = groupAllList?.data?.groups?.map(el => {
     return {
@@ -154,6 +148,7 @@ const CustomerTable = ({
                       let check = [];
                       testData.map(v => {
                         check.push(v.id);
+                        return undefined
                       });
                       setUserCheck(check);
                     } else {
@@ -365,9 +360,6 @@ const FlexPwdBox = styled.div`
   width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-const DropdownBox = styled.div`
-  width: 150px;
 `;
 
 const SelectWrap = styled.div`

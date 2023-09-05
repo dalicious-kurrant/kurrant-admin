@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import useMutate from 'common/CRUD/useMutate';
 import {TableCheckboxStatusAtom, userCheckAtom} from 'common/Table/store';
 import {useAtom} from 'jotai';
@@ -27,16 +28,16 @@ const CustomerCustom = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [allChk, setAllChk] = useState(false);
   const [userCheck, setUserCheck] = useAtom(userCheckAtom);
-  const [checkboxStatus, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
-  const [dataToEdit, setDataToEdit] = useState({});
-  const [registerStatus, setRegisterStatus] = useState('register');
+  const [, setCheckboxStatus] = useAtom(TableCheckboxStatusAtom);
+  const [dataToEdit, ] = useState({});
+  const [registerStatus, ] = useState('register');
   const [key, setKey] = useState([]);
-  const [exelUser, setExelUser] = useAtom(exelUserAtom);
+  const [exelUser, ] = useAtom(exelUserAtom);
   const [userOption] = useAtom(userStateAtom);
   const [nameOption] = useAtom(userIdAtom);
   const [spotOption] = useAtom(groupIdAtom);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useAtom(userPageAtom);
+  const [totalPage, ] = useAtom(userPageAtom);
   const userStatus = userOption && `&userStatus=${userOption}`;
   const groupId = spotOption && `&group=${spotOption}`;
   const userId = nameOption && `&userId=${nameOption}`;
@@ -47,10 +48,10 @@ const CustomerCustom = () => {
     userId: userId && userId,
   };
 
-  const {deleteMutate, submitMutate, editMutate} = useMutate(CustomerDataAtom);
+  const { submitMutate, editMutate} = useMutate(CustomerDataAtom);
 
   const token = localStorage.getItem('token');
-  const {} = useCustomerQuery(
+  useCustomerQuery(
     ['getCustomerJSON'],
     CustomerDataAtom,
     `users/all?${params.userStatus}${params.groupId}${params.userId}&page=${page}&limit=100`,

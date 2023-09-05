@@ -6,8 +6,6 @@ import {TableWrapper} from '../../../style/common.style';
 import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
 import {
   foodStatusData,
-  scheduleFormatted,
-  scheduleFormatted2,
 } from '../../../utils/statusFormatter';
 import {exelPlanAtom} from '../../../utils/store';
 

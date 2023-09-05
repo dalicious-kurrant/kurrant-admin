@@ -1,6 +1,5 @@
 import {calendarApis} from 'api/calendar';
 import {useMutation, useQuery} from 'react-query';
-import {scheduleFormatted} from 'utils/statusFormatter';
 
 export function usePostCalendar() {
   return useMutation(data => {

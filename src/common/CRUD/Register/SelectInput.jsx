@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {handleFalsyValueToBlank} from 'utils/valueHandlingLogics';
 
 const SelectInput = ({
   fieldsToOpen,
@@ -39,7 +38,6 @@ const SelectInput = ({
     <>
       <Container flex={flex} width={width}>
         <TitleWrap style={headerWidth ? {width: headerWidth} : undefined}>
-          {/* <Title>{fieldsToOpen[name]}</Title> */}
           <Title>{fieldName}</Title>
         </TitleWrap>
 
@@ -90,10 +88,8 @@ const TitleWrap = styled.div`
 
   height: 3rem;
   font-size: 1.2rem;
-  /* text-align: center; */
   display: flex;
   align-items: center;
-  /* border: 1px solid black; */
   border: 1px solid ${props => props.theme.colors.Grey07};
 `;
 const Title = styled.span`
@@ -133,11 +129,7 @@ const Select = styled.select`
 
 const Option = styled.option`
   border: none;
-  /* height: 100%; */
   font-size: 1.2rem;
-  /* color: ${props => props.theme.Black}; */
 `;
 
-const PlaceholderOption = styled(Option)`
-  color: ${props => props.theme.Gray};
-`;
+

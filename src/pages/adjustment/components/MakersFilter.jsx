@@ -1,7 +1,6 @@
 import {useMakersList} from 'hooks/useAdjustment';
 import {useAtom} from 'jotai';
 import {useEffect, useState} from 'react';
-import {useFormContext} from 'react-hook-form';
 import {Button, Dropdown} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedYearMonthDate} from 'utils/dateFormatter';

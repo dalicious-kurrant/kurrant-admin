@@ -1,4 +1,4 @@
-import {useQuery, useQueryClient} from 'react-query';
+import {useQuery} from 'react-query';
 
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
@@ -11,14 +11,11 @@ const useGetFoodGroupQuery = makersId => {
   const [makersList, setMakersList] = useAtom(getMakersAtom);
 
   const {
-    data,
-    status,
-    isLoading,
     refetch: getFoodGroupQueryRefetch,
   } = useQuery(
     ['foods', 'groups'],
 
-    async ({queryKey}) => {
+    async () => {
       const response = await instance.get('/foods/groups');
 
       setFoodGroupData(response.data);
@@ -34,10 +31,10 @@ const useGetFoodGroupQuery = makersId => {
     },
   );
 
-  const {refetch: getMakersListRefetchQuery} = useQuery(
+  useQuery(
     ['util', 'makersList'],
 
-    async ({queryKey}) => {
+    async () => {
       const response = await instance.get('/makersInfos');
 
       setMakersList(response.data);
@@ -48,7 +45,7 @@ const useGetFoodGroupQuery = makersId => {
       enabled: true,
       retry: 1,
       retryDelay: 800,
-    },
+    }
   );
 
   const [foodGroupList, setFoodGroupList] = useState([]);
@@ -56,7 +53,7 @@ const useGetFoodGroupQuery = makersId => {
   const {refetch: getFoodGroupListRefetchQuery} = useQuery(
     ['util', 'foodGroupList'],
 
-    async ({queryKey}) => {
+    async () => {
       const response = await instance.get(`/foods/makers/${makersId}/groups`);
 
       setFoodGroupList(response.data);
@@ -74,7 +71,7 @@ const useGetFoodGroupQuery = makersId => {
     if (makersId) {
       getFoodGroupListRefetchQuery();
     }
-  }, [makersId]);
+  }, [getFoodGroupListRefetchQuery, makersId]);
 
   return {
     getFoodGroupQueryRefetch,
