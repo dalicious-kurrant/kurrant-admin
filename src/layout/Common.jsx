@@ -177,6 +177,29 @@ const Common = () => {
   const completePost = async () => {
     const reqArray = [];
     if (completePlan) {
+      completePlan.map(makers => {
+        return makers.makersSchedules.map(client => {
+          return client.foodSchedules.map(food => {
+            const result = {
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              groupName: makers.groupName,
+              groupCapacity: makers.groupCapacity,
+              deliveryTime: makers.deliveryTime,
+              makersName: client.makersName,
+              makersCapacity: client.makersCapacity,
+              makersCount: client.makersCount,
+              makersPickupTime: client.makersPickupTime,
+              foodName: food.foodName,
+              foodStatus: food.dailyFoodStatus,
+              dailyFoodId: food.dailyFoodId || null,
+              foodCapacity: food.foodCapacity,
+              foodCount: food.foodCount,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -187,6 +210,27 @@ const Common = () => {
       }
     }
     if (exelCompletePlan) {
+      exelCompletePlan.map((makers, i) => {
+        if (i !== 0) {
+          const result = {
+            serviceDate: formattedDate(makers.serviceDate, '-'),
+            diningType: makers.diningType,
+            groupName: makers.groupName,
+            groupCapacity: makers.groupCapacity,
+            deliveryTime: makers.deliveryTime.split(','),
+            makersName: makers.makersName,
+            makersCapacity: makers.makersCapacity,
+            makersCount: makers.makersCount,
+            makersPickupTime: makers.makersPickupTime.split(','),
+            foodName: makers.foodName,
+            foodStatus: makers.dailyFoodStatus,
+            dailyFoodId: makers.dailyFoodId || null,
+            foodCapacity: makers.foodCapacity,
+            foodCount: makers.foodCount,
+          };
+          reqArray.push(result);
+        }
+      });
       try {
         await completePostCalendar(reqArray);
         alert('저장 되었습니다.');
@@ -201,6 +245,27 @@ const Common = () => {
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
+      plan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
     }
 
     if (reCommandPlan) {

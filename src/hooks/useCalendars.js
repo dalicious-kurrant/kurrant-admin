@@ -15,6 +15,7 @@ export function useCompleteCalendar() {
 export function usePostCompleteCalendar() {
   return useMutation(
     data => {
+      console.log(data)
       return calendarApis.completePostDailyFood(data);
     },
     {

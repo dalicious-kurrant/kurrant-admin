@@ -117,6 +117,27 @@ const Plans = () => {
   const callPostCalendar = async () => {
     const reqArray = [];
     if (plan) {
+      plan.map(makers => {
+        return makers.clientSchedule.map(client => {
+          return client.foodSchedule.map(food => {
+            const result = {
+              makersName: makers.makersName,
+              makersScheduleStatus: scheduleFormatted2(makers.scheduleStatus),
+              serviceDate: makers.serviceDate,
+              diningType: makers.diningType,
+              makersCapacity: makers.makersCapacity,
+              pickupTime: client.pickupTime,
+              groupName: client.clientName,
+              groupCapacity: client.clientCapacity,
+              foodScheduleStatus: scheduleFormatted2(food.scheduleStatus),
+              foodName: food.foodName,
+              foodStatus: food.foodStatus,
+              foodCapacity: food.foodCapacity,
+            };
+            reqArray.push(result);
+          });
+        });
+      });
     }
     if (reCommandPlan) {
       console.log(reCommandPlan);
