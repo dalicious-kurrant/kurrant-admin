@@ -8,11 +8,13 @@ import styled from 'styled-components';
 import {formattedWeekDate} from '../../utils/dateFormatter';
 import CustomPlanExelTable from './components/CustomPlanExelTable';
 
+import {ReactComponent as ChangeArrowRight} from 'assets/svg/ChangeArrowRight.svg';
 import 'react-datepicker/dist/react-datepicker.css';
 import {useGetCompleteCalendar, useGetFilter} from 'hooks/useCalendars';
 import CustomPlanTable from './components/CustomPlanTable';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
+import { foodCompleteStatusData } from 'utils/statusFormatter';
 
 // 메이커스 정보 페이지
 const CompletePlans = () => {
@@ -22,6 +24,10 @@ const CompletePlans = () => {
   const [selectMakers, setSelectMakers] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
   const [totalPage, ] = useState(0);
+
+  const [currentStatus, setCurrentStatus]=useState();
+  const [updateStatus, setUpdateStatus]=useState();
+
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const curr = new Date();
@@ -55,6 +61,25 @@ const CompletePlans = () => {
     calendarRefetch();
     setShouldFetchData(true);
   };
+
+  const handleChangeDailyFoodStatus = async()=>{
+    if(!plan || !currentStatus || !updateStatus)return;
+    const changeStatusList = plan.map((p)=>{
+      return p.makersSchedules.map((makers)=>{
+        return makers.foodSchedules.map((food)=>{
+          return food.dailyFoodId
+        })
+      })
+    }).flat(2);
+    const req = {
+      ids:changeStatusList,
+      currentStatus,
+      updateStatus
+    }
+    console.log(req)
+  }
+
+
   useEffect(() => {
     if (!exelPlan) {
       if (isSuccess) {
@@ -118,82 +143,15 @@ const CompletePlans = () => {
                 조회
               </Button>
             </RecoDatePickerContainer>
-            {/* <RecoDatePickerContainer>
-              <RecoDatePickerBox>
-                <DatePicker
-                  selected={new Date(formattedWeekDateZ(accessStartDate))}
-                  onChange={date => {
-                    setAccessStartDate(date);
-                  }}
-                  dateFormat="yyyy-MM-dd"
-                  customInput={<SelectDatePicker />}
-                />
-              </RecoDatePickerBox>
-              -
-              <RecoDatePickerBox>
-                <DatePicker
-                  selected={new Date(formattedWeekDateZ(accessEndDate))}
-                  onChange={date => {
-                    setAccessEndDate(date);
-                  }}
-                  dateFormat="yyyy-MM-dd"
-                  customInput={<SelectDatePicker />}
-                />
-              </RecoDatePickerBox>
-            </RecoDatePickerContainer> */}
+     
           </DeadLineWrapper>
         )}
       </Wrapper>
-      {/* <ContentWrapper>
-        <BtnWrapper>
-          <CallWrapper>
-            <Button
-              color="blue"
-              content="식사요청"
-              onClick={callPostCalendar}
-            />
-            <Button color="grey" content="2023-02-20" icon="calendar" onClick={onActive} />
-            <DatePickerBox>
-              <DatePicker
-                selected={startDate}
-                onChange={date => setStartDate(date)}
-                timeInputLabel="Time:"
-                dateFormat="yyyy-MM-dd aa h:mm"
-                showTimeInput
-                customInput={<SelectDatePicker />}
-              />
-            </DatePickerBox>
-          </CallWrapper>
-        </BtnWrapper>
-
-        <BtnWrapper>
-          <AccessBox>
-            <Button color="blue" content="식단 완료(미완)" onClick={onActive} />
-            <AccessDate>
-              <AccessDatePickerBox>
-                <DatePicker
-                  selected={accessStartDate}
-                  onChange={date => setAccessStartDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  customInput={<SelectDatePicker />}
-                />
-              </AccessDatePickerBox>
-              -
-              <AccessDatePickerBox>
-                <DatePicker
-                  selected={accessEndDate}
-                  onChange={date => setAccessEndDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  customInput={<SelectDatePicker />}
-                />
-              </AccessDatePickerBox>
-            </AccessDate>
-          </AccessBox>
-        </BtnWrapper>
-      </ContentWrapper> */}
+  
       {!exelPlan && (
         <FilterContainer>
           <FilterBox>
+            <div style={{display:'flex', gap:10}}>
             <DropBox>
               <Label color="teal">메이커스</Label>
               <Dropdown
@@ -224,6 +182,39 @@ const CompletePlans = () => {
                 }}
               />
             </DropBox>
+            </div>
+            <div style={{display:'flex', gap:10 ,alignItems:'center', justifySelf:'flex-end' ,alignSelf:'self-end'}}>
+              <DropBox>
+                <Label color="blue">현재상태</Label>
+                <Dropdown
+                placeholder="현재상태"
+                fluid
+                selection
+                options={foodCompleteStatusData}
+                onChange={(e, data) => {
+                  setCurrentStatus(data.value)
+
+                }}
+              />
+              </DropBox>
+              <div style={{width:25,marginTop:20, marginLeft:5,marginRight:5}}>
+                <ChangeArrowRight />
+              </div>
+              <DropBox>
+                <Label color="blue">바꿀상태</Label>
+                <Dropdown
+                  placeholder="바꿀상태"
+                  fluid
+                  selection
+                  options={foodCompleteStatusData}
+                  onChange={(e, data) => {
+                    setUpdateStatus(data.value)
+                  }}
+                />
+              </DropBox>              
+              <Button onClick={handleChangeDailyFoodStatus} style={{whiteSpace:'nowrap',marginTop:20}} color='blue'>변경</Button>
+            </div>
+            
             {/* <DropBox>
             <Label>다이닝별 승인 상태</Label>
             <Dropdown
@@ -260,6 +251,7 @@ const CompletePlans = () => {
           {exelPlan && <CustomPlanExelTable />}
           {plan && (
             <>
+            
               <CustomPlanTable
                 count={count}
                 testData={plan}
@@ -282,6 +274,8 @@ const PagenationBox = styled.div`
 `;
 const FilterBox = styled.div`
   display: flex;
+  width: calc(100% - 120px);
+  justify-content: space-between;
   gap: 20px;
 `;
 const DeadLineWrapper = styled.div`
@@ -308,5 +302,6 @@ const DropBox = styled.div`
 const FilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  z-index: 9;
   gap: 20px;
 `;
