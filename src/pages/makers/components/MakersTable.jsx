@@ -151,40 +151,40 @@ const MakersTable = ({data, setData}) => {
                   {el.diningTypes.map((dining)=>diningFormatted(dining.diningType)).join(',')}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {morningDining.lastOrderTime || '-'}
+                  {morningDining?.lastOrderTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {lunchDining.lastOrderTime || '-'}
+                  {lunchDining?.lastOrderTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {dinnerDining.lastOrderTime || '-'}
+                  {dinnerDining?.lastOrderTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {morningDining.capacity || '-'}
+                  {morningDining?.capacity || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {lunchDining.capacity || '-'}
+                  {lunchDining?.capacity || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {dinnerDining.capacity || '-'}
+                  {dinnerDining?.capacity || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {morningDining.minTime || '-'}
+                  {morningDining?.minTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {lunchDining.minTime || '-'}
+                  {lunchDining?.minTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {dinnerDining.minTime || '-'}
+                  {dinnerDining?.minTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {morningDining.maxTime || '-'}
+                  {morningDining?.maxTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {lunchDining.maxTime || '-'}
+                  {lunchDining?.maxTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {dinnerDining.maxTime || '-'}
+                  {dinnerDining?.maxTime || '-'}
                 </Table.Cell>
                 <Table.Cell textAlign="center">{el.serviceForm}</Table.Cell>
                 <Table.Cell textAlign="center">{el.serviceType}</Table.Cell>
