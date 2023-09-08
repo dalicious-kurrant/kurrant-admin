@@ -42,6 +42,7 @@ import {
 } from 'utils/store';
 import {orderStatusFomatted} from 'utils/statusFormatter';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
+import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
 
 const TableHeaderData = [
   {id: 0, text: '날짜'},
@@ -732,7 +733,9 @@ const Order = () => {
           />
         </div>
       </OrderStatusBox>
-      {!(isOrderFetching || isGroupFetching) && (
+      {isOrderFetching || isGroupFetching ? (
+        <ActivityIndicator height="300px" />
+      ) : (
         <TableWrapper>
           <Table celled>
             <Table.Header>
