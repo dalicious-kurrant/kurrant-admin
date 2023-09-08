@@ -83,7 +83,7 @@ const Order = () => {
   const [startOrderDate, setStartOrderDate] = useAtom(startOrderDateAtom);
   const [endOrderDate, setEndOrderDate] = useAtom(endOrderDateAtom);
   const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
-  const [, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
+  const [groupTypeOption, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
   const [userOption, setUserOption] = useAtom(userOptionAtom);
   const [makersOption, setMakersOption] = useAtom(makersOptionAtom);
   const [spotOption, setSpotOption] = useAtom(spotOptionAtom);
@@ -220,6 +220,7 @@ const Order = () => {
     startDate,
     endDate,
     groupOption,
+    groupTypeOption,
     userOption.value,
     spotOption.value,
     makersOption.value,
@@ -256,6 +257,9 @@ const Order = () => {
     }
     if (groupTypeRef.current) {
       groupTypeRef.current.clearValue();
+    }
+    if (orderStatusRef.current) {
+      orderStatusRef.current.clearValue();
     }
     // window.location.reload();
     setDefaultGroup('');
@@ -424,6 +428,7 @@ const Order = () => {
     startDate,
     endDate,
     groupOption,
+    groupTypeOption,
     userOption,
     spotOption,
     makersOption,
