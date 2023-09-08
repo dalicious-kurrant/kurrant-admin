@@ -14,6 +14,7 @@ export const orderApis = {
     startDate,
     endDate,
     groupOption,
+    groupTypeOption,
     userOption,
     spotOption,
     makersOption,
@@ -24,9 +25,10 @@ export const orderApis = {
     checkFilterType,
   ) => {
     const params = {
-      group: groupOption,
+      group: groupOption !== '' ? groupOption : null,
       userId: userOption,
       spots: spotOption,
+      spotType: groupTypeOption,
       makersId: makersOption,
       diningTypeCode: diningTypeOption,
       status: orderStatusOption,
