@@ -3,7 +3,7 @@ import {TableWrapper} from 'style/common.style';
 import {formattedPercent} from '../../../utils/numberFormatter';
 import {useState} from 'react';
 import MakersEditModal from './MakersEditModal';
-import { diningFormatted } from 'utils/statusFormatter';
+import {diningFormatted} from 'utils/statusFormatter';
 
 const MakersTable = ({data, setData}) => {
   const [showOpenModal, setShowOpenModal] = useState(false);
@@ -12,8 +12,8 @@ const MakersTable = ({data, setData}) => {
   const showEditOpen = id => {
     const datas = data?.data?.find(v => v.id === id);
     setClickData(datas);
-    console.log(datas)
-    setSelectedImages(datas.introImages)
+    // console.log(datas)
+    setSelectedImages(datas.introImages);
     setShowOpenModal(true);
   };
   // console.log(data, '09');
@@ -117,9 +117,15 @@ const MakersTable = ({data, setData}) => {
           {data?.data?.map((el, i) => {
             const parentCompany = el.isParentCompany ? '있음' : '없음';
             const isActive = el.isActive ? '활성' : '비활성';
-            const morningDining = el.diningTypes.find((dining)=>dining.diningType === 1)
-            const lunchDining = el.diningTypes.find((dining)=>dining.diningType === 2)
-            const dinnerDining = el.diningTypes.find((dining)=>dining.diningType === 3)
+            const morningDining = el.diningTypes.find(
+              dining => dining.diningType === 1,
+            );
+            const lunchDining = el.diningTypes.find(
+              dining => dining.diningType === 2,
+            );
+            const dinnerDining = el.diningTypes.find(
+              dining => dining.diningType === 3,
+            );
             return (
               <Table.Row
                 key={el.id + i}
@@ -148,7 +154,9 @@ const MakersTable = ({data, setData}) => {
                   <div style={{width: 120}}>{el.serviceDays}</div>
                 </Table.Cell>
                 <Table.Cell textAlign="center">
-                  {el.diningTypes.map((dining)=>diningFormatted(dining.diningType)).join(',')}
+                  {el.diningTypes
+                    .map(dining => diningFormatted(dining.diningType))
+                    .join(',')}
                 </Table.Cell>
                 <Table.Cell textAlign="center">
                   {morningDining?.lastOrderTime || '-'}

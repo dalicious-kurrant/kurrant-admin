@@ -21,7 +21,7 @@ import ItemInfoTable from './components/ItemInfoTable';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
-  const [option, ] = useAtom(makersNameAtom);
+  const [option] = useAtom(makersNameAtom);
   const [product, setProduct] = useAtom(productAtom);
   const [, setExportExel] = useAtom(exportProductAtom);
   const [page, setPage] = useAtom(productPageAtom);
@@ -34,7 +34,7 @@ const ItemInfo = () => {
   );
   const {data: exportProductList, isLoading} = useGetExportProductsList();
   const [totalPage, setTotalPage] = useState(0);
-  const [exelProduct, ] = useAtom(exelProductAtom);
+  const [exelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
 
   const checkId = (e, id) => {
@@ -50,7 +50,7 @@ const ItemInfo = () => {
     }
     if (!isLoading) {
       setExportExel(exportProductList?.data);
-      console.log('가져오는중');
+      // console.log('가져오는중');
     }
   }, [exportProductList, exportProductList?.data, isLoading, productList]);
 
@@ -93,8 +93,6 @@ const ItemInfo = () => {
 };
 
 export default ItemInfo;
-
-
 
 const PagenationBox = styled.div`
   ${({totalPage}) => {
