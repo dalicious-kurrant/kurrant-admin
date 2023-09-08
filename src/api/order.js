@@ -1,10 +1,10 @@
 import instance from '../shared/axios';
 
 export const orderApis = {
-  groupList: async (spotType) => {
+  groupList: async spotType => {
     const url = 'orders/group';
-    const spot = `?spotType=${spotType}`
-   return await instance.get(spotType ?url+spot :url)
+    const spot = `?spotType=${spotType}`;
+    return await instance.get(spotType ? url + spot : url);
   },
   groupInfoList: async groupId =>
     await instance.get(`orders/groupInfo${groupId}`),
@@ -19,17 +19,36 @@ export const orderApis = {
     makersOption,
     diningTypeOption,
     orderStatusOption,
-  ) =>
-    await instance.get(`orders?startDate=${startDate}&endDate=${endDate}`, {
-      params: {
-        group: groupOption,
-        userId: userOption,
-        spots: spotOption,
-        makersId: makersOption,
-        diningTypeCode: diningTypeOption,
-        status: orderStatusOption,
-      },
-    }),
+    startOrderDate,
+    endOrderDate,
+    checkFilterType,
+  ) => {
+    const params = {
+      group: groupOption,
+      userId: userOption,
+      spots: spotOption,
+      makersId: makersOption,
+      diningTypeCode: diningTypeOption,
+      status: orderStatusOption,
+    };
+    if (checkFilterType === 0) {
+      params.startDate = startDate;
+      params.endDate = endDate;
+    } else if (checkFilterType === 1) {
+      params.orderStartDate = startOrderDate;
+      params.orderEndDate = endOrderDate;
+    } else {
+      params.startDate = startDate;
+      params.endDate = endDate;
+      params.orderStartDate = startOrderDate;
+      params.orderEndDate = endOrderDate;
+    }
+
+    const res = await instance.get(`orders`, {
+      params: params,
+    });
+    return res;
+  },
   orderDetail: async orderCode => await instance.get(`orders/${orderCode}`),
   orderCancel: async data =>
     await instance.post('orders/orderItems/cancel', data),

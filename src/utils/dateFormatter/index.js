@@ -33,7 +33,7 @@ export function formattedWeekDateTime(data, delimiter = '-') {
   const day = leftPad(dateTime.getDate());
   const hour = leftPad(dateTime.getHours());
   const minute = leftPad(dateTime.getMinutes());
-  return `${day}일 ${[hour,minute].join(':')}`;
+  return `${day}일 ${[hour, minute].join(':')}`;
 }
 export function formattedTime(data) {
   if (typeof data !== typeof new Date()) {
@@ -78,7 +78,7 @@ export function formattedDate(data, delimiter = '.') {
 }
 export function formattedDateZ(data, delimiter = '.') {
   const dateTime = transDateType(data);
-  console.log(dateTime)
+  // console.log(dateTime)
   const year = dateTime.getUTCFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());

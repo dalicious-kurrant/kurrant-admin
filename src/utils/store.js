@@ -1,8 +1,5 @@
 import {atomWithReset} from 'jotai/utils';
-import {
-  formattedWeekDateZ,
-  formattedYearMonthDate,
-} from './dateFormatter';
+import {formattedWeekDateZ, formattedYearMonthDate} from './dateFormatter';
 
 //일정관리 아톰
 export const exelPlanAtom = atomWithReset();
