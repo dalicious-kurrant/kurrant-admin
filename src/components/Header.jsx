@@ -43,6 +43,8 @@ import {
   noticeMakersPushFilterAtom,
   noticeMakersPageAtom,
   checkValueAtom,
+  startOrderDateAtom,
+  endOrderDateAtom,
 } from 'utils/store';
 import {CustomerDataAtom} from 'pages/customer/Customer/store';
 import {SpotInfoDataAtom} from 'pages/customer/SpotInfo/store';
@@ -105,6 +107,9 @@ const Header = ({openMenu, setOpenMenu}) => {
   const resetAtom42 = useResetAtom(noticeMakersPageAtom);
   const resetAtom43 = useResetAtom(checkValueAtom);
 
+  const resetAtom44 = useResetAtom(startOrderDateAtom);
+  const resetAtom45 = useResetAtom(endOrderDateAtom);
+
   const logOutButton = () => {
     localStorage.removeItem('token');
     window.location.replace('/');
@@ -154,6 +159,8 @@ const Header = ({openMenu, setOpenMenu}) => {
     resetAtom41();
     resetAtom42();
     resetAtom43();
+    resetAtom44();
+    resetAtom45();
   };
   return (
     <H.Wrapper>

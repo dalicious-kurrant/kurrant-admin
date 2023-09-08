@@ -2,7 +2,7 @@ import {useAtom} from 'jotai';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import {diningListAtom, spotListAtom} from 'utils/store';
 import {orderApis} from '../api/order';
-import { userExel } from 'utils/downloadExel/exel';
+import {userExel} from 'utils/downloadExel/exel';
 
 export function useGetGroupList(spotType) {
   return useQuery('groupList', () => {
@@ -25,8 +25,8 @@ export function useGetGroupInfoList(groupId) {
         setSpotList(res.data.spots);
         setDiningType(res.data.diningTypes);
       },
-      retry:false,
-      enabled:groupId !== 0,
+      retry: false,
+      enabled: groupId !== 0,
     },
   );
 }
@@ -40,21 +40,32 @@ export function useGetOrderList(
   makersOption,
   diningTypeOption,
   orderStatusOption,
+  startOrderDate,
+  endOrderDate,
+  checkFilterType,
 ) {
-  return useQuery('orderList', () => {
-    return orderApis.orderList(
-      startDate,
-      endDate,
-      groupOption,
-      userOption,
-      spotOption,
-      makersOption,
-      diningTypeOption,
-      orderStatusOption,
-    );
-  },{
-    retry:false
-  });
+  return useQuery(
+    'orderList',
+    () => {
+      return orderApis.orderList(
+        startDate,
+        endDate,
+        groupOption,
+        userOption,
+        spotOption,
+        makersOption,
+        diningTypeOption,
+        orderStatusOption,
+        startOrderDate,
+        endOrderDate,
+        checkFilterType,
+      );
+    },
+    {
+      retry: false,
+      //enabled: false,
+    },
+  );
 }
 
 export function useGetMakersList() {
@@ -88,15 +99,19 @@ export function useAllUserList() {
   });
 }
 export function useAllUserExport() {
-  return useQuery('allUserExport', () => {
-    return orderApis.allUserExport();
-  },{
-    onSuccess:(v)=>{
-      console.log(v)
-      userExel(v.data)
+  return useQuery(
+    'allUserExport',
+    () => {
+      return orderApis.allUserExport();
     },
-   enabled:false 
-  });
+    {
+      onSuccess: v => {
+        console.log(v);
+        userExel(v.data);
+      },
+      enabled: false,
+    },
+  );
 }
 
 export function useEditOrderStatus() {
