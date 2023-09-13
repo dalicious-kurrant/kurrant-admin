@@ -1,9 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Dropdown, Label, Table} from 'semantic-ui-react';
-import {
-  PageWrapper,
-  TableWrapper,
-} from '../../../style/common.style';
+import {PageWrapper, TableWrapper} from '../../../style/common.style';
 import Select from 'react-select';
 import styled, {css} from 'styled-components';
 
@@ -28,6 +25,7 @@ import {
   diningListAtom,
   diningTypeOptionAtom,
   endDateAtom,
+  endOrderDateAtom,
   groupFilterAtom,
   groupInfoAtom,
   groupOptionAtom,
@@ -39,10 +37,12 @@ import {
   spotListAtom,
   spotOptionAtom,
   startDateAtom,
+  startOrderDateAtom,
   userOptionAtom,
 } from 'utils/store';
 import {orderStatusFomatted} from 'utils/statusFormatter';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
+import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
 
 const TableHeaderData = [
   {id: 0, text: '날짜'},
@@ -78,13 +78,13 @@ const Order = () => {
   const makersRef = useRef(null);
   const diningRef = useRef(null);
   const orderStatusRef = useRef(null);
-  // const day = new Date();
-  // const days = formattedWeekDate(day);
   const queryClient = useQueryClient();
   const [startDate, setStartDate] = useAtom(startDateAtom);
   const [endDate, setEndDate] = useAtom(endDateAtom);
+  const [startOrderDate, setStartOrderDate] = useAtom(startOrderDateAtom);
+  const [endOrderDate, setEndOrderDate] = useAtom(endOrderDateAtom);
   const [groupOption, setGroupOption] = useAtom(groupOptionAtom);
-  const [, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
+  const [groupTypeOption, setGroupTypeOption] = useAtom(groupTypeOptionAtom);
   const [userOption, setUserOption] = useAtom(userOptionAtom);
   const [makersOption, setMakersOption] = useAtom(makersOptionAtom);
   const [spotOption, setSpotOption] = useAtom(spotOptionAtom);
@@ -111,12 +111,12 @@ const Order = () => {
   const [defaultDining, setDefaultDining] = useAtom(diningTypeOptionAtom);
   const [defaultOrderStatus, setDefaultOrderStatus] = useAtom(orderStatusAtom);
   const [, setOrderNumber] = useAtom(orderNumberAtom);
-
+  const [checkFilterType, setCheckFilterType] = useState(0);
   const {data: groupList, refetch: groupRefetch} =
     useGetGroupList(defaultGroupType);
   const {data: makersList} = useGetMakersList();
   const {data: allUserList} = useAllUserList();
-  const {mutateAsync: cancelOrder, isLoading:cancleLoading} = useCancelOrder();
+  const {mutateAsync: cancelOrder, isLoading: cancleLoading} = useCancelOrder();
   const {mutateAsync: statusChange} = useEditOrderStatus();
 
   const groupTypeArr = [
@@ -143,10 +143,9 @@ const Order = () => {
   const allUserArr = allUserList?.data?.map(el => {
     return {
       value: el.id,
-      label: el.name+`(${el.id})`,
+      label: el.name + `(${el.id})`,
     };
   });
-
 
   const spotArr =
     spotList &&
@@ -158,7 +157,7 @@ const Order = () => {
     });
   const diningTypeArr =
     diningType &&
-    diningType.map(el => {
+    diningType?.map(el => {
       return {
         value: el.code,
         label: el.diningType,
@@ -191,6 +190,11 @@ const Order = () => {
     {value: 14, label: '리뷰 작성 완료'},
   ];
 
+  const checkFilter = [
+    {key: 0, value: 0, text: '서비스 날짜'},
+    {key: 1, value: 1, text: '주문 날짜'},
+    {key: 2, value: 2, text: '서비스 날짜 + 주문 날짜'},
+  ];
   const orderStatusChangeOptionArr = [
     // {key: 4, value: 4, text: '주문실패'},
     {key: 5, value: 5, text: '결제완료'},
@@ -217,15 +221,16 @@ const Order = () => {
     startDate,
     endDate,
     groupOption,
+    groupTypeOption,
     userOption.value,
     spotOption.value,
     makersOption.value,
     diningTypeOption.value,
     orderStatusOption.value,
+    startOrderDate,
+    endOrderDate,
+    checkFilterType,
   );
-
-
-
 
   const openModal = () => {
     setModalOpen(true);
@@ -254,7 +259,12 @@ const Order = () => {
     if (groupTypeRef.current) {
       groupTypeRef.current.clearValue();
     }
+    if (orderStatusRef.current) {
+      orderStatusRef.current.clearValue();
+    }
     // window.location.reload();
+    setDefaultGroup('');
+    setDefaultSpot('');
   };
   const goToPage = code => {
     navigate('/order/info/detail/' + code, {
@@ -307,18 +317,16 @@ const Order = () => {
   };
 
   const cancelButton = async () => {
-    console.log(cancleLoading)
-    if(cancleLoading) return;
-     try {
-      
+    console.log(cancleLoading);
+    if (cancleLoading) return;
+    try {
       await cancelOrder({idList: checkItems});
       closeModal();
       queryClient.invalidateQueries('orderList');
       setCheckItems([]);
-     } catch (error) {
-      alert("주문 취소가 실패 했습니다.")
-     }
-   
+    } catch (error) {
+      alert('주문 취소가 실패 했습니다.');
+    }
   };
 
   const excelButton = async () => {
@@ -398,7 +406,7 @@ const Order = () => {
       el.orderItemDailyFoods?.map(s => {
         if (selectClient.includes(orderStatusFomatted(s.orderStatus)))
           idArray.push(s.orderItemDailyFoodId);
-        return undefined
+        return undefined;
       }),
     );
     const data = {
@@ -421,11 +429,15 @@ const Order = () => {
     startDate,
     endDate,
     groupOption,
+    groupTypeOption,
     userOption,
     spotOption,
     makersOption,
     diningTypeOption,
     orderStatusOption,
+    checkFilterType,
+    startOrderDate,
+    endOrderDate,
     refetch,
   ]);
 
@@ -437,10 +449,28 @@ const Order = () => {
   }, [defaultGroupType, groupRefetch]);
   return (
     <PageWrapper>
-      <label>서비스일 날짜</label>
       <div style={{display: 'flex'}}>
-      <DateRangePicker  startDate={startDate} endDate={endDate} setStartDate={setStartDate} setEndDate={setEndDate}/>
-       
+        <div>
+          <label>서비스 날짜</label>
+          <DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+          />
+        </div>
+        <div style={{width: 220, marginLeft: 12}}>
+          <label>조회 필터</label>
+          <Dropdown
+            fluid
+            selection
+            options={checkFilter}
+            value={checkFilterType}
+            onChange={(e, data) => {
+              setCheckFilterType(data.value);
+            }}
+          />
+        </div>
         <ResetButton>
           <Button
             color="black"
@@ -451,12 +481,17 @@ const Order = () => {
           <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
         </ResetButton>
       </div>
-      {/* 
-      주문 날짜 필터
-      <div style={{ marginTop:24}}>
-      <label>주문 날짜</label>
-        <DateRangePicker  startDate={startOrderDate} endDate={endOrderDate} setStartDate={setStartOrderDate} setEndDate={setEndOrderDate}/>
-      </div> */}
+      <div style={{marginTop: 24}}>
+        <label>주문 날짜</label>
+        <div style={{display: 'flex'}}>
+          <DateRangePicker
+            startDate={startOrderDate}
+            endDate={endOrderDate}
+            setStartDate={setStartOrderDate}
+            setEndDate={setEndOrderDate}
+          />
+        </div>
+      </div>
 
       <SelectBoxWrapper>
         <SelectBoxWrap>
@@ -494,9 +529,10 @@ const Order = () => {
               }}
             />
           </OrderStatus>
-          <OrderStatus>
+          <OrderStatus style={{width: 200}}>
             <span>배송 스팟</span>
             <SelectBox
+              isDisabled={!defaultGroup}
               ref={spotRef}
               options={spotArr}
               placeholder="배송 스팟(상세 스팟)"
@@ -547,8 +583,9 @@ const Order = () => {
           />
         </SelectBoxWrap>
         <SelectBoxWrap>
-          <span>식사타입</span>
+          <span>식사 타입</span>
           <SelectBox
+            isDisabled={!defaultGroup}
             ref={diningRef}
             options={diningTypeArr}
             placeholder="식사타입"
@@ -670,7 +707,11 @@ const Order = () => {
             />
           </div>
         </div>
-        <div style={{display: 'flex', alignItems: 'flex-end'}}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+          }}>
           <Dropdown
             placeholder="변경할 상태"
             selection
@@ -683,6 +724,7 @@ const Order = () => {
             }}
           />
           <Button
+            style={{marginLeft: 12}}
             color="orange"
             content="배송 상태 변경"
             onClick={async () => {
@@ -691,7 +733,9 @@ const Order = () => {
           />
         </div>
       </OrderStatusBox>
-      {!(isOrderFetching || isGroupFetching) && (
+      {isOrderFetching || isGroupFetching ? (
+        <ActivityIndicator height="300px" />
+      ) : (
         <TableWrapper>
           <Table celled>
             <Table.Header>
@@ -711,208 +755,223 @@ const Order = () => {
                         {data.text}
                       </Table.HeaderCell>
                     );
-                  return undefined
+                  return undefined;
                 })}
               </Table.Row>
             </Table.Header>
 
             <Table.Body>
-              {orderList?.data?.map(v => {
-                return v.orderItemDailyFoods?.map((item, idx) => {
-                  return (
-                    <TableRow
-                      onClick={() => goToPage(v.orderCode)}
-                      key={v.orderCode + idx}>
-                      {checkColumnItems?.length > 0 && (
-                        <Table.Cell
-                          textAlign="center"
-                          onClick={e => e.stopPropagation()}>
-                          <input
-                            checked={
-                              checkItems.includes(item.orderItemDailyFoodId)
-                                ? true
-                                : false
-                            }
-                            type="checkbox"
-                            onClick={e => {
-                              checked(e, item.orderItemDailyFoodId);
-                            }}
-                            onChange={e =>
-                              handleSingleCheck(
-                                e.target.checked,
-                                item.orderItemDailyFoodId,
-                              )
-                            }
-                          />
-                        </Table.Cell>
-                      )}
+              {orderList?.data?.length !== 0 ? (
+                orderList?.data?.map(v => {
+                  return v.orderItemDailyFoods?.map((item, idx) => {
+                    return (
+                      <TableRow
+                        onClick={() => goToPage(v.orderCode)}
+                        key={v.orderCode + idx}>
+                        {checkColumnItems?.length > 0 && (
+                          <Table.Cell
+                            textAlign="center"
+                            onClick={e => e.stopPropagation()}>
+                            <input
+                              checked={
+                                checkItems.includes(item.orderItemDailyFoodId)
+                                  ? true
+                                  : false
+                              }
+                              type="checkbox"
+                              onClick={e => {
+                                checked(e, item.orderItemDailyFoodId);
+                              }}
+                              onChange={e =>
+                                handleSingleCheck(
+                                  e.target.checked,
+                                  item.orderItemDailyFoodId,
+                                )
+                              }
+                            />
+                          </Table.Cell>
+                        )}
 
-                      {checkColumnItems?.includes(0) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {v.serviceDate}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(1) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {v.orderDateTime.split('T')[0]}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(2) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {v.orderDateTime.split('T')[1].split('.')[0]}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(3) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {v.groupName}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(4) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>{v.spotName}</div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(5) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>{v.userName}</div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(6) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {v.userEmail}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(7) && (
-                        <Table.Cell textAlign="center">{v.phone}</Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(8) && (
-                        <Table.Cell textAlign="center">
-                          {v.diningType}
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(9) && (
-                        <Table.Cell textAlign="center">
-                          {item.deliveryTime}
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(10) && (
-                        <Table.Cell textAlign="center">
-                          {item.orderStatus === '취소' ? (
-                            <OrderCancel>{item.orderStatus}</OrderCancel>
-                          ) : (
-                            item.orderStatus
-                          )}
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(11) && (
-                        <Table.Cell>
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {item.makers}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(12) && (
-                        <Table.Cell>
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {item.foodName}
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(13) && (
-                        <Table.Cell textAlign="center">{item.count}</Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(14) && (
-                        <Table.Cell textAlign="center">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {withCommas(
-                              item.supplyPrice === 0 ? '0' : item.supplyPrice,
+                        {checkColumnItems?.includes(0) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.serviceDate}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(1) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.orderDateTime.split('T')[0]}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(2) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.orderDateTime.split('T')[1].split('.')[0]}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(3) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.groupName}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(4) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.spotName}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(5) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.userName}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(6) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.userEmail}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(7) && (
+                          <Table.Cell textAlign="center">{v.phone}</Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(8) && (
+                          <Table.Cell textAlign="center">
+                            {v.diningType}
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(9) && (
+                          <Table.Cell textAlign="center">
+                            {item.deliveryTime}
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(10) && (
+                          <Table.Cell textAlign="center">
+                            {item.orderStatus === '취소' ? (
+                              <OrderCancel>{item.orderStatus}</OrderCancel>
+                            ) : (
+                              item.orderStatus
                             )}
-                            원
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {checkColumnItems?.includes(15) && (
-                        <Table.Cell textAlign="right">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {withCommas(item.price)}원
-                          </div>
-                        </Table.Cell>
-                      )}
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(11) && (
+                          <Table.Cell>
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {item.makers}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(12) && (
+                          <Table.Cell>
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {item.foodName}
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(13) && (
+                          <Table.Cell textAlign="center">
+                            {item.count}
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(14) && (
+                          <Table.Cell textAlign="center">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {withCommas(
+                                item.supplyPrice === 0 ? '0' : item.supplyPrice,
+                              )}
+                              원
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {checkColumnItems?.includes(15) && (
+                          <Table.Cell textAlign="right">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {withCommas(item.price)}원
+                            </div>
+                          </Table.Cell>
+                        )}
 
-                      {idx === 0 && checkColumnItems?.includes(16) && (
-                        <Table.Cell
-                          rowSpan={v.orderItemDailyFoods.length}
-                          textAlign="center"
-                          verticalAlign="middle">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {withCommas(
-                              v.totalPrice === 0 ? '0' : v.totalPrice,
-                            )}
-                            원
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {idx === 0 && checkColumnItems?.includes(17) && (
-                        <Table.Cell
-                          rowSpan={v.orderItemDailyFoods.length}
-                          textAlign="center"
-                          verticalAlign="middle">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {withCommas(
-                              v.supportPrice === 0 ? '0' : v.supportPrice,
-                            )}
-                            원
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {idx === 0 && checkColumnItems?.includes(18) && (
-                        <Table.Cell
-                          rowSpan={v.orderItemDailyFoods.length}
-                          textAlign="center"
-                          verticalAlign="middle">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {withCommas(v.payPrice === 0 ? '0' : v.payPrice)}원
-                          </div>
-                        </Table.Cell>
-                      )}
+                        {idx === 0 && checkColumnItems?.includes(16) && (
+                          <Table.Cell
+                            rowSpan={v.orderItemDailyFoods.length}
+                            textAlign="center"
+                            verticalAlign="middle">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {withCommas(
+                                v.totalPrice === 0 ? '0' : v.totalPrice,
+                              )}
+                              원
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {idx === 0 && checkColumnItems?.includes(17) && (
+                          <Table.Cell
+                            rowSpan={v.orderItemDailyFoods.length}
+                            textAlign="center"
+                            verticalAlign="middle">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {withCommas(
+                                v.supportPrice === 0 ? '0' : v.supportPrice,
+                              )}
+                              원
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {idx === 0 && checkColumnItems?.includes(18) && (
+                          <Table.Cell
+                            rowSpan={v.orderItemDailyFoods.length}
+                            textAlign="center"
+                            verticalAlign="middle">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {withCommas(v.payPrice === 0 ? '0' : v.payPrice)}
+                              원
+                            </div>
+                          </Table.Cell>
+                        )}
 
-                      {idx === 0 && checkColumnItems?.includes(19) && (
-                        <Table.Cell
-                          rowSpan={v.orderItemDailyFoods.length}
-                          textAlign="center"
-                          verticalAlign="middle">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {withCommas(
-                              v.deliveryPrice === 0 ? '0' : v.deliveryPrice,
-                            )}
-                            원
-                          </div>
-                        </Table.Cell>
-                      )}
-                      {idx === 0 && checkColumnItems?.includes(20) && (
-                        <Table.Cell
-                          rowSpan={v.orderItemDailyFoods.length}
-                          textAlign="center"
-                          verticalAlign="middle">
-                          <div style={{whiteSpace: 'nowrap'}}>
-                            {v.orderCode}
-                          </div>
-                        </Table.Cell>
-                      )}
-                    </TableRow>
-                  );
-                });
-              })}
+                        {idx === 0 && checkColumnItems?.includes(19) && (
+                          <Table.Cell
+                            rowSpan={v.orderItemDailyFoods.length}
+                            textAlign="center"
+                            verticalAlign="middle">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {withCommas(
+                                v.deliveryPrice === 0 ? '0' : v.deliveryPrice,
+                              )}
+                              원
+                            </div>
+                          </Table.Cell>
+                        )}
+                        {idx === 0 && checkColumnItems?.includes(20) && (
+                          <Table.Cell
+                            rowSpan={v.orderItemDailyFoods.length}
+                            textAlign="center"
+                            verticalAlign="middle">
+                            <div style={{whiteSpace: 'nowrap'}}>
+                              {v.orderCode}
+                            </div>
+                          </Table.Cell>
+                        )}
+                      </TableRow>
+                    );
+                  });
+                })
+              ) : (
+                <Table.Row>
+                  <Table.Cell colSpan={22} textAlign="center">
+                    데이터가 없습니다.
+                  </Table.Cell>
+                </Table.Row>
+              )}
             </Table.Body>
           </Table>
         </TableWrapper>
@@ -949,8 +1008,6 @@ const SelectBox = styled(Select)`
   flex: 1;
 `;
 
-
-
 const TableRow = styled(Table.Row)`
   :hover {
     cursor: pointer;
@@ -960,10 +1017,10 @@ const TableRow = styled(Table.Row)`
 
 const ResetButton = styled.div`
   display: flex;
-  margin-left: 50px;
-  gap: 20px;
+  margin-left: 12px;
+  gap: 12px;
+  align-items: flex-end;
 `;
-
 
 const OrderCancel = styled.span`
   color: ${({theme}) => theme.colors.red[500]};

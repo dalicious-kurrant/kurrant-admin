@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 const spin = keyframes`
   0% {
@@ -14,7 +14,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: ${({height}) => height && height};
 `;
 
 const Spinner = styled.div`
@@ -26,9 +26,9 @@ const Spinner = styled.div`
   animation: ${spin} 2s linear infinite;
 `;
 
-const ActivityIndicator = () => {
+const ActivityIndicator = ({height = '100vh'}) => {
   return (
-    <Container>
+    <Container height={height}>
       <Spinner />
     </Container>
   );

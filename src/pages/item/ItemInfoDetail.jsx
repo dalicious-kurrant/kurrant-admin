@@ -29,7 +29,7 @@ const ProductDetailPage = () => {
 
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
-  console.log(detailData);
+  // console.log(detailData);
   const {mutateAsync: addKeyword} = useAddProductKeyword();
 
   useEffect(() => {
@@ -87,7 +87,9 @@ const ProductDetailPage = () => {
     }
     if (sendIntroForm?.length > 0) {
       for (let i = 0; i < sendIntroForm.length; i++) {
+
         console.log(sendIntroForm[i]);
+
         formData.append('introFiles', sendIntroForm[i]);
       }
     }
@@ -136,7 +138,7 @@ const ProductDetailPage = () => {
       protein: protein,
       fat: fat,
     };
-    console.log(data, '0888');
+    // console.log(data, '0888');
 
     const json = JSON.stringify(data);
     const blob = new Blob([json], {type: 'application/json'});
