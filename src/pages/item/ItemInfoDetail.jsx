@@ -55,7 +55,6 @@ const ProductDetailPage = () => {
     mode: 'all',
   });
   const {watch, setValue} = form;
-
   // const foodName = watch('foodName');
   const foodPrice = watch('foodPrice');
   const supplyPrice = watch('supplyPrice');
