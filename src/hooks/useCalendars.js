@@ -1,5 +1,5 @@
 import {calendarApis} from 'api/calendar';
-import {useMutation, useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 
 export function usePostCalendar() {
   return useMutation(data => {
@@ -10,6 +10,17 @@ export function useCompleteCalendar() {
   return useMutation(data => {
     console.log(data);
     return calendarApis.completeDailyFood(data);
+  });
+}
+export function useUpdateFoodsStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(data => {
+    return calendarApis.updateFoodsStatus(data);
+  },{
+    onSuccess:(res)=>{
+      console.log(res)
+      queryClient.invalidateQueries('calendarCompleteList')
+    }
   });
 }
 export function usePostCompleteCalendar() {
@@ -31,6 +42,7 @@ export function useGetCompleteCalendar(
   page,
   makersId,
   groupId,
+  diningType,
   shouldFetchData,
 ) {
   return useQuery(
@@ -43,6 +55,7 @@ export function useGetCompleteCalendar(
         page,
         makersId,
         groupId,
+        diningType,
       );
     },
     {
