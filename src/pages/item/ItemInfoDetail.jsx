@@ -29,7 +29,7 @@ const ProductDetailPage = () => {
 
   const {data: detailData} = useGetDetailProductsList(foodId, makersId);
   const {mutateAsync: editData} = useEditProductDetail();
-  console.log(detailData);
+  // console.log(detailData);
   const {mutateAsync: addKeyword} = useAddProductKeyword();
 
   useEffect(() => {
@@ -54,11 +54,7 @@ const ProductDetailPage = () => {
   const form = useForm({
     mode: 'all',
   });
-  const {
-    watch,
-    setValue,
-  } = form;
-
+  const {watch, setValue} = form;
   // const foodName = watch('foodName');
   const defaultPrice = watch('defaultPrice');
   const supplyPrice = watch('supplyPrice');
@@ -83,14 +79,15 @@ const ProductDetailPage = () => {
   const modifyButton = async () => {
     const formData = new FormData();
 
-    if (sendForm?.length> 0) {
+    if (sendForm?.length > 0) {
       for (let i = 0; i < sendForm.length; i++) {
         formData.append('files', sendForm[i]);
       }
     }
-    if (sendIntroForm?.length> 0) {
+    if (sendIntroForm?.length > 0) {
       for (let i = 0; i < sendIntroForm.length; i++) {
-        console.log(sendIntroForm[i])
+        console.log(sendIntroForm[i]);
+
         formData.append('introFiles', sendIntroForm[i]);
       }
     }
@@ -130,7 +127,7 @@ const ProductDetailPage = () => {
         dinnerTime === undefined
           ? null
           : dinnerEndTime + '일전 ' + dinnerTime,
-        foodImages: dataList?.foodImages,
+      foodImages: dataList?.foodImages,
       introImages: dataList?.introImages,
       description: text,
 
@@ -139,7 +136,7 @@ const ProductDetailPage = () => {
       protein: protein,
       fat: fat,
     };
-    console.log(data, '0888');
+    // console.log(data, '0888');
 
     const json = JSON.stringify(data);
     const blob = new Blob([json], {type: 'application/json'});
@@ -455,64 +452,64 @@ const ProductDetailPage = () => {
         <div>
           <ItemKeyword foodId={foodId} />
         </div>
-        <div style={{display:'flex', justifyContent:'space-between'}}>
-        <div>
-          <TagTitle>이미지 등록 (최대 6장)</TagTitle>
-          <Label content="기존 이미지" color="blue" />
-          <ImageWrap>
-            {dataList &&
-              dataList?.foodImages.map((el, i) => {
-                return (
-                  <ImageBox key={el + i}>
-                    <img src={el} alt="기존이미지" />
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div>
+            <TagTitle>이미지 등록 (최대 6장)</TagTitle>
+            <Label content="기존 이미지" color="blue" />
+            <ImageWrap>
+              {dataList &&
+                dataList?.foodImages.map((el, i) => {
+                  return (
+                    <ImageBox key={el + i}>
+                      <img src={el} alt="기존이미지" />
 
-                    <DeleteButton
-                      circular
-                      icon="delete"
-                      onClick={() => {
-                        deleteImage(el);
-                      }}
-                    />
-                  </ImageBox>
-                );
-              })}
-          </ImageWrap>
+                      <DeleteButton
+                        circular
+                        icon="delete"
+                        onClick={() => {
+                          deleteImage(el);
+                        }}
+                      />
+                    </ImageBox>
+                  );
+                })}
+            </ImageWrap>
 
-          <ItemDetailImage
-            setSendForm={setSendForm}
-            sendForm={sendForm}
-            length={dataList?.foodImages.length}
-          />
-        </div>
-        <div>
-          <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
-          <Label content="기존 이미지" color="blue" />
-          <ImageIntroWrap>
-            {dataList &&
-              dataList?.introImages.map((el, i) => {
-                return (
-                  <ImageBox key={el + i}>
-                    <img src={el} alt="기존이미지" />
+            <ItemDetailImage
+              setSendForm={setSendForm}
+              sendForm={sendForm}
+              length={dataList?.foodImages.length}
+            />
+          </div>
+          <div>
+            <TagTitle>메이커스 소개 이미지 등록 (최대 1장)</TagTitle>
+            <Label content="기존 이미지" color="blue" />
+            <ImageIntroWrap>
+              {dataList &&
+                dataList?.introImages.map((el, i) => {
+                  return (
+                    <ImageBox key={el + i}>
+                      <img src={el} alt="기존이미지" />
 
-                    <DeleteButton
-                      circular
-                      icon="delete"
-                      onClick={() => {
-                        deleteIntroImage(el);
-                      }}
-                    />
-                  </ImageBox>
-                );
-              })}
-          </ImageIntroWrap>
-          <ItemDetailImage
-            id={'inputIntroTag'}
-            setSendForm={setSendIntroForm}
-            sendForm={sendIntroForm}
-            length={dataList?.introImages.length}
-            maxLength={1}
-          />
-        </div>
+                      <DeleteButton
+                        circular
+                        icon="delete"
+                        onClick={() => {
+                          deleteIntroImage(el);
+                        }}
+                      />
+                    </ImageBox>
+                  );
+                })}
+            </ImageIntroWrap>
+            <ItemDetailImage
+              id={'inputIntroTag'}
+              setSendForm={setSendIntroForm}
+              sendForm={sendIntroForm}
+              length={dataList?.introImages.length}
+              maxLength={1}
+            />
+          </div>
         </div>
         <div>
           <TagTitle>메뉴 설명</TagTitle>
