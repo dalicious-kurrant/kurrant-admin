@@ -10,7 +10,7 @@ import CustomPlanExelTable from './components/CustomPlanExelTable';
 
 import {ReactComponent as ChangeArrowRight} from 'assets/svg/ChangeArrowRight.svg';
 import 'react-datepicker/dist/react-datepicker.css';
-import {useGetCompleteCalendar, useGetFilter} from 'hooks/useCalendars';
+import {useGetCompleteCalendar, useGetFilter, useUpdateFoodsStatus} from 'hooks/useCalendars';
 import CustomPlanTable from './components/CustomPlanTable';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
 import ActivityIndicator from 'components/ActivityIndicator/ActivityIndicator';
@@ -23,6 +23,7 @@ const CompletePlans = () => {
   const [plan, setPlan] = useAtom(completePlanAtom);
   const [selectMakers, setSelectMakers] = useState([]);
   const [selectClient, setSelectClient] = useState([]);
+  const [selectDining, setSelectDining] = useState([]);
   const [totalPage, ] = useState(0);
 
   const [currentStatus, setCurrentStatus]=useState();
@@ -34,6 +35,7 @@ const CompletePlans = () => {
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
   const [options, setOption] = useState([]);
   const [optionsClient, setOptionsClient] = useState([]);
+  const [optionsDining, ] = useState([{key: "아침", text:  "아침", value: 1},{key: "점심", text:  "점심", value: 2},{key: "저녁", text:  "저녁", value:3}]);
   const [accessStartDate, setAccessStartDate] = useState(
     new Date(curr.getTime() + curr.getTimezoneOffset() * 60 * 1000) +
       KR_TIME_DIFF,
@@ -54,8 +56,10 @@ const CompletePlans = () => {
     page,
     selectMakers,
     selectClient,
+    selectDining,
     shouldFetchData,
   );
+  const {mutateAsync :updateFoodsStatus} = useUpdateFoodsStatus();
   const {data: filterList} = useGetFilter();
   const handleFetchData = () => {
     calendarRefetch();
@@ -76,7 +80,12 @@ const CompletePlans = () => {
       currentStatus,
       updateStatus
     }
-    console.log(req)
+    try {
+      await updateFoodsStatus(req)
+      setPlan();
+    } catch (error) {
+      alert(`음식상태 변경 오류\n${error.toString()}`)
+    }
   }
 
 
@@ -84,6 +93,7 @@ const CompletePlans = () => {
     if (!exelPlan) {
       if (isSuccess) {
         //console.log(calendarData?.data);
+        console.log(calendarData?.data)
         setPlan(calendarData?.data);
         setOption(
           filterList?.data?.makers?.map(v => {
@@ -179,6 +189,21 @@ const CompletePlans = () => {
                 value={selectClient}
                 onChange={(e, data) => {
                   setSelectClient(data.value);
+                }}
+              />
+            </DropBox>
+            <DropBox>
+              <Label color="brown">다이닝타입</Label>
+              <Dropdown
+                placeholder="다이닝타입"
+                fluid
+                search
+                multiple
+                selection
+                options={optionsDining}
+                value={selectDining}
+                onChange={(e, data) => {
+                  setSelectDining(data.value);
                 }}
               />
             </DropBox>

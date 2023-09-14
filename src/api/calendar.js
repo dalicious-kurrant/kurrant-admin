@@ -25,6 +25,7 @@ export const calendarApis = {
     page,
     makersId,
     groupId,
+    diningType,
   ) =>
     await instance.get(`dailyFoods`, {
       params: {
@@ -34,6 +35,7 @@ export const calendarApis = {
         // page: page,
         makersIds: makersId.join(','),
         groupIds: groupId.join(','),
+        diningType: diningType.join(',')
       },
     }),
   getFilterList: async () => await instance.get(`dailyFoods/groupsAndMakers`),
@@ -57,4 +59,6 @@ export const calendarApis = {
         status: status.join(','),
       },
     }),
+  updateFoodsStatus: async data =>
+    await instance.patch(`dailyFoods/status`, data),
 };
