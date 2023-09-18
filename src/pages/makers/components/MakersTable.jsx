@@ -1,9 +1,10 @@
 import {Table} from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';
 import {formattedPercent} from '../../../utils/numberFormatter';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import MakersEditModal from './MakersEditModal';
 import {diningFormatted} from 'utils/statusFormatter';
+import { useEditEvent } from 'hooks/usePoint';
 
 const MakersTable = ({data, setData}) => {
   const [showOpenModal, setShowOpenModal] = useState(false);
@@ -16,7 +17,10 @@ const MakersTable = ({data, setData}) => {
     setSelectedImages(datas.introImages);
     setShowOpenModal(true);
   };
-  // console.log(data, '09');
+  useEffect(()=>{
+    if(!showOpenModal) setClickData();
+
+  },[showOpenModal])
   return (
     <TableWrapper>
       <Table celled>
