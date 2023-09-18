@@ -78,7 +78,6 @@ export function formattedDate(data, delimiter = '.') {
 }
 export function formattedDateZ(data, delimiter = '.') {
   const dateTime = transDateType(data);
-  // console.log(dateTime)
   const year = dateTime.getUTCFullYear();
   const month = leftPad(dateTime.getMonth() + 1);
   const day = leftPad(dateTime.getDate());
