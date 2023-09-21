@@ -11,7 +11,6 @@ export function useSaveMakersInformation() {
   const queryClient = useQueryClient();
   return useMutation(data => makersApis.saveMakersInfo(data), {
     onSuccess: e => {
-      alert(e);
       queryClient.invalidateQueries('makersInformation');
     },
     onError: err => {
