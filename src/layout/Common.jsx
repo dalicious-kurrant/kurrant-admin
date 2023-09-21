@@ -128,14 +128,14 @@ const Common = () => {
   const [planExport, setPlanExport] = useAtom(planExportAtom);
   const [exelPlan, setExelPlan] = useAtom(exelPlanAtom);
 
-  const [startDate, ] = useAtom(deadlineAtom);
+  const [startDate] = useAtom(deadlineAtom);
   const {mutateAsync: postPresetCalendar} = usePostPresetCalendar();
   const {mutateAsync: saveUserData} = useSaveUserData();
 
   // 스팟
   const [indexStatus] = useAtom(indexAtom);
   const [exelSpot, setExelSpot] = useAtom(exelSpotAtom);
-  const [spotInfoData, ] = useAtom(SpotInfoDataAtom);
+  const [spotInfoData] = useAtom(SpotInfoDataAtom);
   const [spot, setSpot] = useAtom(spotAtom);
 
   const [exelUser, setExelUser] = useAtom(exelUserAtom);
@@ -164,7 +164,7 @@ const Common = () => {
   const {mutateAsync: saveMakersInfo} = useSaveMakersInformation();
 
   const {sendExcelForceMutate} = useSpotInfoExelForceQuery();
-  const [tableDeleteList, ] = useAtom(TableDeleteListAtom);
+  const [tableDeleteList] = useAtom(TableDeleteListAtom);
 
   const onUploadFileButtonClick = useCallback(() => {
     if (!inputRef.current) {
@@ -205,7 +205,7 @@ const Common = () => {
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        alert(`저장을 실패 했습니다1.\n${error.toString()}`);
         return window.location.reload();
       }
     }
@@ -236,7 +236,7 @@ const Common = () => {
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        alert(`저장을 실패 했습니다2.\n${error.toString()}`);
         return window.location.reload();
       }
     }
@@ -287,7 +287,7 @@ const Common = () => {
               foodCapacity: food.foodCapacity,
             };
             reqArray.push(result);
-            return undefined
+            return undefined;
           });
         });
       });
@@ -311,7 +311,7 @@ const Common = () => {
           };
           reqArray.push(result);
         }
-        return undefined
+        return undefined;
       });
     }
     if (exelProduct) {
@@ -337,14 +337,14 @@ const Common = () => {
 
           reqArray.push(result);
         }
-        return undefined
+        return undefined;
       });
       try {
         await productPost(reqArray);
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        alert(`저장을 실패 했습니다3.\n${error.toString()}`);
         return window.location.reload();
       }
     }
@@ -352,6 +352,7 @@ const Common = () => {
     if (exelCorporation) {
       const week = ['월', '화', '수', '목', '금', '토', '일'];
       exelCorporation.map((item, idx) => {
+        console.log(item.isActive, '00');
         if (idx !== 0) {
           // console.log(item.dinnerSupportPrice);
           const orderServiceDays =
@@ -406,7 +407,7 @@ const Common = () => {
                 };
                 return pushData;
               }
-              return undefined
+              return undefined;
             })
             .filter(meal => meal);
           const result = {
@@ -441,7 +442,7 @@ const Common = () => {
           // console.log(JSON.stringify(result));
           reqArray.push(result);
         }
-        return undefined
+        return undefined;
       });
       // console.log(reqArray, '00');
       try {
@@ -449,7 +450,7 @@ const Common = () => {
         alert('저장 되었습니다.');
         return window.location.reload();
       } catch (error) {
-        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        alert(`저장을 실패 했습니다4.\n${error.toString()}`);
         return window.location.reload();
       }
     }
@@ -504,13 +505,13 @@ const Common = () => {
                   : item.dinnerMaxTime,
             });
           }
-
+          console.log(item.isActive);
           const result = {
             id: item.id,
             isActive:
               item.isActive === '활성여부'
                 ? item.isActive
-                : '활성'
+                : item.isActive === '활성'
                 ? true
                 : false,
             code: item.code,
@@ -546,29 +547,29 @@ const Common = () => {
 
           reqArray.push(result);
         }
-        return undefined
+        return undefined;
       });
-      console.log(reqArray, '00');
-      try {
-        await saveMakersInfo({saveMakersRequestDto: reqArray});
-        alert('저장 되었습니다.');
-        return window.location.reload();
-      } catch (error) {
-        alert(`저장을 실패 했습니다.\n${error.toString()}`);
-        return window.location.reload();
-      }
+      console.log(reqArray, '최종');
+      // try {
+      //   // await saveMakersInfo({saveMakersRequestDto: reqArray});
+      //   // alert('저장 되었습니다.');
+      //   // return window.location.reload();
+      // } catch (error) {
+      //   // alert(`저장을 실패 했습니다.\n${error.toString()}`);
+      //   // return window.location.reload();
+      // }
     }
-    try {
-      await postPresetCalendar({
-        deadline: formattedFullDate(startDate, '-'),
-        excelDataList: [...reqArray],
-      });
-      alert('저장 되었습니다.');
-      return window.location.reload();
-    } catch (error) {
-      alert(`저장을 실패 했습니다.\n${error.toString()}`);
-      return window.location.reload();
-    }
+    // try {
+    //   await postPresetCalendar({
+    //     deadline: formattedFullDate(startDate, '-'),
+    //     excelDataList: [...reqArray],
+    //   });
+    //   alert('저장 되었습니다.');
+    //   return window.location.reload();
+    // } catch (error) {
+    //   alert(`저장을 실패 했습니다.\n${error.toString()}`);
+    //   return window.location.reload();
+    // }
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
@@ -767,6 +768,7 @@ const Common = () => {
                   isActive: v.isActive,
                 };
               }
+              console.log(v.isActive);
               if (v.isActive === '활성') {
                 return {
                   ...v,
@@ -803,7 +805,7 @@ const Common = () => {
           orderAlarm: v.orderAlarm || null,
         };
       }
-      return undefined
+      return undefined;
     });
     const req = result.filter(element => {
       return element !== undefined && element !== null && element !== '';
@@ -813,7 +815,7 @@ const Common = () => {
     return window.location.reload();
   };
   const handlerSaveUser = async () => {
-    const result = user.map((v) => {
+    const result = user.map(v => {
       return {
         password: v.password || null,
         paymentPassword: v.paymentPassword || null,
