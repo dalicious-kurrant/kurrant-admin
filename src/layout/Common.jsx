@@ -549,27 +549,29 @@ const Common = () => {
         }
         return undefined;
       });
-      console.log(reqArray, '최종');
-      // try {
-      //   // await saveMakersInfo({saveMakersRequestDto: reqArray});
-      //   // alert('저장 되었습니다.');
-      //   // return window.location.reload();
-      // } catch (error) {
-      //   // alert(`저장을 실패 했습니다.\n${error.toString()}`);
-      //   // return window.location.reload();
-      // }
+      try {
+        console.log(reqArray, '최종');
+        await saveMakersInfo({saveMakersRequestDto: reqArray});
+        alert('저장 되었습니다.');
+        return window.location.reload();
+      } catch (error) {
+        alert(`저장을 실패 했습니다.\n${error.toString()}`);
+        return window.location.reload();
+      } finally {
+        return window.location.reload();
+      }
     }
-    // try {
-    //   await postPresetCalendar({
-    //     deadline: formattedFullDate(startDate, '-'),
-    //     excelDataList: [...reqArray],
-    //   });
-    //   alert('저장 되었습니다.');
-    //   return window.location.reload();
-    // } catch (error) {
-    //   alert(`저장을 실패 했습니다.\n${error.toString()}`);
-    //   return window.location.reload();
-    // }
+    try {
+      await postPresetCalendar({
+        deadline: formattedFullDate(startDate, '-'),
+        excelDataList: [...reqArray],
+      });
+      alert('저장 되었습니다.');
+      return window.location.reload();
+    } catch (error) {
+      alert(`저장을 실패 했습니다.\n${error.toString()}`);
+      return window.location.reload();
+    }
   };
   const onUploadFile = async e => {
     if (!e.target.files) {
