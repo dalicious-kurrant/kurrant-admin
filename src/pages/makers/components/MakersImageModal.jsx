@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {Carousel} from 'react-responsive-carousel';
 import CloseIcon from '../../../assets/svg/closeIcon.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-const MakersImageModal = ({imageSrc, setSelectedImages,setNowData}) => {
+const MakersImageModal = ({imageSrc, setSelectedImages,data,setNowData}) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const handleOpen = imageIndex => {
@@ -24,11 +24,10 @@ const MakersImageModal = ({imageSrc, setSelectedImages,setNowData}) => {
           return <ImageBox key={index}>
             <CloseButtonImg
               onClick={() => {
-                setNowData((nowData)=>{
-                  return {...nowData,introImages:nowData.introImages.filter((intro)=>{
-                    return intro !== image
-                  })}
-                });
+               
+                setNowData({...data,introImages:data.introImages.filter((intro)=>{
+                  return intro !== image
+                })});
                 setSelectedImages(
                   imageSrc.filter(img => {
                     return img !== image;
