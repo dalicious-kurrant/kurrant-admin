@@ -24,7 +24,6 @@ const MakersImageModal = ({imageSrc, setSelectedImages,data,setNowData}) => {
           return <ImageBox key={index}>
             <CloseButtonImg
               onClick={() => {
-               
                 setNowData({...data,introImages:data.introImages.filter((intro)=>{
                   return intro !== image
                 })});
