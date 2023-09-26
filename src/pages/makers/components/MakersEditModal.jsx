@@ -810,6 +810,7 @@ function MakersEditModal({
           <ImageUploader
             selectedImages={selectedImages}
             setSelectedImages={setSelectedImages}
+            data={data}
             setData={setData}
           />
           {/* <MakersImageModal imageSrc={["https://admin.dalicious.co/img/makersintroimg.png","https://admin.dalicious.co/img/kurrantmembership.png","https://admin.dalicious.co/img/makersintroimg.png","https://admin.dalicious.co/img/kurrantmembership.png","https://admin.dalicious.co/img/makersintroimg.png","https://admin.dalicious.co/img/kurrantmembership.png"]} /> */}

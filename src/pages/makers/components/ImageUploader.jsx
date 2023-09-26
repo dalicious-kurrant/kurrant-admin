@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import MakersImageModal from './MakersImageModal';
 
-const ImageUploader = ({selectedImages, setSelectedImages,setNowData}) => {
+const ImageUploader = ({selectedImages, setSelectedImages,data,setData}) => {
 
   const handleImageChange = (event) => {
     const selectedFiles = event.target.files;
@@ -37,7 +37,7 @@ const ImageUploader = ({selectedImages, setSelectedImages,setNowData}) => {
       />
       {(selectedImages?.length > 0 ) && (
         <div>
-          <MakersImageModal imageSrc={selectedImages} setSelectedImages={setSelectedImages} setNowData={setNowData}/>
+          <MakersImageModal imageSrc={selectedImages} setSelectedImages={setSelectedImages} data={data} setNowData={setData}/>
         </div>
       )}
     </div>
