@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {PageWrapper} from 'style/common.style';
 import {Button, Dropdown, Label, Pagination} from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import ReviewTable from './components/ReviewTable';
 import Select from 'react-select';
 import * as XLSX from 'xlsx';
@@ -11,10 +11,6 @@ import useReviewQuery from './useReviewQuery';
 import {buildCustomUrl, fillMakersDropboxObject} from './ReviewPageLogics';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import ReviewSelectDatePicker from './components/ReviewSelectDatePicker';
-import ReviewPagination from './ReviewPagination/ReviewPagination';
-import RadioInput from './components/Radio/RadioInput';
-import RadioGroup from './components/Radio/RadioGroup';
 import Radio from './components/Radio/Radio';
 import KeyDetector from 'common/KeyDetector/KeyDetector';
 import DateRangePicker from 'components/DateRangePicker/DateRangePicker';
@@ -49,7 +45,7 @@ const ReviewPage = () => {
   // 필터 값들 모으기
 
   // 1. 날짜
-  const [screenWidth , setScreenWidth] = useState(window.innerWidth)
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
@@ -79,6 +75,8 @@ const ReviewPage = () => {
   const [url, setUrl] = useState(`reviews/all?limit=${limitInit}&page=1`);
 
   useEffect(() => {
+    // isMakersComment, 가 바뀔떄는 page가 1로 돌아가야 됨
+
     setUrl(
       buildCustomUrl(
         limit,
@@ -98,15 +96,31 @@ const ReviewPage = () => {
     limit,
     orderItemNameAndCode,
     writer,
-    isMakersComment,
-    isAdminComment,
-    isReport,
     makersId,
     startDate,
     endDate,
     url,
     setUrl,
   ]);
+
+  useEffect(() => {
+    setPage(1);
+
+    setUrl(
+      buildCustomUrl(
+        limit,
+        1,
+        orderItemNameAndCode,
+        writer,
+        isMakersComment,
+        isAdminComment,
+        isReport,
+        makersId,
+        startDate,
+        endDate,
+      ),
+    );
+  }, [isMakersComment, isAdminComment, isReport]);
 
   const {
     reviewList,
@@ -189,17 +203,17 @@ const ReviewPage = () => {
   // console.log(reviewList);
   // }, [reviewList]);
 
-const handleResize = () => {
-  setScreenWidth(window.innerWidth);
-};
+  const handleResize = () => {
+    setScreenWidth(window.innerWidth);
+  };
 
-useEffect(() => {
-    window.addEventListener("resize", handleResize);
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
     return () => {
-        // cleanup
-        window.removeEventListener("resize", handleResize);
+      // cleanup
+      window.removeEventListener('resize', handleResize);
     };
-}, []);
+  }, []);
   return (
     <PageWrapper>
       <Wrap1>
@@ -207,7 +221,12 @@ useEffect(() => {
           <DateWrapper>
             <DeadLineWrapper>
               <RecoDatePickerContainer>
-                <DateRangePicker endDate={endDate} setEndDate={setEndDate} startDate={startDate} setStartDate={setStartDate}/>
+                <DateRangePicker
+                  endDate={endDate}
+                  setEndDate={setEndDate}
+                  startDate={startDate}
+                  setStartDate={setStartDate}
+                />
                 {/* <RecoDatePickerBox>
                   <DatePicker
                     selected={startDate}
@@ -357,12 +376,12 @@ useEffect(() => {
             </CheckboxSmallWrap>
           </CheckboxWrap>
         </Wrap3>
-        <Wrap3 style={{marginLeft:50}}>
+        <Wrap3 style={{marginLeft: 50}}>
           <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
         </Wrap3>
       </Wrap1>
-
-      {status == 'success' && reviewList && reviewList.length > 0 ? (
+                
+      {status === 'success' && reviewList && reviewList.length > 0 ? (
         <PaginationContainer screenWidth={screenWidth}>
           {/* <ReviewPagination
           page={page}
@@ -373,13 +392,14 @@ useEffect(() => {
           selectOptionArray={[50, 100, 200, 500]}
         /> */}
           <PaginationBox>
-          <Pagination
-            defaultActivePage={1}
-            onPageChange={(e, data) => {
-              setPage(data.activePage);
-            }}
-            totalPages={totalPage}
-          />
+            <Pagination
+              defaultActivePage={1}
+              activePage={page}
+              onPageChange={(e, data) => {
+                setPage(data.activePage);
+              }}
+              totalPages={totalPage}
+            />
           </PaginationBox>
           <LimitBox>
             <Dropdown
@@ -410,7 +430,7 @@ const DateWrapper = styled.div`
   margin-bottom: 10px;
 `;
 const PaginationContainer = styled.div`
-  width: ${({screenWidth})=> `${screenWidth-80}px`};
+  width: ${({screenWidth}) => `${screenWidth - 80}px`};
   justify-content: center;
   align-items: center;
   margin-top: 50px;
@@ -430,12 +450,9 @@ const LimitBox = styled.div`
   width: 300px;
   align-items: center;
 `;
-// const Label = styled.label`
-//   font-size: 22px;
-// `;
+
 const Wrap1 = styled.div`
   display: flex;
-  /* border: 1px solid black; */
 `;
 const Wrap2 = styled.div`
   display: flex;
@@ -459,14 +476,6 @@ const RecoDatePickerContainer = styled.div`
   align-items: center;
   gap: 10px;
   margin-right: 20px;
-`;
-const RecoDatePickerBox = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: space-between;
-  width: 100px;
-  margin-top: 10px;
 `;
 
 const FilterButton = styled(Button)`
@@ -511,11 +520,7 @@ const NoRespondText = styled.span`
   font-size: 20px;
 `;
 
-const DateDatePicker = styled(DatePicker)``;
 
-const DefaultDateText = styled.span`
-  color: #6b6b6b; /* Customize the color of the default text */
-`;
 
 const Div = styled.div`
   flex: 1;

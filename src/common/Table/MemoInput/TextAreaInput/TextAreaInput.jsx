@@ -27,7 +27,7 @@ const TextAreaInput = ({
     if (isBlur) {
       onChange(data);
     }
-  }, [isBlur]);
+  }, [data, isBlur, onChange]);
 
   useEffect(() => {
     setData(input);

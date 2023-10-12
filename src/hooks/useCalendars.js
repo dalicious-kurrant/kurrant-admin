@@ -1,6 +1,5 @@
 import {calendarApis} from 'api/calendar';
-import {useMutation, useQuery} from 'react-query';
-import {scheduleFormatted} from 'utils/statusFormatter';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 
 export function usePostCalendar() {
   return useMutation(data => {
@@ -13,9 +12,21 @@ export function useCompleteCalendar() {
     return calendarApis.completeDailyFood(data);
   });
 }
+export function useUpdateFoodsStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(data => {
+    return calendarApis.updateFoodsStatus(data);
+  },{
+    onSuccess:(res)=>{
+      console.log(res)
+      queryClient.invalidateQueries('calendarCompleteList')
+    }
+  });
+}
 export function usePostCompleteCalendar() {
   return useMutation(
     data => {
+      console.log(data)
       return calendarApis.completePostDailyFood(data);
     },
     {
@@ -31,17 +42,26 @@ export function useGetCompleteCalendar(
   page,
   makersId,
   groupId,
+  diningType,
+  shouldFetchData,
 ) {
-  return useQuery('calendarCompleteList', () => {
-    return calendarApis.getCompleteDailyFood(
-      startDate,
-      endDate,
-      size,
-      page,
-      makersId,
-      groupId,
-    );
-  });
+  return useQuery(
+    'calendarCompleteList',
+    () => {
+      return calendarApis.getCompleteDailyFood(
+        startDate,
+        endDate,
+        size,
+        page,
+        makersId,
+        groupId,
+        diningType,
+      );
+    },
+    {
+      enabled: shouldFetchData,
+    },
+  );
 }
 export function useGetCalendar(size, page, makersId, groupId, status) {
   return useQuery('calendarList', () => {

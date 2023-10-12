@@ -1,18 +1,11 @@
 import {
-  useGetManualNotificationGroup,
-  useGetManualNotificationSpot,
-  useGetManualNotificationType,
-  useGetManualNotificationUser,
   usePostManualNotification,
 } from 'hooks/useNotification';
 import {useAtom} from 'jotai';
-import {useEffect, useRef, useState} from 'react';
 import {
   Button,
   Dropdown,
-  Input,
   Table,
-  TableHeader,
   TextArea,
 } from 'semantic-ui-react';
 import {TableWrapper} from 'style/common.style';

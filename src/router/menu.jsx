@@ -1,17 +1,12 @@
 import React from 'react';
-import Diet from '../pages/order/Diet';
 import Order from '../pages/order/orderInfomation/Order';
 import Makers from '../pages/makers/Makers';
-import Spot from '../pages/customer/Spot';
 
-import Company from '../pages/customer/corporation/corporationInfo/Company';
 import CompanyList from '../pages/customer/CompanyList';
 import Apartment from '../pages/customer/Apartment';
 import ItemInfo from '../pages/item/ItemInfo';
-import ItemInfoDetail from '../pages/item/ItemInfoDetail';
 import Plans from '../pages/makers/Plans';
 import SpotInfo from '../pages/customer/SpotInfo/SpotInfo';
-import SpotInfoExcel from '../pages/customer/SpotInfo/SpotInfoExcel';
 import Schedule from '../pages/salesSchedule/Schedule';
 import CompletePlans from '../pages/makers/CompletePlans';
 import CustomerCustom from 'pages/customer/Customer/CustomerCustom';
@@ -20,8 +15,6 @@ import Personal from '../pages/recommendation/personal';
 import Learning from '../pages/recommendation/learning/Learning';
 import ReviewPage from 'pages/boardAndReview/review/ReviewPage';
 import Point from 'pages/calculation/point/Point';
-import SpotAdjustment from 'pages/adjustment/SpotAdjustment';
-import MakersAdjustment from 'pages/adjustment/MakersAdjustment';
 import AdditionalOrder from 'pages/order/additionalOrder/AdditionalOrder';
 import Notification from 'pages/notification/Notification';
 import MakersCalc from 'pages/adjustment/MakersCalc';
@@ -31,12 +24,13 @@ import SpotInformation from 'pages/customer/corporation/SpotInformation';
 import RecommendationMakersPage from 'pages/recommendation/makers/RecommendationMakersPage';
 import FoodGroupPage from 'pages/shop/foodGroup/FoodGroupPage';
 import Announcement from 'pages/announcement/Announcement';
-import Notice from 'pages/makers/MakersNotice';
 import MakersNotice from 'pages/makers/MakersNotice';
 import CompanyNotice from 'pages/customer/notice/CompanyNotice';
 import Worker from 'pages/delivery/Worker';
 import Information from 'pages/delivery/Information';
 import CustomerTastePage from 'pages/customerTaste/CustomerTastePage';
+import RegisterMakers from 'pages/apply/makers/RegisterMakers';
+import RecommnedMakers from 'pages/makers/RecommendMakers';
 
 export const MenuList = [
   {
@@ -108,7 +102,7 @@ export const MenuList = [
         component: <Apartment />,
       },
       {
-        name: '고객사 공지사항 (진행중)',
+        name: '고객사 공지사항',
         url: '/notice',
         component: <CompanyNotice />,
       },
@@ -141,9 +135,14 @@ export const MenuList = [
         component: <Plans />,
       },
       {
-        name: '메이커스 공지사항 (진행중)',
+        name: '메이커스 공지사항',
         url: '/notice',
         component: <MakersNotice />,
+      },
+      {
+        name: '메이커스 추천',
+        url: '/recommend',
+        component: <RecommnedMakers />,
       },
     ],
   },
@@ -182,12 +181,13 @@ export const MenuList = [
     ],
   },
   {
-    name: '신청 (진행중)',
+    name: '신청',
     url: '/apply',
     children: [
       {
-        name: '메이커스 신청 (진행중)',
+        name: '메이커스 신청',
         url: '/makers',
+        component: <RegisterMakers />,
       },
       {
         name: '스팟 신청',
@@ -218,7 +218,7 @@ export const MenuList = [
         url: '/contents',
       },
       {
-        name: '공지사항 (진행중)',
+        name: '공지사항',
         url: '/notice',
         component: <Announcement />,
       },

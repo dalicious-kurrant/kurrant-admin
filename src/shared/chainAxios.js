@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('chain-token');
+// const token = localStorage.getItem('chain-token');
 
 const baseURL =
   process.env.REACT_APP_NODE_ENV === 'prod'

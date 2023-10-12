@@ -1,8 +1,8 @@
-import {useQuery, useQueryClient} from 'react-query';
+import {useQuery} from 'react-query';
 import {MakersListAtom, ReviewListAtom, UnansweredCountAtom} from './store';
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 
 const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
   const [reviewList, setReviewList] = useAtom(ReviewListAtom);
@@ -11,7 +11,6 @@ const useReviewQuery = (uniqueQueryKey, url, enable = true) => {
   const [totalPage, setTotalPage] = useState(0);
 
   const {
-    data,
     status,
     isLoading,
     refetch: reviewQueryRefetch,

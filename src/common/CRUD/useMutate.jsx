@@ -15,7 +15,8 @@ const useMutate = atom => {
     const oldDataList = [...dataList];
     let newDataList = [];
     for (let i = 0; i < oldDataList.length; i++) {
-      if (oldDataList[i].id == input.id) {
+      console.log(oldDataList[i].id,input.id)
+      if (oldDataList[i].id === input.id) {
         newDataList.push(input);
       } else {
         newDataList.push(oldDataList[i]);
@@ -29,7 +30,7 @@ const useMutate = atom => {
     const oldDataList = [...dataList];
     let newDataList = [];
     for (let i = 0; i < oldDataList.length; i++) {
-      if (oldDataList[i].id == id) {
+      if (oldDataList[i].id === id) {
       } else {
         newDataList.push(oldDataList[i]);
       }

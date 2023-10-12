@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 // import {TableWrapper} from '../../../style/common.style';
 
-import Select from 'react-select';
 import {TableWrapper} from 'style/common.style';
 
 import {useState} from 'react';
@@ -63,7 +62,7 @@ const ReviewTable = ({testData}) => {
           <Table.Body>
             {testData?.length > 0 &&
               testData?.map((row, i) => {
-                console.log(row);
+                // console.log(row);
                 return (
                   <Table.Row
                     style={{
@@ -154,21 +153,4 @@ const Content = styled.div`
   text-overflow: ellipsis;
 `;
 
-const FlexPwdBox = styled.div`
-  width: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-const DropdownBox = styled.div`
-  width: 150px;
-`;
 
-const SelectWrap = styled.div`
-  display: flex;
-  margin-bottom: 24px;
-`;
-
-const SelectBox = styled(Select)`
-  width: 250px;
-  margin-right: 50px;
-`;

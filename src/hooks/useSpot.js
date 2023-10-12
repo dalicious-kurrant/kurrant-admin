@@ -6,9 +6,9 @@ export function useGetSpotList() {
     return spotApis.getSpot();
   });
 }
-export function useGetShareSpotList(
-  page,
-) {
+
+// 공유 스팟
+export function useGetShareSpotList(page) {
   return useQuery('shareSpotZone', () => {
     return spotApis.getShareSpot(page);
   });
@@ -34,6 +34,42 @@ export function useDeleteShareSpot() {
     },
     onError: err => {
       console.log(err);
+    },
+  });
+}
+
+// 프라이빗
+
+export function useGetPrivateSpotList(page) {
+  return useQuery('privateSpotZone', () => {
+    return spotApis.getPrivateSpot(page);
+  });
+}
+
+export function useAddPrivateSpot() {
+  const queryClient = useQueryClient();
+  return useMutation(data => spotApis.addPrivateSpot(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('privateSpotZone');
+    },
+  });
+}
+
+export function useModifyPrivateStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(data => spotApis.modifyPrivateStatus(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('privateSpotZone');
+      alert('상태 변경 완료');
+    },
+  });
+}
+
+export function useDeletePrivateStatus() {
+  const queryClient = useQueryClient();
+  return useMutation(id => spotApis.deletePrivateSpot(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('privateSpotZone');
     },
   });
 }

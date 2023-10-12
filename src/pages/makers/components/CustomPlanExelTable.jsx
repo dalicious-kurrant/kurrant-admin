@@ -1,15 +1,13 @@
 import {useAtom} from 'jotai';
 import React, {useEffect, useState} from 'react';
-import {Button, Table, Dropdown} from 'semantic-ui-react';
+import {Table, Dropdown} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
 import {formattedTime, formattedWeekDate} from '../../../utils/dateFormatter';
 import {
   foodCompleteStatusData,
-  scheduleFormatted,
-  scheduleFormatted2,
 } from '../../../utils/statusFormatter';
-import {exelCompletePlanAtom, exelPlanAtom} from '../../../utils/store';
+import {exelCompletePlanAtom} from '../../../utils/store';
 
 const PlanExelTable = () => {
   const [key, setKey] = useState();

@@ -1,7 +1,5 @@
-import {calendarApis} from 'api/calendar';
 import {usersApis} from 'api/user';
-import {useMutation, useQuery} from 'react-query';
-import {scheduleFormatted} from 'utils/statusFormatter';
+import {useMutation} from 'react-query';
 
 export function useSaveUserData() {
   return useMutation(
@@ -15,3 +13,4 @@ export function useSaveUserData() {
     },
   );
 }
+

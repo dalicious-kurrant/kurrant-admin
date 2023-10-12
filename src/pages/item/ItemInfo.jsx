@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {Pagination, PaginationItem, Table} from 'semantic-ui-react';
+import {Pagination} from 'semantic-ui-react';
 import {PageWrapper, TableWrapper} from '../../style/common.style';
 import {
-  useDeleteProductList,
   useGetAllProductsList,
   useGetExportProductsList,
 } from '../../hooks/useProductsList';
@@ -18,13 +18,12 @@ import {
   productPageAtom,
 } from '../../utils/store';
 import ItemInfoTable from './components/ItemInfoTable';
-import {useQueryClient} from 'react-query';
 
 // 상품 정보 페이지
 const ItemInfo = () => {
-  const [option, setOption] = useAtom(makersNameAtom);
+  const [option] = useAtom(makersNameAtom);
   const [product, setProduct] = useAtom(productAtom);
-  const [exportExel, setExportExel] = useAtom(exportProductAtom);
+  const [, setExportExel] = useAtom(exportProductAtom);
   const [page, setPage] = useAtom(productPageAtom);
 
   const makersId = option && `&makersId=${option}`;
@@ -35,7 +34,7 @@ const ItemInfo = () => {
   );
   const {data: exportProductList, isLoading} = useGetExportProductsList();
   const [totalPage, setTotalPage] = useState(0);
-  const [exelProduct, setExelProduct] = useAtom(exelProductAtom);
+  const [exelProduct] = useAtom(exelProductAtom);
   const [checkItems, setCheckItems] = useState([]);
 
   const checkId = (e, id) => {
@@ -51,7 +50,7 @@ const ItemInfo = () => {
     }
     if (!isLoading) {
       setExportExel(exportProductList?.data);
-      console.log('가져오는중');
+      // console.log('가져오는중');
     }
   }, [exportProductList, exportProductList?.data, isLoading, productList]);
 
@@ -94,13 +93,6 @@ const ItemInfo = () => {
 };
 
 export default ItemInfo;
-
-const TableRow = styled(Table.Row)`
-  :hover {
-    cursor: pointer;
-    background-color: whitesmoke;
-  }
-`;
 
 const PagenationBox = styled.div`
   ${({totalPage}) => {

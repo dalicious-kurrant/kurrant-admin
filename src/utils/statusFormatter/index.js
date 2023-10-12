@@ -387,3 +387,53 @@ export const foodCompleteStatusData = [
     value: 6,
   },
 ];
+export function formattedBoardOptionStatus(data) {
+  if (data.length === 1 && data[0] === 0) {
+    return '[공지] ';
+  } else if (
+    data.length === 2 &&
+    (data[0] === 1 || data[0] === 2) &&
+    (data[1] === 1 || data[1] === 2)
+  ) {
+    return '[이벤트] ';
+  } else if (data.length === 1 && data[0] === 2) {
+    return '[이벤트] ';
+  } else {
+    return '';
+  }
+}
+
+export const registerMakersStatusData = [
+  {
+    key: '스팟 개설 신청',
+    text: '스팟 개설 신청',
+    value: 0,
+  },
+  {
+    key: '운영 사항 협의',
+    text: '운영 사항 협의',
+    value: 1,
+  },
+  {
+    key: '스팟 개설 완료',
+    text: '스팟 개설 완료',
+    value: 2,
+  },
+  {
+    key: '미승인',
+    text: '미승인',
+    value: 3,
+  },
+  {
+    key: '보류',
+    text: '보류',
+    value: 4,
+  },
+];
+
+export const recommendMakersStatus = [
+  {key: 0, text: '대기', value: 0},
+  {key: 1, text: '진행중', value: 1},
+  {key: 2, text: '완료', value: 2},
+  {key: 3, text: '불가', value: 3},
+];

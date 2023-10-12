@@ -1,8 +1,7 @@
 import {PageWrapper} from 'style/common.style';
-import styled from 'styled-components';
 import FoodGroupTable from './Table/FoodGroupTable';
 
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';
 // import FoodGroupCreateModal from './Modal/FoodGroupCreateModal';
 import useGetFoodGroupQuery from './useGetFoodGroupQuery';
@@ -10,12 +9,12 @@ import useFoodGroupMutation from './useFoodGroupMutation';
 import FoodGroupCreateModal from './Modal/FoodGroupCreateModal';
 
 const FoodGroupPage = () => {
-  const [showCRUDBundle, setShowCRUDBundle] = useState(false);
+  const [showCRUDBundle] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const [checkboxList, setCheckboxList] = useState([]);
 
-  const {getFoodGroupQueryRefetch, foodGroupData} = useGetFoodGroupQuery();
+  const {foodGroupData} = useGetFoodGroupQuery();
 
   const {deleteFoodGroupMutation} = useFoodGroupMutation(
     () => {
@@ -71,13 +70,4 @@ const FoodGroupPage = () => {
 
 export default FoodGroupPage;
 
-const WordBreakSampleDiv = styled.div`
-  width: 200px;
-  border: 1px solid black;
-`;
 
-const WordBreakSpan = styled.span`
-  /* word-break: normal; */
-  word-break: break-all;
-  /* word-break: keep-all; */
-`;

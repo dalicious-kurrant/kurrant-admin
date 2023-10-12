@@ -1,13 +1,10 @@
-import {useAtom} from 'jotai';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Button,
-  Header,
   Form,
   Modal,
   Input,
   Label,
-  Checkbox,
   Dropdown,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
@@ -15,10 +12,9 @@ import styled from 'styled-components';
 import ExcelIcon from '../../../asset/icons/excel.svg';
 import PDFIcon from '../../../asset/icons/pdfIcon.svg';
 import {
-  adjustReverseStatusFomatted,
   adjustTextStatusFomatted,
 } from 'utils/statusFormatter';
-import {useSaveMakersAdjust, useUpdateMakersAdjust} from 'hooks/useAdjustment';
+import {useUpdateMakersAdjust} from 'hooks/useAdjustment';
 const statusData = [
   {key: 0, text: '정산 신청 완료', value: '정산 신청 완료'},
   {key: 1, text: '거래명세서 확정 대기', value: '거래명세서 확정 대기'},

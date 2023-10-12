@@ -1,4 +1,4 @@
-import {useDeleteMakersAdjust, useGetOneMakersAdjust, useGetOneSpotAdjust, useMakersList} from 'hooks/useAdjustment';
+import {useDeleteMakersAdjust, useGetOneMakersAdjust,  useMakersList} from 'hooks/useAdjustment';
 import {useEffect, useState} from 'react';
 import {Button, Dropdown} from 'semantic-ui-react';
 import styled from 'styled-components';

@@ -1,7 +1,8 @@
 import {useAtom} from 'jotai';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import {diningListAtom, spotListAtom, userListAtom} from 'utils/store';
+import {diningListAtom, spotListAtom} from 'utils/store';
 import {orderApis} from '../api/order';
+import {userExel} from 'utils/downloadExel/exel';
 
 export function useGetGroupList(spotType) {
   return useQuery('groupList', () => {
@@ -10,9 +11,9 @@ export function useGetGroupList(spotType) {
 }
 
 export function useGetGroupInfoList(groupId) {
-  const [spotList, setSpotList] = useAtom(spotListAtom);
-  const [userList, setUserList] = useAtom(userListAtom);
-  const [diningType, setDiningType] = useAtom(diningListAtom);
+  const [, setSpotList] = useAtom(spotListAtom);
+  // const [userList, setUserList] = useAtom(userListAtom);
+  const [, setDiningType] = useAtom(diningListAtom);
   return useQuery(
     'groupInfoList',
     () => {
@@ -20,12 +21,12 @@ export function useGetGroupInfoList(groupId) {
     },
     {
       onSuccess: res => {
-        setUserList(res.data.users);
+        // setUserList(res.data.users);
         setSpotList(res.data.spots);
         setDiningType(res.data.diningTypes);
       },
-      retry:false,
-      enabled:groupId !== 0,
+      retry: false,
+      enabled: groupId !== 0,
     },
   );
 }
@@ -34,31 +35,49 @@ export function useGetOrderList(
   startDate,
   endDate,
   groupOption,
+  groupTypeOption,
   userOption,
   spotOption,
   makersOption,
   diningTypeOption,
   orderStatusOption,
+  startOrderDate,
+  endOrderDate,
+  checkFilterType,
 ) {
-  return useQuery('orderList', () => {
-    return orderApis.orderList(
-      startDate,
-      endDate,
-      groupOption,
-      userOption,
-      spotOption,
-      makersOption,
-      diningTypeOption,
-      orderStatusOption,
-    );
-  },{
-    retry:false
-  });
+  return useQuery(
+    'orderList',
+    () => {
+      return orderApis.orderList(
+        startDate,
+        endDate,
+        groupOption,
+        groupTypeOption,
+        userOption,
+        spotOption,
+        makersOption,
+        diningTypeOption,
+        orderStatusOption,
+        startOrderDate,
+        endOrderDate,
+        checkFilterType,
+      );
+    },
+    {
+      retry: false,
+      //enabled: false,
+    },
+  );
 }
 
 export function useGetMakersList() {
   return useQuery('makersList', () => {
     return orderApis.makersList();
+  });
+}
+export function useGetGroupAllList() {
+  return useQuery('groupAllList', () => {
+    return orderApis.groupAllList();
   });
 }
 
@@ -80,6 +99,21 @@ export function useAllUserList() {
   return useQuery('allUserList', () => {
     return orderApis.allUserList();
   });
+}
+export function useAllUserExport() {
+  return useQuery(
+    'allUserExport',
+    () => {
+      return orderApis.allUserExport();
+    },
+    {
+      onSuccess: v => {
+        console.log(v);
+        userExel(v.data);
+      },
+      enabled: false,
+    },
+  );
 }
 
 export function useEditOrderStatus() {

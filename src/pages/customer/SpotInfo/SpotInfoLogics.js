@@ -1,18 +1,6 @@
-import {checkedValue, idsToDelete, numberOfTrues} from '../Logics/Logics';
+import {checkedValue, numberOfTrues} from '../Logics/Logics';
 
-const sendDelete = (tableDeleteList, deleteFinalMutate) => {
-  const toNumList = tableDeleteList.map(v => {
-    return parseInt(v);
-  });
 
-  // 스트링 -> 넘버
-
-  const submitData = {
-    spotIdList: toNumList,
-  };
-
-  deleteFinalMutate(submitData);
-};
 
 export const makeId = dataInput => {
   return dataInput.map((v, i) => {

@@ -1,15 +1,10 @@
-import {useUpdateMakersDetail} from 'hooks/useMakers';
-import {useAtom} from 'jotai';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
-  Header,
   Form,
   Modal,
   Input,
   Label,
-  Checkbox,
-  TextArea,
 } from 'semantic-ui-react';
 import styled from 'styled-components';
 
@@ -868,11 +863,7 @@ const FlexBox = styled.div`
   /* margin-right: 10px; */
   width: ${({width}) => (width ? `${width}px` : '300px')};
 `;
-const FlexBox2 = styled.div`
-  display: flex;
-  gap: 10px;
-  width: ${({width}) => (width ? `${width}px` : '100px')};
-`;
+
 const LineBox = styled.div`
   display: flex;
   font-size: 12px;

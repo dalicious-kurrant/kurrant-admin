@@ -1,10 +1,7 @@
-import {PageWrapper} from 'style/common.style';
-import Filter from './components/Filter';
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Button, Pagination, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {useEffect, useRef, useState} from 'react';
-import ModalComponent from './components/Modal';
-import {useCreateMySpot, useGetMySpotList} from 'hooks/useMySpot';
 import * as XLSX from 'xlsx';
 import {useAtom} from 'jotai';
 import {
@@ -12,13 +9,12 @@ import {
   MySpotCountyAtom,
   MySpotVillageAtom,
   MySpotZipcodeAtom,
-  checkListAtom,
   checkShareListAtom,
   maxUserAtom,
   minUserAtom,
   spotPageAtom,
 } from 'utils/store';
-import { useGetShareSpotList } from 'hooks/useSpot';
+import {useGetShareSpotList} from 'hooks/useSpot';
 const TableHeaderData = [
   {id: 0, text: '신청시간'},
   {id: 1, text: '기존 주소 여부'},
@@ -30,25 +26,13 @@ const TableHeaderData = [
   {id: 7, text: '기타내용'},
 ];
 const ShareSpotZone = () => {
-  const el = useRef();
   const [checkItems, setCheckItems] = useAtom(checkShareListAtom);
-  const [showModifyOpenModal, setShowModifyOpenModal] = useState(false);
-  const [nowData, setNowData] = useState();
-  const [click, setClick] = useState(false);
   const [page, setPage] = useAtom(spotPageAtom);
+  
   const [totalPage, setTotalPage] = useState(0);
 
-  const [selectCity] = useAtom(MySpotCityAtom);
-  const [selectCounty] = useAtom(MySpotCountyAtom);
-  const [selectVillage] = useAtom(MySpotVillageAtom);
-  const [selectZipcode] = useAtom(MySpotZipcodeAtom);
-
-  const [minUser] = useAtom(minUserAtom);
-  const [maxUser] = useAtom(maxUserAtom);
-
-  const {data: shareSpotData, refetch: spotListRefetch} = useGetShareSpotList(
-    page,
-  );
+  const {data: shareSpotData, refetch: spotListRefetch} =
+    useGetShareSpotList(page);
   const excelButton = async () => {
     const reqArrays = [];
     reqArrays.push([
@@ -59,7 +43,7 @@ const ShareSpotZone = () => {
       'deliveryTime',
       'entranceOption',
       'userId',
-      'memo'
+      'memo',
     ]);
     reqArrays.push(TableHeaderData.map(v => v.text));
     shareSpotData?.data?.items.map(el => {
@@ -81,9 +65,6 @@ const ShareSpotZone = () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, '공유프라이빗 스팟 신청');
     XLSX.writeFile(workbook, '공유프라이빗 스팟 신청.xlsx');
   };
-  const closeUser = e => {
-    if (click && el.current && !el.current.contains(e.target)) setClick(false);
-  };
 
   const handleSingleCheck = (checked, id) => {
     if (checked) {
@@ -104,8 +85,6 @@ const ShareSpotZone = () => {
     }
   };
 
-
-
   useEffect(() => {
     if (shareSpotData) {
       setTotalPage(shareSpotData?.data?.total);
@@ -114,29 +93,11 @@ const ShareSpotZone = () => {
 
   useEffect(() => {
     spotListRefetch();
-  }, [
-    spotListRefetch,
-    page,
-    selectCity,
-    selectCounty,
-    selectVillage,
-    selectZipcode,
-    minUser,
-    maxUser,
-  ]);
-
-  useEffect(() => {
-    window.addEventListener('click', closeUser);
-    return () => {
-      window.removeEventListener('click', closeUser);
-    };
-  }, [click, el.current]);
+  }, [spotListRefetch, page]);
   return (
-    <Wrap ref={el}>
-      {/* <Filter setClick={setClick} click={click} /> */}
+    <Wrap>
       <Button color="green" content="엑셀 내보내기" onClick={excelButton} />
       <PaginationWrap>
-        {/* <Button content="스팟 개설" color="green" onClick={spotCreateButton} /> */}
         <Pagination
           ellipsisItem={null}
           defaultActivePage={page}
@@ -159,12 +120,18 @@ const ShareSpotZone = () => {
                 }}>
                 <input type="checkbox" />
               </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">신청시간</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">기존 주소 여부</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">주소(도로명)</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">신청일</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                기존 주소 여부
+              </Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                주소(도로명)
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">상세주소</Table.HeaderCell>
               <Table.HeaderCell textAlign="center">배송시간</Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">외부인 출입 가능 여부</Table.HeaderCell>
+              <Table.HeaderCell textAlign="center">
+                외부인 출입 가능 여부
+              </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 신청 유저 (id)
               </Table.HeaderCell>
@@ -179,12 +146,10 @@ const ShareSpotZone = () => {
                 </Table.Cell>
               </Table.Row>
             ) : (
+
               shareSpotData?.data?.items.map((el, idx) => {
-                console.log(el)
                 return (
-                  <Table.Row
-                    key={el.id}
-                 >
+                  <Table.Row key={el.id}>
                     <Table.Cell
                       textAlign="center"
                       onClick={e => e.stopPropagation()}>
@@ -196,16 +161,28 @@ const ShareSpotZone = () => {
                         }
                       />
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{el.createdDate}</Table.Cell>
-                    <Table.Cell textAlign="center">{el.groupId ? "있음": "없음"}</Table.Cell>
-                    <Table.Cell textAlign="center">{el.address1}</Table.Cell>
-                    <Table.Cell textAlign="center">{el.address2}</Table.Cell>
-                    <Table.Cell textAlign="center">{el.deliveryTime}</Table.Cell>
-                    <Table.Cell textAlign="center">{el.entranceOption? "가능":"불가"}</Table.Cell>
                     <Table.Cell textAlign="center">
-                      {el.userId}
+                      <div style={{whiteSpace: 'nowrap'}}>{el.createdDate}</div>
                     </Table.Cell>
-                    <Table.Cell textAlign="center">{el.memo}</Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {el.groupId ? '있음' : '없음'}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center" width={4}>
+                      <div style={{whiteSpace: 'nowrap'}}>{el.address1}</div>
+                    </Table.Cell>
+                    <Table.Cell textAlign="center" width={2}>
+                      {el.address2}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {el.deliveryTime}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">
+                      {el.entranceOption ? '가능' : '불가'}
+                    </Table.Cell>
+                    <Table.Cell textAlign="center">{el.userId}</Table.Cell>
+                    <Table.Cell textAlign="center" width={3}>
+                      <div style={{whiteSpace: 'nowrap'}}>{el.memo}</div>
+                    </Table.Cell>
                   </Table.Row>
                 );
               })
@@ -213,7 +190,6 @@ const ShareSpotZone = () => {
           </Table.Body>
         </Table>
       </div>
-     
     </Wrap>
   );
 };

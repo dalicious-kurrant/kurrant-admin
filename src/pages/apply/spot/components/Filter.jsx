@@ -217,17 +217,7 @@ const Filter = ({click, setClick}) => {
 };
 
 export default Filter;
-const InputBox = styled.input`
-  display: flex;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  //text-align: end;
-  //padding-right: 8px;
-  text-align: center;
-  width: 100%;
-`;
+
 
 const InputBlock = styled.div`
   min-width: 200px;

@@ -3,7 +3,7 @@ import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import instance from 'shared/axios';
-import {shiftUserType, sliceStringDataByKey} from './CustomerLogics';
+import {shiftUserType} from './CustomerLogics';
 import {userPageAtom} from 'utils/store';
 
 const useCustomerQuery = (

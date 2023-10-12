@@ -1,7 +1,6 @@
 import {PageWrapper} from 'style/common.style';
-import styled from 'styled-components';
 
-import {useEffect, useState} from 'react';
+import { useState} from 'react';
 import useGetRecommendationMakersQuery from './useGetRecommendationMakersQuery';
 import RecommendationTable from './Table/RecommendationTable';
 import CRUDBundle from 'common/CRUD/Register/CRUDBundle';

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Input from 'components/input/Input';
 import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -52,7 +53,6 @@ const EventModify = ({
     setValue('accountLimit', initialData[0]?.accountCompletionLimit);
     setValue('rewardPoint', initialData[0]?.rewardPoint);
     setValue('noticeId', initialData[0]?.boardId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
 
   const modifyButton = async () => {

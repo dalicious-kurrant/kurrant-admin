@@ -1,9 +1,7 @@
 import Input from 'components/input/Input';
-import {useAddMySpot, useModifyMySpot} from 'hooks/useMySpot';
 import { useAddShareSpot } from 'hooks/useSpot';
-import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import {Button, Form, Label, Modal} from 'semantic-ui-react';
+import {Button, Label, Modal} from 'semantic-ui-react';
 import styled from 'styled-components';
 
 const AddShareModal = ({open, setOpen, data, title, button}) => {
@@ -11,7 +9,7 @@ const AddShareModal = ({open, setOpen, data, title, button}) => {
   const form = useForm({
     mode: 'all',
   });
-  const {watch, setValue,handleSubmit} = form;
+  const {handleSubmit} = form;
 
   const addSpotButton = async (datas) => {
     console.log(datas);
@@ -145,12 +143,7 @@ const InputWrap = styled.div`
   align-items: flex-end;
 `;
 
-const Title = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-right: 12px;
-`;
+
 
 const InputBox = styled(Input)`
   display: flex;

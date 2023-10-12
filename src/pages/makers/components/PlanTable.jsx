@@ -1,37 +1,9 @@
-import {Button, Dropdown, Table} from 'semantic-ui-react';
+import {Button,  Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {TableWrapper} from '../../../style/common.style';
-import {
-  foodStatusData,
-  scheduleFormatted,
-} from '../../../utils/statusFormatter';
 
 const PlanTable = ({count, testData, setTestData}) => {
-  console.log(testData);
 
-  const changeStatus = (d, b) => {
-    setTestData(
-      testData.map(makers => {
-        return {
-          ...makers,
-          clientSchedule: makers.clientSchedule.map(client => {
-            return {
-              ...client,
-              foodSchedule: client.foodSchedule.map(food => {
-                if (food.presetFoodId === d.presetFoodId) {
-                  return {
-                    ...food,
-                    foodStatus: b,
-                  };
-                }
-                return food;
-              }),
-            };
-          }),
-        };
-      }),
-    );
-  };
   return (
     <TableWrapper>
       <Table celled>
@@ -207,7 +179,4 @@ const FlexBox = styled.div`
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-`;
-const DropdownBox = styled.div`
-  width: 150px;
 `;

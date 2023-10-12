@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import {Dropdown} from 'semantic-ui-react';
+import {Checkbox, Dropdown} from 'semantic-ui-react';
 import {useCompanyList} from 'hooks/useCompany';
 import {useEffect} from 'react';
 
@@ -10,6 +11,8 @@ const DropdownBox = ({
   setSelectStatus,
   selectSpots,
   setSelectSpots,
+  checkValue,
+  setCheckValue,
   editData,
 }) => {
   const {data: companyList} = useCompanyList();
@@ -17,8 +20,8 @@ const DropdownBox = ({
   const typeArray = [
     {key: 0, text: '전체 공지', value: 0},
     {key: 1, text: '스팟 공지', value: 1},
-    {key: 2, text: '팝업', value: 2},
-    {key: 3, text: '이벤트 공지', value: 3},
+    // {key: 2, text: '팝업', value: 2},
+    // {key: 3, text: '이벤트 공지', value: 3},
   ];
 
   const statusArray = [
@@ -34,6 +37,14 @@ const DropdownBox = ({
     };
   });
 
+  const checkboxValue = value => {
+    if (checkValue.includes(value)) {
+      return setCheckValue(checkValue.filter(el => el !== value));
+    }
+
+    setCheckValue([...checkValue, value]);
+  };
+
   useEffect(() => {
     if (editData) {
       function groupIds() {
@@ -47,8 +58,10 @@ const DropdownBox = ({
       setSelectType(editData.boardType);
       setSelectStatus(editData.isStatus);
       setSelectSpots(groupId);
+      setCheckValue(editData.boardOption);
     }
   }, []);
+
   return (
     <DropdownWrap>
       <DropdownDiv>
@@ -84,6 +97,21 @@ const DropdownBox = ({
             setSelectSpots(data.value);
           }}
         />
+        <CheckboxWrap>
+          <Checkbox
+            label="팝업"
+            checked={checkValue.includes(1)}
+            onChange={(e, data) => checkboxValue(data.value)}
+            value={1}
+          />
+          <Checkbox
+            label="이벤트"
+            checked={checkValue.includes(2)}
+            style={{marginLeft: 12}}
+            value={2}
+            onChange={(e, data) => checkboxValue(data.value)}
+          />
+        </CheckboxWrap>
       </DropdownDiv>
     </DropdownWrap>
   );
@@ -98,4 +126,11 @@ const DropdownWrap = styled.div`
 
 const DropdownDiv = styled.div`
   margin-right: 12px;
+  display: flex;
+`;
+
+const CheckboxWrap = styled.div`
+  margin-left: 12px;
+  align-items: center;
+  display: flex;
 `;

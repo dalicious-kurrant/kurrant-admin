@@ -1,6 +1,5 @@
 import {useGetSpotOrders} from 'hooks/useAdjustment';
-import {useLocation} from 'react-router-dom';
-import {Label, Table} from 'semantic-ui-react';
+import {Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import withCommas from 'utils/withCommas';
 import ScrollToTop from '../../../asset/image/scrollTop.png';
@@ -97,7 +96,6 @@ const ClientMeal = ({id}) => {
         </Table.Header>
         <Table.Body>
           {item?.map((el, idx) => {
-            const test = item.filter(v => v.serviceDate === el.serviceDate);
 
             return (
               <Table.Row key={idx}>

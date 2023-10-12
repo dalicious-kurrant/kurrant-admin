@@ -1,4 +1,4 @@
-import {formattedDateForRecommendation, formattedDateZ} from 'utils/dateFormatter';
+import { formattedDateZ} from 'utils/dateFormatter';
 
 export const fillMakersDropboxObject = makersListFromServer => {
   // value와 label형태로 만들기
@@ -64,6 +64,8 @@ export const buildCustomUrl = (
   }
 
   // 3. boolean애들 3
+
+  // 여기가 바뀌면 page는 1로 돌아가야됨
 
   if (isMakersComment) {
     basicUrl.push(`&isMakersComment=${isMakersComment}`);

@@ -18,6 +18,7 @@ export function useAppNoticeLoad(
   selectStatus,
   selectSpots,
   selectPush,
+  checkBoxValue,
 ) {
   return useQuery('appNoticeList', () => {
     return noticeApis.appNoticeGet(
@@ -26,6 +27,7 @@ export function useAppNoticeLoad(
       selectStatus,
       selectSpots,
       selectPush,
+      checkBoxValue,
     );
   });
 }

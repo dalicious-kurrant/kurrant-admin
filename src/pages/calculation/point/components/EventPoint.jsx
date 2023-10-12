@@ -6,14 +6,13 @@ import styled from 'styled-components';
 import Select from 'react-select';
 import {FormProvider, useForm} from 'react-hook-form';
 import Input from 'components/input/Input';
-import {formattedWeekDate, formattedWeekDateZ} from 'utils/dateFormatter';
+import {formattedWeekDateZ} from 'utils/dateFormatter';
 import EventModify from './EventModify';
 import withCommas from 'utils/withCommas';
 
 const EventPoint = () => {
   const conditionRef = useRef(null);
   const startDateRef = useRef(null);
-  const endDateRef = useRef(null);
   const day = new Date();
   const days = formattedWeekDateZ(day);
   const [startDate, setStartDate] = useState(days);
@@ -49,7 +48,7 @@ const EventPoint = () => {
   const accountLimit = watch('accountLimit');
   const rewardPoint = watch('rewardPoint');
   const noticeId = watch('noticeId');
-  console.log(noticeId);
+
   const handleSingleCheck = (checked, id, data) => {
     const arr = [data];
 

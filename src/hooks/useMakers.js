@@ -10,7 +10,7 @@ export function useGetMakersInformation() {
 export function useSaveMakersInformation() {
   const queryClient = useQueryClient();
   return useMutation(data => makersApis.saveMakersInfo(data), {
-    onSuccess: () => {
+    onSuccess: e => {
       queryClient.invalidateQueries('makersInformation');
     },
     onError: err => {
@@ -19,15 +19,19 @@ export function useSaveMakersInformation() {
     },
   });
 }
+
 export function useUpdateMakersDetail() {
   const queryClient = useQueryClient();
-  return useMutation(data => makersApis.updateMakersInfo(data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('makersInformation');
+  return useMutation(
+    (formData, config) => makersApis.updateMakersInfo(formData, config),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('makersInformation');
+      },
+      onError: err => {
+        console.log(err, '메이커스에러');
+        alert('잘못된 데이터가 입력됐습니다. 다시 시도해주세요');
+      },
     },
-    onError: err => {
-      console.log(err, '메이커스에러');
-      alert('잘못된 데이터가 입력됐습니다. 다시 시도해주세요');
-    },
-  });
+  );
 }

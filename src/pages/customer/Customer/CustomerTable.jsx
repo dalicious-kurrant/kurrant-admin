@@ -1,19 +1,17 @@
 import {useState} from 'react';
-import {Button, Checkbox, Dropdown, Table} from 'semantic-ui-react';
+import {Button, Checkbox, Table} from 'semantic-ui-react';
 import styled from 'styled-components';
 import {formattedFullDate, formattedWeekDate} from 'utils/dateFormatter';
 import {TableWrapper} from '../../../style/common.style';
 import {
-  foodStatusData,
-  scheduleFormatted,
   userStatusFormatted,
 } from '../../../utils/statusFormatter';
 import CostomerEditModal from './CustomerEditModal';
 import Select from 'react-select';
-import {useGetSpotList} from 'hooks/useSpot';
 import {useAtom} from 'jotai';
-import {groupIdAtom, uerIdAtom, userIdAtom, userStateAtom} from 'utils/store';
+import {groupIdAtom, userIdAtom, userStateAtom} from 'utils/store';
 import CustomerPoint from './CustomerPoint';
+import { useAllUserExport, useAllUserList, useGetGroupAllList } from 'hooks/useOrderList';
 
 const CustomerTable = ({
   testData,
@@ -21,17 +19,20 @@ const CustomerTable = ({
   userCheck,
   setUserCheck,
   allChk,
+  setPage,
   setAllChk,
 }) => {
   const [pointOpenModal, setPointOpenModal] = useState(false);
   const [showOpenModal, setShowOpenModal] = useState(false);
-  const [editId, setEditId] = useState();
+  const [, setEditId] = useState();
   const [clickData, setClickData] = useState();
-  const [userOption, setUserOption] = useAtom(userStateAtom);
-  const [nameOption, setNameOption] = useAtom(userIdAtom);
-  const [spotOption, setSpotOption] = useAtom(groupIdAtom);
-  const [option, setOption] = useState(testData);
-  const {data: spotList} = useGetSpotList();
+  const [, setUserOption] = useAtom(userStateAtom);
+  const [, setNameOption] = useAtom(userIdAtom);
+  const [, setSpotOption] = useAtom(groupIdAtom);
+  const {data: allUserList} = useAllUserList();
+  const { refetch:refetchExport ,isFetching:loadingExport} = useAllUserExport();
+  const {data: groupAllList} = useGetGroupAllList();
+  // const {data: spotList} = useGetSpotList();
 
   const showEditOpen = id => {
     setEditId(id);
@@ -39,25 +40,25 @@ const CustomerTable = ({
     setClickData(...data);
     setShowOpenModal(true);
   };
-
+  const handleAllUserExport = async()=>{
+    refetchExport();
+  }
   const userArr = [
     {value: 0, label: '탈퇴'},
     {value: 1, label: '활성'},
     {value: 2, label: '탈퇴 요청'},
   ];
 
-  const userNameArr = testData?.map(el => {
+  const userNameArr = allUserList?.data?.map(el => {
     return {
       value: el.id,
-      label: el.userName,
+      label: el.name,
     };
   });
 
-  const set = spotList?.data?.reduce((acc, v) => {
-    return acc.find(x => x.groupId === v.groupId) ? acc : [...acc, v];
-  }, []);
 
-  const spotArr = set?.map(el => {
+
+  const spotArr = groupAllList?.data?.groups?.map(el => {
     return {
       value: el.groupId,
       label: el.groupName,
@@ -90,6 +91,7 @@ const CustomerTable = ({
           options={userNameArr}
           onChange={e => {
             //userNameFilter(e.value);
+            setPage(1)
             setNameOption(e.value);
           }}
         />
@@ -98,6 +100,7 @@ const CustomerTable = ({
           options={spotArr}
           onChange={e => {
             //spotFilter(e.label);
+            setPage(1)
             setSpotOption(e.value);
           }}
         />
@@ -112,6 +115,12 @@ const CustomerTable = ({
           onClick={() => {
             pointModal();
           }}
+        />
+        <Button
+          content="전체 유저 내보내기"
+          color={loadingExport ? "grey" : "linkedin"}
+          disabled={loadingExport}
+          onClick={handleAllUserExport}
         />
       </SelectWrap>
       <TableWrapper>
@@ -139,6 +148,7 @@ const CustomerTable = ({
                       let check = [];
                       testData.map(v => {
                         check.push(v.id);
+                        return undefined
                       });
                       setUserCheck(check);
                     } else {
@@ -350,9 +360,6 @@ const FlexPwdBox = styled.div`
   width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-const DropdownBox = styled.div`
-  width: 150px;
 `;
 
 const SelectWrap = styled.div`

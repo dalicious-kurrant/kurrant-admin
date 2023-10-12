@@ -1,8 +1,7 @@
-import {useQuery, useQueryClient} from 'react-query';
+import {useQuery} from 'react-query';
 
 import {useAtom} from 'jotai';
 import instance from 'shared/axios';
-import {useEffect, useState} from 'react';
 import {customerTasteFoodIdListAtom} from './store';
 
 const useGetCustomerTasteQuery = (enable = true) => {

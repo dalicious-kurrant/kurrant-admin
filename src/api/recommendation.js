@@ -201,14 +201,14 @@ export const recommendationApis = {
     }).toString();
 
     const res = await fetch(url + params);
-    const json = await res.json();
+    await res.json();
   },
 
   callDeleteModel: async ({version}) => {
     const url = DOMAIN + API_BASE_URL + `/recommendation/models/${version}?`;
 
     const res = await fetch(url, {method: 'DELETE'});
-    const json = await res.json();
+    await res.json();
   },
 
   getGroupsRecommendation: async ({version, groups, diningTypes}) => {

@@ -1,9 +1,5 @@
 import {atomWithReset} from 'jotai/utils';
-import {
-  formattedWeekDate,
-  formattedWeekDateZ,
-  formattedYearMonthDate,
-} from './dateFormatter';
+import {formattedWeekDateZ, formattedYearMonthDate} from './dateFormatter';
 
 //일정관리 아톰
 export const exelPlanAtom = atomWithReset();
@@ -36,6 +32,8 @@ const day = new Date();
 const days = formattedWeekDateZ(day);
 export const startDateAtom = atomWithReset(days);
 export const endDateAtom = atomWithReset(days);
+export const startOrderDateAtom = atomWithReset(days);
+export const endOrderDateAtom = atomWithReset(days);
 export const groupOptionAtom = atomWithReset('');
 export const groupTypeOptionAtom = atomWithReset('');
 export const userOptionAtom = atomWithReset('');
@@ -99,6 +97,7 @@ export const corpDataAtom = atomWithReset();
 export const indexAtom = atomWithReset();
 export const checkListAtom = atomWithReset([]);
 export const checkShareListAtom = atomWithReset([]);
+export const checkPrivateListAtom = atomWithReset([]);
 export const spotPageAtom = atomWithReset(1);
 
 export const MySpotCityAtom = atomWithReset([]);
@@ -128,6 +127,7 @@ export const noticeStatusFilterAtom = atomWithReset(null);
 export const noticeSpotFilterAtom = atomWithReset([]);
 export const noticePushFilterAtom = atomWithReset(null);
 export const noticePageAtom = atomWithReset(1);
+export const checkValueAtom = atomWithReset([]);
 
 // 메이커스 공지사항
 export const noticeMakersTypeFilterAtom = atomWithReset(null);
@@ -144,3 +144,8 @@ export const noticeCompanyPushFilterAtom = atomWithReset(null);
 export const noticeCompanyPageAtom = atomWithReset(1);
 
 export const userPageAtom = atomWithReset(0);
+
+// 메이커스 추천
+export const recommendStatusAtom = atomWithReset();
+export const recommendMakersAtom = atomWithReset();
+export const recommendSpotAtom = atomWithReset();

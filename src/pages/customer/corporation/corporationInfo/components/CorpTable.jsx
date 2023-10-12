@@ -1,5 +1,6 @@
-import {Label, Pagination, Table, TableRow} from 'semantic-ui-react';
-import {PageWrapper, TableWrapper} from 'style/common.style';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {Label, Pagination, Table} from 'semantic-ui-react';
+import {TableWrapper} from 'style/common.style';
 import styled from 'styled-components';
 import Select from 'react-select';
 
@@ -89,7 +90,7 @@ const CorpTable = ({
   const [clickId, setClickId] = useState();
   const showEditOpen = id => {
     setClickId(id);
-    const datas = corpListData.filter(v => v.id === id);
+    corpListData.filter(v => v.id === id);
     // setClickData(...datas);
   };
   const {data: corpDetail, refetch: refetchDetail} =
