@@ -30,6 +30,7 @@ import Worker from 'pages/delivery/Worker';
 import Information from 'pages/delivery/Information';
 import CustomerTastePage from 'pages/customerTaste/CustomerTastePage';
 import RegisterMakers from 'pages/apply/makers/RegisterMakers';
+import RecommnedMakers from 'pages/makers/RecommendMakers';
 
 export const MenuList = [
   {
@@ -137,6 +138,11 @@ export const MenuList = [
         name: '메이커스 공지사항',
         url: '/notice',
         component: <MakersNotice />,
+      },
+      {
+        name: '메이커스 추천',
+        url: '/recommend',
+        component: <RecommnedMakers />,
       },
     ],
   },

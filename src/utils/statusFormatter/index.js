@@ -430,3 +430,10 @@ export const registerMakersStatusData = [
     value: 4,
   },
 ];
+
+export const recommendMakersStatus = [
+  {key: 0, text: '대기', value: 0},
+  {key: 1, text: '진행중', value: 1},
+  {key: 2, text: '완료', value: 2},
+  {key: 3, text: '불가', value: 3},
+];
