@@ -13,7 +13,7 @@ import {
 import ItemDetailImage from './components/ItemDetailImage';
 import {useAtom} from 'jotai';
 import {productDataAtom} from 'utils/store';
-import {Button, Label} from 'semantic-ui-react';
+import {Button, Checkbox, Label} from 'semantic-ui-react';
 import ItemKeyword from './ItemKeyword/ItemKeyword';
 
 const ProductDetailPage = () => {
@@ -41,6 +41,7 @@ const ProductDetailPage = () => {
 
   const listData = detailData?.data;
   const [clicked, setClicked] = useState([]);
+  const [isGroup ,setIsGroup] = useState(false);
   const [dataList, setDataList] = useAtom(productDataAtom); // 이미지
   const [sendForm, setSendForm] = useState([]);
   const [sendIntroForm, setSendIntroForm] = useState([]);
@@ -70,7 +71,7 @@ const ProductDetailPage = () => {
   const morningEndTime = watch('morningEnd');
   const lunchEndTime = watch('lunchEnd');
   const dinnerEndTime = watch('dinnerEnd');
-
+  const childrenIds = watch('foodGroupChild')
   const calorie = watch('calorie');
   const carbohydrate = watch('carbohydrate');
   const protein = watch('protein');
@@ -78,7 +79,6 @@ const ProductDetailPage = () => {
 
   const modifyButton = async () => {
     const formData = new FormData();
-
     if (sendForm?.length > 0) {
       for (let i = 0; i < sendForm.length; i++) {
         formData.append('files', sendForm[i]);
@@ -105,6 +105,8 @@ const ProductDetailPage = () => {
       foodTags: clicked,
       morningCapacity: morningCapacity,
       lunchCapacity: lunchCapacity,
+      isParent : isGroup,
+      childrenIds:childrenIds.includes(',') ? childrenIds?.split(',').map((v)=>Number(v)): [],
       dinnerCapacity: dinnerCapacity,
       morningLastOrderTime:
         (morningEndTime === undefined ||
@@ -136,7 +138,6 @@ const ProductDetailPage = () => {
       protein: protein,
       fat: fat,
     };
-    // console.log(data, '0888');
 
     const json = JSON.stringify(data);
     const blob = new Blob([json], {type: 'application/json'});
@@ -183,6 +184,7 @@ const ProductDetailPage = () => {
   };
 
   useEffect(() => {
+    setIsGroup(listData?.isParent);
     setValue('foodName', listData?.foodName);
     setValue('defaultPrice', withCommas(listData?.defaultPrice));
     setValue(
@@ -231,6 +233,10 @@ const ProductDetailPage = () => {
       'customPrice',
       withCommas(listData?.customPrice === 0 ? '0' : listData?.customPrice),
     );
+    setValue(
+      'foodGroupChild',
+      listData?.childrenIds?.length > 0 ? listData?.childrenIds?.join(',') : '',
+    );
     setClicked(listData?.foodTags);
     setValue(
       'morning',
@@ -275,6 +281,8 @@ const ProductDetailPage = () => {
   }, [
     listData?.customPrice,
     listData?.foodName,
+    listData?.childrenIds,
+    listData?.isParent,
     listData?.defaultPrice,
     listData?.makersDiscountPrice,
     listData?.makersDiscountRate,
@@ -328,6 +336,15 @@ const ProductDetailPage = () => {
                 <Input name="morning" label="아침식사 케파" />
                 <Input name="lunch" label="점심식사 케파" />
                 <Input name="dinner" label="저녁식사 케파" />
+                <CheckboxView>
+                  <LabelContainer>
+                    그룹화
+                  </LabelContainer>
+                <Checkbox  type='checkbox' fitted toggle checked={isGroup} onChange={(v,data)=>{
+                  setIsGroup(data.checked)
+                }}/>
+                </CheckboxView>
+                {isGroup && <Input name="foodGroupChild" label="그룹소속 음식 ID" width="250px" placeholder="ex) 12,13,14"/>}
               </CapaWrap>
               <EndTimeWrap>
                 <EndTimeContents>
@@ -668,4 +685,16 @@ const DietRepoWrap = styled.div`
   display: flex;
 
   margin-top: 24px;
+`;
+const CheckboxView = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 30px;
+  
+  justify-content: center;
+`
+const LabelContainer = styled.p`
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 12px;
 `;

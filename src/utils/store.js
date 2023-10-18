@@ -144,3 +144,8 @@ export const noticeCompanyPushFilterAtom = atomWithReset(null);
 export const noticeCompanyPageAtom = atomWithReset(1);
 
 export const userPageAtom = atomWithReset(0);
+
+// 메이커스 추천
+export const recommendStatusAtom = atomWithReset();
+export const recommendMakersAtom = atomWithReset();
+export const recommendSpotAtom = atomWithReset();

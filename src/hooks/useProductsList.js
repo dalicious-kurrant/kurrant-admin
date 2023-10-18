@@ -27,8 +27,9 @@ export function useEditProductDetail() {
   return useMutation(
     (formData, config) => productApis.modifyProductDetail(formData, config),
     {
-      onSuccess: () => {
+      onSuccess: (v) => {
         queryClient.invalidateQueries('detailList');
+        console.log(v)
       },
       onError: () => {
         alert('잘못된 데이터가 있습니다. 다시 시도해주세요');

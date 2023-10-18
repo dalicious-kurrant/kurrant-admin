@@ -80,12 +80,16 @@ const MySpotZone = () => {
     if (checkItems.length === 0) {
       alert('개설할 스팟을 선택해주세요.');
     } else {
-      await createSpot(checkItems);
+      await createSpot({ids: checkItems});
     }
   };
 
   const renewSpotButton = async () => {
-    await renewSpot(renewData?.data);
+    if (renewData?.data?.length === 0) {
+      alert('갱신 내역이 없습니다.');
+    } else {
+      await renewSpot({ids: renewData?.data});
+    }
   };
 
   useEffect(() => {
